@@ -1,0 +1,2 @@
+/usr/bin/ar qc libquery.a  CMakeFiles/query.dir/PageRank.cpp.o
+/usr/bin/ranlib libquery.a

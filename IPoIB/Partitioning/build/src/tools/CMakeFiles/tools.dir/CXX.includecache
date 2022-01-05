@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/tools/Parser.hpp
+algorithm
+-
+cctype
+-
+cstring
+-
+iomanip
+-
+iostream
+-
+locale
+-
+map
+-
+numeric
+-
+sstream
+-
+stdexcept
+-
+string
+-
+unordered_map
+-
+vector
+-
+
+/home/hjkim/rdma/Partitioning/src/tools/Parser.cpp
+Parser.hpp
+/home/hjkim/rdma/Partitioning/src/tools/Parser.hpp
+

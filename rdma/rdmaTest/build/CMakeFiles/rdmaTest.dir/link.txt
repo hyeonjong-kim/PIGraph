@@ -1,0 +1,1 @@
+/usr/bin/g++     CMakeFiles/rdmaTest.dir/main.cpp.o  -o rdmaTest  -libverbs src/tools/libtools.a src/network/libnetwork.a -lpthread 
