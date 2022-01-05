@@ -6,5 +6,5 @@ CXX_FLAGS =
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/hjkim/rdma/rdmaTest/include/tools 
+CXX_INCLUDES = -I/home/hjkim/PiGraph/Tools/rdmaTest/src/tools/../../include/tools 
 

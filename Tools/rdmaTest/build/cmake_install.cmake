@@ -1,4 +1,4 @@
-# Install script for directory: /home/hjkim/rdma/rdmaTest
+# Install script for directory: /home/hjkim/PiGraph/Tools/rdmaTest
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,12 +39,12 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/hjkim/rdma/rdmaTest/build/src/tools/cmake_install.cmake")
+  include("/home/hjkim/PiGraph/Tools/rdmaTest/build/src/tools/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/hjkim/rdma/rdmaTest/build/src/network/cmake_install.cmake")
+  include("/home/hjkim/PiGraph/Tools/rdmaTest/build/src/network/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -55,5 +55,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/hjkim/rdma/rdmaTest/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/hjkim/PiGraph/Tools/rdmaTest/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

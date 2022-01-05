@@ -13,6 +13,7 @@
 #include <chrono>
 #include <vector>
 #include <sstream>
+#include <map>
 
 using namespace std;
 
@@ -49,6 +50,8 @@ class tcp{
         char* GetServerAddr(){return this->server_addr;}
         void CloseSocket();
         void ShutdownSocket();
+        map<string, string> ReadRDMAInfo();
+        void SendRDMAInfo(string _msg);
 };
 
 #endif

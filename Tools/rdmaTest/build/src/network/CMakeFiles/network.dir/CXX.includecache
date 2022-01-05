@@ -34,7 +34,7 @@ sstream
 map
 -
 
-/home/hjkim/rdma/rdmaTest/src/network/tcp.cpp
+/home/hjkim/PiGraph/Tools/rdmaTest/src/network/tcp.cpp
 tcp.hpp
-/home/hjkim/rdma/rdmaTest/src/network/tcp.hpp
+/home/hjkim/PiGraph/Tools/rdmaTest/src/network/tcp.hpp
 

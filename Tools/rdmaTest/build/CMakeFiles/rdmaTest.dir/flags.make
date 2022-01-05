@@ -6,5 +6,5 @@ CXX_FLAGS =   -std=gnu++17
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/hjkim/rdma/rdmaTest/include/tools -I/home/hjkim/rdma/rdmaTest/include/network 
+CXX_INCLUDES = -I/home/hjkim/PiGraph/Tools/rdmaTest/src/tools/../../include/tools -I/home/hjkim/PiGraph/Tools/rdmaTest/src/network/../../include/network 
 

@@ -1,4 +1,4 @@
-# Install script for directory: /home/hjkim/rdma/rdmaTest/src/network
+# Install script for directory: /home/hjkim/PiGraph/Tools/rdmaTest/src/network
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

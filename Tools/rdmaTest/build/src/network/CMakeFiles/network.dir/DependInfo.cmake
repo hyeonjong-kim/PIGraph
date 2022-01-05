@@ -4,13 +4,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/hjkim/rdma/rdmaTest/src/network/tcp.cpp" "/home/hjkim/rdma/rdmaTest/build/src/network/CMakeFiles/network.dir/tcp.cpp.o"
+  "/home/hjkim/PiGraph/Tools/rdmaTest/src/network/tcp.cpp" "/home/hjkim/PiGraph/Tools/rdmaTest/build/src/network/CMakeFiles/network.dir/tcp.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "../include/network"
+  "../src/network/../../include/network"
   )
 
 # Targets to which this target links.

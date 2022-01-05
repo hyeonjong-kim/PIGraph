@@ -156,7 +156,6 @@ void tcp::CloseSocket(){
 
 map<string, string> tcp::ReadRDMAInfo(){
     
-
     map<string, string> info;
     string info_name[6] = {"addr", "len", "lkey", "rkey", "lid", "qp_num"};
     for(int i = 0; i < 6; i++){

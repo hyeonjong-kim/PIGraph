@@ -159,3 +159,30 @@ void tcp::CloseSocket(){
     close(this->server_socket);
     close(this->new_socket);
 }
+
+map<string, string> tcp::ReadRDMAInfo(){
+    
+    map<string, string> info;
+    string info_name[6] = {"addr", "len", "lkey", "rkey", "lid", "qp_num"};
+    for(int i = 0; i < 6; i++){
+        this->result="";
+        this->read_char = "";
+        while(result.back() != '\n'){
+            this->valread = read(this->new_socket , this->buffer, 1);
+            this->read_char = this->buffer;
+            if(this->read_char!=""){
+                this->result += this->read_char;
+            }
+        }
+        info.insert({info_name[i], this->result});
+    }
+
+    return info;
+}
+
+void tcp::SendRDMAInfo(string _msg){
+    this->send_msg = _msg;
+    char msg[send_msg.size()];
+    strcpy(msg, send_msg.c_str());
+    write(this->client_sock , msg , strlen(msg));
+}
