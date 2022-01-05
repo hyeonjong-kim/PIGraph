@@ -1,1 +1,0 @@
-/usr/bin/g++     CMakeFiles/networktest.dir/main.cpp.o  -o networktest  src/network/libnetwork.a -lpthread 

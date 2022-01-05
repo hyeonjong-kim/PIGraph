@@ -1,1 +1,0 @@
-/usr/bin/g++     CMakeFiles/Partitioning.dir/main.cpp.o  -o Partitioning  src/tools/libtools.a 
