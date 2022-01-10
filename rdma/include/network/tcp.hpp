@@ -52,6 +52,7 @@ class tcp{
         void ShutdownSocket();
         map<string, string> ReadRDMAInfo();
         void SendRDMAInfo(string _msg);
+        string tcp::ReadCheckMsg()
 };
 
 #endif

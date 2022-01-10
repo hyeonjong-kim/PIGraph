@@ -179,9 +179,20 @@ void RDMA::PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint3
 
 void RDMA::SendMsg(string _msg){
   this->bulk_msg = this->bulk_msg + _msg;
-  if(this->bulk_msg.back()=="Q"){
+  if(this->bulk_msg.back() == 'Q'){
     char send_msg[this->bulk_msg.size()];
     strcpy(send_msg, this->bulk_msg.c_str());
-    this->PostRdmaWrite(this->qp, this->mr, send_msg, sizeof(send_msg), this->RDMAInfo.find("addr")->second, RDMAInfo.find("rkey")->second)
+    this->PostRdmaWrite(this->qp, this->mr, send_msg, sizeof(send_msg), this->RDMAInfo.find("addr")->second, RDMAInfo.find("rkey")->second);
+    this->t->SendCheckmsg();
   }
 }
+
+string RDMA::ReadMsg(){
+  string s = "";
+	while(s.compare("1\n")!= 0){
+		s = this->t->ReadCheckMsg();
+	}
+  
+  return this->recv_msg;
+}
+
