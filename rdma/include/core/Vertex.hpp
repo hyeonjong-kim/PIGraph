@@ -7,7 +7,7 @@
 #include <map>
 #include <mutex>
 
-#include "../network/tcp.hpp"
+#include "RDMA.hpp"
 
 using namespace std;
 
@@ -29,10 +29,10 @@ class Vertex {
         map<int, queue<double>>* message_addr;
         mutex* socket_mu;
         int externalBucket;
-        tcp* msgThread;
+        RDMA* msgThread;
         
     public:
-        Vertex(Vertexidx vertex_id, Vertexidx out_edge, map<int, queue<double>>* _messsage_addr, tcp* _t, int host_num, mutex* socketmu);
+        Vertex(Vertexidx vertex_id, Vertexidx out_edge, map<int, queue<double>>* _messsage_addr, RDMA* _rdma, int host_num, mutex* socketmu);
         ~Vertex();
         
         virtual void Compute() = 0;
@@ -66,7 +66,7 @@ class Vertex {
 };
 
 template<typename VertexValue, typename EdgeValue, typename MessageValue,typename Vertexidx>
-Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::Vertex(Vertexidx vertex_id, Vertexidx out_edge, map<int, queue<double>>* _messsage_addr, tcp* _t, int host_num, mutex* socketmu){
+Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::Vertex(Vertexidx vertex_id, Vertexidx out_edge, map<int, queue<double>>* _messsage_addr, RDMA* _rdma, int host_num, mutex* socketmu){
     SetVertexid(vertex_id);
     AddOutEdge(out_edge);
     SetMessageAddr(_messsage_addr);
@@ -85,7 +85,7 @@ void Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::SendMessageTo(cons
     string s1 = to_string(dest_vertex);
     string s2 = to_string(message);
     string s3 = s1 + " " + s2 + "\n";
-
+    
     this->socket_mu[socket_num].lock();
     this->msgThread[socket_num].Sendmsg(s3);
     this->socket_mu[socket_num].unlock();

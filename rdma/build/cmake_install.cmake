@@ -1,4 +1,4 @@
-# Install script for directory: /home/hjkim/PiGraph/IPoIB
+# Install script for directory: /home/hjkim/PiGraph/rdma
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,22 +39,22 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/hjkim/PiGraph/IPoIB/build/src/core/cmake_install.cmake")
+  include("/home/hjkim/PiGraph/rdma/build/src/core/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/hjkim/PiGraph/IPoIB/build/src/query/cmake_install.cmake")
+  include("/home/hjkim/PiGraph/rdma/build/src/query/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/hjkim/PiGraph/IPoIB/build/src/tools/cmake_install.cmake")
+  include("/home/hjkim/PiGraph/rdma/build/src/tools/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/hjkim/PiGraph/IPoIB/build/src/network/cmake_install.cmake")
+  include("/home/hjkim/PiGraph/rdma/build/src/network/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -65,5 +65,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/hjkim/PiGraph/IPoIB/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/hjkim/PiGraph/rdma/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

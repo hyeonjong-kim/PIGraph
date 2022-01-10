@@ -6,5 +6,5 @@ CXX_FLAGS =
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/hjkim/PiGraph/IPoIB/src/tools/../../include/tools 
+CXX_INCLUDES = -I/home/hjkim/PiGraph/rdma/src/tools/../../include/tools 
 

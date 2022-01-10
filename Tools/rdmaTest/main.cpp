@@ -14,6 +14,7 @@
 
 #include "ThreadPool.hpp"
 #include "tcp.hpp"
+#include "map"
 #define PORT 1
 using namespace std;
 
@@ -119,6 +120,7 @@ bool changeQueuePairStateToRTS(struct ibv_qp* queue_pair) {
 
 struct ibv_mr* registerMemoryRegion(struct ibv_pd* pd, void* buffer, size_t size) {
   return ibv_reg_mr(pd, buffer, size, IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_READ | IBV_ACCESS_REMOTE_WRITE);
+  
 }
 
 std::string HostToIp(const std::string& host) {
@@ -174,7 +176,6 @@ static void post_send(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t
 
     printf("post send wr: imm_data=0x%08x, byte_len=%u\n", send_wr.imm_data, length);
 }
-
 
 template <typename T> 
 T FromString ( const std::string &Text)
@@ -251,7 +252,7 @@ static void post_rdma_read(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uin
 
 int main(){
   int num_host = 2;
-  string host_file = "/home/hjkim/rdma/hostfile/hostinfo.txt";
+  string host_file = "/home/hjkim/PiGraph/rdma/hostfile/hostinfo.txt";
   ThreadPool* connectionThread = new ThreadPool(num_host);
   tcp t[num_host];
   vector<char[15]> server_ip(num_host);
@@ -273,6 +274,7 @@ int main(){
 		}
 		hostnum++;
 	}
+  
 	hostfile.close();
   
   hostfile.open(host_file);
@@ -296,8 +298,6 @@ int main(){
 			}
 	}
   
-  
-
   //Create user context
   struct ibv_context* context = createContext();
   //Create protection domain
@@ -309,7 +309,8 @@ int main(){
   struct ibv_qp* qp = createQueuePair(protection_domain, completion_queue);
   //Create memory region
   char buffer[1024 * 1024];
-  struct ibv_mr *mr = registerMemoryRegion(protection_domain, buffer, sizeof(buffer));
+  string s1;
+  struct ibv_mr *mr = registerMemoryRegion(protection_domain, &s1, 1000);
   
   //Exchange queue pair info
   uint16_t lid = getLocalId(context, PORT);
@@ -317,7 +318,7 @@ int main(){
   
   //Send RDMA info
   std::ostringstream oss;
-  oss << &buffer;
+  oss << &s1;
   t[1].SendRDMAInfo(oss.str()+"\n");
   t[1].SendRDMAInfo(to_string(mr->length)+"\n");
   t[1].SendRDMAInfo(to_string(mr->lkey)+"\n");
@@ -328,14 +329,20 @@ int main(){
   //Read RDMA info
   map<string, string> rdmaInfo = t[1].ReadRDMAInfo();
 
+  cout << &s1 << endl;
+  cout << rdmaInfo.find("addr")->second << endl;
+  cout << sizeof(s1) << endl;
+
   //Exchange queue pair state
   changeQueuePairStateToInit(qp);
   changeQueuePairStateToRTR(qp, PORT, stoi(rdmaInfo.find("qp_num")->second), stoi(rdmaInfo.find("lid")->second));
   changeQueuePairStateToRTS(qp);
 
-  for (int i=0 ; i<1000 ; i++)buffer[i] = 'f';
-  post_rdma_write(qp, mr, buffer, 1000, rdmaInfo.find("addr")->second, rdmaInfo.find("rkey")->second);
-  
+
+  s1 = "fdafdasf";
+
+  post_rdma_write(qp, mr, &s1, sizeof(s1), rdmaInfo.find("addr")->second, rdmaInfo.find("rkey")->second);
+ cout << sizeof(s1) << endl; 
   int num_wr = 1;
   struct ibv_wc wc;
   int ret;
@@ -377,6 +384,9 @@ int main(){
   ibv_destroy_cq(completion_queue);
   ibv_dereg_mr(mr);
   ibv_dealloc_pd(protection_domain);
+  
+  //sleep(10);
+  //cout << s1 << endl;
 
   return 0;
 }

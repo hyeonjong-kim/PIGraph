@@ -100,8 +100,6 @@ int main(int argc, const char *argv[])
         return 0;
     }
 
-	
-
 	ifstream data(file_name);
 	ifstream hostfile(host_file);
 	char buf[100];
@@ -133,7 +131,7 @@ int main(int argc, const char *argv[])
 		cout << "network mode error" << endl;
 		return 0;
 	}
-
+	
 	struct timeval start = {};
     struct timeval end = {};
 
@@ -231,66 +229,6 @@ int main(int argc, const char *argv[])
 
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
-		if(i%2==0){
-			for(int j = 0; j < num_host; j++){
-				threadPool2->EnqueueJob([&t, j, &mu, num_host, &pagerank_set,&messages2](){
-					int count = 0;
-					string s = "";
-					vector<string> result;
-					vector<string> msg;
-					vector<string> v;
-						s = t[j].Readmsg();
-						v = split(s, '\n');
-						for(int k = 0; k < v.size(); k++){
-							msg = split(v[k], ' ');
-							if(msg.size() ==2){
-								count++;
-								//cout <<  msg[0] << endl;
-								//cout <<  msg[1] << endl;
-							}
-							if(msg.size() ==2 && pagerank_set.count(stoi(msg[0])) == 1){
-								int mu_num = internalHashFunction(stoi(msg[0]));
-								mu[mu_num].lock();
-								messages2->find(stoi(msg[0]))->second.push(stod(msg[1]));
-								mu[mu_num].unlock();
-								
-							}
-						}
-					cout << "socket num: " <<  t[j].GetServerAddr() << " amount recv msg : " << count << endl;
-				});
-			}
-		}
-
-		else{
-			for(int j = 0; j < num_host; j++){
-				threadPool2->EnqueueJob([&t, j, &mu, num_host, &pagerank_set,&messages1](){
-					int count = 0;
-					string s = "";
-					vector<string> result;
-					vector<string> msg;
-					vector<string> v;
-						s = t[j].Readmsg();
-						v = split(s, '\n');
-						for(int k = 0; k < v.size(); k++){
-							msg = split(v[k], ' ');
-							if(msg.size() ==2){
-								count++;
-								//cout <<  msg[0] << endl;
-								//cout <<  msg[1] << endl;
-							}
-							if(msg.size() ==2 && pagerank_set.count(stoi(msg[0])) == 1){
-								int mu_num = internalHashFunction(stoi(msg[0]));
-								mu[mu_num].lock();
-								messages1->find(stoi(msg[0]))->second.push(stod(msg[1]));
-								mu[mu_num].unlock();
-								
-							}
-						}
-					cout << "socket num: " <<  t[j].GetServerAddr() << " amount recv msg : " << count << endl;
-				});
-			}
-		}
-		
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			threadPool->EnqueueJob([iter](){iter->second.Compute();});
 		}
@@ -313,17 +251,6 @@ int main(int argc, const char *argv[])
 					}
 					break;
 				}
-		}
-
-		if(i%2==0){
-			for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-				iter->second.SetMessageAddr(messages2);
-			}	
-		}
-		else{
-			for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-				iter->second.SetMessageAddr(messages1);
-			}	
 		}
 	}
 	gettimeofday(&end, NULL);

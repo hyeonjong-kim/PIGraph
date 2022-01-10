@@ -87,4 +87,6 @@ ThreadPool.hpp
 /home/hjkim/PiGraph/Tools/rdmaTest/ThreadPool.hpp
 tcp.hpp
 /home/hjkim/PiGraph/Tools/rdmaTest/tcp.hpp
+map
+/home/hjkim/PiGraph/Tools/rdmaTest/map
 

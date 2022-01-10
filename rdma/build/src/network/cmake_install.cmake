@@ -1,4 +1,4 @@
-# Install script for directory: /home/hjkim/PiGraph/IPoIB/src/network
+# Install script for directory: /home/hjkim/PiGraph/rdma/src/network
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

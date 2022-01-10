@@ -16,6 +16,15 @@ RDMA::~RDMA(){
 
 }
 
+template <typename T> 
+T FromString (const std::string &Text)
+{
+    std::stringstream ss(Text);
+    void * result;
+    ss >> result;
+    return (T)result;
+}
+
 struct ibv_context* RDMA::CreateContext() {
     
     int ret;
@@ -137,4 +146,37 @@ void RDMA::ConnectRDMA(){
     this->ChangeQueuePairStateToInit(this->qp);
     this->ChangeQueuePairStateToRTR(this->qp, PORT, stoi(this->RDMAInfo.find("qp_num")->second), stoi(this->RDMAInfo.find("lid")->second));
     this->ChangeQueuePairStateToRTS(this->qp);
+}
+
+void RDMA::PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length, string r_addr, string r_key){
+  int ret;
+  r_addr.erase(r_addr.find_last_not_of(" \n\r\t")+1);
+
+  struct ibv_sge sge = {
+      .addr   = (uint64_t)(uintptr_t)addr,
+      .length = length,
+      .lkey   = mr->lkey,
+  };
+
+  struct ibv_send_wr send_wr = {
+      .wr_id      = (uint64_t)(uintptr_t)addr,
+      .sg_list    = &sge,
+      .num_sge    = 1,
+      .opcode     = IBV_WR_RDMA_WRITE,
+      .imm_data   = rand(),
+      .wr = {
+        .rdma = {
+          .remote_addr = FromString<uint64_t>(r_addr),
+          .rkey = stoul(r_key),
+        }
+      }
+  };
+
+  struct ibv_send_wr *bad_wr;
+  ret = ibv_post_send(qp, &send_wr, &bad_wr);
+  assert(ret == 0);
+}
+
+void RDMASendMsg(string sendType){
+  
 }

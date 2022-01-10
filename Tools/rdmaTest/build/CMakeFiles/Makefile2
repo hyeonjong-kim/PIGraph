@@ -112,8 +112,8 @@ src/tools/clean: src/tools/CMakeFiles/tools.dir/clean
 # Target rules for target CMakeFiles/rdmaTest.dir
 
 # All Build rule for target.
-CMakeFiles/rdmaTest.dir/all: src/network/CMakeFiles/network.dir/all
 CMakeFiles/rdmaTest.dir/all: src/tools/CMakeFiles/tools.dir/all
+CMakeFiles/rdmaTest.dir/all: src/network/CMakeFiles/network.dir/all
 	$(MAKE) -f CMakeFiles/rdmaTest.dir/build.make CMakeFiles/rdmaTest.dir/depend
 	$(MAKE) -f CMakeFiles/rdmaTest.dir/build.make CMakeFiles/rdmaTest.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hjkim/PiGraph/Tools/rdmaTest/build/CMakeFiles --progress-num=3,4 "Built target rdmaTest"

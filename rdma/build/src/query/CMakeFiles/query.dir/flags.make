@@ -6,5 +6,5 @@ CXX_FLAGS =
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/hjkim/PiGraph/IPoIB/src/query/../../include/query -I/home/hjkim/PiGraph/IPoIB/src/core/../../include/core 
+CXX_INCLUDES = -I/home/hjkim/PiGraph/rdma/src/query/../../include/query -I/home/hjkim/PiGraph/rdma/src/core/../../include/core 
 

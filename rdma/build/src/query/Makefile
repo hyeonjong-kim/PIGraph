@@ -48,10 +48,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/hjkim/PiGraph/IPoIB
+CMAKE_SOURCE_DIR = /home/hjkim/PiGraph/rdma
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/hjkim/PiGraph/IPoIB/build
+CMAKE_BINARY_DIR = /home/hjkim/PiGraph/rdma/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,14 +80,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/hjkim/PiGraph/IPoIB/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/IPoIB/build/CMakeFiles /home/hjkim/PiGraph/IPoIB/build/src/query/CMakeFiles/progress.marks
-	cd /home/hjkim/PiGraph/IPoIB/build && $(MAKE) -f CMakeFiles/Makefile2 src/query/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/IPoIB/build/CMakeFiles 0
+	cd /home/hjkim/PiGraph/rdma/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/rdma/build/CMakeFiles /home/hjkim/PiGraph/rdma/build/src/query/CMakeFiles/progress.marks
+	cd /home/hjkim/PiGraph/rdma/build && $(MAKE) -f CMakeFiles/Makefile2 src/query/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/rdma/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/hjkim/PiGraph/IPoIB/build && $(MAKE) -f CMakeFiles/Makefile2 src/query/clean
+	cd /home/hjkim/PiGraph/rdma/build && $(MAKE) -f CMakeFiles/Makefile2 src/query/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,23 +97,23 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/hjkim/PiGraph/IPoIB/build && $(MAKE) -f CMakeFiles/Makefile2 src/query/preinstall
+	cd /home/hjkim/PiGraph/rdma/build && $(MAKE) -f CMakeFiles/Makefile2 src/query/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/hjkim/PiGraph/IPoIB/build && $(MAKE) -f CMakeFiles/Makefile2 src/query/preinstall
+	cd /home/hjkim/PiGraph/rdma/build && $(MAKE) -f CMakeFiles/Makefile2 src/query/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/hjkim/PiGraph/IPoIB/build && $(CMAKE_COMMAND) -P /home/hjkim/PiGraph/IPoIB/build/CMakeFiles/VerifyGlobs.cmake
-	cd /home/hjkim/PiGraph/IPoIB/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/hjkim/PiGraph/rdma/build && $(CMAKE_COMMAND) -P /home/hjkim/PiGraph/rdma/build/CMakeFiles/VerifyGlobs.cmake
+	cd /home/hjkim/PiGraph/rdma/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 src/query/CMakeFiles/query.dir/rule:
-	cd /home/hjkim/PiGraph/IPoIB/build && $(MAKE) -f CMakeFiles/Makefile2 src/query/CMakeFiles/query.dir/rule
+	cd /home/hjkim/PiGraph/rdma/build && $(MAKE) -f CMakeFiles/Makefile2 src/query/CMakeFiles/query.dir/rule
 .PHONY : src/query/CMakeFiles/query.dir/rule
 
 # Convenience name for target.
@@ -123,7 +123,7 @@ query: src/query/CMakeFiles/query.dir/rule
 
 # fast build rule for target.
 query/fast:
-	cd /home/hjkim/PiGraph/IPoIB/build && $(MAKE) -f src/query/CMakeFiles/query.dir/build.make src/query/CMakeFiles/query.dir/build
+	cd /home/hjkim/PiGraph/rdma/build && $(MAKE) -f src/query/CMakeFiles/query.dir/build.make src/query/CMakeFiles/query.dir/build
 .PHONY : query/fast
 
 PageRank.o: PageRank.cpp.o
@@ -132,7 +132,7 @@ PageRank.o: PageRank.cpp.o
 
 # target to build an object file
 PageRank.cpp.o:
-	cd /home/hjkim/PiGraph/IPoIB/build && $(MAKE) -f src/query/CMakeFiles/query.dir/build.make src/query/CMakeFiles/query.dir/PageRank.cpp.o
+	cd /home/hjkim/PiGraph/rdma/build && $(MAKE) -f src/query/CMakeFiles/query.dir/build.make src/query/CMakeFiles/query.dir/PageRank.cpp.o
 .PHONY : PageRank.cpp.o
 
 PageRank.i: PageRank.cpp.i
@@ -141,7 +141,7 @@ PageRank.i: PageRank.cpp.i
 
 # target to preprocess a source file
 PageRank.cpp.i:
-	cd /home/hjkim/PiGraph/IPoIB/build && $(MAKE) -f src/query/CMakeFiles/query.dir/build.make src/query/CMakeFiles/query.dir/PageRank.cpp.i
+	cd /home/hjkim/PiGraph/rdma/build && $(MAKE) -f src/query/CMakeFiles/query.dir/build.make src/query/CMakeFiles/query.dir/PageRank.cpp.i
 .PHONY : PageRank.cpp.i
 
 PageRank.s: PageRank.cpp.s
@@ -150,7 +150,7 @@ PageRank.s: PageRank.cpp.s
 
 # target to generate assembly for a file
 PageRank.cpp.s:
-	cd /home/hjkim/PiGraph/IPoIB/build && $(MAKE) -f src/query/CMakeFiles/query.dir/build.make src/query/CMakeFiles/query.dir/PageRank.cpp.s
+	cd /home/hjkim/PiGraph/rdma/build && $(MAKE) -f src/query/CMakeFiles/query.dir/build.make src/query/CMakeFiles/query.dir/PageRank.cpp.s
 .PHONY : PageRank.cpp.s
 
 # Help Target
@@ -176,7 +176,7 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/hjkim/PiGraph/IPoIB/build && $(CMAKE_COMMAND) -P /home/hjkim/PiGraph/IPoIB/build/CMakeFiles/VerifyGlobs.cmake
-	cd /home/hjkim/PiGraph/IPoIB/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/hjkim/PiGraph/rdma/build && $(CMAKE_COMMAND) -P /home/hjkim/PiGraph/rdma/build/CMakeFiles/VerifyGlobs.cmake
+	cd /home/hjkim/PiGraph/rdma/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

@@ -53,7 +53,8 @@ class RDMA {
         void ConnectRDMA();
         void ExchangeInfo();
         
-        static void PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length, string r_addr, string r_key);
+        void PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length, string r_addr, string r_key);
+        void SendMsg(string sendType);
 };
 
 #endif

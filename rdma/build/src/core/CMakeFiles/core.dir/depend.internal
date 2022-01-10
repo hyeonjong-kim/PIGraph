@@ -3,5 +3,6 @@
 
 src/core/CMakeFiles/core.dir/Vertex.cpp.o
  ../include/core/Vertex.hpp
+ ../include/network/RDMA.hpp
  ../include/network/tcp.hpp
- /home/hjkim/PiGraph/IPoIB/src/core/Vertex.cpp
+ /home/hjkim/PiGraph/rdma/src/core/Vertex.cpp

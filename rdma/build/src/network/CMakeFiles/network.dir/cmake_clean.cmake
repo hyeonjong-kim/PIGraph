@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/network.dir/RDMA.cpp.o"
   "CMakeFiles/network.dir/tcp.cpp.o"
   "libnetwork.a"
   "libnetwork.pdb"

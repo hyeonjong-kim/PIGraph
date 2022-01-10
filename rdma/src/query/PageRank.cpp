@@ -1,7 +1,7 @@
 #include "PageRank.hpp"
 
 
-PageRank::PageRank(int vertex_id, int out_edge, map<int, queue<double>>* _messsage_addr, tcp* _t, int host_num, mutex* socketmu):Vertex<double, void, double, int>(vertex_id, out_edge, _messsage_addr, _t, host_num, socketmu){
+PageRank::PageRank(int vertex_id, int out_edge, map<int, queue<double>>* _messsage_addr, RDMA* _rdma, int host_num, mutex* socketmu):Vertex<double, void, double, int>(vertex_id, out_edge, _messsage_addr, _rdma, host_num, socketmu){
     SetValue(1.0/GetNumVertices());
 }
 
