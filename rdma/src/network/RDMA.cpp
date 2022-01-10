@@ -7,7 +7,7 @@ RDMA::RDMA(tcp* _t){
     this->cq_size = 0x10;
     this->completion_queue = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
     this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue);
-    this->mr = this->RegisterMemoryRegion(this->protection_domain, this->buffer, sizeof(buffer));
+    this->mr = this->RegisterMemoryRegion(this->protection_domain, this->recv_msg, sizeof(recv_msg));
     this->lid = this->GetLocalId(this->context, PORT);
     this->qp_num = this->GetQueuePairNumber(this->qp);
 }
@@ -177,6 +177,11 @@ void RDMA::PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint3
   assert(ret == 0);
 }
 
-void RDMASendMsg(string sendType){
-  
+void RDMA::SendMsg(string _msg){
+  this->bulk_msg = this->bulk_msg + _msg;
+  if(this->bulk_msg.back()=="Q"){
+    char send_msg[this->bulk_msg.size()];
+    strcpy(send_msg, this->bulk_msg.c_str());
+    this->PostRdmaWrite(this->qp, this->mr, send_msg, sizeof(send_msg), this->RDMAInfo.find("addr")->second, RDMAInfo.find("rkey")->second)
+  }
 }

@@ -31,10 +31,11 @@ class RDMA {
         int cq_size;
         struct ibv_cq* completion_queue;
         struct ibv_qp* qp;
-        char buffer[1024 * 1024];
         struct ibv_mr *mr;
         uint16_t lid;
         uint32_t qp_num;
+        string bulk_msg;
+        char recv_msg[104857600];
     
     public:
         RDMA(tcp* _t);
@@ -54,7 +55,7 @@ class RDMA {
         void ExchangeInfo();
         
         void PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length, string r_addr, string r_key);
-        void SendMsg(string sendType);
+        void SendMsg(string _msg);
 };
 
 #endif
