@@ -12,6 +12,22 @@ RDMA::RDMA(tcp* _t){
     this->qp_num = this->GetQueuePairNumber(this->qp);
 }
 
+RDMA::RDMA(){
+
+}
+
+void RDMA::setInfo(tcp* _t){
+    this->t = _t;
+    this->context = this->CreateContext();
+    this->protection_domain = ibv_alloc_pd(this->context);
+    this->cq_size = 0x10;
+    this->completion_queue = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
+    this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue);
+    this->mr = this->RegisterMemoryRegion(this->protection_domain, this->recv_msg, sizeof(recv_msg));
+    this->lid = this->GetLocalId(this->context, PORT);
+    this->qp_num = this->GetQueuePairNumber(this->qp);
+}
+
 RDMA::~RDMA(){
 
 }
@@ -131,7 +147,7 @@ struct ibv_mr* RDMA::RegisterMemoryRegion(struct ibv_pd* pd, void* buffer, size_
 void RDMA::ExchangeInfo(){
     //Send RDMA Info
     std::ostringstream oss;
-    oss << &buffer;
+    oss << &(this->recv_msg);
     this->t->SendRDMAInfo(oss.str()+"\n");
     this->t->SendRDMAInfo(to_string(this->mr->length)+"\n");
     this->t->SendRDMAInfo(to_string(this->mr->lkey)+"\n");

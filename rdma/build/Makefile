@@ -125,6 +125,19 @@ PiGraph/fast:
 .PHONY : PiGraph/fast
 
 #=============================================================================
+# Target rules for targets named network
+
+# Build rule for target.
+network: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 network
+.PHONY : network
+
+# fast build rule for target.
+network/fast:
+	$(MAKE) -f src/network/CMakeFiles/network.dir/build.make src/network/CMakeFiles/network.dir/build
+.PHONY : network/fast
+
+#=============================================================================
 # Target rules for targets named core
 
 # Build rule for target.
@@ -163,19 +176,6 @@ tools/fast:
 	$(MAKE) -f src/tools/CMakeFiles/tools.dir/build.make src/tools/CMakeFiles/tools.dir/build
 .PHONY : tools/fast
 
-#=============================================================================
-# Target rules for targets named network
-
-# Build rule for target.
-network: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 network
-.PHONY : network
-
-# fast build rule for target.
-network/fast:
-	$(MAKE) -f src/network/CMakeFiles/network.dir/build.make src/network/CMakeFiles/network.dir/build
-.PHONY : network/fast
-
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -212,10 +212,10 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... PiGraph"
+	@echo "... network"
 	@echo "... core"
 	@echo "... query"
 	@echo "... tools"
-	@echo "... network"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

@@ -3,6 +3,7 @@
 
 src/query/CMakeFiles/query.dir/PageRank.cpp.o
  ../include/core/Vertex.hpp
+ ../include/network/RDMA.hpp
  ../include/network/tcp.hpp
  ../include/query/PageRank.hpp
  /home/hjkim/PiGraph/rdma/src/query/PageRank.cpp

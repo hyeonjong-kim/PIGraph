@@ -17,8 +17,10 @@ map
 -
 mutex
 -
-RDMA.hpp
-../include/core/RDMA.hpp
+../network/tcp.hpp
+../include/network/tcp.hpp
+../network/RDMA.hpp
+../include/network/RDMA.hpp
 
 ../include/network/RDMA.hpp
 iostream

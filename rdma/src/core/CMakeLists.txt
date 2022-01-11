@@ -5,5 +5,6 @@ file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
 add_library(core STATIC ${SRC_FILES})
 
 target_include_directories(core PUBLIC ../../include/core)
+
 target_link_libraries(core PRIVATE network)
-#target_compile_options(core PRIVATE -Wall -Werror)
+

@@ -7,7 +7,8 @@
 #include <map>
 #include <mutex>
 
-#include "RDMA.hpp"
+#include "../network/tcp.hpp"
+#include "../network/RDMA.hpp"
 
 using namespace std;
 
@@ -29,10 +30,10 @@ class Vertex {
         map<int, queue<double>>* message_addr;
         mutex* socket_mu;
         int externalBucket;
-        RDMA* msgThread;
+        tcp* msgThread;
         
     public:
-        Vertex(Vertexidx vertex_id, Vertexidx out_edge, map<int, queue<double>>* _messsage_addr, RDMA* _rdma, int host_num, mutex* socketmu);
+        Vertex(Vertexidx vertex_id, Vertexidx out_edge, map<int, queue<double>>* _messsage_addr, tcp* _t, int host_num, mutex* socketmu);
         ~Vertex();
         
         virtual void Compute() = 0;
@@ -66,7 +67,7 @@ class Vertex {
 };
 
 template<typename VertexValue, typename EdgeValue, typename MessageValue,typename Vertexidx>
-Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::Vertex(Vertexidx vertex_id, Vertexidx out_edge, map<int, queue<double>>* _messsage_addr, RDMA* _rdma, int host_num, mutex* socketmu){
+Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::Vertex(Vertexidx vertex_id, Vertexidx out_edge, map<int, queue<double>>* _messsage_addr, tcp* _t, int host_num, mutex* socketmu){
     SetVertexid(vertex_id);
     AddOutEdge(out_edge);
     SetMessageAddr(_messsage_addr);

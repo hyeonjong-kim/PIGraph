@@ -24,7 +24,7 @@ class tcp{
         struct sockaddr_in serv_addr;
         int opt = 1;
         int addrlen = sizeof(address);
-        char buffer[1048676] = {0};
+        char buffer[104867600] = {0};
         int port;
         int valread;
         char* server_addr;
@@ -34,12 +34,11 @@ class tcp{
         string result;
         string read_char;
         string send_msg ="";
-        int send_msg_size;
 
     public:
-        tcp(int socket_num, int port, char _server_addr[], int num_host, int _client_port, int _msgsize);
+        tcp(int socket_num, int port, char _server_addr[], int num_host, int _client_port);
         tcp();
-        void SetInfo(int socket_num, int port, char _server_addr[], int num_host, int _client_port, int _msgsize);
+        void SetInfo(int socket_num, int port, char _server_addr[], int num_host, int _client_port);
         ~tcp();
         void SetSocket();
         void ConnectSocket();
@@ -52,7 +51,7 @@ class tcp{
         void ShutdownSocket();
         map<string, string> ReadRDMAInfo();
         void SendRDMAInfo(string _msg);
-        string tcp::ReadCheckMsg()
+        string ReadCheckMsg();
 };
 
 #endif

@@ -54,27 +54,27 @@ CMAKE_BINARY_DIR = /home/hjkim/PiGraph/rdma/build
 
 # The main recursive "all" target.
 all: CMakeFiles/PiGraph.dir/all
+all: src/network/all
 all: src/core/all
 all: src/query/all
 all: src/tools/all
-all: src/network/all
 
 .PHONY : all
 
 # The main recursive "preinstall" target.
+preinstall: src/network/preinstall
 preinstall: src/core/preinstall
 preinstall: src/query/preinstall
 preinstall: src/tools/preinstall
-preinstall: src/network/preinstall
 
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/PiGraph.dir/clean
+clean: src/network/clean
 clean: src/core/clean
 clean: src/query/clean
 clean: src/tools/clean
-clean: src/network/clean
 
 .PHONY : clean
 
@@ -154,10 +154,10 @@ src/tools/clean: src/tools/CMakeFiles/tools.dir/clean
 # Target rules for target CMakeFiles/PiGraph.dir
 
 # All Build rule for target.
+CMakeFiles/PiGraph.dir/all: src/network/CMakeFiles/network.dir/all
 CMakeFiles/PiGraph.dir/all: src/core/CMakeFiles/core.dir/all
 CMakeFiles/PiGraph.dir/all: src/query/CMakeFiles/query.dir/all
 CMakeFiles/PiGraph.dir/all: src/tools/CMakeFiles/tools.dir/all
-CMakeFiles/PiGraph.dir/all: src/network/CMakeFiles/network.dir/all
 	$(MAKE) -f CMakeFiles/PiGraph.dir/build.make CMakeFiles/PiGraph.dir/depend
 	$(MAKE) -f CMakeFiles/PiGraph.dir/build.make CMakeFiles/PiGraph.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hjkim/PiGraph/rdma/build/CMakeFiles --progress-num=1,2 "Built target PiGraph"
@@ -179,6 +179,33 @@ PiGraph: CMakeFiles/PiGraph.dir/rule
 CMakeFiles/PiGraph.dir/clean:
 	$(MAKE) -f CMakeFiles/PiGraph.dir/build.make CMakeFiles/PiGraph.dir/clean
 .PHONY : CMakeFiles/PiGraph.dir/clean
+
+#=============================================================================
+# Target rules for target src/network/CMakeFiles/network.dir
+
+# All Build rule for target.
+src/network/CMakeFiles/network.dir/all:
+	$(MAKE) -f src/network/CMakeFiles/network.dir/build.make src/network/CMakeFiles/network.dir/depend
+	$(MAKE) -f src/network/CMakeFiles/network.dir/build.make src/network/CMakeFiles/network.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hjkim/PiGraph/rdma/build/CMakeFiles --progress-num=5,6,7 "Built target network"
+.PHONY : src/network/CMakeFiles/network.dir/all
+
+# Build rule for subdir invocation for target.
+src/network/CMakeFiles/network.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/rdma/build/CMakeFiles 3
+	$(MAKE) -f CMakeFiles/Makefile2 src/network/CMakeFiles/network.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/rdma/build/CMakeFiles 0
+.PHONY : src/network/CMakeFiles/network.dir/rule
+
+# Convenience name for target.
+network: src/network/CMakeFiles/network.dir/rule
+
+.PHONY : network
+
+# clean rule for target.
+src/network/CMakeFiles/network.dir/clean:
+	$(MAKE) -f src/network/CMakeFiles/network.dir/build.make src/network/CMakeFiles/network.dir/clean
+.PHONY : src/network/CMakeFiles/network.dir/clean
 
 #=============================================================================
 # Target rules for target src/core/CMakeFiles/core.dir
@@ -211,8 +238,8 @@ src/core/CMakeFiles/core.dir/clean:
 # Target rules for target src/query/CMakeFiles/query.dir
 
 # All Build rule for target.
-src/query/CMakeFiles/query.dir/all: src/core/CMakeFiles/core.dir/all
 src/query/CMakeFiles/query.dir/all: src/network/CMakeFiles/network.dir/all
+src/query/CMakeFiles/query.dir/all: src/core/CMakeFiles/core.dir/all
 	$(MAKE) -f src/query/CMakeFiles/query.dir/build.make src/query/CMakeFiles/query.dir/depend
 	$(MAKE) -f src/query/CMakeFiles/query.dir/build.make src/query/CMakeFiles/query.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hjkim/PiGraph/rdma/build/CMakeFiles --progress-num=8,9 "Built target query"
@@ -261,33 +288,6 @@ tools: src/tools/CMakeFiles/tools.dir/rule
 src/tools/CMakeFiles/tools.dir/clean:
 	$(MAKE) -f src/tools/CMakeFiles/tools.dir/build.make src/tools/CMakeFiles/tools.dir/clean
 .PHONY : src/tools/CMakeFiles/tools.dir/clean
-
-#=============================================================================
-# Target rules for target src/network/CMakeFiles/network.dir
-
-# All Build rule for target.
-src/network/CMakeFiles/network.dir/all:
-	$(MAKE) -f src/network/CMakeFiles/network.dir/build.make src/network/CMakeFiles/network.dir/depend
-	$(MAKE) -f src/network/CMakeFiles/network.dir/build.make src/network/CMakeFiles/network.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hjkim/PiGraph/rdma/build/CMakeFiles --progress-num=5,6,7 "Built target network"
-.PHONY : src/network/CMakeFiles/network.dir/all
-
-# Build rule for subdir invocation for target.
-src/network/CMakeFiles/network.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/rdma/build/CMakeFiles 3
-	$(MAKE) -f CMakeFiles/Makefile2 src/network/CMakeFiles/network.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/rdma/build/CMakeFiles 0
-.PHONY : src/network/CMakeFiles/network.dir/rule
-
-# Convenience name for target.
-network: src/network/CMakeFiles/network.dir/rule
-
-.PHONY : network
-
-# clean rule for target.
-src/network/CMakeFiles/network.dir/clean:
-	$(MAKE) -f src/network/CMakeFiles/network.dir/build.make src/network/CMakeFiles/network.dir/clean
-.PHONY : src/network/CMakeFiles/network.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

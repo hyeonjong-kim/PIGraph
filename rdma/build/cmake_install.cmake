@@ -39,6 +39,11 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
+  include("/home/hjkim/PiGraph/rdma/build/src/network/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
   include("/home/hjkim/PiGraph/rdma/build/src/core/cmake_install.cmake")
 endif()
 
@@ -50,11 +55,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
   include("/home/hjkim/PiGraph/rdma/build/src/tools/cmake_install.cmake")
-endif()
-
-if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  # Include the install script for the subdirectory.
-  include("/home/hjkim/PiGraph/rdma/build/src/network/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)

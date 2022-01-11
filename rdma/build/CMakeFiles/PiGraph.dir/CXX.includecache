@@ -19,6 +19,40 @@ mutex
 -
 ../network/tcp.hpp
 ../include/network/tcp.hpp
+../network/RDMA.hpp
+../include/network/RDMA.hpp
+
+../include/network/RDMA.hpp
+iostream
+-
+infiniband/verbs.h
+-
+string
+-
+fstream
+-
+sstream
+-
+cstdlib
+-
+netdb.h
+-
+cstdlib
+-
+arpa/inet.h
+-
+assert.h
+-
+inttypes.h
+-
+typeinfo
+-
+cstdio
+-
+map
+-
+tcp.hpp
+../include/network/tcp.hpp
 
 ../include/network/tcp.hpp
 iostream
@@ -127,4 +161,6 @@ Parser.hpp
 /home/hjkim/PiGraph/rdma/Parser.hpp
 tcp.hpp
 /home/hjkim/PiGraph/rdma/tcp.hpp
+RDMA.hpp
+/home/hjkim/PiGraph/rdma/RDMA.hpp
 

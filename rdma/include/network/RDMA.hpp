@@ -39,7 +39,11 @@ class RDMA {
     
     public:
         RDMA(tcp* _t);
+        RDMA();
         ~RDMA();
+        
+        void setInfo(tcp* _t);
+        
         struct ibv_context* CreateContext();
         struct ibv_qp* CreateQueuePair(struct ibv_pd* pd, struct ibv_cq* cq);
         struct ibv_mr* RegisterMemoryRegion(struct ibv_pd* pd, void* buffer, size_t size);
@@ -56,6 +60,8 @@ class RDMA {
         
         void PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length, string r_addr, string r_key);
         void SendMsg(string _msg);
+        
+        string ReadMsg();
 };
 
 #endif

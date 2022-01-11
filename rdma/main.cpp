@@ -10,6 +10,7 @@
 #include "ThreadPool.hpp"
 #include "Parser.hpp"
 #include "tcp.hpp"
+#include "RDMA.hpp"
 
 using namespace argparse;
 
@@ -50,20 +51,12 @@ int main(int argc, const char *argv[])
       .description("file name")
       .required(true);
 	parser.add_argument()
-      .names({"-M", "--msgsize"})
-      .description("msg size")
-      .required(false);
-	parser.add_argument()
       .names({"-n", "--hostnumber"})
       .description("number of host")
       .required(true);
 	parser.add_argument()
       .names({"-s", "--superstep"})
       .description("sperstep")
-      .required(true);
-	parser.add_argument()
-      .names({"-N", "--network"})
-      .description("network mode")
       .required(true);
 	parser.add_argument()
       .names({"-p", "--partitioning"})
@@ -84,10 +77,8 @@ int main(int argc, const char *argv[])
 	string host_file = "../hostfile/hostinfo.txt";
 	int num_host = stoi(parser.get<string>("n"));
 	int superstep = stoi(parser.get<string>("s"));
-	string network_mode = parser.get<string>("N");
 	int p_option= stoi(parser.get<string>("p"));
     char delimiter;
-	int msgsize = stoi(parser.get<string>("M"));
 	
     if(p_option == 0){
         delimiter = ' ';
@@ -100,16 +91,15 @@ int main(int argc, const char *argv[])
         return 0;
     }
 
-	ifstream data(file_name);
-	ifstream hostfile(host_file);
-	char buf[100];
-	string s;
-	
 	char hostname[256];
 	size_t hostnamelen = 256;
 	gethostname(hostname, hostnamelen);
 	string hostname_str(hostname);
 	int hostnum = 0;
+
+	ifstream hostfile(host_file);
+	char buf[100];
+	string s;
 
 	for(int i=0; i<num_host; i++){
 		hostfile.getline(buf, 100);
@@ -122,16 +112,6 @@ int main(int argc, const char *argv[])
 
 	hostfile.close();
 
-	if(network_mode.compare("ethernet")==0){
-	}
-	else if(network_mode.compare("ipoib")==0){
-		host_file = "/home/hjkim/rdma/hostfile/hostinfo_ib.txt";
-	}
-	else{
-		cout << "network mode error" << endl;
-		return 0;
-	}
-	
 	struct timeval start = {};
     struct timeval end = {};
 
@@ -156,7 +136,7 @@ int main(int argc, const char *argv[])
 		s = buf;
 		s = HostToIp(s);
 		strcpy(server_ip[i], s.c_str());
-		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+hostnum, msgsize);
+		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+hostnum);
 		t[i].SetSocket();
 		connectionThread->EnqueueJob([&t, i](){t[i].ConnectSocket();});
 	}
@@ -169,8 +149,29 @@ int main(int argc, const char *argv[])
 				break;
 			}
 	}
+
+	RDMA rdma[num_host];
+
+	for(int i = 0; i < num_host; i++){
+		rdma[i].setInfo(&t[i]);
+		connectionThread->EnqueueJob([&rdma, i]{rdma[i].ConnectRDMA();});
+	}
+
+	while(true){
+			if(connectionThread->getJobs().empty()){
+				while(true){
+					if(connectionThread->checkAllThread())break;
+				}
+				break;
+			}
+	}
 	
+
+	/*
 	cout<< "read file" <<endl;
+
+	ifstream data(file_name);
+	
 	gettimeofday(&start, NULL);
 	while (true) {
         data.getline(buf, 100);
@@ -224,7 +225,7 @@ int main(int argc, const char *argv[])
 			break;
 		}
 	}
-
+	
 	cout<< "start graph query" <<endl;
 
 	gettimeofday(&start, NULL);
@@ -260,4 +261,5 @@ int main(int argc, const char *argv[])
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "time: " << time << endl;
 	return 0;
+	*/
 }

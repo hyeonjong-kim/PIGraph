@@ -1,11 +1,10 @@
 #include "tcp.hpp"
 
-tcp::tcp(int socket_num, int port, char _server_addr[], int num_host, int _client_port, int _msgsize){
+tcp::tcp(int socket_num, int port, char _server_addr[], int num_host, int _client_port){
     this->port = port + socket_num;
     this->server_addr = _server_addr;
     this->num_host = num_host;
     this->client_port = _client_port;
-    this->send_msg_size = _msgsize;
 }
 
 tcp::tcp(){
@@ -88,7 +87,7 @@ void tcp::ConnectSocket(){
 }
 
 void tcp::Sendmsg(string _msg){
-    if(this->send_msg.size() < this->send_msg_size && _msg.compare("Q")!=0){
+    if(_msg.compare("Q")!=0){
         this->send_msg += _msg;
     }
     else{
@@ -117,20 +116,16 @@ string tcp::Readmsg(){
     return this->result;
 }
 
-void tcp::SetInfo(int socket_num, int port, char _server_addr[], int num_host, int _client_port, int _msgsize){
+void tcp::SetInfo(int socket_num, int port, char _server_addr[], int num_host, int _client_port){
     this->port = port + socket_num;
     this->server_addr = _server_addr;
     this->num_host = num_host;
     this->client_port = _client_port;
-    this->send_msg_size = _msgsize;
 }
 
 string tcp::CheckReadfile(){
+    
     this->result="";
-
-    this->valread = read(this->new_socket , this->buffer, 1);
-    this->read_char = this->buffer;
-    this->result = this->result+this->read_char;
 
     while(result.back() != '\n'){
         this->valread = read(this->new_socket , this->buffer, 1);
@@ -185,4 +180,19 @@ void tcp::SendRDMAInfo(string _msg){
     char msg[send_msg.size()];
     strcpy(msg, send_msg.c_str());
     write(this->client_sock , msg , strlen(msg));
+}
+
+string tcp::ReadCheckMsg(){
+    
+    this->result="";
+
+    while(result.back() != '\n'){
+        this->valread = read(this->new_socket , this->buffer, 1);
+        this->read_char = this->buffer;
+        if(this->read_char!=""){
+            this->result += this->read_char;
+        }
+    }
+
+    return this->result;
 }
