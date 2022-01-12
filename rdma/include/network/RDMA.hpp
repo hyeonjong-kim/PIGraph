@@ -34,7 +34,7 @@ class RDMA {
         struct ibv_mr *mr;
         uint16_t lid;
         uint32_t qp_num;
-        string bulk_msg;
+        string bulk_msg = "";
         char recv_msg[104857600];
     
     public:
@@ -60,6 +60,8 @@ class RDMA {
         
         void PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length, string r_addr, string r_key);
         void SendMsg(string _msg);
+
+        char* GetRecvMsg(){return this->recv_msg;}
         
         string ReadMsg();
 };

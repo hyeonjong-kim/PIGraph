@@ -44,8 +44,7 @@ void tcp::SetSocket(){
 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(this->client_port);
-   
-    if(inet_pton(AF_INET, server_addr, &serv_addr.sin_addr)<=0){
+    if(inet_pton(AF_INET, this->server_addr, &serv_addr.sin_addr)<=0){
         perror("Invalid address/ Address not supported");
         exit(EXIT_FAILURE);
     }
@@ -63,15 +62,12 @@ void tcp::ConnectSocket(){
             exit(EXIT_FAILURE);
         }
         else{
-            //cout << "Server Connection success" << endl;
         }
     }, ref(this->new_socket), ref(this->server_socket), ref(this->address), ref(this->addrlen));
     
     thread connect_client([](int& sock, struct sockaddr_in& serv_addr){
         while(connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0){
-           //cout << "Wait connection" << endl;
         }
-        //cout << "Clinet Connection success" << endl;
     }, ref(this->client_sock), ref(this->serv_addr));
 
     connect_server.join();

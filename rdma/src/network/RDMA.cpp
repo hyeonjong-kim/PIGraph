@@ -194,10 +194,40 @@ void RDMA::PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint3
 
 void RDMA::SendMsg(string _msg){
   this->bulk_msg = this->bulk_msg + _msg;
+  
   if(this->bulk_msg.back() == 'Q'){
     char send_msg[this->bulk_msg.size()];
     strcpy(send_msg, this->bulk_msg.c_str());
     this->PostRdmaWrite(this->qp, this->mr, send_msg, sizeof(send_msg), this->RDMAInfo.find("addr")->second, RDMAInfo.find("rkey")->second);
+    int num_wr = 1;
+    struct ibv_wc wc;
+    int ret;
+
+    while (num_wr > 0) {
+      ret = ibv_poll_cq(this->completion_queue, 1, &wc);
+
+      if (ret == 0)continue; /* polling */
+
+      if (ret < 0) {
+        fprintf(stderr, "Failure: ibv_poll_cq\n");
+        exit(EXIT_FAILURE);
+      }
+
+      if (wc.status != IBV_WC_SUCCESS) {
+        fprintf(stderr, "Completion errror\n");
+        exit(EXIT_FAILURE);
+      }
+
+      switch (wc.opcode) {
+        case IBV_WC_SEND:
+          printf("poll send wc: wr_id=0x%016" PRIx64 "\n", wc.wr_id);
+          break;
+
+        default:
+          exit(EXIT_FAILURE);
+      }
+      num_wr--;        
+    }
     this->t->SendCheckmsg();
   }
 }

@@ -77,11 +77,11 @@ int main(int argc, const char *argv[]){
 	*/
 	
 	int num_thread = thread::hardware_concurrency();
-	int num_mutex = 256;
+	int num_mutex = 16;
 	string file_name = "/home/hjkim/data/facebook_combined.txt";
 	string host_file = "/home/hjkim/PiGraph/rdma/hostfile/hostinfo.txt";
 	int num_host = 1;
-	int superstep = 10;
+	int superstep = 1;
 	int p_option= 0;
     char delimiter;
 
@@ -135,17 +135,14 @@ int main(int argc, const char *argv[]){
 	vector<string> v;
 	hostfile.open(host_file);
 
-	for(int i=0; i<num_host; i++){
+	for(int i=0; i< num_host; i++){
 		hostfile.getline(buf, 100);
 		s = buf;
 		s = HostToIp(s);
 		strcpy(server_ip[i], s.c_str());
 		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+hostnum);
 		t[i].SetSocket();
-		connectionThread->EnqueueJob([&t, i](){
-			t[i].ConnectSocket();
-			cout << t[i].GetServerAddr() << endl;
-		});
+		connectionThread->EnqueueJob([&t, i](){t[i].ConnectSocket();});
 	}
 
 	while(true){
@@ -181,7 +178,7 @@ int main(int argc, const char *argv[]){
 			pagerank_set.find(stoi(v[0]))->second.AddOutEdge(stoi(v[1]));
 		}
 		else{
-			PageRank p(stoi(v[0]),stoi(v[1]), messages1, t, num_host, socketmu);
+			PageRank p(stoi(v[0]),stoi(v[1]), messages1, rdma, num_host, socketmu);
 			pagerank_set.insert(pair<int, PageRank>(stoi(v[0]), p));
 		}
 	}
@@ -195,7 +192,7 @@ int main(int argc, const char *argv[]){
     for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
 	for(int j = 0; j < num_host; j++){
-		threadPool2->EnqueueJob([t, j](){
+		threadPool2->EnqueueJob([&t, j](){
 			string s = "";
 			while(s.compare("1\n")!= 0){
 				s = t[j].CheckReadfile();
@@ -212,15 +209,18 @@ int main(int argc, const char *argv[]){
 		}
 	}
 
-	/*
+	cout << "Complete reading file all node" << endl;
+	map<int, PageRank>::iterator iter;
+	
 	cout<< "start graph query" <<endl;
 
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
+		//Conduct Query
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			threadPool->EnqueueJob([iter](){iter->second.Compute();});
 		}
-
+		//Wait to complete Query
 		while(true){
 			if(threadPool->getJobs().empty()){
 				while(true){
@@ -229,25 +229,17 @@ int main(int argc, const char *argv[]){
 				break;
 			}
 		}
+		for(int i = 0; i < num_host; i++)rdma[i].SendMsg("Q");
 
-		for(int o = 0; o < num_host; o++)t[o].Sendmsg("Q");
-
-		while(true){
-				if(threadPool2->getJobs().empty()){
-					while(true){
-						if(threadPool2->checkAllThread())break;
-					}
-					break;
-				}
-		}
+		cout << rdma[0].GetRecvMsg() << endl;
 	}
+
 	gettimeofday(&end, NULL);
 
-	for(int o; o<num_host;o++)t[o].CloseSocket();
+	for(int i; i<num_host;i++)t[i].CloseSocket();
 
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "time: " << time << endl;
 	
-	*/
 	return 0;
 }
