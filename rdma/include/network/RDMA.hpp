@@ -24,7 +24,7 @@ using namespace std;
 
 class RDMA {
     private:
-        tcp* t;
+        tcp* t = new tcp();
         map<string, string> RDMAInfo;
         struct ibv_context* context;
         struct ibv_pd* protection_domain;

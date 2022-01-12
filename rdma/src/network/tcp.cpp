@@ -7,10 +7,6 @@ tcp::tcp(int socket_num, int port, char _server_addr[], int num_host, int _clien
     this->client_port = _client_port;
 }
 
-tcp::tcp(){
-
-}
-
 tcp::~tcp(){
     
 }
@@ -81,9 +77,7 @@ void tcp::ConnectSocket(){
     connect_server.join();
     connect_client.join();
     
-    cout << this->server_addr << endl;
-    cout << this->client_port << endl;
-    cout << this->port << endl;
+    cout << this->server_addr << " is ready to communicate"<< endl;
 }
 
 void tcp::Sendmsg(string _msg){

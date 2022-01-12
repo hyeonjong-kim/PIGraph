@@ -17,15 +17,15 @@ RDMA::RDMA(){
 }
 
 void RDMA::setInfo(tcp* _t){
-    this->t = _t;
-    this->context = this->CreateContext();
-    this->protection_domain = ibv_alloc_pd(this->context);
-    this->cq_size = 0x10;
-    this->completion_queue = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
-    this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue);
-    this->mr = this->RegisterMemoryRegion(this->protection_domain, this->recv_msg, sizeof(recv_msg));
-    this->lid = this->GetLocalId(this->context, PORT);
-    this->qp_num = this->GetQueuePairNumber(this->qp);
+  this->t = _t;
+  this->context = this->CreateContext();
+  this->protection_domain = ibv_alloc_pd(this->context);
+  this->cq_size = 0x10;
+  this->completion_queue = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
+  this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue);
+  this->mr = this->RegisterMemoryRegion(this->protection_domain, this->recv_msg, sizeof(recv_msg));
+  this->lid = this->GetLocalId(this->context, PORT);
+  this->qp_num = this->GetQueuePairNumber(this->qp);
 }
 
 RDMA::~RDMA(){
@@ -64,7 +64,6 @@ struct ibv_context* RDMA::CreateContext() {
 
     if (dev_list[0]) {
         struct ibv_device *device = dev_list[0];
-        printf("IB device: %s\n", ibv_get_device_name(device));
         context = ibv_open_device(device);
         assert(context);
         
@@ -145,7 +144,6 @@ struct ibv_mr* RDMA::RegisterMemoryRegion(struct ibv_pd* pd, void* buffer, size_
 }
 
 void RDMA::ExchangeInfo(){
-    //Send RDMA Info
     std::ostringstream oss;
     oss << &(this->recv_msg);
     this->t->SendRDMAInfo(oss.str()+"\n");
@@ -154,14 +152,15 @@ void RDMA::ExchangeInfo(){
     this->t->SendRDMAInfo(to_string(this->mr->rkey)+"\n");
     this->t->SendRDMAInfo(to_string(this->lid)+"\n");
     this->t->SendRDMAInfo(to_string(this->qp_num)+"\n");
-    
     this->RDMAInfo = this->t->ReadRDMAInfo();
 }
 
 void RDMA::ConnectRDMA(){
+    this->ExchangeInfo();
     this->ChangeQueuePairStateToInit(this->qp);
     this->ChangeQueuePairStateToRTR(this->qp, PORT, stoi(this->RDMAInfo.find("qp_num")->second), stoi(this->RDMAInfo.find("lid")->second));
     this->ChangeQueuePairStateToRTS(this->qp);
+    cout << "Connect RDMA based on " << this->t->GetServerAddr() << endl;
 }
 
 void RDMA::PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length, string r_addr, string r_key){

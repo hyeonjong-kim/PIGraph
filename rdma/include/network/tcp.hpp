@@ -37,7 +37,7 @@ class tcp{
 
     public:
         tcp(int socket_num, int port, char _server_addr[], int num_host, int _client_port);
-        tcp();
+        tcp(){};
         void SetInfo(int socket_num, int port, char _server_addr[], int num_host, int _client_port);
         ~tcp();
         void SetSocket();
