@@ -39,7 +39,7 @@ string HostToIp(string host) {
 }
 
 int main(int argc, const char *argv[]){	
-	/*
+	
 	//Parser info
 	ArgumentParser parser("Pigraph", "Pigraph execution");
 	parser.add_argument()
@@ -79,16 +79,7 @@ int main(int argc, const char *argv[]){
 	int superstep = stoi(parser.get<string>("s"));
 	int p_option= stoi(parser.get<string>("p"));
     char delimiter;
-	*/
 	
-	int num_thread = thread::hardware_concurrency();
-	int num_mutex = 16;
-	string file_name = "/home/hjkim/data/facebook_combined.txt";
-	string host_file = "/home/hjkim/PiGraph/rdma/hostfile/hostinfo.txt";
-	int num_host = 1;
-	int superstep = 2;
-	int p_option= 0;
-    char delimiter;
 
     if(p_option == 0){
         delimiter = ' ';
