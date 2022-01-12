@@ -297,7 +297,7 @@ int main(){
 				break;
 			}
 	}
-  
+  //////////////////////////////////////////////////////////////
   //Create user context
   struct ibv_context* context = createContext();
   //Create protection domain
@@ -308,9 +308,8 @@ int main(){
   //Create queue pair
   struct ibv_qp* qp = createQueuePair(protection_domain, completion_queue);
   //Create memory region
-  char buffer[1024 * 1024];
-  string s1;
-  struct ibv_mr *mr = registerMemoryRegion(protection_domain, &s1, 1000);
+  char buffer[2][1024 * 1024];
+  struct ibv_mr *mr = registerMemoryRegion(protection_domain, buffer, sizeof(buffer));
   
   //Exchange queue pair info
   uint16_t lid = getLocalId(context, PORT);
@@ -318,7 +317,7 @@ int main(){
   
   //Send RDMA info
   std::ostringstream oss;
-  oss << &s1;
+  oss << &buffer;
   t[1].SendRDMAInfo(oss.str()+"\n");
   t[1].SendRDMAInfo(to_string(mr->length)+"\n");
   t[1].SendRDMAInfo(to_string(mr->lkey)+"\n");
@@ -328,21 +327,16 @@ int main(){
 
   //Read RDMA info
   map<string, string> rdmaInfo = t[1].ReadRDMAInfo();
-
-  cout << &s1 << endl;
+  cout << &buffer << endl;
   cout << rdmaInfo.find("addr")->second << endl;
-  cout << sizeof(s1) << endl;
-
   //Exchange queue pair state
   changeQueuePairStateToInit(qp);
   changeQueuePairStateToRTR(qp, PORT, stoi(rdmaInfo.find("qp_num")->second), stoi(rdmaInfo.find("lid")->second));
   changeQueuePairStateToRTS(qp);
+  buffer[0][0] = 'f';
 
+  post_rdma_write(qp, mr, buffer[0], 1000, rdmaInfo.find("addr")->second, rdmaInfo.find("rkey")->second);
 
-  s1 = "fdafdasf";
-
-  post_rdma_write(qp, mr, &s1, sizeof(s1), rdmaInfo.find("addr")->second, rdmaInfo.find("rkey")->second);
- cout << sizeof(s1) << endl; 
   int num_wr = 1;
   struct ibv_wc wc;
   int ret;
@@ -386,7 +380,7 @@ int main(){
   ibv_dealloc_pd(protection_domain);
   
   //sleep(10);
-  //cout << s1 << endl;
+  //cout << buffer[0] << endl;
 
   return 0;
 }

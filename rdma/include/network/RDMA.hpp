@@ -32,9 +32,11 @@ class RDMA {
         struct ibv_cq* completion_queue;
         struct ibv_qp* qp;
         struct ibv_mr *mr;
+        struct ibv_mr *send_mr;
         uint16_t lid;
         uint32_t qp_num;
         string bulk_msg = "";
+        char send_msg[104857600];
         char recv_msg[104857600];
     
     public:

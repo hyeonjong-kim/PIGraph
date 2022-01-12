@@ -1,15 +1,16 @@
 #include "RDMA.hpp"
 
 RDMA::RDMA(tcp* _t){
-    this->t = _t;
-    this->context = this->CreateContext();
-    this->protection_domain = ibv_alloc_pd(this->context);
-    this->cq_size = 0x10;
-    this->completion_queue = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
-    this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue);
-    this->mr = this->RegisterMemoryRegion(this->protection_domain, this->recv_msg, sizeof(recv_msg));
-    this->lid = this->GetLocalId(this->context, PORT);
-    this->qp_num = this->GetQueuePairNumber(this->qp);
+  this->t = _t;
+  this->context = this->CreateContext();
+  this->protection_domain = ibv_alloc_pd(this->context);
+  this->cq_size = 0x10;
+  this->completion_queue = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
+  this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue);
+  this->mr = this->RegisterMemoryRegion(this->protection_domain, this->recv_msg, sizeof(this->recv_msg));
+  this->send_mr = this->RegisterMemoryRegion(this->protection_domain, this->send_msg, sizeof(this->send_msg));
+  this->lid = this->GetLocalId(this->context, PORT);
+  this->qp_num = this->GetQueuePairNumber(this->qp);
 }
 
 RDMA::RDMA(){
@@ -23,7 +24,8 @@ void RDMA::setInfo(tcp* _t){
   this->cq_size = 0x10;
   this->completion_queue = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
   this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue);
-  this->mr = this->RegisterMemoryRegion(this->protection_domain, this->recv_msg, sizeof(recv_msg));
+  this->mr = this->RegisterMemoryRegion(this->protection_domain, this->recv_msg, sizeof(this->recv_msg));
+  this->send_mr = this->RegisterMemoryRegion(this->protection_domain, this->send_msg, sizeof(this->send_msg));
   this->lid = this->GetLocalId(this->context, PORT);
   this->qp_num = this->GetQueuePairNumber(this->qp);
 }
@@ -43,31 +45,31 @@ T FromString (const std::string &Text)
 
 struct ibv_context* RDMA::CreateContext() {
     
-    int ret;
+  int ret;
 
-    ret = ibv_fork_init();
-    if (ret) {
-        fprintf(stderr, "Failure: ibv_fork_init (errno=%d)\n", ret);
-        exit(EXIT_FAILURE);
-    }
+  ret = ibv_fork_init();
+  if (ret) {
+      fprintf(stderr, "Failure: ibv_fork_init (errno=%d)\n", ret);
+      exit(EXIT_FAILURE);
+  }
 
-    struct ibv_device **dev_list;
-    dev_list = ibv_get_device_list(NULL);
+  struct ibv_device **dev_list;
+  dev_list = ibv_get_device_list(NULL);
 
-    if (!dev_list) {
-        int errsave = errno;
-        fprintf(stderr, "Failure: ibv_get_device_list (errno=%d)\n", errsave);
-        exit(EXIT_FAILURE);        
-    }
+  if (!dev_list) {
+      int errsave = errno;
+      fprintf(stderr, "Failure: ibv_get_device_list (errno=%d)\n", errsave);
+      exit(EXIT_FAILURE);        
+  }
 
-    struct ibv_context *context;
+  struct ibv_context *context;
 
-    if (dev_list[0]) {
-        struct ibv_device *device = dev_list[0];
-        context = ibv_open_device(device);
-        assert(context);
-        
-    }
+  if (dev_list[0]) {
+      struct ibv_device *device = dev_list[0];
+      context = ibv_open_device(device);
+      assert(context);
+      
+  }
   return context;
 }
 
@@ -144,23 +146,23 @@ struct ibv_mr* RDMA::RegisterMemoryRegion(struct ibv_pd* pd, void* buffer, size_
 }
 
 void RDMA::ExchangeInfo(){
-    std::ostringstream oss;
-    oss << &(this->recv_msg);
-    this->t->SendRDMAInfo(oss.str()+"\n");
-    this->t->SendRDMAInfo(to_string(this->mr->length)+"\n");
-    this->t->SendRDMAInfo(to_string(this->mr->lkey)+"\n");
-    this->t->SendRDMAInfo(to_string(this->mr->rkey)+"\n");
-    this->t->SendRDMAInfo(to_string(this->lid)+"\n");
-    this->t->SendRDMAInfo(to_string(this->qp_num)+"\n");
-    this->RDMAInfo = this->t->ReadRDMAInfo();
+  std::ostringstream oss;
+  oss << &(this->recv_msg);
+  this->t->SendRDMAInfo(oss.str()+"\n");
+  this->t->SendRDMAInfo(to_string(this->mr->length)+"\n");
+  this->t->SendRDMAInfo(to_string(this->mr->lkey)+"\n");
+  this->t->SendRDMAInfo(to_string(this->mr->rkey)+"\n");
+  this->t->SendRDMAInfo(to_string(this->lid)+"\n");
+  this->t->SendRDMAInfo(to_string(this->qp_num)+"\n");
+  this->RDMAInfo = this->t->ReadRDMAInfo();
 }
 
 void RDMA::ConnectRDMA(){
-    this->ExchangeInfo();
-    this->ChangeQueuePairStateToInit(this->qp);
-    this->ChangeQueuePairStateToRTR(this->qp, PORT, stoi(this->RDMAInfo.find("qp_num")->second), stoi(this->RDMAInfo.find("lid")->second));
-    this->ChangeQueuePairStateToRTS(this->qp);
-    cout << "Connect RDMA based on " << this->t->GetServerAddr() << endl;
+  this->ExchangeInfo();
+  this->ChangeQueuePairStateToInit(this->qp);
+  this->ChangeQueuePairStateToRTR(this->qp, PORT, stoi(this->RDMAInfo.find("qp_num")->second), stoi(this->RDMAInfo.find("lid")->second));
+  this->ChangeQueuePairStateToRTS(this->qp);
+  cout << "Connect RDMA based on " << this->t->GetServerAddr() << endl;
 }
 
 void RDMA::PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length, string r_addr, string r_key){
@@ -196,9 +198,8 @@ void RDMA::SendMsg(string _msg){
   this->bulk_msg = this->bulk_msg + _msg;
   
   if(this->bulk_msg.back() == 'Q'){
-    char send_msg[this->bulk_msg.size()];
-    strcpy(send_msg, this->bulk_msg.c_str());
-    this->PostRdmaWrite(this->qp, this->mr, send_msg, sizeof(send_msg), this->RDMAInfo.find("addr")->second, RDMAInfo.find("rkey")->second);
+    strcpy(this->send_msg, this->bulk_msg.c_str());
+    this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, sizeof(send_msg), this->RDMAInfo.find("addr")->second, RDMAInfo.find("rkey")->second);
     int num_wr = 1;
     struct ibv_wc wc;
     int ret;
@@ -217,9 +218,9 @@ void RDMA::SendMsg(string _msg){
         fprintf(stderr, "Completion errror\n");
         exit(EXIT_FAILURE);
       }
-
-      switch (wc.opcode) {
-        case IBV_WC_SEND:
+  
+      switch (wc.opcode) { 
+        case IBV_WC_RDMA_WRITE:
           printf("poll send wc: wr_id=0x%016" PRIx64 "\n", wc.wr_id);
           break;
 

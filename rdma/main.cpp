@@ -14,6 +14,11 @@
 
 using namespace argparse;
 
+int internalBucket;
+int internalHashFunction(int x){
+	return (x % internalBucket);
+}
+
 vector<string> split(string input, char delimiter) {
 	vector<string> answer;
     stringstream ss(input);
@@ -81,7 +86,7 @@ int main(int argc, const char *argv[]){
 	string file_name = "/home/hjkim/data/facebook_combined.txt";
 	string host_file = "/home/hjkim/PiGraph/rdma/hostfile/hostinfo.txt";
 	int num_host = 1;
-	int superstep = 1;
+	int superstep = 2;
 	int p_option= 0;
     char delimiter;
 
@@ -121,14 +126,12 @@ int main(int argc, const char *argv[]){
     struct timeval end = {};
 
 	ThreadPool* threadPool = new ThreadPool(num_thread);
-	ThreadPool* threadPool2 = new ThreadPool(num_thread);
 	ThreadPool* connectionThread = new ThreadPool(num_host);
-	map<int, queue<double>>* messages1 = new map<int, queue<double>>;
-	map<int, queue<double>>* messages2 = new map<int, queue<double>>;
+	map<int, queue<double>>* messages = new map<int, queue<double>>;
 	map<int, PageRank> pagerank_set;
 	mutex mu[num_mutex];
 	mutex socketmu[num_host];
-	int internalBucket = num_mutex;
+	internalBucket = num_mutex;
 
 	tcp *t = new tcp[num_host];
 	vector<char[15]> server_ip(num_host);
@@ -178,7 +181,7 @@ int main(int argc, const char *argv[]){
 			pagerank_set.find(stoi(v[0]))->second.AddOutEdge(stoi(v[1]));
 		}
 		else{
-			PageRank p(stoi(v[0]),stoi(v[1]), messages1, rdma, num_host, socketmu);
+			PageRank p(stoi(v[0]),stoi(v[1]), messages, rdma, num_host, socketmu);
 			pagerank_set.insert(pair<int, PageRank>(stoi(v[0]), p));
 		}
 	}
@@ -192,7 +195,7 @@ int main(int argc, const char *argv[]){
     for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
 	for(int j = 0; j < num_host; j++){
-		threadPool2->EnqueueJob([&t, j](){
+		connectionThread->EnqueueJob([&t, j](){
 			string s = "";
 			while(s.compare("1\n")!= 0){
 				s = t[j].CheckReadfile();
@@ -201,19 +204,23 @@ int main(int argc, const char *argv[]){
 	}
 
 	while(true){
-		if(threadPool2->getJobs().empty()){
+		if(connectionThread->getJobs().empty()){
 			while(true){
-				if(threadPool2->checkAllThread())break;
+				if(connectionThread->checkAllThread())break;
 			}
 			break;
 		}
 	}
-
 	cout << "Complete reading file all node" << endl;
+
 	map<int, PageRank>::iterator iter;
-	
+	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
+		queue<double> q;
+		messages->insert(make_pair(iter->first, q));
+	}
 	cout<< "start graph query" <<endl;
 
+	
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
 		//Conduct Query
@@ -229,9 +236,37 @@ int main(int argc, const char *argv[]){
 				break;
 			}
 		}
-		for(int i = 0; i < num_host; i++)rdma[i].SendMsg("Q");
 
-		cout << rdma[0].GetRecvMsg() << endl;
+		for(int j = 0; j < num_host; j++)rdma[j].SendMsg("Q");
+
+		for(int j = 0; j < num_host; j++){
+			threadPool->EnqueueJob([&rdma, j, &mu, num_host, &pagerank_set,&messages](){
+				string s(rdma[j].ReadMsg());
+				vector<string> result;
+				vector<string> msg;
+				vector<string> v;
+				
+				v = split(s, '\n');
+				for(int k = 0; k < v.size(); k++){
+					msg = split(v[k], ' ');
+					if(msg.size() ==2 && pagerank_set.count(stoi(msg[0])) == 1){
+						int mu_num = internalHashFunction(stoi(msg[0]));
+						mu[mu_num].lock();
+						messages->find(stoi(msg[0]))->second.push(stod(msg[1]));
+						mu[mu_num].unlock();
+					}
+				}
+			});
+		}
+
+		while(true){
+			if(threadPool->getJobs().empty()){
+				while(true){
+					if(threadPool->checkAllThread())break;
+				}
+				break;
+			}
+		}
 	}
 
 	gettimeofday(&end, NULL);
@@ -240,6 +275,11 @@ int main(int argc, const char *argv[]){
 
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "time: " << time << endl;
-	
+
+	/*
+	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
+		cout << iter->second.GetValue() << endl;
+	}
+	*/
 	return 0;
 }
