@@ -85,7 +85,6 @@ void Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::SendMessageTo(cons
     string s1 = to_string(dest_vertex);
     string s2 = to_string(message);
     string s3 = s1 + " " + s2 + "\n";
-
     this->socket_mu[socket_num].lock();
     this->msgThread[socket_num].Sendmsg(s3);
     this->socket_mu[socket_num].unlock();

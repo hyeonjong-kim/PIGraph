@@ -68,7 +68,7 @@ class RDMA {
         char* ReadMsg();
 
         void ClearRecvMsg();
-        
+        void CloseRDMA();
         bool PollCompletion(struct ibv_cq* cq);
 };
 

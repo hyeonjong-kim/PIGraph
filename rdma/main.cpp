@@ -39,7 +39,7 @@ string HostToIp(string host) {
 }
 
 int main(int argc, const char *argv[]){	
-	/*
+	
 	//Parser info
 	ArgumentParser parser("Pigraph", "Pigraph execution");
 	parser.add_argument()
@@ -78,16 +78,6 @@ int main(int argc, const char *argv[]){
 	int num_host = stoi(parser.get<string>("n"));
 	int superstep = stoi(parser.get<string>("s"));
 	int p_option= stoi(parser.get<string>("p"));
-    char delimiter;
-	*/
-	//Parameter
-	int num_thread = thread::hardware_concurrency();
-	int num_mutex = 256;
-	string file_name = "/home/hjkim/data/facebook_combined.txt";
-	string host_file = "../hostfile/hostinfo.txt";
-	int num_host = 1;
-	int superstep = 10;
-	int p_option= 0;
     char delimiter;
 	
 
@@ -220,9 +210,21 @@ int main(int argc, const char *argv[]){
 		messages->insert(make_pair(iter->first, q));
 	}
 	
+
+	struct timeval start_query = {};
+	struct timeval end_query = {};
+	struct timeval start_network = {};
+	struct timeval end_network = {};
+
+	double query_time = 0.0;
+	double network_time = 0.0;
+	
+
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
+
+		gettimeofday(&start_query, NULL);
 		//Conduct Query
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			threadPool->EnqueueJob([iter](){iter->second.Compute();});
@@ -237,8 +239,13 @@ int main(int argc, const char *argv[]){
 			}
 		}
 
+		gettimeofday(&end_query, NULL);
+		cout <<  "query time is " << end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0 << endl;
+		query_time += end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
 		for(int o = 0; o < num_host; o++)rdma[o].SendMsg("Q");
-
+		
+		
+		gettimeofday(&start_network, NULL);
 		for(int j = 0; j < num_host; j++){
 			threadPool->EnqueueJob([&rdma, j, &mu, num_host, &pagerank_set,&messages](){
 				int count = 0;
@@ -248,15 +255,13 @@ int main(int argc, const char *argv[]){
 				vector<string> v;
 				v = split(s, '\n');
 
-				//cout << s << endl;
-				
 				for(int k = 0; k < v.size(); k++){
 					msg = split(v[k], ' ');
 					
 					if(msg.size()==2){
 						count++;
 					}
-					/*
+					
 					if(msg.size() ==2 && pagerank_set.count(stoi(msg[0])) == 1){
 						
 						int mu_num = internalHashFunction(stoi(msg[0]));
@@ -264,14 +269,11 @@ int main(int argc, const char *argv[]){
 						messages->find(stoi(msg[0]))->second.push(stod(msg[1]));
 						mu[mu_num].unlock();
 					}
-					*/
+					
 				}
-				rdma[j].ClearRecvMsg();
 				cout <<  "msg amount is " << count << endl;
-				cout << rdma[j].GetRecvMsg() << endl;
-				
-			});
-		}
+		});
+	}
 
 		while(true){
 			if(threadPool->getJobs().empty()){
@@ -281,6 +283,11 @@ int main(int argc, const char *argv[]){
 				break;
 			}
 		}
+		
+		gettimeofday(&end_network, NULL);
+		cout <<  "network time is " << end_network.tv_sec + end_network.tv_usec / 1000000.0 - start_network.tv_sec - start_network.tv_usec / 1000000.0 << endl;
+
+		network_time += end_network.tv_sec + end_network.tv_usec / 1000000.0 - start_network.tv_sec - start_network.tv_usec / 1000000.0;
 	}
 
 	gettimeofday(&end, NULL);
@@ -292,8 +299,12 @@ int main(int argc, const char *argv[]){
 	}
 	
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
-	cout << "time: " << time << endl;
+	cout << "toal time: " << time << endl;
+	cout << "toal network time: " << time << endl;
+	cout << "toal query time: " << time << endl;
 
+
+	for(int o = 0; o < num_host; o++)rdma[o].CloseRDMA();
 	
 	
 	

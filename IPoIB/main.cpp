@@ -131,7 +131,6 @@ int main(int argc, const char *argv[])
     struct timeval end = {};
 
 	ThreadPool* threadPool = new ThreadPool(num_thread);
-	ThreadPool* threadPool2 = new ThreadPool(num_thread);
 	ThreadPool* connectionThread = new ThreadPool(num_host);
 	map<int, queue<double>>* messages = new map<int, queue<double>>;
 	map<int, PageRank> pagerank_set;
@@ -194,7 +193,7 @@ int main(int argc, const char *argv[])
     for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
 	for(int j = 0; j < num_host; j++){
-		threadPool2->EnqueueJob([&t, j](){
+		connectionThread->EnqueueJob([&t, j](){
 			string s = "";
 			while(s.compare("1\n")!= 0){
 				s = t[j].CheckReadfile();
@@ -204,9 +203,9 @@ int main(int argc, const char *argv[])
 	}
 
 	while(true){
-		if(threadPool2->getJobs().empty()){
+		if(connectionThread->getJobs().empty()){
 			while(true){
-				if(threadPool2->checkAllThread())break;
+				if(connectionThread->checkAllThread())break;
 			}
 			break;
 		}
@@ -218,9 +217,16 @@ int main(int argc, const char *argv[])
 		messages->insert(make_pair(iter->first, q));
 	}
 
+
+	struct timeval start_query = {};
+	struct timeval end_query = {};
+	struct timeval start_network = {};
+	struct timeval end_network = {};
+
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
+		gettimeofday(&start_query, NULL);
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			threadPool->EnqueueJob([iter](){iter->second.Compute();});
 		}
@@ -233,16 +239,19 @@ int main(int argc, const char *argv[])
 				break;
 			}
 		}
-
+		gettimeofday(&end_query, NULL);
+		cout <<  "query time is " << end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0 << endl;
 		for(int o = 0; o < num_host; o++)t[o].Sendmsg("Q");
-
+		
+		
+		
+		gettimeofday(&start_network, NULL);
 		for(int j = 0; j < num_host; j++){
 			threadPool->EnqueueJob([&t, j, &mu, num_host, &pagerank_set,&messages](){
 				string s = t[j].Readmsg();
 				vector<string> result;
 				vector<string> msg;
 				vector<string> v;
-				cout <<  s.length() << endl;
 				v = split(s, '\n');
 				for(int k = 0; k < v.size(); k++){
 					msg = split(v[k], ' ');
@@ -264,6 +273,8 @@ int main(int argc, const char *argv[])
 					break;
 				}
 		}
+		gettimeofday(&end_network, NULL);
+		cout <<  "network time is " << end_network.tv_sec + end_network.tv_usec / 1000000.0 - start_network.tv_sec - start_network.tv_usec / 1000000.0 << endl;
 	}
 	gettimeofday(&end, NULL);
 
@@ -273,7 +284,6 @@ int main(int argc, const char *argv[])
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		cout << iter->second.GetValue() << endl;
 	}
-	
 	
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "time: " << time << endl;

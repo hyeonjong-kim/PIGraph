@@ -31,7 +31,7 @@ void RDMA::setInfo(tcp* _t){
 }
 
 RDMA::~RDMA(){
-
+  
 }
 
 template <typename T> 
@@ -188,21 +188,29 @@ void RDMA::PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint3
         }
       }
   };
-
   struct ibv_send_wr *bad_wr;
   ret = ibv_post_send(qp, &send_wr, &bad_wr);
   assert(ret == 0);
 }
 
 void RDMA::SendMsg(string _msg){
-  this->bulk_msg = this->bulk_msg + _msg;
-  
-  if(this->bulk_msg.back() == 'Q'){
+  if(_msg.compare("Q")!=0){
+    this->bulk_msg += _msg;
+  }
+  else{
+    this->bulk_msg +=_msg;
     strcpy(this->send_msg, this->bulk_msg.c_str());
     this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, this->bulk_msg.length(), this->RDMAInfo.find("addr")->second, RDMAInfo.find("rkey")->second);
-    cout << this->PollCompletion(this->completion_queue) << endl;
+    if(this->PollCompletion(this->completion_queue)){
+      cout <<  "Success Send MSG" << endl;
+    }
+    else{
+      cout <<  "Fail Send MSG" << endl;
+    }
     this->t->SendCheckmsg();
+    this->bulk_msg = "";
   }
+  
 }
 
 char* RDMA::ReadMsg(){
@@ -217,7 +225,6 @@ char* RDMA::ReadMsg(){
 
 void RDMA::ClearRecvMsg(){
   memset(this->recv_msg, 0, sizeof(char)*10485760);
-  memset(this->send_msg, 0, sizeof(char)*10485760);
   this->bulk_msg = "";
 }
 
@@ -226,10 +233,6 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
   int result;
 
   do {
-    // ibv_poll_cq returns the number of WCs that are newly completed,
-    // If it is 0, it means no new work completion is received.
-    // Here, the second argument specifies how many WCs the poll should check,
-    // however, giving more than 1 incurs stack smashing detection with g++8 compilation.
     result = ibv_poll_cq(cq, 1, &wc);
   } while (result == 0);
 
@@ -242,3 +245,11 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
   printf("Poll failed with status %s (work request ID: %llu)\n", ibv_wc_status_str(wc.status), wc.wr_id);
   return false;
 }
+
+void RDMA::CloseRDMA(){
+  ibv_destroy_qp(this->qp);
+  ibv_destroy_cq(this->completion_queue);
+  ibv_dereg_mr(this->mr);
+  ibv_dereg_mr(this->send_mr);
+  ibv_dealloc_pd(this->protection_domain);
+};
