@@ -199,46 +199,46 @@ void RDMA::SendMsg(string _msg){
   
   if(this->bulk_msg.back() == 'Q'){
     strcpy(this->send_msg, this->bulk_msg.c_str());
-    this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, sizeof(send_msg), this->RDMAInfo.find("addr")->second, RDMAInfo.find("rkey")->second);
-    int num_wr = 1;
-    struct ibv_wc wc;
-    int ret;
-
-    while (num_wr > 0) {
-      ret = ibv_poll_cq(this->completion_queue, 1, &wc);
-
-      if (ret == 0)continue; /* polling */
-
-      if (ret < 0) {
-        fprintf(stderr, "Failure: ibv_poll_cq\n");
-        exit(EXIT_FAILURE);
-      }
-
-      if (wc.status != IBV_WC_SUCCESS) {
-        fprintf(stderr, "Completion errror\n");
-        exit(EXIT_FAILURE);
-      }
-  
-      switch (wc.opcode) { 
-        case IBV_WC_RDMA_WRITE:
-          printf("poll send wc: wr_id=0x%016" PRIx64 "\n", wc.wr_id);
-          break;
-
-        default:
-          exit(EXIT_FAILURE);
-      }
-      num_wr--;        
-    }
+    this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, this->bulk_msg.length(), this->RDMAInfo.find("addr")->second, RDMAInfo.find("rkey")->second);
+    cout << this->PollCompletion(this->completion_queue) << endl;
     this->t->SendCheckmsg();
   }
 }
 
-string RDMA::ReadMsg(){
-  string s = "";
-	while(s.compare("1\n")!= 0){
-		s = this->t->ReadCheckMsg();
-	}
+char* RDMA::ReadMsg(){
+  while(true){
+    if(this->t->ReadCheckMsg().compare("1\n") == 0){
+      break;
+    }
+  }
   
   return this->recv_msg;
 }
 
+void RDMA::ClearRecvMsg(){
+  memset(this->recv_msg, 0, sizeof(char)*10485760);
+  memset(this->send_msg, 0, sizeof(char)*10485760);
+  this->bulk_msg = "";
+}
+
+bool RDMA::PollCompletion(struct ibv_cq* cq) {
+  struct ibv_wc wc;
+  int result;
+
+  do {
+    // ibv_poll_cq returns the number of WCs that are newly completed,
+    // If it is 0, it means no new work completion is received.
+    // Here, the second argument specifies how many WCs the poll should check,
+    // however, giving more than 1 incurs stack smashing detection with g++8 compilation.
+    result = ibv_poll_cq(cq, 1, &wc);
+  } while (result == 0);
+
+  if (result > 0 && wc.status == ibv_wc_status::IBV_WC_SUCCESS) {
+    // success
+    return true;
+  }
+
+  // You can identify which WR failed with wc.wr_id.
+  printf("Poll failed with status %s (work request ID: %llu)\n", ibv_wc_status_str(wc.status), wc.wr_id);
+  return false;
+}

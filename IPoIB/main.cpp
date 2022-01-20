@@ -50,10 +50,6 @@ int main(int argc, const char *argv[])
       .description("file name")
       .required(true);
 	parser.add_argument()
-      .names({"-M", "--msgsize"})
-      .description("msg size")
-      .required(false);
-	parser.add_argument()
       .names({"-n", "--hostnumber"})
       .description("number of host")
       .required(true);
@@ -87,8 +83,8 @@ int main(int argc, const char *argv[])
 	string network_mode = parser.get<string>("N");
 	int p_option= stoi(parser.get<string>("p"));
     char delimiter;
-	int msgsize = stoi(parser.get<string>("M"));
-	
+
+
     if(p_option == 0){
         delimiter = ' ';
     }
@@ -100,19 +96,16 @@ int main(int argc, const char *argv[])
         return 0;
     }
 
-	
-
-	ifstream data(file_name);
-	ifstream hostfile(host_file);
-	char buf[100];
-	string s;
-	
 	char hostname[256];
 	size_t hostnamelen = 256;
 	gethostname(hostname, hostnamelen);
 	string hostname_str(hostname);
 	int hostnum = 0;
 
+	ifstream hostfile(host_file);
+	char buf[100];
+	string s;
+	
 	for(int i=0; i<num_host; i++){
 		hostfile.getline(buf, 100);
 		s = buf;
@@ -140,14 +133,13 @@ int main(int argc, const char *argv[])
 	ThreadPool* threadPool = new ThreadPool(num_thread);
 	ThreadPool* threadPool2 = new ThreadPool(num_thread);
 	ThreadPool* connectionThread = new ThreadPool(num_host);
-	map<int, queue<double>>* messages1 = new map<int, queue<double>>;
-	map<int, queue<double>>* messages2 = new map<int, queue<double>>;
+	map<int, queue<double>>* messages = new map<int, queue<double>>;
 	map<int, PageRank> pagerank_set;
 	mutex mu[num_mutex];
 	mutex socketmu[num_host];
-
 	internalBucket = num_mutex;
-	tcp t[num_host];
+	
+	tcp *t = new tcp[num_host];
 	
 	vector<char[15]> server_ip(num_host);
 	vector<string> v;
@@ -158,7 +150,7 @@ int main(int argc, const char *argv[])
 		s = buf;
 		s = HostToIp(s);
 		strcpy(server_ip[i], s.c_str());
-		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+hostnum, msgsize);
+		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+hostnum);
 		t[i].SetSocket();
 		connectionThread->EnqueueJob([&t, i](){t[i].ConnectSocket();});
 	}
@@ -171,8 +163,11 @@ int main(int argc, const char *argv[])
 				break;
 			}
 	}
+
+	cout<< "Read file" <<endl;
 	
-	cout<< "read file" <<endl;
+	ifstream data(file_name);
+	
 	gettimeofday(&start, NULL);
 	while (true) {
         data.getline(buf, 100);
@@ -185,7 +180,8 @@ int main(int argc, const char *argv[])
 			pagerank_set.find(stoi(v[0]))->second.AddOutEdge(stoi(v[1]));
 		}
 		else{
-			PageRank p(stoi(v[0]),stoi(v[1]), messages1, t, num_host, socketmu);
+			PageRank p(stoi(v[0]),stoi(v[1]), messages, t, num_host, socketmu);
+			
 			pagerank_set.insert(pair<int, PageRank>(stoi(v[0]), p));
 		}
     }
@@ -194,17 +190,6 @@ int main(int argc, const char *argv[])
 	
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "time of reading file: " << time << endl;
-
-	map<int, PageRank>::iterator iter;
-	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-		queue<double> q;
-		messages1->insert(make_pair(iter->first, q));
-	}
-
-	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-		queue<double> q;
-		messages2->insert(make_pair(iter->first, q));
-	}
 
     for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
@@ -227,70 +212,15 @@ int main(int argc, const char *argv[])
 		}
 	}
 
-	cout<< "start graph query" <<endl;
+	map<int, PageRank>::iterator iter;
+	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
+		queue<double> q;
+		messages->insert(make_pair(iter->first, q));
+	}
 
+	cout<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
-		if(i%2==0){
-			for(int j = 0; j < num_host; j++){
-				threadPool2->EnqueueJob([&t, j, &mu, num_host, &pagerank_set,&messages2](){
-					int count = 0;
-					string s = "";
-					vector<string> result;
-					vector<string> msg;
-					vector<string> v;
-						s = t[j].Readmsg();
-						v = split(s, '\n');
-						for(int k = 0; k < v.size(); k++){
-							msg = split(v[k], ' ');
-							if(msg.size() ==2){
-								count++;
-								//cout <<  msg[0] << endl;
-								//cout <<  msg[1] << endl;
-							}
-							if(msg.size() ==2 && pagerank_set.count(stoi(msg[0])) == 1){
-								int mu_num = internalHashFunction(stoi(msg[0]));
-								mu[mu_num].lock();
-								messages2->find(stoi(msg[0]))->second.push(stod(msg[1]));
-								mu[mu_num].unlock();
-								
-							}
-						}
-					cout << "socket num: " <<  t[j].GetServerAddr() << " amount recv msg : " << count << endl;
-				});
-			}
-		}
-
-		else{
-			for(int j = 0; j < num_host; j++){
-				threadPool2->EnqueueJob([&t, j, &mu, num_host, &pagerank_set,&messages1](){
-					int count = 0;
-					string s = "";
-					vector<string> result;
-					vector<string> msg;
-					vector<string> v;
-						s = t[j].Readmsg();
-						v = split(s, '\n');
-						for(int k = 0; k < v.size(); k++){
-							msg = split(v[k], ' ');
-							if(msg.size() ==2){
-								count++;
-								//cout <<  msg[0] << endl;
-								//cout <<  msg[1] << endl;
-							}
-							if(msg.size() ==2 && pagerank_set.count(stoi(msg[0])) == 1){
-								int mu_num = internalHashFunction(stoi(msg[0]));
-								mu[mu_num].lock();
-								messages1->find(stoi(msg[0]))->second.push(stod(msg[1]));
-								mu[mu_num].unlock();
-								
-							}
-						}
-					cout << "socket num: " <<  t[j].GetServerAddr() << " amount recv msg : " << count << endl;
-				});
-			}
-		}
-		
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			threadPool->EnqueueJob([iter](){iter->second.Compute();});
 		}
@@ -306,30 +236,45 @@ int main(int argc, const char *argv[])
 
 		for(int o = 0; o < num_host; o++)t[o].Sendmsg("Q");
 
+		for(int j = 0; j < num_host; j++){
+			threadPool->EnqueueJob([&t, j, &mu, num_host, &pagerank_set,&messages](){
+				string s = t[j].Readmsg();
+				vector<string> result;
+				vector<string> msg;
+				vector<string> v;
+				cout <<  s.length() << endl;
+				v = split(s, '\n');
+				for(int k = 0; k < v.size(); k++){
+					msg = split(v[k], ' ');
+					if(msg.size() ==2 && pagerank_set.count(stoi(msg[0])) == 1){
+						int mu_num = internalHashFunction(stoi(msg[0]));
+						mu[mu_num].lock();
+						messages->find(stoi(msg[0]))->second.push(stod(msg[1]));
+						mu[mu_num].unlock();
+					}
+				}
+			});
+		}
+		
 		while(true){
-				if(threadPool2->getJobs().empty()){
+				if(threadPool->getJobs().empty()){
 					while(true){
-						if(threadPool2->checkAllThread())break;
+						if(threadPool->checkAllThread())break;
 					}
 					break;
 				}
-		}
-
-		if(i%2==0){
-			for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-				iter->second.SetMessageAddr(messages2);
-			}	
-		}
-		else{
-			for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-				iter->second.SetMessageAddr(messages1);
-			}	
 		}
 	}
 	gettimeofday(&end, NULL);
 
 	for(int o; o<num_host;o++)t[o].CloseSocket();
 
+	
+	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
+		cout << iter->second.GetValue() << endl;
+	}
+	
+	
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "time: " << time << endl;
 	return 0;

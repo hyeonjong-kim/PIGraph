@@ -145,7 +145,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=PiGraph
+CMAKE_PROJECT_NAME:STATIC=PiGraph_IPoIB
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -210,10 +210,10 @@ CMAKE_STRIP:FILEPATH=/usr/bin/strip
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Value Computed by CMake
-PiGraph_BINARY_DIR:STATIC=/home/hjkim/PiGraph/IPoIB/build
+PiGraph_IPoIB_BINARY_DIR:STATIC=/home/hjkim/PiGraph/IPoIB/build
 
 //Value Computed by CMake
-PiGraph_SOURCE_DIR:STATIC=/home/hjkim/PiGraph/IPoIB
+PiGraph_IPoIB_SOURCE_DIR:STATIC=/home/hjkim/PiGraph/IPoIB
 
 
 ########################

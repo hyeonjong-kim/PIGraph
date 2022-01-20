@@ -36,8 +36,8 @@ class RDMA {
         uint16_t lid;
         uint32_t qp_num;
         string bulk_msg = "";
-        char send_msg[104857600];
-        char recv_msg[104857600];
+        char send_msg[10485760];
+        char recv_msg[10485760];
     
     public:
         RDMA(tcp* _t);
@@ -63,9 +63,13 @@ class RDMA {
         void PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length, string r_addr, string r_key);
         void SendMsg(string _msg);
 
-        char* GetRecvMsg(){return this->recv_msg;}
+        char* GetRecvMsg(){return this->send_msg;}
+        string GetBulkMsg(){return this->bulk_msg;}
+        char* ReadMsg();
+
+        void ClearRecvMsg();
         
-        string ReadMsg();
+        bool PollCompletion(struct ibv_cq* cq);
 };
 
 #endif

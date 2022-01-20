@@ -53,7 +53,7 @@ CMAKE_BINARY_DIR = /home/hjkim/PiGraph/IPoIB/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/PiGraph.dir/all
+all: CMakeFiles/PiGraph_IPoIB.dir/all
 all: src/core/all
 all: src/query/all
 all: src/tools/all
@@ -70,7 +70,7 @@ preinstall: src/network/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/PiGraph.dir/clean
+clean: CMakeFiles/PiGraph_IPoIB.dir/clean
 clean: src/core/clean
 clean: src/query/clean
 clean: src/tools/clean
@@ -151,34 +151,34 @@ src/tools/clean: src/tools/CMakeFiles/tools.dir/clean
 .PHONY : src/tools/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/PiGraph.dir
+# Target rules for target CMakeFiles/PiGraph_IPoIB.dir
 
 # All Build rule for target.
-CMakeFiles/PiGraph.dir/all: src/core/CMakeFiles/core.dir/all
-CMakeFiles/PiGraph.dir/all: src/query/CMakeFiles/query.dir/all
-CMakeFiles/PiGraph.dir/all: src/tools/CMakeFiles/tools.dir/all
-CMakeFiles/PiGraph.dir/all: src/network/CMakeFiles/network.dir/all
-	$(MAKE) -f CMakeFiles/PiGraph.dir/build.make CMakeFiles/PiGraph.dir/depend
-	$(MAKE) -f CMakeFiles/PiGraph.dir/build.make CMakeFiles/PiGraph.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hjkim/PiGraph/IPoIB/build/CMakeFiles --progress-num=1,2 "Built target PiGraph"
-.PHONY : CMakeFiles/PiGraph.dir/all
+CMakeFiles/PiGraph_IPoIB.dir/all: src/core/CMakeFiles/core.dir/all
+CMakeFiles/PiGraph_IPoIB.dir/all: src/query/CMakeFiles/query.dir/all
+CMakeFiles/PiGraph_IPoIB.dir/all: src/tools/CMakeFiles/tools.dir/all
+CMakeFiles/PiGraph_IPoIB.dir/all: src/network/CMakeFiles/network.dir/all
+	$(MAKE) -f CMakeFiles/PiGraph_IPoIB.dir/build.make CMakeFiles/PiGraph_IPoIB.dir/depend
+	$(MAKE) -f CMakeFiles/PiGraph_IPoIB.dir/build.make CMakeFiles/PiGraph_IPoIB.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hjkim/PiGraph/IPoIB/build/CMakeFiles --progress-num=1,2 "Built target PiGraph_IPoIB"
+.PHONY : CMakeFiles/PiGraph_IPoIB.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/PiGraph.dir/rule: cmake_check_build_system
+CMakeFiles/PiGraph_IPoIB.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/IPoIB/build/CMakeFiles 11
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/PiGraph.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/PiGraph_IPoIB.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/IPoIB/build/CMakeFiles 0
-.PHONY : CMakeFiles/PiGraph.dir/rule
+.PHONY : CMakeFiles/PiGraph_IPoIB.dir/rule
 
 # Convenience name for target.
-PiGraph: CMakeFiles/PiGraph.dir/rule
+PiGraph_IPoIB: CMakeFiles/PiGraph_IPoIB.dir/rule
 
-.PHONY : PiGraph
+.PHONY : PiGraph_IPoIB
 
 # clean rule for target.
-CMakeFiles/PiGraph.dir/clean:
-	$(MAKE) -f CMakeFiles/PiGraph.dir/build.make CMakeFiles/PiGraph.dir/clean
-.PHONY : CMakeFiles/PiGraph.dir/clean
+CMakeFiles/PiGraph_IPoIB.dir/clean:
+	$(MAKE) -f CMakeFiles/PiGraph_IPoIB.dir/build.make CMakeFiles/PiGraph_IPoIB.dir/clean
+.PHONY : CMakeFiles/PiGraph_IPoIB.dir/clean
 
 #=============================================================================
 # Target rules for target src/core/CMakeFiles/core.dir

@@ -112,17 +112,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named PiGraph
+# Target rules for targets named PiGraph_IPoIB
 
 # Build rule for target.
-PiGraph: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 PiGraph
-.PHONY : PiGraph
+PiGraph_IPoIB: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 PiGraph_IPoIB
+.PHONY : PiGraph_IPoIB
 
 # fast build rule for target.
-PiGraph/fast:
-	$(MAKE) -f CMakeFiles/PiGraph.dir/build.make CMakeFiles/PiGraph.dir/build
-.PHONY : PiGraph/fast
+PiGraph_IPoIB/fast:
+	$(MAKE) -f CMakeFiles/PiGraph_IPoIB.dir/build.make CMakeFiles/PiGraph_IPoIB.dir/build
+.PHONY : PiGraph_IPoIB/fast
 
 #=============================================================================
 # Target rules for targets named core
@@ -182,7 +182,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) -f CMakeFiles/PiGraph.dir/build.make CMakeFiles/PiGraph.dir/main.cpp.o
+	$(MAKE) -f CMakeFiles/PiGraph_IPoIB.dir/build.make CMakeFiles/PiGraph_IPoIB.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -191,7 +191,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) -f CMakeFiles/PiGraph.dir/build.make CMakeFiles/PiGraph.dir/main.cpp.i
+	$(MAKE) -f CMakeFiles/PiGraph_IPoIB.dir/build.make CMakeFiles/PiGraph_IPoIB.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -200,7 +200,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) -f CMakeFiles/PiGraph.dir/build.make CMakeFiles/PiGraph.dir/main.cpp.s
+	$(MAKE) -f CMakeFiles/PiGraph_IPoIB.dir/build.make CMakeFiles/PiGraph_IPoIB.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -211,7 +211,7 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... PiGraph"
+	@echo "... PiGraph_IPoIB"
 	@echo "... core"
 	@echo "... query"
 	@echo "... tools"

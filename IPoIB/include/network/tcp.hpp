@@ -36,9 +36,9 @@ class tcp{
         int send_msg_size;
 
     public:
-        tcp(int socket_num, int port, char _server_addr[], int num_host, int _client_port, int _msgsize);
+        tcp(int socket_num, int port, char _server_addr[], int num_host, int _client_port);
         tcp();
-        void SetInfo(int socket_num, int port, char _server_addr[], int num_host, int _client_port, int _msgsize);
+        void SetInfo(int socket_num, int port, char _server_addr[], int num_host, int _client_port);
         ~tcp();
         void SetSocket();
         void ConnectSocket();
