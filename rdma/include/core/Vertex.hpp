@@ -28,12 +28,13 @@ class Vertex {
         vector<Vertexidx> out_edge;
         double NumVertices = 4031.0;
         map<int, queue<double>>* message_addr;
+        double** msg_queue;
         mutex* socket_mu;
         int externalBucket;
         RDMA* msgThread;
         
     public:
-        Vertex(Vertexidx vertex_id, Vertexidx out_edge, map<int, queue<double>>* _messsage_addr, RDMA* _rdma, int host_num, mutex* socketmu);
+        Vertex(Vertexidx vertex_id, Vertexidx out_edge, map<int, queue<double>>* _messsage_addr, RDMA* _rdma, int host_num, mutex* socketmu, double** _msg_queue);
         ~Vertex();
         
         virtual void Compute() = 0;
@@ -49,6 +50,7 @@ class Vertex {
         int GetState(){return this->state;}
         RDMA* GetMsgThread(){return this->msgThread;}
         int GetExternalBucket(){return this->externalBucket;}
+        double** GetMsgQue(){return this->msg_queue;}
 
         void SetValue(VertexValue vertex_value){this->vertex_value = vertex_value;}
         void SetVertexid(Vertexidx vertex_id){this->vertex_id = vertex_id;}
@@ -58,6 +60,7 @@ class Vertex {
         void SetSocketMutex(mutex* socket_mu){this->socket_mu = socket_mu;}
         void SetExternalBucket(int host_num){this->externalBucket = host_num;}
         void SetMsgThread(RDMA* _rdma){this->msgThread = _rdma;}
+        void SetMsgQue(double** _msg_queue){this->msg_queue=_msg_queue;}
 
         void AddOutEdge(Vertexidx vertexidx){this->out_edge.push_back(vertexidx);}
         void NextSuperstep(){this->superstep++;}
@@ -67,13 +70,14 @@ class Vertex {
 };
 
 template<typename VertexValue, typename EdgeValue, typename MessageValue,typename Vertexidx>
-Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::Vertex(Vertexidx vertex_id, Vertexidx out_edge, map<int, queue<double>>* _messsage_addr, RDMA* _rdma, int host_num, mutex* socketmu){
+Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::Vertex(Vertexidx vertex_id, Vertexidx out_edge, map<int, queue<double>>* _messsage_addr, RDMA* _rdma, int host_num, mutex* socketmu, double** _msg_queue){
     SetVertexid(vertex_id);
     AddOutEdge(out_edge);
     SetMessageAddr(_messsage_addr);
     SetExternalBucket(host_num);
     SetSocketMutex(socketmu);
     SetMsgThread(_rdma);
+    SetMsgQue(_msg_queue);
 }
 
 template<typename VertexValue, typename EdgeValue, typename MessageValue,typename Vertexidx>
@@ -83,12 +87,8 @@ Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::~Vertex(){
 
 template<typename VertexValue, typename EdgeValue, typename MessageValue,typename Vertexidx>
 void Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::SendMessageTo(const Vertexidx& dest_vertex, const MessageValue& message, int socket_num){
-    string s1 = to_string(dest_vertex);
-    string s2 = to_string(message);
-    string s3 = s1 + " " + s2 + "\n";
-
     this->socket_mu[socket_num].lock();
-    this->msgThread[socket_num].SendMsg(s3);
+    this->msgThread[socket_num].SendMsg(dest_vertex, message);
     this->socket_mu[socket_num].unlock();
 }
 

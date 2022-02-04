@@ -15,6 +15,7 @@
 #include <typeinfo>
 #include <cstdio>
 #include <map>
+#include <vector>
 
 #include "tcp.hpp"
 
@@ -31,20 +32,25 @@ class RDMA {
         int cq_size;
         struct ibv_cq* completion_queue;
         struct ibv_qp* qp;
-        struct ibv_mr *mr;
-        struct ibv_mr *send_mr;
+        
+        map<int, struct ibv_mr*> recv_mr;
+        map<int, struct ibv_mr*> send_mr;
+        
         uint16_t lid;
         uint32_t qp_num;
-        string bulk_msg = "";
-        char send_msg[10485760];
-        char recv_msg[10485760];
+        
+        map<int, double*> send_msg_que;
+        map<int, int> send_msg_pos;
+        map<int, vector<string>> send_msg_addr;
+        
+        map<int, double*> recv_msg;
     
     public:
-        RDMA(tcp* _t);
+        RDMA(tcp* _t, map<int,double*> _recv_msg);
         RDMA();
         ~RDMA();
         
-        void setInfo(tcp* _t);
+        void setInfo(tcp* _t, map<int,double*> _recv_msg);
         
         struct ibv_context* CreateContext();
         struct ibv_qp* CreateQueuePair(struct ibv_pd* pd, struct ibv_cq* cq);
@@ -61,15 +67,15 @@ class RDMA {
         void ExchangeInfo();
         
         void PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length, string r_addr, string r_key);
-        void SendMsg(string _msg);
+        void SendMsg(int vertex_id, double value);
 
-        char* GetRecvMsg(){return this->send_msg;}
-        string GetBulkMsg(){return this->bulk_msg;}
-        char* ReadMsg();
-
+        bool CheckCommunication();
+        
         void ClearRecvMsg();
         void CloseRDMA();
         bool PollCompletion(struct ibv_cq* cq);
+
+        vector<string> split(string input, char delimiter);
 };
 
 #endif

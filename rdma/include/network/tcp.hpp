@@ -44,7 +44,6 @@ class tcp{
         void ConnectSocket();
         string Readmsg();
         void Sendmsg(string _msg);
-        string CheckReadfile();
         void SendCheckmsg();
         char* GetServerAddr(){return this->server_addr;}
         void CloseSocket();
@@ -52,6 +51,7 @@ class tcp{
         map<string, string> ReadRDMAInfo();
         void SendRDMAInfo(string _msg);
         string ReadCheckMsg();
+        
 };
 
 #endif

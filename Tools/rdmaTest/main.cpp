@@ -19,6 +19,28 @@
 using namespace std;
 
 
+bool pollCompletion(struct ibv_cq* cq) {
+  struct ibv_wc wc;
+  int result;
+
+  do {
+    // ibv_poll_cq returns the number of WCs that are newly completed,
+    // If it is 0, it means no new work completion is received.
+    // Here, the second argument specifies how many WCs the poll should check,
+    // however, giving more than 1 incurs stack smashing detection with g++8 compilation.
+    result = ibv_poll_cq(cq, 1, &wc);
+  } while (result == 0);
+
+  if (result > 0 && wc.status == ibv_wc_status::IBV_WC_SUCCESS) {
+    // success
+    return true;
+  }
+
+  // You can identify which WR failed with wc.wr_id.
+  printf("Poll failed with status %s (work request ID: %llu)\n", ibv_wc_status_str(wc.status), wc.wr_id);
+  return false;
+}
+
 struct ibv_context* createContext() {
     
     int ret;
@@ -251,7 +273,8 @@ static void post_rdma_read(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uin
 }
 
 int main(){
-  int num_host = 2;
+  
+  int num_host = 1;
   string host_file = "/home/hjkim/PiGraph/rdma/hostfile/hostinfo.txt";
   ThreadPool* connectionThread = new ThreadPool(num_host);
   tcp t[num_host];
@@ -297,6 +320,8 @@ int main(){
 				break;
 			}
 	}
+
+  
   //////////////////////////////////////////////////////////////
   //Create user context
   struct ibv_context* context = createContext();
@@ -308,8 +333,10 @@ int main(){
   //Create queue pair
   struct ibv_qp* qp = createQueuePair(protection_domain, completion_queue);
   //Create memory region
-  char buffer[2][1024 * 1024];
+  double buffer[1024];
+  double buffer2[1024];
   struct ibv_mr *mr = registerMemoryRegion(protection_domain, buffer, sizeof(buffer));
+  struct ibv_mr *send_mr = registerMemoryRegion(protection_domain, buffer2, sizeof(buffer2));
   
   //Exchange queue pair info
   uint16_t lid = getLocalId(context, PORT);
@@ -318,69 +345,33 @@ int main(){
   //Send RDMA info
   std::ostringstream oss;
   oss << &buffer;
-  t[1].SendRDMAInfo(oss.str()+"\n");
-  t[1].SendRDMAInfo(to_string(mr->length)+"\n");
-  t[1].SendRDMAInfo(to_string(mr->lkey)+"\n");
-  t[1].SendRDMAInfo(to_string(mr->rkey)+"\n");
-  t[1].SendRDMAInfo(to_string(lid)+"\n");
-  t[1].SendRDMAInfo(to_string(qp_num)+"\n");
+  t[0].SendRDMAInfo(oss.str()+"\n");
+  t[0].SendRDMAInfo(to_string(mr->length)+"\n");
+  t[0].SendRDMAInfo(to_string(mr->lkey)+"\n");
+  t[0].SendRDMAInfo(to_string(mr->rkey)+"\n");
+  t[0].SendRDMAInfo(to_string(lid)+"\n");
+  t[0].SendRDMAInfo(to_string(qp_num)+"\n");
 
   //Read RDMA info
-  map<string, string> rdmaInfo = t[1].ReadRDMAInfo();
-  cout << &buffer << endl;
-  cout << rdmaInfo.find("addr")->second << endl;
+  map<string, string> rdmaInfo = t[0].ReadRDMAInfo();
+
   //Exchange queue pair state
   changeQueuePairStateToInit(qp);
   changeQueuePairStateToRTR(qp, PORT, stoi(rdmaInfo.find("qp_num")->second), stoi(rdmaInfo.find("lid")->second));
   changeQueuePairStateToRTS(qp);
-  buffer[0][0] = 'f';
 
-  post_rdma_write(qp, mr, buffer[0], 1000, rdmaInfo.find("addr")->second, rdmaInfo.find("rkey")->second);
+  for(int i = 0; i < 1024; i++)buffer2[i]=0.123;
 
-  int num_wr = 1;
-  struct ibv_wc wc;
-  int ret;
+  post_rdma_write(qp, send_mr, buffer2, sizeof(double)*1024, rdmaInfo.find("addr")->second, rdmaInfo.find("rkey")->second);
+  pollCompletion(completion_queue);
 
-  while (num_wr > 0) {
-    ret = ibv_poll_cq(completion_queue, 1, &wc);
-
-    if (ret == 0)continue; /* polling */
-
-    if (ret < 0) {
-      fprintf(stderr, "Failure: ibv_poll_cq\n");
-      exit(EXIT_FAILURE);
-    }
-
-    if (wc.status != IBV_WC_SUCCESS) {
-      fprintf(stderr, "Completion errror\n");
-      exit(EXIT_FAILURE);
-    }
-
-    switch (wc.opcode) {
-      case IBV_WC_SEND:
-        printf("poll send wc: wr_id=0x%016" PRIx64 "\n", wc.wr_id);
-        break;
-
-      case IBV_WC_RECV:
-        printf("poll recv wc: wr_id=0x%016" PRIx64 " byte_len=%u, imm_data=0x%x\n", wc.wr_id, wc.byte_len, wc.imm_data);
-        ret = memcmp(buffer + 4096, (char*)(uintptr_t)wc.wr_id, wc.byte_len);
-        assert(ret == 0);
-        break;
-
-      default:
-        exit(EXIT_FAILURE);
-    }
-
-    num_wr--;        
-  }
-  
+  sleep(10);
+  for(int i = 0; i < 1024; i++)cout << buffer[i] << endl;
   ibv_destroy_qp(qp);
   ibv_destroy_cq(completion_queue);
   ibv_dereg_mr(mr);
   ibv_dealloc_pd(protection_domain);
-  
-  //sleep(10);
-  //cout << buffer[0] << endl;
+ 
 
   return 0;
 }

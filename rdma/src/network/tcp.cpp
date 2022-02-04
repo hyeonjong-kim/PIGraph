@@ -113,21 +113,6 @@ void tcp::SetInfo(int socket_num, int port, char _server_addr[], int num_host, i
     this->client_port = _client_port;
 }
 
-string tcp::CheckReadfile(){
-    
-    this->result="";
-
-    while(result.back() != '\n'){
-        this->valread = read(this->new_socket , this->buffer, 1);
-        this->read_char = this->buffer;
-        if(this->read_char!=""){
-            this->result += this->read_char;
-        }
-    }
-
-    return this->result;
-}
-
 void tcp::SendCheckmsg(){
     string checkMsg = "1\n";
     char msg[checkMsg.size()];
@@ -148,8 +133,8 @@ void tcp::CloseSocket(){
 map<string, string> tcp::ReadRDMAInfo(){
     
     map<string, string> info;
-    string info_name[6] = {"addr", "len", "lkey", "rkey", "lid", "qp_num"};
-    for(int i = 0; i < 6; i++){
+    string info_name[2] = {"lid", "qp_num"};
+    for(int i = 0; i < 2; i++){
         this->result="";
         this->read_char = "";
         while(result.back() != '\n'){

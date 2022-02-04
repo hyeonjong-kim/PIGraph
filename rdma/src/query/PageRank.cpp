@@ -1,7 +1,7 @@
 #include "PageRank.hpp"
 
 
-PageRank::PageRank(int vertex_id, int out_edge, map<int, queue<double>>* _messsage_addr, RDMA* _rdma, int host_num, mutex* socketmu):Vertex<double, void, double, int>(vertex_id, out_edge, _messsage_addr, _rdma, host_num, socketmu){
+PageRank::PageRank(int vertex_id, int out_edge, map<int, queue<double>>* _messsage_addr, RDMA* _rdma, int host_num, mutex* socketmu, double** _msg_queue):Vertex<double, void, double, int>(vertex_id, out_edge, _messsage_addr, _rdma, host_num, socketmu, _msg_queue){
     SetValue(1.0/GetNumVertices());
 }
 
@@ -15,11 +15,12 @@ void PageRank::Compute(){
     
     if(GetSuperstep() >=1){
         double sum = 0;
-        queue<double>& q = GetMessageAddr()->find(Vertexidx)->second;
-        
-        while(!q.empty()){
-            sum += q.front();
-            q.pop();
+        for(int i = 0; i < GetExternalBucket(); i++){
+            for(int j = 0; j < 256; j++){
+                if(GetMsgQue()[i][j] == 0.0)break;
+                //cout << GetMsgQue()[i][j] << endl;
+                sum += GetMsgQue()[i][j];
+            }
         }
         double value = 0.15/GetNumVertices() + 0.85 * sum;
         SetValue(value);

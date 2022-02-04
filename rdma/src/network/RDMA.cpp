@@ -1,33 +1,57 @@
 #include "RDMA.hpp"
 
-RDMA::RDMA(tcp* _t){
+vector<string> RDMA::split(string input, char delimiter) {
+	vector<string> answer;
+    stringstream ss(input);
+    string temp;
+
+    while (getline(ss, temp, delimiter)) {
+        answer.push_back(temp);
+    }
+
+    return answer;
+}
+
+RDMA::RDMA(tcp* _t, map<int,double*> _recv_msg){
   this->t = _t;
   this->context = this->CreateContext();
   this->protection_domain = ibv_alloc_pd(this->context);
   this->cq_size = 0x10;
   this->completion_queue = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
   this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue);
-  this->mr = this->RegisterMemoryRegion(this->protection_domain, this->recv_msg, sizeof(this->recv_msg));
-  this->send_mr = this->RegisterMemoryRegion(this->protection_domain, this->send_msg, sizeof(this->send_msg));
   this->lid = this->GetLocalId(this->context, PORT);
   this->qp_num = this->GetQueuePairNumber(this->qp);
+  
+  this->recv_msg = _recv_msg;
+
+  map<int, double*>::iterator iter;
+  for(iter = this->recv_msg.begin(); iter != this->recv_msg.end(); iter++){
+    struct ibv_mr *mr = RegisterMemoryRegion(this->protection_domain, iter->second, sizeof(double)*256);
+    this->recv_mr.insert(make_pair(iter->first, mr));
+  }
 }
 
 RDMA::RDMA(){
 
 }
 
-void RDMA::setInfo(tcp* _t){
+void RDMA::setInfo(tcp* _t, map<int,double*> _recv_msg){
   this->t = _t;
   this->context = this->CreateContext();
   this->protection_domain = ibv_alloc_pd(this->context);
   this->cq_size = 0x10;
   this->completion_queue = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
   this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue);
-  this->mr = this->RegisterMemoryRegion(this->protection_domain, this->recv_msg, sizeof(this->recv_msg));
-  this->send_mr = this->RegisterMemoryRegion(this->protection_domain, this->send_msg, sizeof(this->send_msg));
   this->lid = this->GetLocalId(this->context, PORT);
   this->qp_num = this->GetQueuePairNumber(this->qp);
+  
+  this->recv_msg = _recv_msg;
+  
+  map<int, double*>::iterator iter;
+  for(iter = this->recv_msg.begin(); iter != this->recv_msg.end(); iter++){
+    struct ibv_mr *mr = RegisterMemoryRegion(this->protection_domain, iter->second, sizeof(double)*256);
+    this->recv_mr.insert(make_pair(iter->first, mr));
+  }
 }
 
 RDMA::~RDMA(){
@@ -146,15 +170,36 @@ struct ibv_mr* RDMA::RegisterMemoryRegion(struct ibv_pd* pd, void* buffer, size_
 }
 
 void RDMA::ExchangeInfo(){
-  std::ostringstream oss;
-  oss << &(this->recv_msg);
-  this->t->SendRDMAInfo(oss.str()+"\n");
-  this->t->SendRDMAInfo(to_string(this->mr->length)+"\n");
-  this->t->SendRDMAInfo(to_string(this->mr->lkey)+"\n");
-  this->t->SendRDMAInfo(to_string(this->mr->rkey)+"\n");
   this->t->SendRDMAInfo(to_string(this->lid)+"\n");
   this->t->SendRDMAInfo(to_string(this->qp_num)+"\n");
   this->RDMAInfo = this->t->ReadRDMAInfo();
+  
+  map<int,double*>::iterator iter;
+  for(iter=this->recv_msg.begin(); iter!=this->recv_msg.end(); iter++){
+    std::ostringstream oss;
+    oss << iter->second;
+    this->t->Sendmsg(to_string(iter->first) + " " + oss.str() + " " + to_string(this->recv_mr.find(iter->first)->second->rkey) + "\n");
+  }
+
+  this->t->Sendmsg("Q");
+  
+
+  string result = this->t->Readmsg();
+  vector<string> msg_split = split(result, '\n');
+  vector<string> value_split;
+
+  for(int k = 0; k < msg_split.size(); k++){
+    value_split = split(msg_split[k], ' ');
+    if(value_split.size() == 3 && this->send_msg_que.count(stoi(value_split[0]))!=1){
+      double* msg_queue = new double[256]{0.0,};
+      this->send_msg_que.insert(make_pair(stoi(value_split[0]), msg_queue));
+      this->send_msg_pos.insert(make_pair(stoi(value_split[0]), 0));
+      vector<string> addr_rkey = {value_split[1], value_split[2]};
+      this->send_msg_addr.insert(make_pair(stoi(value_split[0]), addr_rkey));
+      struct ibv_mr *mr = RegisterMemoryRegion(this->protection_domain, msg_queue, sizeof(double)*256);
+      this->send_mr.insert(make_pair(stoi(value_split[0]), mr));
+    }
+  }
 }
 
 void RDMA::ConnectRDMA(){
@@ -193,63 +238,59 @@ void RDMA::PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint3
   assert(ret == 0);
 }
 
-void RDMA::SendMsg(string _msg){
-  if(_msg.compare("Q")!=0){
-    this->bulk_msg += _msg;
-  }
-  else{
-    this->bulk_msg +=_msg;
-    strcpy(this->send_msg, this->bulk_msg.c_str());
-    this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, this->bulk_msg.length(), this->RDMAInfo.find("addr")->second, RDMAInfo.find("rkey")->second);
-    if(this->PollCompletion(this->completion_queue)){
-      cout <<  "Success Send MSG" << endl;
-    }
-    else{
-      cout <<  "Fail Send MSG" << endl;
-    }
-    this->t->SendCheckmsg();
-    this->bulk_msg = "";
-  }
-  
-}
-
-char* RDMA::ReadMsg(){
-  while(true){
-    if(this->t->ReadCheckMsg().compare("1\n") == 0){
-      break;
-    }
-  }
-  
-  return this->recv_msg;
-}
-
-void RDMA::ClearRecvMsg(){
-  memset(this->recv_msg, 0, sizeof(char)*10485760);
-  this->bulk_msg = "";
-}
-
 bool RDMA::PollCompletion(struct ibv_cq* cq) {
   struct ibv_wc wc;
   int result;
-
+  
   do {
     result = ibv_poll_cq(cq, 1, &wc);
   } while (result == 0);
-
   if (result > 0 && wc.status == ibv_wc_status::IBV_WC_SUCCESS) {
     // success
     return true;
   }
-
+  
   // You can identify which WR failed with wc.wr_id.
   printf("Poll failed with status %s (work request ID: %llu)\n", ibv_wc_status_str(wc.status), wc.wr_id);
+  
   return false;
+}
+
+void RDMA::SendMsg(int vertex_id, double value){
+  if(vertex_id != 2147483647){
+    if(this->send_msg_que.count(vertex_id) == 1){
+      this->send_msg_que.find(vertex_id)->second[this->send_msg_pos.find(vertex_id)->second++] = value;
+    }    
+  }
+  else{
+    map<int,vector<string>>::iterator iter;
+    for(iter=this->send_msg_addr.begin();iter != this->send_msg_addr.end();iter++){
+      this->PostRdmaWrite(this->qp, this->send_mr.find(iter->first)->second, this->send_msg_que.find(iter->first)->second, sizeof(double)*256, iter->second[0], iter->second[1]);
+      this->PollCompletion(this->completion_queue);
+      this->send_msg_pos.find(iter->first)->second = 0;
+    }
+    this->t->SendCheckmsg();
+
+  }
+}
+
+bool RDMA::CheckCommunication(){
+  while(true){
+    if(this->t->ReadCheckMsg().compare("1\n") == 0){
+      return true;
+    }
+  }
+}
+
+void RDMA::ClearRecvMsg(){
+  map<int, double*>::iterator iter;
+  for(iter=this->recv_msg.begin(); iter!=this->recv_msg.end(); iter++){
+    memset(iter->second, 0, sizeof(double)*256);
+  }
 }
 
 void RDMA::CloseRDMA(){
   ibv_destroy_qp(this->qp);
   ibv_destroy_cq(this->completion_queue);
-  ibv_dereg_mr(this->mr);
-  ibv_dereg_mr(this->send_mr);
   ibv_dealloc_pd(this->protection_domain);
 };
