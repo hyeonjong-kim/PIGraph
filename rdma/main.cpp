@@ -179,8 +179,11 @@ int main(int argc, const char *argv[]){
 	gettimeofday(&end, NULL);
 	data.close();
 	
-	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	
+	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
+	cout << "Time of reading file: " << time << endl;
+
+
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
 	for(int j = 0; j < num_host; j++){
@@ -203,8 +206,6 @@ int main(int argc, const char *argv[]){
 
 	cout << "Complete reading file all node" << endl;
 
-	cout << "Time of reading file: " << time << endl;
-
 	for(int i = 0; i < num_host; i++){
 		rdma[i].setInfo(&t[i], recv_msg[i]);
 		rdma[i].ConnectRDMA();
@@ -216,11 +217,11 @@ int main(int argc, const char *argv[]){
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
-		//Conduct Query
+
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			threadPool->EnqueueJob([iter](){iter->second.Compute();});
 		}
-		//Wait to complete Query
+		
 		while(true){
 			if(threadPool->getJobs().empty()){
 				while(true){
