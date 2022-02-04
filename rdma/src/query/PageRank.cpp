@@ -26,6 +26,7 @@ void PageRank::Compute(){
         SetValue(value);
     }
     
+    
     if(GetSuperstep() < 30){
         const int n = GetOutEdgeIterator().size();
         for(vector<double>::size_type i = 0; i < n; i++){
