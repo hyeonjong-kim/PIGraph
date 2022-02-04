@@ -179,7 +179,6 @@ int main(int argc, const char *argv[]){
 	gettimeofday(&end, NULL);
 	data.close();
 	
-	
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "Time of reading file: " << time << endl;
 
@@ -206,14 +205,13 @@ int main(int argc, const char *argv[]){
 
 	cout << "Complete reading file all node" << endl;
 
+
 	for(int i = 0; i < num_host; i++){
 		rdma[i].setInfo(&t[i], recv_msg[i]);
 		rdma[i].ConnectRDMA();
 	}
-	
 
 	map<int, PageRank>::iterator iter;
-
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
@@ -231,7 +229,7 @@ int main(int argc, const char *argv[]){
 			}
 		}
 		for(int o = 0; o < num_host; o++)rdma[o].SendMsg(2147483647, 0.0);
-		for(int o = 0; o < num_host; o++)rdma[o].CheckCommunication();
+		//for(int o = 0; o < num_host; o++)rdma[o].CheckCommunication();
 	}
 
 	gettimeofday(&end, NULL);

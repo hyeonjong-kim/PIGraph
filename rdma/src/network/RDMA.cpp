@@ -173,7 +173,6 @@ void RDMA::ExchangeInfo(){
   this->t->SendRDMAInfo(to_string(this->lid)+"\n");
   this->t->SendRDMAInfo(to_string(this->qp_num)+"\n");
   this->RDMAInfo = this->t->ReadRDMAInfo();
-  
   map<int,double*>::iterator iter;
   for(iter=this->recv_msg.begin(); iter!=this->recv_msg.end(); iter++){
     std::ostringstream oss;
@@ -183,7 +182,6 @@ void RDMA::ExchangeInfo(){
 
   this->t->Sendmsg("Q");
   
-
   string result = this->t->Readmsg();
   vector<string> msg_split = split(result, '\n');
   vector<string> value_split;
@@ -259,7 +257,8 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
 void RDMA::SendMsg(int vertex_id, double value){
   if(vertex_id != 2147483647){
     if(this->send_msg_que.count(vertex_id) == 1){
-      this->send_msg_que.find(vertex_id)->second[this->send_msg_pos.find(vertex_id)->second++] = value;
+      cout << vertex_id << endl;
+      if(this->send_msg_que.count(vertex_id) == 1)this->send_msg_que.find(vertex_id)->second[this->send_msg_pos.find(vertex_id)->second++] = value;
     }    
   }
   else{
@@ -269,8 +268,8 @@ void RDMA::SendMsg(int vertex_id, double value){
       this->PollCompletion(this->completion_queue);
       this->send_msg_pos.find(iter->first)->second = 0;
     }
+    
     this->t->SendCheckmsg();
-
   }
 }
 
