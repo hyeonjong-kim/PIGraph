@@ -228,18 +228,19 @@ int main(int argc, const char *argv[]){
 				break;
 			}
 		}
+		
 		for(int o = 0; o < num_host; o++)rdma[o].SendMsg(2147483647, 0.0);
-		//for(int o = 0; o < num_host; o++)rdma[o].CheckCommunication();
+		for(int o = 0; o < num_host; o++)rdma[o].CheckCommunication();
 	}
 
 	gettimeofday(&end, NULL);
 
 	for(int i; i<num_host;i++)t[i].CloseSocket();
-	
+	/*
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		cout << iter->second.GetValue() << endl;
 	}
-	
+	*/
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "toal time: " << time << endl;
 
