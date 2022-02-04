@@ -168,7 +168,7 @@ int main(int argc, const char *argv[]){
 		else{
 			double** msg_queue = new double* [num_host];
 			for(int i = 0; i < num_host; i++){
-				msg_queue[i] = new double[256]{0.0,};
+				msg_queue[i] = new double[8192]{0.0,};
 				recv_msg[i].insert(make_pair(stoi(v[0]), msg_queue[i]));
 			}
 			PageRank p(stoi(v[0]),stoi(v[1]), messages, rdma, num_host, socketmu, msg_queue);
@@ -237,7 +237,6 @@ int main(int argc, const char *argv[]){
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
-
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			threadPool->EnqueueJob([iter](){iter->second.Compute();});
 		}
@@ -250,7 +249,6 @@ int main(int argc, const char *argv[]){
 				break;
 			}
 		}
-		
 		for(int o = 0; o < num_host; o++)rdma[o].SendMsg(2147483647, 0.0);
 		for(int o = 0; o < num_host; o++)rdma[o].CheckCommunication();
 	}

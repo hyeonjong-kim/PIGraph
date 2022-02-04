@@ -26,7 +26,7 @@ RDMA::RDMA(tcp* _t, map<int,double*> _recv_msg){
 
   map<int, double*>::iterator iter;
   for(iter = this->recv_msg.begin(); iter != this->recv_msg.end(); iter++){
-    struct ibv_mr *mr = RegisterMemoryRegion(this->protection_domain, iter->second, sizeof(double)*256);
+    struct ibv_mr *mr = RegisterMemoryRegion(this->protection_domain, iter->second, sizeof(double)*8192);
     this->recv_mr.insert(make_pair(iter->first, mr));
   }
 }
@@ -49,7 +49,7 @@ void RDMA::setInfo(tcp* _t, map<int,double*> _recv_msg){
   
   map<int, double*>::iterator iter;
   for(iter = this->recv_msg.begin(); iter != this->recv_msg.end(); iter++){
-    struct ibv_mr *mr = RegisterMemoryRegion(this->protection_domain, iter->second, sizeof(double)*256);
+    struct ibv_mr *mr = RegisterMemoryRegion(this->protection_domain, iter->second, sizeof(double)*8192);
     this->recv_mr.insert(make_pair(iter->first, mr));
   }
 }
@@ -190,12 +190,12 @@ void RDMA::ExchangeInfo(){
   for(int k = 0; k < msg_split.size(); k++){
     value_split = split(msg_split[k], ' ');
     if(value_split.size() == 3 && this->send_msg_que.count(stoi(value_split[0]))!=1){
-      double* msg_queue = new double[256]{0.0,};
+      double* msg_queue = new double[8192]{0.0,};
       this->send_msg_que.insert(make_pair(stoi(value_split[0]), msg_queue));
       this->send_msg_pos.insert(make_pair(stoi(value_split[0]), 0));
       vector<string> addr_rkey = {value_split[1], value_split[2]};
       this->send_msg_addr.insert(make_pair(stoi(value_split[0]), addr_rkey));
-      struct ibv_mr *mr = RegisterMemoryRegion(this->protection_domain, msg_queue, sizeof(double)*256);
+      struct ibv_mr *mr = RegisterMemoryRegion(this->protection_domain, msg_queue, sizeof(double)*8192);
       this->send_mr.insert(make_pair(stoi(value_split[0]), mr));
     }
   }
@@ -258,13 +258,14 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
 void RDMA::SendMsg(int vertex_id, double value){
   if(vertex_id != 2147483647){
     if(this->send_msg_que.count(vertex_id) == 1){
-      //this->send_msg_que.find(vertex_id)->second[this->send_msg_pos.find(vertex_id)->second++] = value;
+      this->send_msg_que.find(vertex_id)->second[this->send_msg_pos.find(vertex_id)->second] = value;
+      this->send_msg_pos.find(vertex_id)->second++;
     }
   }
   else{
     map<int,vector<string>>::iterator iter;
     for(iter=this->send_msg_addr.begin();iter != this->send_msg_addr.end();iter++){
-      this->PostRdmaWrite(this->qp, this->send_mr.find(iter->first)->second, this->send_msg_que.find(iter->first)->second, sizeof(double)*256, iter->second[0], iter->second[1]);
+      this->PostRdmaWrite(this->qp, this->send_mr.find(iter->first)->second, this->send_msg_que.find(iter->first)->second, sizeof(double)*8192, iter->second[0], iter->second[1]);
       this->PollCompletion(this->completion_queue);
       this->send_msg_pos.find(iter->first)->second = 0;
     }
