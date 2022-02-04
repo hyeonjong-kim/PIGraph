@@ -209,7 +209,29 @@ int main(int argc, const char *argv[]){
 	for(int i = 0; i < num_host; i++){
 		rdma[i].setInfo(&t[i], recv_msg[i]);
 		rdma[i].ConnectRDMA();
+		t[i].SendCheckmsg();
 	}
+
+	for(int j = 0; j < num_host; j++){
+		connectionThread->EnqueueJob([&t, j](){
+			string s = "";
+			while(s.compare("1\n")!= 0){
+				s = t[j].ReadCheckMsg();
+			}
+		});
+	}
+
+	while(true){
+		if(connectionThread->getJobs().empty()){
+			while(true){
+				if(connectionThread->checkAllThread())break;
+			}
+			break;
+		}
+	}
+
+	cout << "Complete all node RDMA setting" << endl;
+
 
 	map<int, PageRank>::iterator iter;
 	cout<< "start graph query" <<endl;
