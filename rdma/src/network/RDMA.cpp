@@ -186,7 +186,7 @@ void RDMA::ExchangeInfo(){
   string result = this->t->Readmsg();
   vector<string> msg_split = split(result, '\n');
   vector<string> value_split;
-
+  
   for(int k = 0; k < msg_split.size(); k++){
     value_split = split(msg_split[k], ' ');
     if(value_split.size() == 3 && this->send_msg_que.count(stoi(value_split[0]))!=1){

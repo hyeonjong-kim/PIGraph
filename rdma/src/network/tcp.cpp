@@ -100,7 +100,7 @@ string tcp::Readmsg(){
         this->read_char = this->buffer;
         this->result += this->read_char;
     }
-
+    
     this->result=this->result.substr(0, this->result.length()-1);  
 
     return this->result;
@@ -158,16 +158,15 @@ void tcp::SendRDMAInfo(string _msg){
 }
 
 string tcp::ReadCheckMsg(){
+    this->result="";
+    char buf[2];
     
-   this->result="";
-
     while(this->result.back() != '\n'){
-        this->valread = read(this->new_socket , this->buffer, 1);
-        this->read_char = this->buffer;
+        this->valread = read(this->new_socket , buf, sizeof(buf)-1);
+        this->read_char = buf;
         if(this->read_char!=""){
             this->result += this->read_char;
         }
     }
-
     return this->result;
 }
