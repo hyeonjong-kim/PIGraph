@@ -209,8 +209,9 @@ int main(int argc, const char *argv[]){
 	for(int i = 0; i < num_host; i++){
 		rdma[i].setInfo(&t[i], recv_msg[i]);
 		rdma[i].ConnectRDMA();
-		t[i].SendCheckmsg();
 	}
+
+	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 
 	for(int j = 0; j < num_host; j++){
 		connectionThread->EnqueueJob([&t, j](){
@@ -257,15 +258,16 @@ int main(int argc, const char *argv[]){
 	gettimeofday(&end, NULL);
 
 	for(int i; i<num_host;i++)t[i].CloseSocket();
-	
+	/*
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		cout << iter->second.GetValue() << endl;
 	}
-	
-	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
-	cout << "toal time: " << time << endl;
+	*/
 
 	for(int o = 0; o < num_host; o++)rdma[o].CloseRDMA();
+
+	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
+	cout << "toal time: " << time << endl;
 	
 	return 0;
 }

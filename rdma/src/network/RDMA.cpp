@@ -183,7 +183,6 @@ void RDMA::ExchangeInfo(){
   this->t->Sendmsg("Q");
 
   string result = this->t->Readmsg();
-  cout << result << endl;
   vector<string> msg_split = split(result, '\n');
   vector<string> value_split;
   

@@ -81,6 +81,7 @@ void tcp::Sendmsg(string _msg){
         this->send_msg += _msg;
     }
     else{
+        
         this->send_msg += _msg;
         char msg[this->send_msg.size()];
         strcpy(msg, send_msg.c_str());
@@ -168,5 +169,6 @@ string tcp::ReadCheckMsg(){
             this->result += this->read_char;
         }
     }
+    cout << this->result << endl;
     return this->result;
 }

@@ -18,15 +18,14 @@ void PageRank::Compute(){
         for(int i = 0; i < GetExternalBucket(); i++){
             for(int j = 0; j < 256; j++){
                 if(GetMsgQue()[i][j] == 0.0)break;
-                //cout << GetMsgQue()[i][j] << endl;
                 sum += GetMsgQue()[i][j];
             }
         }
         double value = 0.15/GetNumVertices() + 0.85 * sum;
         SetValue(value);
     }
-    
-    
+
+
     if(GetSuperstep() < 30){
         const int n = GetOutEdgeIterator().size();
         for(vector<double>::size_type i = 0; i < n; i++){
