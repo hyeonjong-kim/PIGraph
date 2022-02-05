@@ -168,7 +168,7 @@ int main(int argc, const char *argv[]){
 		else{
 			double** msg_queue = new double* [num_host];
 			for(int i = 0; i < num_host; i++){
-				msg_queue[i] = new double[4048]{0.0,};
+				msg_queue[i] = new double[2048]{0.0,};
 				recv_msg[i].insert(make_pair(stoi(v[0]), msg_queue[i]));
 			}
 			PageRank p(stoi(v[0]),stoi(v[1]), messages, rdma, num_host, socketmu, msg_queue);
@@ -186,7 +186,7 @@ int main(int argc, const char *argv[]){
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
 	for(int j = 0; j < num_host; j++){
-		connectionThread->EnqueueJob([&t, j](){
+		connectionThread->EnqueueJob([t, j](){
 			string s = "";
 			while(s.compare("1\n")!= 0){
 				s = t[j].ReadCheckMsg();
@@ -218,6 +218,7 @@ int main(int argc, const char *argv[]){
 			while(s.compare("1\n")!= 0){
 				s = t[j].ReadCheckMsg();
 			}
+			cout <<  t[j].GetServerAddr() << " is RDMA connection" << endl;
 		});
 	}
 
@@ -256,11 +257,11 @@ int main(int argc, const char *argv[]){
 	gettimeofday(&end, NULL);
 
 	for(int i; i<num_host;i++)t[i].CloseSocket();
-	/*
+	
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		cout << iter->second.GetValue() << endl;
 	}
-	*/
+	
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "toal time: " << time << endl;
 

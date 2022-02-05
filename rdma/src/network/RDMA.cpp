@@ -26,7 +26,7 @@ RDMA::RDMA(tcp* _t, map<int,double*> _recv_msg){
 
   map<int, double*>::iterator iter;
   for(iter = this->recv_msg.begin(); iter != this->recv_msg.end(); iter++){
-    struct ibv_mr *mr = RegisterMemoryRegion(this->protection_domain, iter->second, sizeof(double)* 4048);
+    struct ibv_mr *mr = RegisterMemoryRegion(this->protection_domain, iter->second, sizeof(double)* 2048);
     this->recv_mr.insert(make_pair(iter->first, mr));
   }
 }
@@ -49,9 +49,7 @@ void RDMA::setInfo(tcp* _t, map<int,double*> _recv_msg){
   
   map<int, double*>::iterator iter;
   for(iter = this->recv_msg.begin(); iter != this->recv_msg.end(); iter++){
-    
-    struct ibv_mr *mr = RegisterMemoryRegion(this->protection_domain, iter->second, sizeof(double)*8192);
-    if(iter->first == 4048)cout << mr<< endl;
+    struct ibv_mr *mr = RegisterMemoryRegion(this->protection_domain, iter->second, sizeof(double)*4048);
     this->recv_mr.insert(make_pair(iter->first, mr));
   }
 }
@@ -175,40 +173,36 @@ void RDMA::ExchangeInfo(){
   this->t->SendRDMAInfo(to_string(this->lid)+"\n");
   this->t->SendRDMAInfo(to_string(this->qp_num)+"\n");
   this->RDMAInfo = this->t->ReadRDMAInfo();
-
   map<int,double*>::iterator iter;
   for(iter=this->recv_msg.begin(); iter!=this->recv_msg.end(); iter++){
     std::ostringstream oss;
     oss << iter->second;
-    //cout <<  to_string(iter->first) << endl;
-    //cout <<  to_string(iter->first) + " " + oss.str() + " " + to_string(this->recv_mr.find(iter->first)->second->rkey) + "\n";
     this->t->Sendmsg(to_string(iter->first) + " " + oss.str() + " " + to_string(this->recv_mr.find(iter->first)->second->rkey) + "\n");
   }
   
   this->t->Sendmsg("Q");
-  
+
   string result = this->t->Readmsg();
+  cout << result << endl;
   vector<string> msg_split = split(result, '\n');
   vector<string> value_split;
   
   for(int k = 0; k < msg_split.size(); k++){
     value_split = split(msg_split[k], ' ');
     if(value_split.size() == 3 && this->send_msg_que.count(stoi(value_split[0]))!=1){
-      double* msg_queue = new double[4048]{0.0,};
+      double* msg_queue = new double[2048]{0.0,};
       this->send_msg_que.insert(make_pair(stoi(value_split[0]), msg_queue));
       this->send_msg_pos.insert(make_pair(stoi(value_split[0]), 0));
       vector<string> addr_rkey = {value_split[1], value_split[2]};
       this->send_msg_addr.insert(make_pair(stoi(value_split[0]), addr_rkey));
-      struct ibv_mr *mr = RegisterMemoryRegion(this->protection_domain, msg_queue, sizeof(double)*4048);
+      struct ibv_mr *mr = RegisterMemoryRegion(this->protection_domain, msg_queue, sizeof(double)*2048);
       this->send_mr.insert(make_pair(stoi(value_split[0]), mr));
     }
   }
 }
 
 void RDMA::ConnectRDMA(){
-  cout <<  "signal 4" << endl;
   this->ExchangeInfo();
-  cout <<  "signal 5" << endl;
   this->ChangeQueuePairStateToInit(this->qp);
   this->ChangeQueuePairStateToRTR(this->qp, PORT, stoi(this->RDMAInfo.find("qp_num")->second), stoi(this->RDMAInfo.find("lid")->second));
   this->ChangeQueuePairStateToRTS(this->qp);
@@ -271,7 +265,7 @@ void RDMA::SendMsg(int vertex_id, double value){
   else{
     map<int,vector<string>>::iterator iter;
     for(iter=this->send_msg_addr.begin();iter != this->send_msg_addr.end();iter++){
-      this->PostRdmaWrite(this->qp, this->send_mr.find(iter->first)->second, this->send_msg_que.find(iter->first)->second, sizeof(double)*4048, iter->second[0], iter->second[1]);
+      this->PostRdmaWrite(this->qp, this->send_mr.find(iter->first)->second, this->send_msg_que.find(iter->first)->second, sizeof(double)*2048, iter->second[0], iter->second[1]);
       this->PollCompletion(this->completion_queue);
       this->send_msg_pos.find(iter->first)->second = 0;
     }
