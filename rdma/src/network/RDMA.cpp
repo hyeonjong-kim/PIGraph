@@ -291,5 +291,9 @@ void RDMA::ClearRecvMsg(){
 void RDMA::CloseRDMA(){
   ibv_destroy_qp(this->qp);
   ibv_destroy_cq(this->completion_queue);
+  map<int, struct ibv_mr*>::iterator iter;
+  for(iter=this->recv_mr.begin(); iter!=this->recv_mr.end(); iter++)ibv_dereg_mr(iter->second);
+  for(iter=this->send_mr.begin(); iter!=this->send_mr.end(); iter++)ibv_dereg_mr(iter->second);
   ibv_dealloc_pd(this->protection_domain);
+  
 };
