@@ -168,7 +168,7 @@ int main(int argc, const char *argv[]){
 		else{
 			double** msg_queue = new double* [num_host];
 			for(int i = 0; i < num_host; i++){
-				msg_queue[i] = new double[8192]{0.0,};
+				msg_queue[i] = new double[4048]{0.0,};
 				recv_msg[i].insert(make_pair(stoi(v[0]), msg_queue[i]));
 			}
 			PageRank p(stoi(v[0]),stoi(v[1]), messages, rdma, num_host, socketmu, msg_queue);
@@ -205,7 +205,7 @@ int main(int argc, const char *argv[]){
 
 	cout << "Complete reading file all node" << endl;
 
-
+	
 	for(int i = 0; i < num_host; i++){
 		rdma[i].setInfo(&t[i], recv_msg[i]);
 		rdma[i].ConnectRDMA();
