@@ -72,7 +72,3 @@ map
 RDMA.hpp
 /home/hjkim/PiGraph/rdma/src/network/RDMA.hpp
 
-/home/hjkim/PiGraph/rdma/src/network/tcp.cpp
-tcp.hpp
-/home/hjkim/PiGraph/rdma/src/network/tcp.hpp
-

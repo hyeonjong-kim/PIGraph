@@ -134,8 +134,8 @@ void tcp::CloseSocket(){
 map<string, string> tcp::ReadRDMAInfo(){
     
     map<string, string> info;
-    string info_name[2] = {"lid", "qp_num"};
-    for(int i = 0; i < 2; i++){
+    string info_name[5] = {"addr", "len", "rkey", "lid", "qp_num"};
+    for(int i = 0; i < 5; i++){
         this->result="";
         this->read_char = "";
         while(result.back() != '\n'){
@@ -169,6 +169,6 @@ string tcp::ReadCheckMsg(){
             this->result += this->read_char;
         }
     }
-    cout << this->result << endl;
+    
     return this->result;
 }

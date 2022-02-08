@@ -33,24 +33,25 @@ class RDMA {
         struct ibv_cq* completion_queue;
         struct ibv_qp* qp;
         
-        map<int, struct ibv_mr*> recv_mr;
-        map<int, struct ibv_mr*> send_mr;
+        double* recv_msg;
+        struct ibv_mr* recv_mr;
+        map<int, vector<int>> recv_pos;
+
+        double* send_msg;
+        struct ibv_mr* send_mr;
+        map<int, vector<int>> send_pos;
+        map<int, int> send_pos_cnt;
         
         uint16_t lid;
         uint32_t qp_num;
+        int buffer_size;
         
-        map<int, double*> send_msg_que;
-        map<int, int> send_msg_pos;
-        map<int, vector<string>> send_msg_addr;
-        
-        map<int, double*> recv_msg;
-    
     public:
-        RDMA(tcp* _t, map<int,double*> _recv_msg);
+        RDMA(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos);
         RDMA();
         ~RDMA();
         
-        void setInfo(tcp* _t, map<int,double*> _recv_msg);
+        void setInfo(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos);
         
         struct ibv_context* CreateContext();
         struct ibv_qp* CreateQueuePair(struct ibv_pd* pd, struct ibv_cq* cq);
@@ -71,7 +72,6 @@ class RDMA {
 
         bool CheckCommunication();
         
-        void ClearRecvMsg();
         void CloseRDMA();
         bool PollCompletion(struct ibv_cq* cq);
 

@@ -335,17 +335,31 @@ int main(){
   //Create memory region
   double buffer[1024];
   double buffer2[1024];
-  struct ibv_mr *mr = registerMemoryRegion(protection_domain, buffer, sizeof(buffer));
-  struct ibv_mr *send_mr = registerMemoryRegion(protection_domain, buffer2, sizeof(buffer2));
+
+  map<int, double*> m;
+  double* dm = new double [2];
+  dm[0] = 1;
+  dm[1] = 1;
+  double* dm2 = new double [2];
+  dm2[0] = 1;
+  dm2[1] = 1;
+  struct ibv_mr *send_mr = registerMemoryRegion(protection_domain, &m, sizeof(m)*2);
   
+  map<int, double*> m2;
+  double* dm3 = new double [2];
+  double* dm4 = new double [2];
+  m.insert(make_pair(1, dm3));
+  m.insert(make_pair(2, dm4));
+  struct ibv_mr *mr = registerMemoryRegion(protection_domain, &m2, sizeof(m2)*2);
+
   //Exchange queue pair info
   uint16_t lid = getLocalId(context, PORT);
   uint32_t qp_num = getQueuePairNumber(qp);
   
   //Send RDMA info
   std::ostringstream oss;
-  oss << &buffer;
-  t[0].SendRDMAInfo(oss.str()+"\n");
+  oss << &m;
+  t[0].SendRDMAInfo(to_string(mr->addr)+"\n");
   t[0].SendRDMAInfo(to_string(mr->length)+"\n");
   t[0].SendRDMAInfo(to_string(mr->lkey)+"\n");
   t[0].SendRDMAInfo(to_string(mr->rkey)+"\n");
@@ -354,24 +368,22 @@ int main(){
 
   //Read RDMA info
   map<string, string> rdmaInfo = t[0].ReadRDMAInfo();
-
+  /*
   //Exchange queue pair state
   changeQueuePairStateToInit(qp);
   changeQueuePairStateToRTR(qp, PORT, stoi(rdmaInfo.find("qp_num")->second), stoi(rdmaInfo.find("lid")->second));
   changeQueuePairStateToRTS(qp);
 
-  for(int i = 0; i < 1024; i++)buffer2[i]=0.123;
-
-  post_rdma_write(qp, send_mr, buffer2, sizeof(double)*1024, rdmaInfo.find("addr")->second, rdmaInfo.find("rkey")->second);
+  post_rdma_write(qp, send_mr, &m, sizeof(m)*2, rdmaInfo.find("addr")->second, rdmaInfo.find("rkey")->second);
   pollCompletion(completion_queue);
 
   sleep(10);
-  for(int i = 0; i < 1024; i++)cout << buffer[i] << endl;
+  map<int, double*>::iterator iter;
+  for(iter=m2.begin();iter!=m2.end();iter++)cout << iter->second[0] << endl;;
   ibv_destroy_qp(qp);
   ibv_destroy_cq(completion_queue);
   ibv_dereg_mr(mr);
   ibv_dealloc_pd(protection_domain);
- 
-
+*/
   return 0;
 }

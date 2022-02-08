@@ -61,6 +61,10 @@ int main(int argc, const char *argv[]){
       .names({"-p", "--partitioning"})
       .description("partitioning option")
       .required(true);
+	parser.add_argument()
+      .names({"-b", "--buffersize"})
+      .description("buffer size")
+      .required(true);
 	parser.enable_help();
 	
 	auto err = parser.parse(argc, argv);
@@ -76,6 +80,7 @@ int main(int argc, const char *argv[]){
 	int num_host = stoi(parser.get<string>("n"));
 	int superstep = stoi(parser.get<string>("s"));
 	int p_option= stoi(parser.get<string>("p"));
+	int buffer_size= stoi(parser.get<string>("b"));
     char delimiter;
 	
 
@@ -116,7 +121,6 @@ int main(int argc, const char *argv[]){
 
 	ThreadPool* threadPool = new ThreadPool(num_thread);
 	ThreadPool* connectionThread = new ThreadPool(num_host);
-	map<int, queue<double>>* messages = new map<int, queue<double>>;
 	map<int, PageRank> pagerank_set;
 	mutex mu[num_mutex];
 	mutex socketmu[num_host];
@@ -146,8 +150,6 @@ int main(int argc, const char *argv[]){
 			}
 	}
     
-	map<int, double*> recv_msg[num_host];
-
 	RDMA *rdma = new RDMA[num_host];
 
 	cout<< "Read file" <<endl;
@@ -166,22 +168,16 @@ int main(int argc, const char *argv[]){
 			pagerank_set.find(stoi(v[0]))->second.AddOutEdge(stoi(v[1]));
 		}
 		else{
-			double** msg_queue = new double* [num_host];
-			for(int i = 0; i < num_host; i++){
-				msg_queue[i] = new double[2048]{0.0,};
-				recv_msg[i].insert(make_pair(stoi(v[0]), msg_queue[i]));
-			}
-			PageRank p(stoi(v[0]),stoi(v[1]), messages, rdma, num_host, socketmu, msg_queue);
+			PageRank p(stoi(v[0]),stoi(v[1]), rdma, num_host, socketmu);
 			pagerank_set.insert(pair<int, PageRank>(stoi(v[0]), p));
 		}
 	}
 	
 	gettimeofday(&end, NULL);
 	data.close();
-	
+
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "Time of reading file: " << time << endl;
-
 
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
@@ -205,14 +201,37 @@ int main(int argc, const char *argv[]){
 
 	cout << "Complete reading file all node" << endl;
 
+
+	double** recv_msg = new double*[num_host];
 	
 	for(int i = 0; i < num_host; i++){
-		rdma[i].setInfo(&t[i], recv_msg[i]);
+		recv_msg[i] = new double[pagerank_set.size()*buffer_size]{0.0,};
+	}
+
+	map<int, vector<int>> recv_pos;
+	int begin_pos = 0;
+	int end_pos = buffer_size-1;
+	map<int, PageRank>::iterator iter;
+	
+	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
+		iter->second.SetMsgQue(recv_msg);
+		iter->second.SetPos(begin_pos, end_pos);
+		
+		vector<int> pos;
+		pos.push_back(begin_pos);
+		pos.push_back(end_pos);
+		recv_pos.insert(make_pair(iter->first, pos));
+		begin_pos += buffer_size;
+		end_pos += buffer_size;
+	}
+
+	for(int i = 0; i < num_host; i++){
+		rdma[i].setInfo(&t[i], recv_msg[i], pagerank_set.size()*buffer_size, recv_pos);
 		rdma[i].ConnectRDMA();
 	}
 
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
-
+	
 	for(int j = 0; j < num_host; j++){
 		connectionThread->EnqueueJob([&t, j](){
 			string s = "";
@@ -231,11 +250,10 @@ int main(int argc, const char *argv[]){
 			break;
 		}
 	}
-
+	
+	
 	cout << "Complete all node RDMA setting" << endl;
-
-
-	map<int, PageRank>::iterator iter;
+	
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
@@ -263,11 +281,10 @@ int main(int argc, const char *argv[]){
 		cout << iter->second.GetValue() << endl;
 	}
 	*/
-
 	for(int o = 0; o < num_host; o++)rdma[o].CloseRDMA();
 
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "toal time: " << time << endl;
-	
+   	
 	return 0;
 }
