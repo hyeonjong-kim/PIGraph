@@ -121,6 +121,8 @@ int main(int argc, const char *argv[]){
 
 	ThreadPool* threadPool = new ThreadPool(num_thread);
 	ThreadPool* connectionThread = new ThreadPool(num_host);
+	ThreadPool* RDMAconnectionThread = new ThreadPool(num_host);
+
 	map<int, PageRank> pagerank_set;
 	mutex mu[num_mutex];
 	mutex socketmu[num_host];
@@ -227,7 +229,21 @@ int main(int argc, const char *argv[]){
 
 	for(int i = 0; i < num_host; i++){
 		rdma[i].setInfo(&t[i], recv_msg[i], pagerank_set.size()*buffer_size, recv_pos);
-		rdma[i].ConnectRDMA();
+		RDMAconnectionThread->EnqueueJob([rdma, i, &t](){
+			rdma[i].ConnectRDMA();
+		});
+		sleep(1);
+	}
+
+	while(true){
+		if(RDMAconnectionThread->getJobs().empty()){
+			while(true){
+				if(RDMAconnectionThread->checkAllThread()){
+					break;
+				}
+			}
+			break;
+		}
 	}
 
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
@@ -276,11 +292,11 @@ int main(int argc, const char *argv[]){
 	gettimeofday(&end, NULL);
 
 	for(int i; i<num_host;i++)t[i].CloseSocket();
-	/*
+	
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		cout << iter->second.GetValue() << endl;
 	}
-	*/
+	
 	for(int o = 0; o < num_host; o++)rdma[o].CloseRDMA();
 
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;

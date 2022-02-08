@@ -177,7 +177,6 @@ void RDMA::ExchangeInfo(){
   }
   this->t->Sendmsg("Q");
 
-  cout <<  RDMAInfo.find("len")->second << endl;
   this->send_msg = new double[stoi(RDMAInfo.find("len")->second)]{0.0,};
   this->send_mr = RegisterMemoryRegion(this->protection_domain, this->send_msg, stoi(RDMAInfo.find("len")->second)* sizeof(double));
 
@@ -255,6 +254,9 @@ void RDMA::SendMsg(int vertex_id, double value){
       if(this->send_pos.find(vertex_id)->second[0]+ this->send_pos_cnt.find(vertex_id)->second <= this->send_pos.find(vertex_id)->second[1]){
         this->send_msg[this->send_pos.find(vertex_id)->second[0] + this->send_pos_cnt.find(vertex_id)->second] = value;
         this->send_pos_cnt.find(vertex_id)->second++;
+      }
+      else{
+        cout << vertex_id << endl;
       }
     }
   }
