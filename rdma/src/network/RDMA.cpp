@@ -250,17 +250,10 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
 
 void RDMA::SendMsg(int vertex_id, double value){
   if(vertex_id != 2147483647){
-    if(this->send_pos_cnt.count(vertex_id) == 1){
-      if(this->send_pos.find(vertex_id)->second[0]+ this->send_pos_cnt.find(vertex_id)->second <= this->send_pos.find(vertex_id)->second[1]){
-        this->send_msg[this->send_pos.find(vertex_id)->second[0] + this->send_pos_cnt.find(vertex_id)->second] = value;
-        this->send_pos_cnt.find(vertex_id)->second++;
-      }
-      else{
-        cout << vertex_id << endl;
-      }
-    }
+    this->send_msg[this->send_pos.find(vertex_id)->second[0] + this->send_pos_cnt.find(vertex_id)->second] = value;
+    this->send_pos_cnt.find(vertex_id)->second++;
   }
-  else{    
+  else{
     this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)*sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
     this->PollCompletion(this->completion_queue);
     this->t->SendCheckmsg();

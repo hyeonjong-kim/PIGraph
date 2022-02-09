@@ -285,9 +285,15 @@ int main(int argc, const char *argv[]){
 	
 	cout << "Complete all node RDMA setting" << endl;
 	
+	struct timeval start_query = {};
+	struct timeval end_query = {};
+	struct timeval start_network = {};
+	struct timeval end_network = {};
+
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
+		gettimeofday(&start_query, NULL);
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			threadPool->EnqueueJob([iter](){iter->second.Compute();});
 		}
@@ -300,8 +306,13 @@ int main(int argc, const char *argv[]){
 				break;
 			}
 		}
+		gettimeofday(&end_query, NULL);
+		cout <<  "query time is " << end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0 << endl;
+		gettimeofday(&start_network, NULL);
 		for(int o = 0; o < num_host; o++)rdma[o].SendMsg(2147483647, 0.0);
 		for(int o = 0; o < num_host; o++)rdma[o].CheckCommunication();
+		gettimeofday(&end_network, NULL);
+		cout <<  "network time is " << end_network.tv_sec + end_network.tv_usec / 1000000.0 - start_network.tv_sec - start_network.tv_usec / 1000000.0 << endl;
 	}
 
 	gettimeofday(&end, NULL);
