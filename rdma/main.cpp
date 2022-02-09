@@ -160,9 +160,7 @@ int main(int argc, const char *argv[]){
 	ifstream data(file_name);
 	
 	gettimeofday(&start, NULL);
-	while(!data.eof()) {
-        data.getline(buf, 100);
-		s = buf;
+	while(getline(data, s)){
         v = split(s, delimiter);
 
 		if(externalHashFunction(stoi(v[0])) == hostnum){
@@ -184,6 +182,8 @@ int main(int argc, const char *argv[]){
 				pagerank_set.insert(pair<int, PageRank>(stoi(v[1]), p));
 			}
 		}
+
+		cout << v[0] <<  " " << v[1] << endl;
 	}
 
 	gettimeofday(&end, NULL);
