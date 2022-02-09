@@ -25,6 +25,7 @@ class Vertex {
         Vertexidx vertex_id;
         int state = 1;
         vector<Vertexidx> out_edge;
+        vector<Vertexidx> in_edge;
         double NumVertices = 4031.0;
         map<int, queue<double>>* message_addr;
         mutex* socket_mu;
@@ -32,7 +33,7 @@ class Vertex {
         tcp* msgThread;
         
     public:
-        Vertex(Vertexidx vertex_id, Vertexidx out_edge, map<int, queue<double>>* _messsage_addr, tcp* _t, int host_num, mutex* socketmu);
+        Vertex(Vertexidx vertex_id, Vertexidx out_edge, Vertexidx in_edge, map<int, queue<double>>* _messsage_addr, tcp* _t, int host_num, mutex* socketmu);
         ~Vertex();
         
         virtual void Compute() = 0;
@@ -59,6 +60,7 @@ class Vertex {
         void SetMsgThread(tcp* _t){this->msgThread = _t;}
 
         void AddOutEdge(Vertexidx vertexidx){this->out_edge.push_back(vertexidx);}
+        void AddInEdge(Vertexidx vertexidx){this->in_edge.push_back(vertexidx);}
         void NextSuperstep(){this->superstep++;}
         void SendMessageTo(const Vertexidx& dest_vertex, const MessageValue& message, int socket_num);
         void VoteHalt(){this->state = 0;}
@@ -66,13 +68,18 @@ class Vertex {
 };
 
 template<typename VertexValue, typename EdgeValue, typename MessageValue,typename Vertexidx>
-Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::Vertex(Vertexidx vertex_id, Vertexidx out_edge, map<int, queue<double>>* _messsage_addr, tcp* _t, int host_num, mutex* socketmu){
+Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::Vertex(Vertexidx vertex_id, Vertexidx out_edge, Vertexidx in_edge, map<int, queue<double>>* _messsage_addr, tcp* _t, int host_num, mutex* socketmu){
     SetVertexid(vertex_id);
-    AddOutEdge(out_edge);
     SetMessageAddr(_messsage_addr);
     SetExternalBucket(host_num);
     SetSocketMutex(socketmu);
     SetMsgThread(_t);
+    if(out_edge!=NULL){
+        AddOutEdge(out_edge);
+    }
+    else{
+        AddInEdge(in_edge);
+    }
 }
 
 template<typename VertexValue, typename EdgeValue, typename MessageValue,typename Vertexidx>

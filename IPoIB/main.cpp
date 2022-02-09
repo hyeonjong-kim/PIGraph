@@ -18,6 +18,11 @@ int internalHashFunction(int x){
 	return (x % internalBucket);
 }
 
+int externalBucket;
+int externalHashFunction(int x){
+	return (x % externalBucket);
+}
+
 vector<string> split(string input, char delimiter) {
 	vector<string> answer;
     stringstream ss(input);
@@ -137,6 +142,7 @@ int main(int argc, const char *argv[])
 	mutex mu[num_mutex];
 	mutex socketmu[num_host];
 	internalBucket = num_mutex;
+	externalBucket = num_host;
 	
 	tcp *t = new tcp[num_host];
 	
@@ -168,22 +174,29 @@ int main(int argc, const char *argv[])
 	ifstream data(file_name);
 	
 	gettimeofday(&start, NULL);
-	while (true) {
-        data.getline(buf, 100);
-        if(data.eof())break;
-
-		s = buf;
+	while(getline(data, s)){
         v = split(s, delimiter);
 
-		if(pagerank_set.count(stoi(v[0])) == 1){
-			pagerank_set.find(stoi(v[0]))->second.AddOutEdge(stoi(v[1]));
+		if(externalHashFunction(stoi(v[0])) == hostnum){
+			if(pagerank_set.count(stoi(v[0])) == 1){
+				pagerank_set.find(stoi(v[0]))->second.AddOutEdge(stoi(v[1]));
+			}
+			else{
+				PageRank p(stoi(v[0]),stoi(v[1]), NULL, messages, t, num_host, socketmu);
+				pagerank_set.insert(pair<int, PageRank>(stoi(v[0]), p));
+			}
 		}
-		else{
-			PageRank p(stoi(v[0]),stoi(v[1]), messages, t, num_host, socketmu);
-			
-			pagerank_set.insert(pair<int, PageRank>(stoi(v[0]), p));
+
+		if(externalHashFunction(stoi(v[1])) == hostnum){
+			if(pagerank_set.count(stoi(v[1])) == 1){
+				pagerank_set.find(stoi(v[1]))->second.AddInEdge(stoi(v[0]));
+			}
+			else{
+				PageRank p(stoi(v[1]), NULL, stoi(v[0]), messages, t, num_host, socketmu);
+				pagerank_set.insert(pair<int, PageRank>(stoi(v[1]), p));
+			}
 		}
-    }
+	}
 	gettimeofday(&end, NULL);
 	data.close();
 	

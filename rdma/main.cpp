@@ -182,8 +182,6 @@ int main(int argc, const char *argv[]){
 				pagerank_set.insert(pair<int, PageRank>(stoi(v[1]), p));
 			}
 		}
-
-		cout << v[0] <<  " " << v[1] << endl;
 	}
 
 	gettimeofday(&end, NULL);
