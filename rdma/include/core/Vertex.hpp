@@ -30,6 +30,7 @@ class Vertex {
         mutex* socket_mu;
         int externalBucket;
         RDMA* msgThread;
+        vector<Vertexidx> in_edge;
         
         double** msg_queue;
         
@@ -38,7 +39,7 @@ class Vertex {
         int begin_pos;
         int end_pos;
 
-        Vertex(Vertexidx vertex_id, Vertexidx out_edge, RDMA* _rdma, int host_num, mutex* socketmu);
+        Vertex(Vertexidx vertex_id, Vertexidx out_edge, Vertexidx in_edge, RDMA* _rdma, int host_num, mutex* socketmu);
         ~Vertex();
         
         virtual void Compute() = 0;
@@ -47,6 +48,7 @@ class Vertex {
         const int& GetSuperstep() const {return this->superstep;} 
         const VertexValue& GetValue() const {return this->vertex_value;}
         const vector<Vertexidx>& GetOutEdgeIterator()const {return this->out_edge;}
+        const vector<Vertexidx>& GetInEdgeIterator()const {return this->in_edge;}
         const double& GetNumVertices() const {return this->NumVertices;}
         mutex* GetMutex(){return this->mu;}
         mutex* GetSocketMutex(){return this->socket_mu;}
@@ -69,6 +71,7 @@ class Vertex {
         }
 
         void AddOutEdge(Vertexidx vertexidx){this->out_edge.push_back(vertexidx);}
+        void AddInEdge(Vertexidx vertexidx){this->in_edge.push_back(vertexidx);}
         void NextSuperstep(){this->superstep++;}
         void SendMessageTo(const Vertexidx& dest_vertex, const MessageValue& message, int socket_num);
         void VoteHalt(){this->state = 0;}
@@ -76,12 +79,18 @@ class Vertex {
 };
 
 template<typename VertexValue, typename EdgeValue, typename MessageValue,typename Vertexidx>
-Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::Vertex(Vertexidx vertex_id, Vertexidx out_edge, RDMA* _rdma, int host_num, mutex* socketmu){
+Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::Vertex(Vertexidx vertex_id, Vertexidx out_edge, Vertexidx in_edge, RDMA* _rdma, int host_num, mutex* socketmu){
     SetVertexid(vertex_id);
-    AddOutEdge(out_edge);
     SetExternalBucket(host_num);
     SetSocketMutex(socketmu);
     SetMsgThread(_rdma);
+    
+    if(out_edge!=NULL){
+        AddOutEdge(out_edge);
+    }
+    else{
+        AddInEdge(in_edge);
+    }
 }
 
 template<typename VertexValue, typename EdgeValue, typename MessageValue,typename Vertexidx>

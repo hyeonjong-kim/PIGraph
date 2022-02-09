@@ -19,6 +19,11 @@ int internalHashFunction(int x){
 	return (x % internalBucket);
 }
 
+int externalBucket;
+int externalHashFunction(int x){
+	return (x % externalBucket);
+}
+
 vector<string> split(string input, char delimiter) {
 	vector<string> answer;
     stringstream ss(input);
@@ -61,10 +66,6 @@ int main(int argc, const char *argv[]){
       .names({"-p", "--partitioning"})
       .description("partitioning option")
       .required(true);
-	parser.add_argument()
-      .names({"-b", "--buffersize"})
-      .description("buffer size")
-      .required(true);
 	parser.enable_help();
 	
 	auto err = parser.parse(argc, argv);
@@ -80,7 +81,6 @@ int main(int argc, const char *argv[]){
 	int num_host = stoi(parser.get<string>("n"));
 	int superstep = stoi(parser.get<string>("s"));
 	int p_option= stoi(parser.get<string>("p"));
-	int buffer_size= stoi(parser.get<string>("b"));
     char delimiter;
 	
 
@@ -127,6 +127,7 @@ int main(int argc, const char *argv[]){
 	mutex mu[num_mutex];
 	mutex socketmu[num_host];
 	internalBucket = num_mutex;
+	externalBucket = num_host;
 
 	tcp *t = new tcp[num_host];
 	vector<char[15]> server_ip(num_host);
@@ -159,22 +160,32 @@ int main(int argc, const char *argv[]){
 	ifstream data(file_name);
 	
 	gettimeofday(&start, NULL);
-	while (true) {
+	while(!data.eof()) {
         data.getline(buf, 100);
-        if(data.eof())break;
-
 		s = buf;
         v = split(s, delimiter);
 
-		if(pagerank_set.count(stoi(v[0])) == 1){
-			pagerank_set.find(stoi(v[0]))->second.AddOutEdge(stoi(v[1]));
+		if(externalHashFunction(stoi(v[0])) == hostnum){
+			if(pagerank_set.count(stoi(v[0])) == 1){
+				pagerank_set.find(stoi(v[0]))->second.AddOutEdge(stoi(v[1]));
+			}
+			else{
+				PageRank p(stoi(v[0]),stoi(v[1]), NULL, rdma, num_host, socketmu);
+				pagerank_set.insert(pair<int, PageRank>(stoi(v[0]), p));
+			}
 		}
-		else{
-			PageRank p(stoi(v[0]),stoi(v[1]), rdma, num_host, socketmu);
-			pagerank_set.insert(pair<int, PageRank>(stoi(v[0]), p));
+
+		if(externalHashFunction(stoi(v[1])) == hostnum){
+			if(pagerank_set.count(stoi(v[1])) == 1){
+				pagerank_set.find(stoi(v[1]))->second.AddInEdge(stoi(v[0]));
+			}
+			else{
+				PageRank p(stoi(v[1]), NULL, stoi(v[0]), rdma, num_host, socketmu);
+				pagerank_set.insert(pair<int, PageRank>(stoi(v[1]), p));
+			}
 		}
 	}
-	
+
 	gettimeofday(&end, NULL);
 	data.close();
 
@@ -203,32 +214,38 @@ int main(int argc, const char *argv[]){
 
 	cout << "Complete reading file all node" << endl;
 
-
-	double** recv_msg = new double*[num_host];
-	
-	for(int i = 0; i < num_host; i++){
-		recv_msg[i] = new double[pagerank_set.size()*buffer_size]{0.0,};
-	}
-
-	map<int, vector<int>> recv_pos;
-	int begin_pos = 0;
-	int end_pos = buffer_size-1;
 	map<int, PageRank>::iterator iter;
 	
+	map<int, vector<int>> recv_pos;
+	int begin_pos = 0;
+	int end_pos = 0;
+	int buffer_size = 0;
+	double** recv_msg = new double*[num_host];
+
+
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-		iter->second.SetMsgQue(recv_msg);
-		iter->second.SetPos(begin_pos, end_pos);
+		buffer_size += iter->second.GetInEdgeIterator().size();
+		end_pos += iter->second.GetInEdgeIterator().size();
 		
+		iter->second.SetPos(begin_pos, end_pos);
+
 		vector<int> pos;
 		pos.push_back(begin_pos);
 		pos.push_back(end_pos);
 		recv_pos.insert(make_pair(iter->first, pos));
-		begin_pos += buffer_size;
-		end_pos += buffer_size;
+		begin_pos = end_pos;
 	}
 
 	for(int i = 0; i < num_host; i++){
-		rdma[i].setInfo(&t[i], recv_msg[i], pagerank_set.size()*buffer_size, recv_pos);
+		recv_msg[i] = new double[buffer_size]{0.0,};
+	}
+
+	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
+		iter->second.SetMsgQue(recv_msg);
+	}
+
+	for(int i = 0; i < num_host; i++){
+		rdma[i].setInfo(&t[i], recv_msg[i], buffer_size, recv_pos);
 		RDMAconnectionThread->EnqueueJob([rdma, i, &t](){
 			rdma[i].ConnectRDMA();
 		});

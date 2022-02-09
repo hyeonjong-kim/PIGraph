@@ -181,6 +181,7 @@ void RDMA::ExchangeInfo(){
   this->send_mr = RegisterMemoryRegion(this->protection_domain, this->send_msg, stoi(RDMAInfo.find("len")->second)* sizeof(double));
 
   string result = this->t->Readmsg();
+  cout <<  result << endl;
   vector<string> msg_split = split(result, '\n');
   vector<string> value_split;
   for(int k = 0; k < msg_split.size(); k++){
@@ -262,6 +263,7 @@ void RDMA::SendMsg(int vertex_id, double value){
   }
   else{    
     this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)*sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
+    cout << this->RDMAInfo.find("len")->second << endl; 
     this->PollCompletion(this->completion_queue);
     this->t->SendCheckmsg();
     map<int, int>::iterator iter;
