@@ -125,7 +125,7 @@ int main(int argc, const char *argv[])
 	if(network_mode.compare("ethernet")==0){
 	}
 	else if(network_mode.compare("ipoib")==0){
-		host_file = "/home/hjkim/rdma/hostfile/hostinfo_ib.txt";
+		host_file = "../hostfile/hostinfo_ib.txt";
 	}
 	else{
 		cout << "network mode error" << endl;
