@@ -45,6 +45,8 @@ class RDMA {
         uint16_t lid;
         uint32_t qp_num;
         int buffer_size;
+
+        int msg_count = 0;
         
     public:
         RDMA(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos);

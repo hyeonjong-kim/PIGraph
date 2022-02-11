@@ -252,6 +252,7 @@ void RDMA::SendMsg(int vertex_id, double value){
   if(vertex_id != 2147483647){
     this->send_msg[this->send_pos.find(vertex_id)->second[0] + this->send_pos_cnt.find(vertex_id)->second] = value;
     this->send_pos_cnt.find(vertex_id)->second++;
+    msg_count++;
   }
   else{
     this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)*sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
@@ -259,6 +260,7 @@ void RDMA::SendMsg(int vertex_id, double value){
     this->t->SendCheckmsg();
     map<int, int>::iterator iter;
     for(iter=this->send_pos_cnt.begin();iter!=this->send_pos_cnt.end();iter++)iter->second = 0;
+    cout << this->msg_count << endl;
   }
 
 }
@@ -269,7 +271,6 @@ bool RDMA::CheckCommunication(){
       break;
     }
   }
-  cout <<  this->t->GetServerAddr() << " is Communication done" << endl;
   return true;
 }
 

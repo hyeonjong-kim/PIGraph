@@ -139,7 +139,7 @@ int main(int argc, const char *argv[]){
 	vector<char[15]> server_ip(num_host);
 	vector<string> v;
 	hostfile.open(host_file);
-
+	
 	for(int i=0; i< num_host; i++){
 		hostfile.getline(buf, 100);
 		s = buf;
@@ -325,8 +325,10 @@ int main(int argc, const char *argv[]){
 		}
 		gettimeofday(&end_query, NULL);
 		cout <<  "query time is " << end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0 << endl;
+		
 		gettimeofday(&start_network, NULL);
 		for(int o = 0; o < num_host; o++)rdma[o].SendMsg(2147483647, 0.0);
+
 		for(int o = 0; o < num_host; o++)rdma[o].CheckCommunication();
 		gettimeofday(&end_network, NULL);
 		cout <<  "network time is " << end_network.tv_sec + end_network.tv_usec / 1000000.0 - start_network.tv_sec - start_network.tv_usec / 1000000.0 << endl;
@@ -343,7 +345,7 @@ int main(int argc, const char *argv[]){
 	for(int o = 0; o < num_host; o++)rdma[o].CloseRDMA();
 	resourceCheckerThread.detach();
 	resourceChecker->printValue();
-	
+
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "toal time: " << time << endl;
    	

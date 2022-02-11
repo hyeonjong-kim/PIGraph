@@ -262,6 +262,7 @@ int main(int argc, const char *argv[])
 		for(int j = 0; j < num_host; j++){
 			threadPool->EnqueueJob([&t, j, &mu, num_host, &pagerank_set,&messages](){
 				string s = t[j].Readmsg();
+				int msg_count = 0;
 				vector<string> result;
 				vector<string> msg;
 				vector<string> v;
@@ -273,8 +274,10 @@ int main(int argc, const char *argv[])
 						mu[mu_num].lock();
 						messages->find(stoi(msg[0]))->second.push(stod(msg[1]));
 						mu[mu_num].unlock();
+						msg_count++;
 					}
 				}
+				cout << msg_count << endl;
 			});
 		}
 		
