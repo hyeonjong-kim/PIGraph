@@ -17,8 +17,8 @@ void PageRank::Compute(){
         double sum = 0;
         for(int i = 0; i < GetExternalBucket(); i++){
             for(int j = this->begin_pos; j < this->end_pos; j++){
+                if(GetMsgQue()[i][j] == 0.0)break;
                 sum += GetMsgQue()[i][j];
-                //cout <<  GetMsgQue()[i][j] << endl;
             }
         }
         double value = 0.15/GetNumVertices() + 0.85 * sum;

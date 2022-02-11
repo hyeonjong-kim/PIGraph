@@ -6,6 +6,7 @@ CMakeFiles/PiGraph.dir/main.cpp.o: ../include/network/RDMA.hpp
 CMakeFiles/PiGraph.dir/main.cpp.o: ../include/network/tcp.hpp
 CMakeFiles/PiGraph.dir/main.cpp.o: ../include/query/PageRank.hpp
 CMakeFiles/PiGraph.dir/main.cpp.o: ../include/tools/Parser.hpp
+CMakeFiles/PiGraph.dir/main.cpp.o: ../include/tools/ResourceChecker.hpp
 CMakeFiles/PiGraph.dir/main.cpp.o: ../include/tools/ThreadPool.hpp
 CMakeFiles/PiGraph.dir/main.cpp.o: ../main.cpp
 

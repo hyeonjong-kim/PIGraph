@@ -4,6 +4,9 @@
 src/tools/CMakeFiles/tools.dir/Parser.cpp.o: ../include/tools/Parser.hpp
 src/tools/CMakeFiles/tools.dir/Parser.cpp.o: ../src/tools/Parser.cpp
 
+src/tools/CMakeFiles/tools.dir/ResourceChecker.cpp.o: ../include/tools/ResourceChecker.hpp
+src/tools/CMakeFiles/tools.dir/ResourceChecker.cpp.o: ../src/tools/ResourceChecker.cpp
+
 src/tools/CMakeFiles/tools.dir/ThreadPool.cpp.o: ../include/tools/ThreadPool.hpp
 src/tools/CMakeFiles/tools.dir/ThreadPool.cpp.o: ../src/tools/ThreadPool.cpp
 

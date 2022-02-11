@@ -5,14 +5,18 @@
 #include <sys/time.h>
 #include <cstdlib>
 #include <netdb.h>
+#include <sys/types.h>
+#include <sys/sysinfo.h>
 
 #include "PageRank.hpp"
 #include "ThreadPool.hpp"
 #include "Parser.hpp"
 #include "tcp.hpp"
 #include "RDMA.hpp"
+#include "ResourceChecker.hpp"
 
 using namespace argparse;
+struct sysinfo memInfo;
 
 int internalBucket;
 int internalHashFunction(int x){
@@ -43,8 +47,9 @@ string HostToIp(string host) {
     return {};
 }
 
+
+
 int main(int argc, const char *argv[]){	
-	
 	ArgumentParser parser("Pigraph", "Pigraph execution");
 	parser.add_argument()
       .names({"-m", "--mutex"})
@@ -73,6 +78,7 @@ int main(int argc, const char *argv[]){
 		std::cout << err << std::endl;
 		return -1;
 	}
+	
 	
 	int num_thread = thread::hardware_concurrency();
 	int num_mutex = stoi(parser.get<string>("m"));
@@ -289,6 +295,17 @@ int main(int argc, const char *argv[]){
 	struct timeval end_query = {};
 	struct timeval start_network = {};
 	struct timeval end_network = {};
+	
+	ResourceChecker* resourceChecker = new ResourceChecker();
+	resourceChecker->init();
+	thread resourceCheckerThread([](ResourceChecker* _resourceChecker){
+		while (1)
+		{
+			_resourceChecker->getCurrentValue();
+			sleep(1);
+		}
+		
+	}, resourceChecker);
 
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
@@ -324,7 +341,9 @@ int main(int argc, const char *argv[]){
 	}
 	
 	for(int o = 0; o < num_host; o++)rdma[o].CloseRDMA();
-
+	resourceCheckerThread.detach();
+	resourceChecker->printValue();
+	
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "toal time: " << time << endl;
    	

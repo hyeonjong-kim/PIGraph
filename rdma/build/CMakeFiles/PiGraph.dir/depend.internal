@@ -7,5 +7,6 @@ CMakeFiles/PiGraph.dir/main.cpp.o
  ../include/network/tcp.hpp
  ../include/query/PageRank.hpp
  ../include/tools/Parser.hpp
+ ../include/tools/ResourceChecker.hpp
  ../include/tools/ThreadPool.hpp
  /home/hjkim/PiGraph/rdma/main.cpp

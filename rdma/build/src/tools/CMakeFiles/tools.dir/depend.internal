@@ -4,6 +4,9 @@
 src/tools/CMakeFiles/tools.dir/Parser.cpp.o
  ../include/tools/Parser.hpp
  /home/hjkim/PiGraph/rdma/src/tools/Parser.cpp
+src/tools/CMakeFiles/tools.dir/ResourceChecker.cpp.o
+ ../include/tools/ResourceChecker.hpp
+ /home/hjkim/PiGraph/rdma/src/tools/ResourceChecker.cpp
 src/tools/CMakeFiles/tools.dir/ThreadPool.cpp.o
  ../include/tools/ThreadPool.hpp
  /home/hjkim/PiGraph/rdma/src/tools/ThreadPool.cpp

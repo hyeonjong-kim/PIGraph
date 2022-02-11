@@ -153,6 +153,33 @@ Parser.cpp.s:
 	cd /home/hjkim/PiGraph/rdma/build && $(MAKE) -f src/tools/CMakeFiles/tools.dir/build.make src/tools/CMakeFiles/tools.dir/Parser.cpp.s
 .PHONY : Parser.cpp.s
 
+ResourceChecker.o: ResourceChecker.cpp.o
+
+.PHONY : ResourceChecker.o
+
+# target to build an object file
+ResourceChecker.cpp.o:
+	cd /home/hjkim/PiGraph/rdma/build && $(MAKE) -f src/tools/CMakeFiles/tools.dir/build.make src/tools/CMakeFiles/tools.dir/ResourceChecker.cpp.o
+.PHONY : ResourceChecker.cpp.o
+
+ResourceChecker.i: ResourceChecker.cpp.i
+
+.PHONY : ResourceChecker.i
+
+# target to preprocess a source file
+ResourceChecker.cpp.i:
+	cd /home/hjkim/PiGraph/rdma/build && $(MAKE) -f src/tools/CMakeFiles/tools.dir/build.make src/tools/CMakeFiles/tools.dir/ResourceChecker.cpp.i
+.PHONY : ResourceChecker.cpp.i
+
+ResourceChecker.s: ResourceChecker.cpp.s
+
+.PHONY : ResourceChecker.s
+
+# target to generate assembly for a file
+ResourceChecker.cpp.s:
+	cd /home/hjkim/PiGraph/rdma/build && $(MAKE) -f src/tools/CMakeFiles/tools.dir/build.make src/tools/CMakeFiles/tools.dir/ResourceChecker.cpp.s
+.PHONY : ResourceChecker.cpp.s
+
 ThreadPool.o: ThreadPool.cpp.o
 
 .PHONY : ThreadPool.o
@@ -192,6 +219,9 @@ help:
 	@echo "... Parser.o"
 	@echo "... Parser.i"
 	@echo "... Parser.s"
+	@echo "... ResourceChecker.o"
+	@echo "... ResourceChecker.i"
+	@echo "... ResourceChecker.s"
 	@echo "... ThreadPool.o"
 	@echo "... ThreadPool.i"
 	@echo "... ThreadPool.s"
