@@ -234,7 +234,7 @@ int main(int argc, const char *argv[])
 	struct timeval start_query = {};
 	struct timeval end_query = {};
 	struct timeval start_network = {};
-	struct timeval end_network = {};
+	struct timeval end_network[num_host] = {};
 
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
@@ -252,17 +252,18 @@ int main(int argc, const char *argv[])
 				break;
 			}
 		}
+		
 		gettimeofday(&end_query, NULL);
 		cout <<  "query time is " << end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0 << endl;
-		for(int o = 0; o < num_host; o++)t[o].Sendmsg("Q");
-		
-		
-		
+
 		gettimeofday(&start_network, NULL);
+
+		for(int o = 0; o < num_host; o++)t[o].Sendmsg("Q");
+
 		for(int j = 0; j < num_host; j++){
-			threadPool->EnqueueJob([&t, j, &mu, num_host, &pagerank_set,&messages](){
+			threadPool->EnqueueJob([&t, j, &mu, num_host, &pagerank_set,&messages, &start_network, &end_network](){
 				string s = t[j].Readmsg();
-				int msg_count = 0;
+				gettimeofday(&end_network[j], NULL);
 				vector<string> result;
 				vector<string> msg;
 				vector<string> v;
@@ -274,12 +275,11 @@ int main(int argc, const char *argv[])
 						mu[mu_num].lock();
 						messages->find(stoi(msg[0]))->second.push(stod(msg[1]));
 						mu[mu_num].unlock();
-						msg_count++;
 					}
 				}
-				cout << msg_count << endl;
 			});
 		}
+
 		
 		while(true){
 				if(threadPool->getJobs().empty()){
@@ -289,18 +289,26 @@ int main(int argc, const char *argv[])
 					break;
 				}
 		}
-		gettimeofday(&end_network, NULL);
-		cout <<  "network time is " << end_network.tv_sec + end_network.tv_usec / 1000000.0 - start_network.tv_sec - start_network.tv_usec / 1000000.0 << endl;
+
+		
+		double network_time = 0.0;
+		for (int j = 0; j < num_host; j++)
+		{
+			network_time = end_network[j].tv_sec + end_network[j].tv_usec / 1000000.0 - start_network.tv_sec - start_network.tv_usec / 1000000.0;
+		}
+		
+		cout <<  "network time is " << network_time/num_host << endl;
 	}
+
 	gettimeofday(&end, NULL);
 
 	for(int o; o<num_host;o++)t[o].CloseSocket();
 
-	
+	/*
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		cout << iter->second.GetValue() << endl;
 	}
-	
+	*/
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "time: " << time << endl;
 	return 0;
