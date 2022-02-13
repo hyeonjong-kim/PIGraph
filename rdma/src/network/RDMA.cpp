@@ -12,7 +12,7 @@ vector<string> RDMA::split(string input, char delimiter) {
     return answer;
 }
 
-RDMA::RDMA(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos){
+RDMA::RDMA(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos, mutex* _vertex_mu, int mu_num){
   this->t = _t;
   this->context = this->CreateContext();
   this->protection_domain = ibv_alloc_pd(this->context);
@@ -23,15 +23,17 @@ RDMA::RDMA(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _
   this->qp_num = this->GetQueuePairNumber(this->qp);
   this->recv_msg = _recv_msg;
   this->buffer_size = _buffer_size;
-  this->recv_mr = RegisterMemoryRegion(this->protection_domain, this->recv_msg, buffer_size);
+  this->recv_mr = RegisterMemoryRegion(this->protection_domain, this->recv_msg, _buffer_size);
   this->recv_pos = _recv_pos;
+  this->vertex_mu = _vertex_mu;
+  this->internalBucket = mu_num;
 }
 
 RDMA::RDMA(){
 
 }
 
-void RDMA::setInfo(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos){
+void RDMA::setInfo(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos, mutex* _vertex_mu, int mu_num){
  this->t = _t;
   this->context = this->CreateContext();
   this->protection_domain = ibv_alloc_pd(this->context);
@@ -44,6 +46,8 @@ void RDMA::setInfo(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector
   this->buffer_size = _buffer_size;
   this->recv_mr = RegisterMemoryRegion(this->protection_domain, this->recv_msg, _buffer_size*sizeof(double) );
   this->recv_pos = _recv_pos;
+  this->vertex_mu = _vertex_mu;
+  this->internalBucket = mu_num;
 }
 
 RDMA::~RDMA(){
@@ -177,8 +181,15 @@ void RDMA::ExchangeInfo(){
   }
   this->t->Sendmsg("Q");
 
-  this->send_msg = new double[stoi(RDMAInfo.find("len")->second)]{0.0,};
-  this->send_mr = RegisterMemoryRegion(this->protection_domain, this->send_msg, stoi(RDMAInfo.find("len")->second)* sizeof(double));
+  this->send_msg = new double[stoi(RDMAInfo.find("len")->second)];
+  this->tmp_send_msg = new double* [stoi(RDMAInfo.find("len")->second)];
+  
+  for (size_t i = 0; i < stoi(RDMAInfo.find("len")->second); i++)
+  {
+    this->tmp_send_msg[i] = new double(0.0);
+  }
+  
+  this->send_mr = RegisterMemoryRegion(this->protection_domain, this->send_msg , stoi(RDMAInfo.find("len")->second) * sizeof(double));
 
   string result = this->t->Readmsg();
   vector<string> msg_split = split(result, '\n');
@@ -250,17 +261,22 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
 
 void RDMA::SendMsg(int vertex_id, double value){
   if(vertex_id != 2147483647){
-    this->send_msg[this->send_pos.find(vertex_id)->second[0] + this->send_pos_cnt.find(vertex_id)->second] = value;
+    this->vertex_mu[this->internalHashFunction(vertex_id)].lock();
+    *(this->tmp_send_msg[this->send_pos.find(vertex_id)->second[0] + this->send_pos_cnt.find(vertex_id)->second]) = value;
     this->send_pos_cnt.find(vertex_id)->second++;
-    msg_count++;
+    this->vertex_mu[this->internalHashFunction(vertex_id)].unlock();
   }
   else{
-    this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)*sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
+    for (size_t i = 0; i < stoi(this->RDMAInfo.find("len")->second); i++)
+    {
+      this->send_msg[i] = *(this->tmp_send_msg[i]);
+    }
+    
+    this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)* sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
     this->PollCompletion(this->completion_queue);
     this->t->SendCheckmsg();
     map<int, int>::iterator iter;
     for(iter=this->send_pos_cnt.begin();iter!=this->send_pos_cnt.end();iter++)iter->second = 0;
-    cout << this->msg_count << endl;
   }
 
 }

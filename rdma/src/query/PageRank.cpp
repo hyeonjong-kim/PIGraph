@@ -1,7 +1,7 @@
 #include "PageRank.hpp"
 
 
-PageRank::PageRank(int vertex_id, int out_edge, int in_edge, RDMA* _rdma, int host_num, mutex* socketmu):Vertex<double, void, double, int>(vertex_id, out_edge, in_edge, _rdma, host_num, socketmu){
+PageRank::PageRank(int vertex_id, int out_edge, int in_edge, RDMA* _rdma, mutex* _socket_mu,int _host_num):Vertex<double, void, double, int>(vertex_id, out_edge, in_edge, _rdma, _socket_mu, _host_num){
     SetValue(1.0/GetNumVertices());
 }
 
@@ -25,18 +25,19 @@ void PageRank::Compute(){
         
         SetValue(value);
     }
-
-
+   
+    
     if(GetSuperstep() < 30){
+         
         const int n = GetOutEdgeIterator().size();
         for(vector<double>::size_type i = 0; i < n; i++){
             int rdma_num = externalHashFunction(GetOutEdgeIterator().at(i));
             SendMessageTo(GetOutEdgeIterator().at(i), GetValue()/n, rdma_num);
         }
+        
     }else{
         VoteHalt();
     }
 
     NextSuperstep();
-
 }

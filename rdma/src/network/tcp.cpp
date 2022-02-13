@@ -81,7 +81,6 @@ void tcp::Sendmsg(string _msg){
         this->send_msg += _msg;
     }
     else{
-        
         this->send_msg += _msg;
         char msg[this->send_msg.size()];
         strcpy(msg, send_msg.c_str());

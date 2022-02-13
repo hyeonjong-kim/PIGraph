@@ -233,12 +233,13 @@ int main(int argc, const char *argv[])
 
 	struct timeval start_query = {};
 	struct timeval end_query = {};
-	struct timeval start_network = {};
+	struct timeval start_network[num_host] = {};
 	struct timeval end_network[num_host] = {};
 
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
+		
 		gettimeofday(&start_query, NULL);
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			threadPool->EnqueueJob([iter](){iter->second.Compute();});
@@ -252,16 +253,15 @@ int main(int argc, const char *argv[])
 				break;
 			}
 		}
-		
 		gettimeofday(&end_query, NULL);
+		
 		cout <<  "query time is " << end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0 << endl;
 
-		gettimeofday(&start_network, NULL);
-
-		for(int o = 0; o < num_host; o++)t[o].Sendmsg("Q");
+		for(int j = 0; j < num_host; j++)t[j].Sendmsg("Q");
 
 		for(int j = 0; j < num_host; j++){
-			threadPool->EnqueueJob([&t, j, &mu, num_host, &pagerank_set,&messages, &start_network, &end_network](){
+			threadPool->EnqueueJob([t, j, &mu, num_host, &pagerank_set,&messages, &start_network, &end_network](){
+				gettimeofday(&start_network[j], NULL);
 				string s = t[j].Readmsg();
 				gettimeofday(&end_network[j], NULL);
 				vector<string> result;
@@ -280,7 +280,6 @@ int main(int argc, const char *argv[])
 			});
 		}
 
-		
 		while(true){
 				if(threadPool->getJobs().empty()){
 					while(true){
@@ -290,11 +289,10 @@ int main(int argc, const char *argv[])
 				}
 		}
 
-		
 		double network_time = 0.0;
 		for (int j = 0; j < num_host; j++)
-		{
-			network_time = end_network[j].tv_sec + end_network[j].tv_usec / 1000000.0 - start_network.tv_sec - start_network.tv_usec / 1000000.0;
+		{	
+			network_time += (end_network[j].tv_sec - start_network[j].tv_sec) + (end_network[j].tv_usec - start_network[j].tv_usec)/1000000000.0;
 		}
 		
 		cout <<  "network time is " << network_time/num_host << endl;
@@ -309,7 +307,8 @@ int main(int argc, const char *argv[])
 		cout << iter->second.GetValue() << endl;
 	}
 	*/
-	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
+
+	time = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)/1000000000.0;
 	cout << "time: " << time << endl;
 	return 0;
 }

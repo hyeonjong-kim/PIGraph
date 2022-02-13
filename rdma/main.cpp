@@ -174,7 +174,7 @@ int main(int argc, const char *argv[]){
 				pagerank_set.find(stoi(v[0]))->second.AddOutEdge(stoi(v[1]));
 			}
 			else{
-				PageRank p(stoi(v[0]),stoi(v[1]), NULL, rdma, num_host, socketmu);
+				PageRank p(stoi(v[0]),stoi(v[1]), NULL, rdma, socketmu, num_host);
 				pagerank_set.insert(pair<int, PageRank>(stoi(v[0]), p));
 			}
 		}
@@ -184,7 +184,7 @@ int main(int argc, const char *argv[]){
 				pagerank_set.find(stoi(v[1]))->second.AddInEdge(stoi(v[0]));
 			}
 			else{
-				PageRank p(stoi(v[1]), NULL, stoi(v[0]), rdma, num_host, socketmu);
+				PageRank p(stoi(v[1]), NULL, stoi(v[0]), rdma, socketmu, num_host);
 				pagerank_set.insert(pair<int, PageRank>(stoi(v[1]), p));
 			}
 		}
@@ -241,7 +241,7 @@ int main(int argc, const char *argv[]){
 	}
 
 	for(int i = 0; i < num_host; i++){
-		recv_msg[i] = new double[buffer_size]{0.0,};
+		recv_msg[i] = new double[buffer_size]{0.0};
 	}
 
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
@@ -249,7 +249,7 @@ int main(int argc, const char *argv[]){
 	}
 
 	for(int i = 0; i < num_host; i++){
-		rdma[i].setInfo(&t[i], recv_msg[i], buffer_size, recv_pos);
+		rdma[i].setInfo(&t[i], recv_msg[i], buffer_size, recv_pos, mu, num_mutex);
 		RDMAconnectionThread->EnqueueJob([rdma, i, &t](){
 			rdma[i].ConnectRDMA();
 		});
@@ -288,8 +288,8 @@ int main(int argc, const char *argv[]){
 		}
 	}
 	
-	
 	cout << "Complete all node RDMA setting" << endl;
+	
 	
 	struct timeval start_query = {};
 	struct timeval end_query = {};
@@ -337,7 +337,7 @@ int main(int argc, const char *argv[]){
 	gettimeofday(&end, NULL);
 
 	for(int i; i<num_host;i++)t[i].CloseSocket();
-	
+
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		cout << iter->second.GetValue() << endl;
 	}

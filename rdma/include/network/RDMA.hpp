@@ -16,6 +16,7 @@
 #include <cstdio>
 #include <map>
 #include <vector>
+#include <mutex>
 
 #include "tcp.hpp"
 
@@ -38,6 +39,8 @@ class RDMA {
         map<int, vector<int>> recv_pos;
 
         double* send_msg;
+        double** tmp_send_msg;
+
         struct ibv_mr* send_mr;
         map<int, vector<int>> send_pos;
         map<int, int> send_pos_cnt;
@@ -46,14 +49,17 @@ class RDMA {
         uint32_t qp_num;
         int buffer_size;
 
+        mutex* vertex_mu;
+        int internalBucket;
+
         int msg_count = 0;
         
     public:
-        RDMA(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos);
+        RDMA(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos, mutex* _vertex_mu, int mu_num);
         RDMA();
         ~RDMA();
         
-        void setInfo(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos);
+        void setInfo(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos, mutex* _vertex_mu, int mu_num);
         
         struct ibv_context* CreateContext();
         struct ibv_qp* CreateQueuePair(struct ibv_pd* pd, struct ibv_cq* cq);
@@ -76,6 +82,11 @@ class RDMA {
         
         void CloseRDMA();
         bool PollCompletion(struct ibv_cq* cq);
+
+        void SetVertexMu(mutex* _vertex_mu){this->vertex_mu = _vertex_mu;}
+        mutex* GetVertexMu(){return this->vertex_mu;}
+
+        int internalHashFunction(int x) {return (x % this->internalBucket);}
 
         vector<string> split(string input, char delimiter);
 };
