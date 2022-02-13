@@ -327,7 +327,19 @@ int main(int argc, const char *argv[]){
 		cout <<  "query time is " << end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0 << endl;
 		
 		gettimeofday(&start_network, NULL);
-		for(int o = 0; o < num_host; o++)rdma[o].SendMsg(2147483647, 0.0);
+		
+		for(int o = 0; o < num_host; o++){
+			connectionThread->EnqueueJob([rdma,o](){rdma[o].SendMsg(2147483647, 0.0);});
+		}
+		
+		while(true){
+			if(connectionThread->getJobs().empty()){
+				while(true){
+					if(connectionThread->checkAllThread())break;
+				}
+				break;
+			}
+		}
 
 		for(int o = 0; o < num_host; o++)rdma[o].CheckCommunication();
 		gettimeofday(&end_network, NULL);
