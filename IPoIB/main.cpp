@@ -5,6 +5,7 @@
 #include <sys/time.h>
 #include <cstdlib>
 #include <netdb.h>
+#include <time.h>
 
 #include "PageRank.hpp"
 #include "ThreadPool.hpp"
@@ -233,8 +234,10 @@ int main(int argc, const char *argv[])
 
 	struct timeval start_query = {};
 	struct timeval end_query = {};
-	struct timeval start_network[num_host] = {};
-	struct timeval end_network[num_host] = {};
+	double average_network = 0;
+	double average_query = 0;
+	double start_network;
+	double end_network[num_host];
 
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
@@ -253,23 +256,40 @@ int main(int argc, const char *argv[])
 				break;
 			}
 		}
-		gettimeofday(&end_query, NULL);
-		
-		cout <<  "query time is " << end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0 << endl;
 
-		for(int j = 0; j < num_host; j++)t[j].Sendmsg("Q");
+		
+		gettimeofday(&end_query, NULL);
+
+		   
+		cout <<  "query time is " << end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0 << endl;
+		average_query += end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
+
+		start_network = (double)clock() / CLOCKS_PER_SEC; 
+		for(int j = 0; j < num_host; j++){
+			connectionThread->EnqueueJob([&t, j](){
+				
+				t[j].Sendmsg("Q");
+			});
+		}
+
+		while(true){
+			if(connectionThread->getJobs().empty()){
+				while(true){
+					if(connectionThread->checkAllThread())break;
+				}
+				break;
+			}
+		}
 
 		for(int j = 0; j < num_host; j++){
-			threadPool->EnqueueJob([t, j, &mu, num_host, &pagerank_set,&messages, &start_network, &end_network](){
-				gettimeofday(&start_network[j], NULL);
-				string s = t[j].Readmsg();
-				gettimeofday(&end_network[j], NULL);
-				vector<string> result;
+			connectionThread->EnqueueJob([&t, j, &mu, num_host, &pagerank_set,&messages, &end_network](){
+				string read_msg = t[j].Readmsg();
+				end_network[j] = (double)clock() / CLOCKS_PER_SEC;    
 				vector<string> msg;
-				vector<string> v;
-				v = split(s, '\n');
-				for(int k = 0; k < v.size(); k++){
-					msg = split(v[k], ' ');
+				vector<string> result;
+				result = split(read_msg, '\n');
+				for(int k = 0; k < result.size(); k++){
+					msg = split(result[k], ' ');
 					if(msg.size() ==2 && pagerank_set.count(stoi(msg[0])) == 1){
 						int mu_num = internalHashFunction(stoi(msg[0]));
 						mu[mu_num].lock();
@@ -281,21 +301,19 @@ int main(int argc, const char *argv[])
 		}
 
 		while(true){
-				if(threadPool->getJobs().empty()){
-					while(true){
-						if(threadPool->checkAllThread())break;
-					}
-					break;
+			if(connectionThread->getJobs().empty()){
+				while(true){
+					if(connectionThread->checkAllThread())break;
 				}
-		}
-
-		double network_time = 0.0;
-		for (int j = 0; j < num_host; j++)
-		{	
-			network_time += (end_network[j].tv_sec - start_network[j].tv_sec) + (end_network[j].tv_usec - start_network[j].tv_usec)/1000000000.0;
+				break;
+			}
 		}
 		
+		double network_time = 0.0;
+		for (int j = 0; j < num_host; j++)network_time += (end_network[j] - start_network);
+
 		cout <<  "network time is " << network_time/num_host << endl;
+		average_network += network_time;
 	}
 
 	gettimeofday(&end, NULL);
@@ -310,5 +328,7 @@ int main(int argc, const char *argv[])
 
 	time = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)/1000000000.0;
 	cout << "time: " << time << endl;
+	cout << "average netwokr query: " << average_query/(double)superstep << endl;
+	cout << "average netwokr time: " <<  average_network/(double)superstep << endl;
 	return 0;
 }

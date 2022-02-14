@@ -17,6 +17,7 @@
 #include <map>
 #include <vector>
 #include <mutex>
+#include <time.h>
 
 #include "tcp.hpp"
 
@@ -52,7 +53,10 @@ class RDMA {
         mutex* vertex_mu;
         int internalBucket;
 
-        int msg_count = 0;
+        double network_time = 0;
+        double start_network = 0;
+        double end_network = 0;
+
         
     public:
         RDMA(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos, mutex* _vertex_mu, int mu_num);
@@ -87,6 +91,8 @@ class RDMA {
         mutex* GetVertexMu(){return this->vertex_mu;}
 
         int internalHashFunction(int x) {return (x % this->internalBucket);}
+
+        double GetNetWorkTime(){return this->network_time;}
 
         vector<string> split(string input, char delimiter);
 };

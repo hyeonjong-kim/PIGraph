@@ -91,7 +91,9 @@ void tcp::Sendmsg(string _msg){
         this->send_msg += _msg;
     }
     else{
+        
         this->send_msg += _msg;
+        //cout << this->send_msg << endl;
         char msg[this->send_msg.size()];
         strcpy(msg, send_msg.c_str());
         write(this->client_sock , msg , strlen(msg));
@@ -110,7 +112,6 @@ string tcp::Readmsg(){
         this->read_char = this->buffer;
         this->result += this->read_char;
     }
-    
     return this->result;
 }
 

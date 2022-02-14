@@ -293,8 +293,8 @@ int main(int argc, const char *argv[]){
 	
 	struct timeval start_query = {};
 	struct timeval end_query = {};
-	struct timeval start_network = {};
-	struct timeval end_network = {};
+	double average_query = 0;
+	double average_network = 0;
 	
 	ResourceChecker* resourceChecker = new ResourceChecker();
 	resourceChecker->init();
@@ -325,8 +325,8 @@ int main(int argc, const char *argv[]){
 		}
 		gettimeofday(&end_query, NULL);
 		cout <<  "query time is " << end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0 << endl;
+		average_query += end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
 		
-		gettimeofday(&start_network, NULL);
 		
 		for(int o = 0; o < num_host; o++){
 			connectionThread->EnqueueJob([rdma,o](){rdma[o].SendMsg(2147483647, 0.0);});
@@ -342,8 +342,12 @@ int main(int argc, const char *argv[]){
 		}
 
 		for(int o = 0; o < num_host; o++)rdma[o].CheckCommunication();
-		gettimeofday(&end_network, NULL);
-		cout <<  "network time is " << end_network.tv_sec + end_network.tv_usec / 1000000.0 - start_network.tv_sec - start_network.tv_usec / 1000000.0 << endl;
+		
+		double network = 0;
+		for(int o = 0; o < num_host; o++)network += rdma[o].GetNetWorkTime();
+		average_network += network/(double)num_host;
+		cout << "netwokr time is " << network/(double)num_host << endl;
+		
 	}
 
 	gettimeofday(&end, NULL);
@@ -360,6 +364,8 @@ int main(int argc, const char *argv[]){
 
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "toal time: " << time << endl;
+	cout << "average netwokr query: " << average_query/(double)superstep << endl;
+	cout << "average netwokr time: " <<  average_network/(double)superstep << endl;
    	
 	return 0;
 }
