@@ -26,7 +26,7 @@ class Vertex {
         Vertexidx vertex_id;
         int state = 1;
         vector<Vertexidx> out_edge;
-        double NumVertices = 4031.0;
+        double NumVertices;
         mutex* socket_mu;
         int internalBucket;
         int externalBucket;

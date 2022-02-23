@@ -140,6 +140,8 @@ int main(int argc, const char *argv[]){
 	vector<string> v;
 	hostfile.open(host_file);
 	
+	
+
 	for(int i=0; i< num_host; i++){
 		hostfile.getline(buf, 100);
 		s = buf;
@@ -164,7 +166,6 @@ int main(int argc, const char *argv[]){
 	cout<< "Read file" <<endl;
 
 	ifstream data(file_name);
-	
 	gettimeofday(&start, NULL);
 	while(getline(data, s)){
         v = split(s, delimiter);
@@ -226,6 +227,7 @@ int main(int argc, const char *argv[]){
 	int buffer_size = 0;
 	double** recv_msg = new double*[num_host];
 
+	
 
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		buffer_size += iter->second.GetInEdgeIterator().size();
@@ -287,10 +289,20 @@ int main(int argc, const char *argv[]){
 			break;
 		}
 	}
-	
+
 	cout << "Complete all node RDMA setting" << endl;
+
+
+	int vertex_num = 0;
+
+	for(int i=0; i < num_host; i++)vertex_num += rdma[i].GetVertexNum();
 	
-	
+
+	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
+		iter->second.SetValue(1.0/double(vertex_num));
+		iter->second.SetNumVertices(double(vertex_num));
+	}
+
 	struct timeval start_query = {};
 	struct timeval end_query = {};
 	double average_query = 0;
@@ -353,9 +365,10 @@ int main(int argc, const char *argv[]){
 	gettimeofday(&end, NULL);
 
 	for(int i; i<num_host;i++)t[i].CloseSocket();
-
+	
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-		cout << iter->second.GetValue() << endl;
+	
+		cout << iter->first << ": " <<  iter->second.GetValue() << endl;
 	}
 	
 	for(int o = 0; o < num_host; o++)rdma[o].CloseRDMA();

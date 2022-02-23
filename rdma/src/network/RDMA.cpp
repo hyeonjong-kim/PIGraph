@@ -204,6 +204,9 @@ void RDMA::ExchangeInfo(){
       this->send_pos_cnt.insert(make_pair(stoi(value_split[0]), 0));
     }
   }
+  
+  this->vertex_num = this->send_pos.size();
+
 }
 
 void RDMA::ConnectRDMA(){

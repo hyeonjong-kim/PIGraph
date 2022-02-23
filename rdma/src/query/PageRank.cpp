@@ -2,7 +2,7 @@
 
 
 PageRank::PageRank(int vertex_id, int out_edge, int in_edge, RDMA* _rdma, mutex* _socket_mu,int _host_num):Vertex<double, void, double, int>(vertex_id, out_edge, in_edge, _rdma, _socket_mu, _host_num){
-    SetValue(1.0/GetNumVertices());
+
 }
 
 PageRank::~PageRank(){
@@ -21,21 +21,21 @@ void PageRank::Compute(){
                 sum += GetMsgQue()[i][j];
             }
         }
-        double value = 0.15/GetNumVertices() + 0.85 * sum;
         
+        double value = (0.15/GetNumVertices()) + 0.85 * sum;
         SetValue(value);
     }
-   
+    
     
     if(GetSuperstep() < 30){
-         
         const int n = GetOutEdgeIterator().size();
         for(vector<double>::size_type i = 0; i < n; i++){
             int rdma_num = externalHashFunction(GetOutEdgeIterator().at(i));
-            SendMessageTo(GetOutEdgeIterator().at(i), GetValue()/n, rdma_num);
+            SendMessageTo(GetOutEdgeIterator().at(i), GetValue()/double(n), rdma_num);
         }
-        
-    }else{
+    }
+
+    else{
         VoteHalt();
     }
 

@@ -57,6 +57,7 @@ class RDMA {
         double start_network = 0;
         double end_network = 0;
 
+        int vertex_num;
         
     public:
         RDMA(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos, mutex* _vertex_mu, int mu_num);
@@ -93,6 +94,7 @@ class RDMA {
         int internalHashFunction(int x) {return (x % this->internalBucket);}
 
         double GetNetWorkTime(){return this->network_time;}
+        int GetVertexNum(){return this->vertex_num;}
 
         vector<string> split(string input, char delimiter);
 };
