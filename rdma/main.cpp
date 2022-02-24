@@ -50,6 +50,7 @@ string HostToIp(string host) {
 
 
 int main(int argc, const char *argv[]){	
+	/*
 	ArgumentParser parser("Pigraph", "Pigraph execution");
 	parser.add_argument()
       .names({"-m", "--mutex"})
@@ -379,6 +380,6 @@ int main(int argc, const char *argv[]){
 	cout << "toal time: " << time << endl;
 	cout << "average netwokr query: " << average_query/(double)superstep << endl;
 	cout << "average netwokr time: " <<  average_network/(double)superstep << endl;
-   	
+   	*/
 	return 0;
 }
