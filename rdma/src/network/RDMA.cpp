@@ -34,7 +34,7 @@ RDMA::RDMA(){
 }
 
 void RDMA::setInfo(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos, mutex* _vertex_mu, int mu_num){
- this->t = _t;
+  this->t = _t;
   this->context = this->CreateContext();
   this->protection_domain = ibv_alloc_pd(this->context);
   this->cq_size = 0x10;
@@ -274,11 +274,8 @@ void RDMA::SendMsg(int vertex_id, double value){
     {
       this->send_msg[i] = *(this->tmp_send_msg[i]);
     }
-    this->start_network =(double)clock() / CLOCKS_PER_SEC;
     this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)* sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
     this->PollCompletion(this->completion_queue);
-    this->end_network =(double)clock() / CLOCKS_PER_SEC;
-    this->network_time = end_network - start_network;
     this->t->SendCheckmsg();
     map<int, int>::iterator iter;
     for(iter=this->send_pos_cnt.begin();iter!=this->send_pos_cnt.end();iter++)iter->second = 0;

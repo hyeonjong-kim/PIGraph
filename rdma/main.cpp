@@ -9,36 +9,16 @@
 #include <sys/sysinfo.h>
 
 #include "PageRank.hpp"
-#include "ThreadPool.hpp"
-#include "Parser.hpp"
 #include "tcp.hpp"
 #include "RDMA.hpp"
+#include "ThreadPool.hpp"
+#include "Parser.hpp"
 #include "ResourceChecker.hpp"
 
-using namespace argparse;
-struct sysinfo memInfo;
-
 int internalBucket;
-int internalHashFunction(int x){
-	return (x % internalBucket);
-}
-
 int externalBucket;
-int externalHashFunction(int x){
-	return (x % externalBucket);
-}
-
-vector<string> split(string input, char delimiter) {
-	vector<string> answer;
-    stringstream ss(input);
-    string temp;
-
-    while (getline(ss, temp, delimiter)) {
-        answer.push_back(temp);
-    }
-
-    return answer;
-}
+int internalHashFunction(int x){return (x % internalBucket);}
+int externalHashFunction(int x){return (x % externalBucket);}
 
 string HostToIp(string host) {
     hostent* hostname = gethostbyname(host.c_str());
@@ -47,10 +27,19 @@ string HostToIp(string host) {
     return {};
 }
 
+vector<string> split(string input, char delimiter) {
+	vector<string> answer;
+    stringstream ss(input);
+    string temp;
 
+    while(getline(ss, temp, delimiter))answer.push_back(temp);
 
-int main(int argc, const char *argv[]){	
-	/*
+    return answer;
+}
+
+using namespace argparse;
+
+int main(int argc, const char *argv[]){
 	ArgumentParser parser("Pigraph", "Pigraph execution");
 	parser.add_argument()
       .names({"-m", "--mutex"})
@@ -83,8 +72,8 @@ int main(int argc, const char *argv[]){
 	
 	int num_thread = thread::hardware_concurrency();
 	int num_mutex = stoi(parser.get<string>("m"));
-	string file_name = parser.get<string>("f");
-	string host_file = "../hostfile/hostinfo.txt";
+	string data_file_name = parser.get<string>("f");
+	string host_file_name = "../hostfile/hostinfo.txt";
 	int num_host = stoi(parser.get<string>("n"));
 	int superstep = stoi(parser.get<string>("s"));
 	int p_option= stoi(parser.get<string>("p"));
@@ -102,27 +91,25 @@ int main(int argc, const char *argv[]){
         return 0;
     }
 
-	char hostname[256];
-	size_t hostnamelen = 256;
-	gethostname(hostname, hostnamelen);
-	string hostname_str(hostname);
-	int hostnum = 0;
+	char this_host_name[256];
+	gethostname(this_host_name, 256);
+	string this_host_name_str(this_host_name);
+	int host_num = 0;
 
-	ifstream hostfile(host_file);
-	char buf[100];
-	string s;
+	ifstream host_file(host_file_name);
+	char read_buf[100];
+	string read_str;
 
 	for(int i=0; i<num_host; i++){
-		hostfile.getline(buf, 100);
-		s = buf;
-		if(hostname_str.compare(s) == 0){
+		host_file.getline(read_buf, 100);
+		read_str = read_buf;
+		if(this_host_name_str.compare(read_str) == 0){
 			break;
 		}
-		hostnum++;
+		host_num++;
 	}
-
-	hostfile.close();
-
+	host_file.close();
+	
 	struct timeval start = {};
     struct timeval end = {};
 
@@ -138,17 +125,15 @@ int main(int argc, const char *argv[]){
 
 	tcp *t = new tcp[num_host];
 	vector<char[15]> server_ip(num_host);
-	vector<string> v;
-	hostfile.open(host_file);
 	
+	host_file.open(host_file_name);
 	
-
 	for(int i=0; i< num_host; i++){
-		hostfile.getline(buf, 100);
-		s = buf;
-		s = HostToIp(s);
-		strcpy(server_ip[i], s.c_str());
-		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+hostnum);
+		host_file.getline(read_buf, 100);
+		read_str = read_buf;
+		read_str = HostToIp(read_str);
+		strcpy(server_ip[i], read_str.c_str());
+		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+host_num);
 		t[i].SetSocket();
 		connectionThread->EnqueueJob([&t, i](){t[i].ConnectSocket();});
 	}
@@ -161,39 +146,41 @@ int main(int argc, const char *argv[]){
 				break;
 			}
 	}
+
+	host_file.close();
     
 	RDMA *rdma = new RDMA[num_host];
 
 	cout<< "Read file" <<endl;
 
-	ifstream data(file_name);
+	ifstream data_file(data_file_name);
+	vector<string> split_line;
 	gettimeofday(&start, NULL);
-	while(getline(data, s)){
-        v = split(s, delimiter);
+	while(getline(data_file, read_str)){
+        split_line = split(read_str, delimiter);
 
-		if(externalHashFunction(stoi(v[0])) == hostnum){
-			if(pagerank_set.count(stoi(v[0])) == 1){
-				pagerank_set.find(stoi(v[0]))->second.AddOutEdge(stoi(v[1]));
+		if(externalHashFunction(stoi(split_line[0])) == host_num){
+			if(pagerank_set.count(stoi(split_line[0])) == 1){
+				pagerank_set.find(stoi(split_line[0]))->second.AddOutEdge(stoi(split_line[1]));
 			}
 			else{
-				PageRank p(stoi(v[0]),stoi(v[1]), NULL, rdma, socketmu, num_host);
-				pagerank_set.insert(pair<int, PageRank>(stoi(v[0]), p));
+				PageRank p(stoi(split_line[0]),stoi(split_line[1]), NULL, rdma, socketmu, num_host);
+				pagerank_set.insert(pair<int, PageRank>(stoi(split_line[0]), p));
 			}
 		}
-
-		if(externalHashFunction(stoi(v[1])) == hostnum){
-			if(pagerank_set.count(stoi(v[1])) == 1){
-				pagerank_set.find(stoi(v[1]))->second.AddInEdge(stoi(v[0]));
+		if(externalHashFunction(stoi(split_line[1])) == host_num){
+			if(pagerank_set.count(stoi(split_line[1])) == 1){
+				pagerank_set.find(stoi(split_line[1]))->second.AddInEdge(stoi(split_line[0]));
 			}
 			else{
-				PageRank p(stoi(v[1]), NULL, stoi(v[0]), rdma, socketmu, num_host);
-				pagerank_set.insert(pair<int, PageRank>(stoi(v[1]), p));
+				PageRank p(stoi(split_line[1]), NULL, stoi(split_line[0]), rdma, socketmu, num_host);
+				pagerank_set.insert(pair<int, PageRank>(stoi(split_line[1]), p));
 			}
 		}
 	}
 
 	gettimeofday(&end, NULL);
-	data.close();
+	data_file.close();
 
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "Time of reading file: " << time << endl;
@@ -227,8 +214,6 @@ int main(int argc, const char *argv[]){
 	int end_pos = 0;
 	int buffer_size = 0;
 	double** recv_msg = new double*[num_host];
-
-	
 
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		buffer_size += iter->second.GetInEdgeIterator().size();
@@ -306,24 +291,10 @@ int main(int argc, const char *argv[]){
 
 	struct timeval start_query = {};
 	struct timeval end_query = {};
-	double average_query = 0;
-	double average_network = 0;
 	
-	ResourceChecker* resourceChecker = new ResourceChecker();
-	resourceChecker->init();
-	thread resourceCheckerThread([](ResourceChecker* _resourceChecker){
-		while (1)
-		{
-			_resourceChecker->getCurrentValue();
-			sleep(1);
-		}
-		
-	}, resourceChecker);
-
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
-		gettimeofday(&start_query, NULL);
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			threadPool->EnqueueJob([iter](){iter->second.Compute();});
 		}
@@ -336,10 +307,6 @@ int main(int argc, const char *argv[]){
 				break;
 			}
 		}
-		gettimeofday(&end_query, NULL);
-		cout <<  "query time is " << end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0 << endl;
-		average_query += end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
-		
 		
 		for(int o = 0; o < num_host; o++){
 			connectionThread->EnqueueJob([rdma,o](){rdma[o].SendMsg(2147483647, 0.0);});
@@ -355,12 +322,6 @@ int main(int argc, const char *argv[]){
 		}
 
 		for(int o = 0; o < num_host; o++)rdma[o].CheckCommunication();
-		
-		double network = 0;
-		for(int o = 0; o < num_host; o++)network += rdma[o].GetNetWorkTime();
-		average_network += network/(double)num_host;
-		cout << "netwokr time is " << network/(double)num_host << endl;
-		
 	}
 
 	gettimeofday(&end, NULL);
@@ -373,13 +334,10 @@ int main(int argc, const char *argv[]){
 	}
 	
 	for(int o = 0; o < num_host; o++)rdma[o].CloseRDMA();
-	resourceCheckerThread.detach();
-	resourceChecker->printValue();
+	
 
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "toal time: " << time << endl;
-	cout << "average netwokr query: " << average_query/(double)superstep << endl;
-	cout << "average netwokr time: " <<  average_network/(double)superstep << endl;
-   	*/
+	
 	return 0;
 }

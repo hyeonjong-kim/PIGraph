@@ -81,8 +81,8 @@ PiGraph: CMakeFiles/PiGraph.dir/main.cpp.o
 PiGraph: CMakeFiles/PiGraph.dir/build.make
 PiGraph: src/core/libcore.a
 PiGraph: src/query/libquery.a
-PiGraph: src/tools/libtools.a
 PiGraph: src/network/libnetwork.a
+PiGraph: src/tools/libtools.a
 PiGraph: src/core/libcore.a
 PiGraph: src/network/libnetwork.a
 PiGraph: CMakeFiles/PiGraph.dir/link.txt

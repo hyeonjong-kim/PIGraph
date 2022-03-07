@@ -7,3 +7,5 @@ add_library(network STATIC ${SRC_FILES})
 target_include_directories(network PUBLIC ../../include/network)
 
 target_link_libraries(network PRIVATE pthread ibverbs)
+
+target_compile_features(network PRIVATE cxx_std_17)

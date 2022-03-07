@@ -8,3 +8,5 @@ target_include_directories(tools PUBLIC ../../include/tools)
 
 target_link_libraries(tools PRIVATE pthread)
 
+target_compile_features(tools PRIVATE cxx_std_17)
+

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtopology.a  CMakeFiles/topology.dir/Topology.cpp.o
+/usr/bin/ranlib libtopology.a

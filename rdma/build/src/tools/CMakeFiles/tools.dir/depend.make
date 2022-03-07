@@ -10,3 +10,6 @@ src/tools/CMakeFiles/tools.dir/ResourceChecker.cpp.o: ../src/tools/ResourceCheck
 src/tools/CMakeFiles/tools.dir/ThreadPool.cpp.o: ../include/tools/ThreadPool.hpp
 src/tools/CMakeFiles/tools.dir/ThreadPool.cpp.o: ../src/tools/ThreadPool.cpp
 
+src/tools/CMakeFiles/tools.dir/argparse.cpp.o: ../include/tools/argparse.hpp
+src/tools/CMakeFiles/tools.dir/argparse.cpp.o: ../src/tools/argparse.cpp
+

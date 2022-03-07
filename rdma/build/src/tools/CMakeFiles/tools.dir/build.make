@@ -96,11 +96,25 @@ src/tools/CMakeFiles/tools.dir/ThreadPool.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/tools.dir/ThreadPool.cpp.s"
 	cd /home/hjkim/PiGraph/rdma/build/src/tools && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hjkim/PiGraph/rdma/src/tools/ThreadPool.cpp -o CMakeFiles/tools.dir/ThreadPool.cpp.s
 
+src/tools/CMakeFiles/tools.dir/argparse.cpp.o: src/tools/CMakeFiles/tools.dir/flags.make
+src/tools/CMakeFiles/tools.dir/argparse.cpp.o: ../src/tools/argparse.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/rdma/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/tools/CMakeFiles/tools.dir/argparse.cpp.o"
+	cd /home/hjkim/PiGraph/rdma/build/src/tools && /usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tools.dir/argparse.cpp.o -c /home/hjkim/PiGraph/rdma/src/tools/argparse.cpp
+
+src/tools/CMakeFiles/tools.dir/argparse.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/tools.dir/argparse.cpp.i"
+	cd /home/hjkim/PiGraph/rdma/build/src/tools && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/hjkim/PiGraph/rdma/src/tools/argparse.cpp > CMakeFiles/tools.dir/argparse.cpp.i
+
+src/tools/CMakeFiles/tools.dir/argparse.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/tools.dir/argparse.cpp.s"
+	cd /home/hjkim/PiGraph/rdma/build/src/tools && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hjkim/PiGraph/rdma/src/tools/argparse.cpp -o CMakeFiles/tools.dir/argparse.cpp.s
+
 # Object files for target tools
 tools_OBJECTS = \
 "CMakeFiles/tools.dir/Parser.cpp.o" \
 "CMakeFiles/tools.dir/ResourceChecker.cpp.o" \
-"CMakeFiles/tools.dir/ThreadPool.cpp.o"
+"CMakeFiles/tools.dir/ThreadPool.cpp.o" \
+"CMakeFiles/tools.dir/argparse.cpp.o"
 
 # External object files for target tools
 tools_EXTERNAL_OBJECTS =
@@ -108,9 +122,10 @@ tools_EXTERNAL_OBJECTS =
 src/tools/libtools.a: src/tools/CMakeFiles/tools.dir/Parser.cpp.o
 src/tools/libtools.a: src/tools/CMakeFiles/tools.dir/ResourceChecker.cpp.o
 src/tools/libtools.a: src/tools/CMakeFiles/tools.dir/ThreadPool.cpp.o
+src/tools/libtools.a: src/tools/CMakeFiles/tools.dir/argparse.cpp.o
 src/tools/libtools.a: src/tools/CMakeFiles/tools.dir/build.make
 src/tools/libtools.a: src/tools/CMakeFiles/tools.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hjkim/PiGraph/rdma/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library libtools.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hjkim/PiGraph/rdma/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX static library libtools.a"
 	cd /home/hjkim/PiGraph/rdma/build/src/tools && $(CMAKE_COMMAND) -P CMakeFiles/tools.dir/cmake_clean_target.cmake
 	cd /home/hjkim/PiGraph/rdma/build/src/tools && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/tools.dir/link.txt --verbose=$(VERBOSE)
 

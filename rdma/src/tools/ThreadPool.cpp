@@ -3,7 +3,7 @@
 ThreadPool::ThreadPool(size_t num_threads)
 : num_threads_(num_threads), stop_all(false) {
     worker_threads_.reserve(num_threads_);
-    threadState = new int[num_threads_];
+    threadState = new int[num_threads_]{1, };
     for(size_t i = 0; i < num_threads_; ++i) {
 
         worker_threads_.emplace_back([this, i]() { this->WorkerThread(i); });
@@ -22,9 +22,11 @@ void ThreadPool::WorkerThread(size_t threadNum) {
         std::function<void()> job = std::move(jobs_.front());
         jobs_.pop();
         lock.unlock();
-        this->threadState[threadNum] = 1;
-        job();
+
         this->threadState[threadNum] = 0;
+        job();
+    
+        this->threadState[threadNum] = 1;
     }
 }
 
@@ -50,8 +52,8 @@ void ThreadPool::EnqueueJob(std::function<void()> job) {
 }
 
 bool ThreadPool::checkAllThread(){
-    for(int i =0; i < int(this->num_threads_);++i){
-        if(this->threadState[i])return false;
+    for(int i =0; i < int(this->num_threads_);i++){
+        if(!this->threadState[i]) return false;
     }
 
     return true;

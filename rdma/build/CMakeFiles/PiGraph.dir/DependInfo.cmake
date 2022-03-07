@@ -12,16 +12,16 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../src/core/../../include/core"
   "../src/query/../../include/query"
-  "../src/tools/../../include/tools"
   "../src/network/../../include/network"
+  "../src/tools/../../include/tools"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
   "/home/hjkim/PiGraph/rdma/build/src/core/CMakeFiles/core.dir/DependInfo.cmake"
   "/home/hjkim/PiGraph/rdma/build/src/query/CMakeFiles/query.dir/DependInfo.cmake"
-  "/home/hjkim/PiGraph/rdma/build/src/tools/CMakeFiles/tools.dir/DependInfo.cmake"
   "/home/hjkim/PiGraph/rdma/build/src/network/CMakeFiles/network.dir/DependInfo.cmake"
+  "/home/hjkim/PiGraph/rdma/build/src/tools/CMakeFiles/tools.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

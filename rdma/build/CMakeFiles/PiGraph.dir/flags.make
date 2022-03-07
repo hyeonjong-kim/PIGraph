@@ -6,5 +6,5 @@ CXX_FLAGS =   -std=gnu++17
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/hjkim/PiGraph/rdma/src/core/../../include/core -I/home/hjkim/PiGraph/rdma/src/query/../../include/query -I/home/hjkim/PiGraph/rdma/src/tools/../../include/tools -I/home/hjkim/PiGraph/rdma/src/network/../../include/network 
+CXX_INCLUDES = -I/home/hjkim/PiGraph/rdma/src/core/../../include/core -I/home/hjkim/PiGraph/rdma/src/query/../../include/query -I/home/hjkim/PiGraph/rdma/src/network/../../include/network -I/home/hjkim/PiGraph/rdma/src/tools/../../include/tools 
 

@@ -8,3 +8,6 @@ target_include_directories(core PUBLIC ../../include/core)
 
 target_link_libraries(core PRIVATE network)
 
+target_compile_features(core PRIVATE cxx_std_17)
+
+
