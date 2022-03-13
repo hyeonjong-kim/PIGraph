@@ -40,7 +40,7 @@ private:
 
     // 모든 쓰레드 종료
     bool stop_all;
-
+    
     // Worker 쓰레드
     void WorkerThread(size_t threadNum);
 };

@@ -1,0 +1,1 @@
+/usr/bin/g++     CMakeFiles/PiGraph_IPoIB_SSSP.dir/main.cpp.o  -o PiGraph_IPoIB_SSSP  core/libcore.a query/libquery.a tools/libtools.a network/libnetwork.a core/libcore.a network/libnetwork.a -lpthread 

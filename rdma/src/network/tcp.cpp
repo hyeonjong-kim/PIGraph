@@ -79,6 +79,7 @@ void tcp::ConnectSocket(){
 void tcp::Sendmsg(string _msg){
     if(_msg.compare("Q")!=0){
         this->send_msg += _msg;
+        
     }
     else{
         this->send_msg += _msg;
@@ -90,19 +91,17 @@ void tcp::Sendmsg(string _msg){
 }
 
 string tcp::Readmsg(){
-    
     this->result = "";
     this->read_char= "";
-
+    
     while(result.back() != 'Q'){
         bzero(this->buffer, sizeof(this->buffer));
         this->valread = read(this->new_socket , this->buffer, sizeof(this->buffer)-1);
         this->read_char = this->buffer;
-        this->result += this->read_char;
+        this->result += this->read_char;   
     }
-    
-    this->result=this->result.substr(0, this->result.length()-1);  
 
+    this->result=this->result.substr(0, this->result.length()-1);  
     return this->result;
 }
 
@@ -131,7 +130,6 @@ void tcp::CloseSocket(){
 }
 
 map<string, string> tcp::ReadRDMAInfo(){
-    
     map<string, string> info;
     string info_name[5] = {"addr", "len", "rkey", "lid", "qp_num"};
     for(int i = 0; i < 5; i++){

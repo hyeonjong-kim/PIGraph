@@ -1,0 +1,1 @@
+/usr/bin/g++     CMakeFiles/PiGraph_RDMA_WCC.dir/main.cpp.o  -o PiGraph_RDMA_WCC  core/libcore.a query/libquery.a network/libnetwork.a tools/libtools.a core/libcore.a network/libnetwork.a -libverbs -lpthread 

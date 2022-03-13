@@ -1,0 +1,15 @@
+/home/hjkim/PiGraph/exec/RDMA_WCC/CMakeFiles/rebuild_cache.dir
+/home/hjkim/PiGraph/exec/RDMA_WCC/CMakeFiles/edit_cache.dir
+/home/hjkim/PiGraph/exec/RDMA_WCC/CMakeFiles/PiGraph_RDMA_WCC.dir
+/home/hjkim/PiGraph/exec/RDMA_WCC/network/CMakeFiles/rebuild_cache.dir
+/home/hjkim/PiGraph/exec/RDMA_WCC/network/CMakeFiles/edit_cache.dir
+/home/hjkim/PiGraph/exec/RDMA_WCC/network/CMakeFiles/network.dir
+/home/hjkim/PiGraph/exec/RDMA_WCC/core/CMakeFiles/rebuild_cache.dir
+/home/hjkim/PiGraph/exec/RDMA_WCC/core/CMakeFiles/edit_cache.dir
+/home/hjkim/PiGraph/exec/RDMA_WCC/core/CMakeFiles/core.dir
+/home/hjkim/PiGraph/exec/RDMA_WCC/query/CMakeFiles/rebuild_cache.dir
+/home/hjkim/PiGraph/exec/RDMA_WCC/query/CMakeFiles/edit_cache.dir
+/home/hjkim/PiGraph/exec/RDMA_WCC/query/CMakeFiles/query.dir
+/home/hjkim/PiGraph/exec/RDMA_WCC/tools/CMakeFiles/rebuild_cache.dir
+/home/hjkim/PiGraph/exec/RDMA_WCC/tools/CMakeFiles/edit_cache.dir
+/home/hjkim/PiGraph/exec/RDMA_WCC/tools/CMakeFiles/tools.dir

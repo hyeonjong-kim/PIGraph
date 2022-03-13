@@ -1,6 +1,0 @@
-SN02.ib
-SN04.ib
-SN05.ib
-SN06.ib
-SN07.ib
-SN08.ib

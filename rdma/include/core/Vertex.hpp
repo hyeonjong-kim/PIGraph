@@ -21,17 +21,21 @@ template<
 class Vertex {
 
     private:
-        int superstep=0;
+        int superstep = 0;
         VertexValue vertex_value;
         Vertexidx vertex_id;
-        int state = 1;
-        vector<Vertexidx> out_edge;
+        bool state = true;
         double NumVertices;
         mutex* socket_mu;
         int internalBucket;
         int externalBucket;
         RDMA* msgThread;
+        
+        vector<Vertexidx> out_edge;
         vector<Vertexidx> in_edge;
+
+        vector<EdgeValue> in_edge_value;
+        vector<EdgeValue> out_edge_value;
 
         mutex* vertex_mu;
 
@@ -55,11 +59,14 @@ class Vertex {
         const double& GetNumVertices() const {return this->NumVertices;}
         mutex* GetSocketMutex(){return this->socket_mu;}
         mutex* GetVertexMutex(){return this->vertex_mu;}
-        int GetState(){return this->state;}
+        bool GetState(){return this->state;}
         RDMA* GetMsgThread(){return this->msgThread;}
         int GetExternalBucket(){return this->externalBucket;}
         double** GetMsgQue(){return this->msg_queue;}
-    
+        const vector<EdgeValue>& GetOutEdgeValueIterator()const {return this->out_edge_value;}
+        const vector<EdgeValue>& GetInEdgeValueIterator()const {return this->in_edge_value;}
+
+       
         void SetValue(VertexValue vertex_value){this->vertex_value = vertex_value;}
         void SetVertexid(Vertexidx vertex_id){this->vertex_id = vertex_id;}
         void SetNumVertices(double NumVertices){this->NumVertices = NumVertices;}
@@ -76,10 +83,15 @@ class Vertex {
 
         void AddOutEdge(Vertexidx vertexidx){this->out_edge.push_back(vertexidx);}
         void AddInEdge(Vertexidx vertexidx){this->in_edge.push_back(vertexidx);}
+        void AddOutEdgeValue(EdgeValue edgeValue){this->out_edge_value.push_back(edgeValue);}
+        void AddInEdgeValue(EdgeValue edgeValue){this->in_edge_value.push_back(edgeValue);}
+
         void NextSuperstep(){this->superstep++;}
         void SendMessageTo(const Vertexidx& dest_vertex, const MessageValue& message, int socket_num);
-        void VoteHalt(){this->state = 0;}
         int externalHashFunction(int x) {return (x % this->externalBucket);}
+
+        void VoteHalt(){this->state = false;}
+        void IsWake(){this->state = true;}
 };
 
 template<typename VertexValue, typename EdgeValue, typename MessageValue,typename Vertexidx>

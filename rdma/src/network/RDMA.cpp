@@ -264,25 +264,39 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
 
 void RDMA::SendMsg(int vertex_id, double value){
   if(vertex_id != 2147483647){
+    this->msg_count++;
     this->vertex_mu[this->internalHashFunction(vertex_id)].lock();
     *(this->tmp_send_msg[this->send_pos.find(vertex_id)->second[0] + this->send_pos_cnt.find(vertex_id)->second]) = value;
     this->send_pos_cnt.find(vertex_id)->second++;
     this->vertex_mu[this->internalHashFunction(vertex_id)].unlock();
   }
   else{
-    for (size_t i = 0; i < stoi(this->RDMAInfo.find("len")->second); i++)
-    {
+    for (size_t i = 0; i < stoi(this->RDMAInfo.find("len")->second); i++){
       this->send_msg[i] = *(this->tmp_send_msg[i]);
     }
+    
+    map<int, int>::iterator iter;
+    for(iter=this->send_pos_cnt.begin(); iter != this->send_pos_cnt.end(); iter++){
+      this->send_msg[this->send_pos.find(iter->first)->second[0] + iter->second] = 0.0;
+      
+      if(iter->second != 0){
+        this->t->Sendmsg(to_string(iter->first) + '\n');
+      }
+    }
+    
     this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)* sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
     this->PollCompletion(this->completion_queue);
-    this->t->SendCheckmsg();
-    map<int, int>::iterator iter;
+    
     for(iter=this->send_pos_cnt.begin();iter!=this->send_pos_cnt.end();iter++)iter->second = 0;
+    this->t->Sendmsg("Q");
+    cout << this->msg_count << endl;
+    this->msg_count = 0 ;
   }
 }
 
 bool RDMA::CheckCommunication(){
+  this->wake_vertex = this->t->Readmsg();
+  this->t->SendCheckmsg();
   while(true){
     if(this->t->ReadCheckMsg().compare("1\n") == 0){
       break;

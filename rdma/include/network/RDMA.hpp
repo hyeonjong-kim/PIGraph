@@ -54,7 +54,11 @@ class RDMA {
         int internalBucket;
 
         int vertex_num;
-        
+
+        int msg_count = 0;
+
+        string wake_vertex = "";
+
     public:
         RDMA(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos, mutex* _vertex_mu, int mu_num);
         RDMA();
@@ -90,6 +94,9 @@ class RDMA {
         int internalHashFunction(int x) {return (x % this->internalBucket);}
 
         int GetVertexNum(){return this->vertex_num;}
+
+        string GetWakeVertex(){return this->wake_vertex;}
+        void ClearWakeVertex(){this->wake_vertex = "";}
 
         vector<string> split(string input, char delimiter);
 };

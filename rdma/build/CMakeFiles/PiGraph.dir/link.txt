@@ -1,1 +1,0 @@
-/usr/bin/g++     CMakeFiles/PiGraph.dir/main.cpp.o  -o PiGraph  src/core/libcore.a src/query/libquery.a src/network/libnetwork.a src/tools/libtools.a src/core/libcore.a src/network/libnetwork.a -libverbs -lpthread 
