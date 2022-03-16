@@ -25,6 +25,8 @@ endif()
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/hjkim/PiGraph/Ethernet_IPoIB/src/query/*.cpp")
 set(OLD_GLOB
   "/home/hjkim/PiGraph/Ethernet_IPoIB/src/query/PageRank.cpp"
+  "/home/hjkim/PiGraph/Ethernet_IPoIB/src/query/SingleSourceShortestPath.cpp"
+  "/home/hjkim/PiGraph/Ethernet_IPoIB/src/query/WeaklyConnectedComponent.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

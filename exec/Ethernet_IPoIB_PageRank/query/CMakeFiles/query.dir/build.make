@@ -70,17 +70,47 @@ query/CMakeFiles/query.dir/PageRank.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/query.dir/PageRank.cpp.s"
 	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank/query && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hjkim/PiGraph/Ethernet_IPoIB/src/query/PageRank.cpp -o CMakeFiles/query.dir/PageRank.cpp.s
 
+query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o: query/CMakeFiles/query.dir/flags.make
+query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/src/query/SingleSourceShortestPath.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o"
+	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank/query && /usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o -c /home/hjkim/PiGraph/Ethernet_IPoIB/src/query/SingleSourceShortestPath.cpp
+
+query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/query.dir/SingleSourceShortestPath.cpp.i"
+	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank/query && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/hjkim/PiGraph/Ethernet_IPoIB/src/query/SingleSourceShortestPath.cpp > CMakeFiles/query.dir/SingleSourceShortestPath.cpp.i
+
+query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/query.dir/SingleSourceShortestPath.cpp.s"
+	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank/query && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hjkim/PiGraph/Ethernet_IPoIB/src/query/SingleSourceShortestPath.cpp -o CMakeFiles/query.dir/SingleSourceShortestPath.cpp.s
+
+query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o: query/CMakeFiles/query.dir/flags.make
+query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/src/query/WeaklyConnectedComponent.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o"
+	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank/query && /usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o -c /home/hjkim/PiGraph/Ethernet_IPoIB/src/query/WeaklyConnectedComponent.cpp
+
+query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.i"
+	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank/query && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/hjkim/PiGraph/Ethernet_IPoIB/src/query/WeaklyConnectedComponent.cpp > CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.i
+
+query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.s"
+	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank/query && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hjkim/PiGraph/Ethernet_IPoIB/src/query/WeaklyConnectedComponent.cpp -o CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.s
+
 # Object files for target query
 query_OBJECTS = \
-"CMakeFiles/query.dir/PageRank.cpp.o"
+"CMakeFiles/query.dir/PageRank.cpp.o" \
+"CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o" \
+"CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o"
 
 # External object files for target query
 query_EXTERNAL_OBJECTS =
 
 query/libquery.a: query/CMakeFiles/query.dir/PageRank.cpp.o
+query/libquery.a: query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o
+query/libquery.a: query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o
 query/libquery.a: query/CMakeFiles/query.dir/build.make
 query/libquery.a: query/CMakeFiles/query.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libquery.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library libquery.a"
 	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank/query && $(CMAKE_COMMAND) -P CMakeFiles/query.dir/cmake_clean_target.cmake
 	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank/query && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/query.dir/link.txt --verbose=$(VERBOSE)
 

@@ -75,7 +75,7 @@ int main(int argc, const char *argv[])
 	
 	auto err = parser.parse(argc, argv);
 	if (err) {
-		std::cout << err << std::endl;
+		std::cerr << err << std::endl;
 		return -1;
 	}
 	
@@ -98,7 +98,7 @@ int main(int argc, const char *argv[])
         delimiter = '\t';
     }
     else{
-        cout << "partitioning option error" << endl;
+        cerr << "partitioning option error" << endl;
         return 0;
     }
 
@@ -129,15 +129,16 @@ int main(int argc, const char *argv[])
 		host_file = "../hostfile/hostinfo_ib.txt";
 	}
 	else{
-		cout << "network mode error" << endl;
+		cerr << "network mode error" << endl;
 		return 0;
 	}
 
 	struct timeval start = {};
     struct timeval end = {};
 
-	ThreadPool* threadPool = new ThreadPool(num_thread);
-	ThreadPool* connectionThread = new ThreadPool(num_host);
+	ThreadPool::ThreadPool threadPool(num_thread);
+	ThreadPool::ThreadPool connectionThread(num_host);
+
 	map<int, queue<double>>* messages = new map<int, queue<double>>;
 	map<int, PageRank> pagerank_set;
 	mutex mu[num_mutex];
@@ -151,6 +152,7 @@ int main(int argc, const char *argv[])
 	vector<string> v;
 	hostfile.open(host_file);
 
+	std::vector<std::future<void>> futures;
 	for(int i=0; i<num_host; i++){
 		hostfile.getline(buf, 100);
 		s = buf;
@@ -158,19 +160,16 @@ int main(int argc, const char *argv[])
 		strcpy(server_ip[i], s.c_str());
 		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+hostnum);
 		t[i].SetSocket();
-		connectionThread->EnqueueJob([&t, i](){t[i].ConnectSocket();});
+		
+		auto f = [&t, i](){t[i].ConnectSocket();};
+		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
 
-	while(true){
-			if(connectionThread->getJobs().empty()){
-				while(true){
-					if(connectionThread->checkAllThread())break;
-				}
-				break;
-			}
-	}
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
 
-	cout<< "Read file" <<endl;
+	cerr<< "Read file" <<endl;
 	
 	ifstream data(file_name);
 	
@@ -202,28 +201,25 @@ int main(int argc, const char *argv[])
 	data.close();
 	
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
-	cout << "time of reading file: " << time << endl;
+	cerr << "time of reading file: " << time << endl;
 
     for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
 	for(int j = 0; j < num_host; j++){
-		connectionThread->EnqueueJob([&t, j](){
+		auto f = [&t, j](){
 			string s = "";
 			while(s.compare("1\n")!= 0){
 				s = t[j].CheckReadfile();
 			}
-			cout <<  t[j].GetServerAddr() << " is complete read file" <<  endl;
-		});
+			cerr <<  t[j].GetServerAddr() << " is complete read file" <<  endl;
+		};
+
+		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
 
-	while(true){
-		if(connectionThread->getJobs().empty()){
-			while(true){
-				if(connectionThread->checkAllThread())break;
-			}
-			break;
-		}
-	}
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
 
 	map<int, PageRank>::iterator iter;
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
@@ -231,60 +227,34 @@ int main(int argc, const char *argv[])
 		messages->insert(make_pair(iter->first, q));
 	}
 
-
-	struct timeval start_query = {};
-	struct timeval end_query = {};
-	double average_network = 0;
-	double average_query = 0;
-	double start_network;
-	double end_network[num_host];
-
-	cout<< "start graph query" <<endl;
+	cerr<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
-		
-		gettimeofday(&start_query, NULL);
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-			threadPool->EnqueueJob([iter](){iter->second.Compute();});
+			auto f = [iter](){iter->second.Compute();};
+			futures.emplace_back(threadPool.EnqueueJob(f));
 		}
 
-		while(true){
-			if(threadPool->getJobs().empty()){
-				while(true){
-					if(threadPool->checkAllThread())break;
-				}
-				break;
-			}
-		}
-
+		for (auto& f_ : futures) {
+    		f_.wait();
+  		}
 		
-		gettimeofday(&end_query, NULL);
-
-		   
-		cout <<  "query time is " << end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0 << endl;
-		average_query += end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
-
-		start_network = (double)clock() / CLOCKS_PER_SEC; 
 		for(int j = 0; j < num_host; j++){
-			connectionThread->EnqueueJob([&t, j](){
+			auto f = [&t, j](){
 				
 				t[j].Sendmsg("Q");
-			});
+			};
+
+			futures.emplace_back(connectionThread.EnqueueJob(f));
 		}
 
-		while(true){
-			if(connectionThread->getJobs().empty()){
-				while(true){
-					if(connectionThread->checkAllThread())break;
-				}
-				break;
-			}
-		}
+		for (auto& f_ : futures) {
+    		f_.wait();
+  		}
 
 		for(int j = 0; j < num_host; j++){
-			connectionThread->EnqueueJob([&t, j, &mu, num_host, &pagerank_set,&messages, &end_network](){
+			auto f = [&t, j, &mu, num_host, &pagerank_set,&messages](){
 				string read_msg = t[j].Readmsg();
-				end_network[j] = (double)clock() / CLOCKS_PER_SEC;    
 				vector<string> msg;
 				vector<string> result;
 				result = split(read_msg, '\n');
@@ -297,23 +267,14 @@ int main(int argc, const char *argv[])
 						mu[mu_num].unlock();
 					}
 				}
-			});
+			};
+
+			futures.emplace_back(connectionThread.EnqueueJob(f));
 		}
 
-		while(true){
-			if(connectionThread->getJobs().empty()){
-				while(true){
-					if(connectionThread->checkAllThread())break;
-				}
-				break;
-			}
-		}
-		
-		double network_time = 0.0;
-		for (int j = 0; j < num_host; j++)network_time += (end_network[j] - start_network);
-
-		cout <<  "network time is " << network_time/num_host << endl;
-		average_network += network_time;
+		for (auto& f_ : futures) {
+    		f_.wait();
+  		}
 	}
 
 	gettimeofday(&end, NULL);
@@ -322,13 +283,11 @@ int main(int argc, const char *argv[])
 
 	/*
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-		cout << iter->second.GetValue() << endl;
+		cerr << iter->second.GetValue() << endl;
 	}
 	*/
 
 	time = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)/1000000000.0;
-	cout << "time: " << time << endl;
-	cout << "average netwokr query: " << average_query/(double)superstep << endl;
-	cout << "average netwokr time: " <<  average_network/(double)superstep << endl;
+	cerr << "time: " << time << endl;
 	return 0;
 }

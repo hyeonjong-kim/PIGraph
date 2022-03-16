@@ -153,6 +153,60 @@ PageRank.cpp.s:
 	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank && $(MAKE) -f query/CMakeFiles/query.dir/build.make query/CMakeFiles/query.dir/PageRank.cpp.s
 .PHONY : PageRank.cpp.s
 
+SingleSourceShortestPath.o: SingleSourceShortestPath.cpp.o
+
+.PHONY : SingleSourceShortestPath.o
+
+# target to build an object file
+SingleSourceShortestPath.cpp.o:
+	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank && $(MAKE) -f query/CMakeFiles/query.dir/build.make query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o
+.PHONY : SingleSourceShortestPath.cpp.o
+
+SingleSourceShortestPath.i: SingleSourceShortestPath.cpp.i
+
+.PHONY : SingleSourceShortestPath.i
+
+# target to preprocess a source file
+SingleSourceShortestPath.cpp.i:
+	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank && $(MAKE) -f query/CMakeFiles/query.dir/build.make query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.i
+.PHONY : SingleSourceShortestPath.cpp.i
+
+SingleSourceShortestPath.s: SingleSourceShortestPath.cpp.s
+
+.PHONY : SingleSourceShortestPath.s
+
+# target to generate assembly for a file
+SingleSourceShortestPath.cpp.s:
+	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank && $(MAKE) -f query/CMakeFiles/query.dir/build.make query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.s
+.PHONY : SingleSourceShortestPath.cpp.s
+
+WeaklyConnectedComponent.o: WeaklyConnectedComponent.cpp.o
+
+.PHONY : WeaklyConnectedComponent.o
+
+# target to build an object file
+WeaklyConnectedComponent.cpp.o:
+	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank && $(MAKE) -f query/CMakeFiles/query.dir/build.make query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o
+.PHONY : WeaklyConnectedComponent.cpp.o
+
+WeaklyConnectedComponent.i: WeaklyConnectedComponent.cpp.i
+
+.PHONY : WeaklyConnectedComponent.i
+
+# target to preprocess a source file
+WeaklyConnectedComponent.cpp.i:
+	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank && $(MAKE) -f query/CMakeFiles/query.dir/build.make query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.i
+.PHONY : WeaklyConnectedComponent.cpp.i
+
+WeaklyConnectedComponent.s: WeaklyConnectedComponent.cpp.s
+
+.PHONY : WeaklyConnectedComponent.s
+
+# target to generate assembly for a file
+WeaklyConnectedComponent.cpp.s:
+	cd /home/hjkim/PiGraph/exec/Ethernet_IPoIB_PageRank && $(MAKE) -f query/CMakeFiles/query.dir/build.make query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.s
+.PHONY : WeaklyConnectedComponent.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -165,6 +219,12 @@ help:
 	@echo "... PageRank.o"
 	@echo "... PageRank.i"
 	@echo "... PageRank.s"
+	@echo "... SingleSourceShortestPath.o"
+	@echo "... SingleSourceShortestPath.i"
+	@echo "... SingleSourceShortestPath.s"
+	@echo "... WeaklyConnectedComponent.o"
+	@echo "... WeaklyConnectedComponent.i"
+	@echo "... WeaklyConnectedComponent.s"
 .PHONY : help
 
 

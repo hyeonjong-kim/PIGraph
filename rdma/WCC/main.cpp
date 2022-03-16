@@ -345,7 +345,6 @@ int main(int argc, const char *argv[]){
 	for(int i; i<num_host;i++)t[i].CloseSocket();
 	
 	for(iter=WeaklyConnectedComponent_set.begin(); iter!=WeaklyConnectedComponent_set.end();iter++){
-	
 		cout << iter->first << ": " <<  iter->second.GetValue() << endl;
 	}
 	
