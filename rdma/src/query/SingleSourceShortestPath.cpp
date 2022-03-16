@@ -27,11 +27,12 @@ void SingleSourceShortestPath::Compute(){
     for(int i = 0; i < GetExternalBucket(); i++){
         for(int j = this->begin_pos; j < this->end_pos; j++){
             if(GetMsgQue()[i][j] == 0.0)break;
-            //cout <<  GetMsgQue()[i][j] << endl;
-            minDist = (GetMsgQue()[i][j] < minDist) ? GetMsgQue()[i][j] : minDist;
+            if(GetMsgQue()[i][j] < minDist){
+                minDist = GetMsgQue()[i][j];
+            }
         }
     }
-   
+
     if(minDist < GetValue()){
         SetValue(minDist);
         const int n = GetOutEdgeIterator().size();

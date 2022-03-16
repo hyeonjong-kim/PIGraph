@@ -27,6 +27,7 @@ file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/hjkim/PiGraph/rdma/src/
 set(OLD_GLOB
   "/home/hjkim/PiGraph/rdma/src/query/PageRank.cpp"
   "/home/hjkim/PiGraph/rdma/src/query/SingleSourceShortestPath.cpp"
+  "/home/hjkim/PiGraph/rdma/src/query/WeaklyConnectedComponent.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

@@ -13,3 +13,9 @@ query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o: /home/hjkim/PiGraph/r
 query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o: /home/hjkim/PiGraph/rdma/include/query/SingleSourceShortestPath.hpp
 query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o: /home/hjkim/PiGraph/rdma/src/query/SingleSourceShortestPath.cpp
 
+query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o: /home/hjkim/PiGraph/rdma/include/core/Vertex.hpp
+query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o: /home/hjkim/PiGraph/rdma/include/network/RDMA.hpp
+query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o: /home/hjkim/PiGraph/rdma/include/network/tcp.hpp
+query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o: /home/hjkim/PiGraph/rdma/include/query/WeaklyConnectedComponent.hpp
+query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o: /home/hjkim/PiGraph/rdma/src/query/WeaklyConnectedComponent.cpp
+

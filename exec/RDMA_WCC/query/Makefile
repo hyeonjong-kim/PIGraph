@@ -180,6 +180,33 @@ SingleSourceShortestPath.cpp.s:
 	cd /home/hjkim/PiGraph/exec/RDMA_WCC && $(MAKE) -f query/CMakeFiles/query.dir/build.make query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.s
 .PHONY : SingleSourceShortestPath.cpp.s
 
+WeaklyConnectedComponent.o: WeaklyConnectedComponent.cpp.o
+
+.PHONY : WeaklyConnectedComponent.o
+
+# target to build an object file
+WeaklyConnectedComponent.cpp.o:
+	cd /home/hjkim/PiGraph/exec/RDMA_WCC && $(MAKE) -f query/CMakeFiles/query.dir/build.make query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o
+.PHONY : WeaklyConnectedComponent.cpp.o
+
+WeaklyConnectedComponent.i: WeaklyConnectedComponent.cpp.i
+
+.PHONY : WeaklyConnectedComponent.i
+
+# target to preprocess a source file
+WeaklyConnectedComponent.cpp.i:
+	cd /home/hjkim/PiGraph/exec/RDMA_WCC && $(MAKE) -f query/CMakeFiles/query.dir/build.make query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.i
+.PHONY : WeaklyConnectedComponent.cpp.i
+
+WeaklyConnectedComponent.s: WeaklyConnectedComponent.cpp.s
+
+.PHONY : WeaklyConnectedComponent.s
+
+# target to generate assembly for a file
+WeaklyConnectedComponent.cpp.s:
+	cd /home/hjkim/PiGraph/exec/RDMA_WCC && $(MAKE) -f query/CMakeFiles/query.dir/build.make query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.s
+.PHONY : WeaklyConnectedComponent.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -195,6 +222,9 @@ help:
 	@echo "... SingleSourceShortestPath.o"
 	@echo "... SingleSourceShortestPath.i"
 	@echo "... SingleSourceShortestPath.s"
+	@echo "... WeaklyConnectedComponent.o"
+	@echo "... WeaklyConnectedComponent.i"
+	@echo "... WeaklyConnectedComponent.s"
 .PHONY : help
 
 

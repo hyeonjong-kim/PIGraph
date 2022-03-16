@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/query.dir/PageRank.cpp.o"
   "CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o"
+  "CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o"
   "libquery.a"
   "libquery.pdb"
 )

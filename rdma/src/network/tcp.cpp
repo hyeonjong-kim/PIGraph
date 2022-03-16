@@ -83,6 +83,7 @@ void tcp::Sendmsg(string _msg){
     }
     else{
         this->send_msg += _msg;
+        //cout << this->send_msg << endl;
         char msg[this->send_msg.size()];
         strcpy(msg, send_msg.c_str());
         write(this->client_sock , msg , strlen(msg));
@@ -98,7 +99,8 @@ string tcp::Readmsg(){
         bzero(this->buffer, sizeof(this->buffer));
         this->valread = read(this->new_socket , this->buffer, sizeof(this->buffer)-1);
         this->read_char = this->buffer;
-        this->result += this->read_char;   
+        this->result += this->read_char;
+        //cout << this->result << endl;
     }
 
     this->result=this->result.substr(0, this->result.length()-1);  
@@ -162,10 +164,11 @@ string tcp::ReadCheckMsg(){
     while(this->result.back() != '\n'){
         this->valread = read(this->new_socket , buf, sizeof(buf)-1);
         this->read_char = buf;
+
         if(this->read_char!=""){
             this->result += this->read_char;
         }
     }
-    
+   
     return this->result;
 }

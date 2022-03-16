@@ -33,6 +33,7 @@ class RDMA {
         struct ibv_pd* protection_domain;
         int cq_size;
         struct ibv_cq* completion_queue;
+        struct ibv_cq* completion_queue_recv;
         struct ibv_qp* qp;
         
         double* recv_msg;
@@ -55,11 +56,10 @@ class RDMA {
 
         int vertex_num;
 
-        int msg_count = 0;
-
         string wake_vertex = "";
 
     public:
+
         RDMA(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos, mutex* _vertex_mu, int mu_num);
         RDMA();
         ~RDMA();
@@ -81,7 +81,9 @@ class RDMA {
         void ExchangeInfo();
         
         void PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length, string r_addr, string r_key);
+        void PostRdmaRead(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length);
         void SendMsg(int vertex_id, double value);
+
 
         bool CheckCommunication();
         

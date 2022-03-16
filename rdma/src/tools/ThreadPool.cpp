@@ -1,12 +1,13 @@
 #include "ThreadPool.hpp"
-
+/*
 ThreadPool::ThreadPool(size_t num_threads)
 : num_threads_(num_threads), stop_all(false) {
     worker_threads_.reserve(num_threads_);
-    threadState = new int[num_threads_]{0, };
+    threadState = new int[num_threads_]{1, };
     for(size_t i = 0; i < num_threads_; ++i) {
         worker_threads_.emplace_back([this, i]() {this->WorkerThread(i); });
     }
+    
 }
 
 void ThreadPool::WorkerThread(size_t threadNum) {
@@ -51,9 +52,12 @@ void ThreadPool::EnqueueJob(std::function<void()> job) {
 
 bool ThreadPool::checkAllThread(){
     for(int i =0; i < int(this->num_threads_);i++){
-        if(this->threadState[i] == 1){
-            i = 0;
-        }
+       if(this->threadState[i] == 1){
+           cout <<  this->threadState[i] << endl;
+           i = 0;
+       }
     }
+
     return true;
 }
+*/

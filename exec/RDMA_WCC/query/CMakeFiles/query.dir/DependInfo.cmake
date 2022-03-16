@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/hjkim/PiGraph/rdma/src/query/PageRank.cpp" "/home/hjkim/PiGraph/exec/RDMA_WCC/query/CMakeFiles/query.dir/PageRank.cpp.o"
   "/home/hjkim/PiGraph/rdma/src/query/SingleSourceShortestPath.cpp" "/home/hjkim/PiGraph/exec/RDMA_WCC/query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o"
+  "/home/hjkim/PiGraph/rdma/src/query/WeaklyConnectedComponent.cpp" "/home/hjkim/PiGraph/exec/RDMA_WCC/query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

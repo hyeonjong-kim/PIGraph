@@ -18,6 +18,7 @@ RDMA::RDMA(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _
   this->protection_domain = ibv_alloc_pd(this->context);
   this->cq_size = 0x10;
   this->completion_queue = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
+  //this->completion_queue_recv = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
   this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue);
   this->lid = this->GetLocalId(this->context, PORT);
   this->qp_num = this->GetQueuePairNumber(this->qp);
@@ -39,6 +40,7 @@ void RDMA::setInfo(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector
   this->protection_domain = ibv_alloc_pd(this->context);
   this->cq_size = 0x10;
   this->completion_queue = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
+  //this->completion_queue_recv = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
   this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue);
   this->lid = this->GetLocalId(this->context, PORT);
   this->qp_num = this->GetQueuePairNumber(this->qp);
@@ -179,6 +181,7 @@ void RDMA::ExchangeInfo(){
   for(iter=this->recv_pos.begin(); iter!=this->recv_pos.end(); iter++){
     this->t->Sendmsg(to_string(iter->first) + " " + to_string(iter->second[0])+ " " + to_string(iter->second[1])+ "\n");
   }
+
   this->t->Sendmsg("Q");
 
   this->send_msg = new double[stoi(RDMAInfo.find("len")->second)];
@@ -230,7 +233,8 @@ void RDMA::PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint3
       .wr_id      = (uint64_t)(uintptr_t)addr,
       .sg_list    = &sge,
       .num_sge    = 1,
-      .opcode     = IBV_WR_RDMA_WRITE,
+      .opcode     = IBV_WR_RDMA_WRITE_WITH_IMM,
+      .send_flags = 0,
       .imm_data   = rand(),
       .wr = {
         .rdma = {
@@ -264,45 +268,40 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
 
 void RDMA::SendMsg(int vertex_id, double value){
   if(vertex_id != 2147483647){
-    this->msg_count++;
     this->vertex_mu[this->internalHashFunction(vertex_id)].lock();
     *(this->tmp_send_msg[this->send_pos.find(vertex_id)->second[0] + this->send_pos_cnt.find(vertex_id)->second]) = value;
     this->send_pos_cnt.find(vertex_id)->second++;
     this->vertex_mu[this->internalHashFunction(vertex_id)].unlock();
   }
   else{
+    
     for (size_t i = 0; i < stoi(this->RDMAInfo.find("len")->second); i++){
       this->send_msg[i] = *(this->tmp_send_msg[i]);
     }
-    
     map<int, int>::iterator iter;
     for(iter=this->send_pos_cnt.begin(); iter != this->send_pos_cnt.end(); iter++){
       this->send_msg[this->send_pos.find(iter->first)->second[0] + iter->second] = 0.0;
-      
       if(iter->second != 0){
-        this->t->Sendmsg(to_string(iter->first) + '\n');
+        this->t->Sendmsg(to_string(iter->first) + "\n");
       }
     }
-    
+
     this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)* sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
-    this->PollCompletion(this->completion_queue);
     
+    thread ReadRDMAmsg([this](){
+      this->PostRdmaRead(this->qp, this->recv_mr, this->recv_msg, this->buffer_size);
+      this->PollCompletion(this->completion_queue);
+    });
+    ReadRDMAmsg.join();
+    
+    this->PollCompletion(this->completion_queue);
     for(iter=this->send_pos_cnt.begin();iter!=this->send_pos_cnt.end();iter++)iter->second = 0;
     this->t->Sendmsg("Q");
-    cout << this->msg_count << endl;
-    this->msg_count = 0 ;
   }
 }
 
 bool RDMA::CheckCommunication(){
   this->wake_vertex = this->t->Readmsg();
-  this->t->SendCheckmsg();
-  while(true){
-    if(this->t->ReadCheckMsg().compare("1\n") == 0){
-      break;
-    }
-  }
-  return true;
 }
 
 void RDMA::CloseRDMA(){
@@ -312,3 +311,22 @@ void RDMA::CloseRDMA(){
   ibv_dereg_mr(this->recv_mr);
   ibv_dealloc_pd(this->protection_domain);
 };
+
+void RDMA::PostRdmaRead(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length){
+   struct ibv_sge sge = {
+        .addr = (uint64_t)(uintptr_t)addr,
+        .length = length,
+        .lkey = mr->lkey
+    };
+
+    struct ibv_recv_wr recv_wr = {
+        .wr_id = (uint64_t)(uintptr_t)sge.addr,
+        .next = NULL,
+        .sg_list = &sge,
+        .num_sge = 1,
+    };
+
+    struct ibv_recv_wr *bad_wr;
+
+    ibv_post_recv(qp, &recv_wr, &bad_wr);
+}

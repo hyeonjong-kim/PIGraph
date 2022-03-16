@@ -6,7 +6,7 @@ CMakeFiles/PiGraph_RDMA_WCC.dir/main.cpp.o
  /home/hjkim/PiGraph/rdma/include/core/Vertex.hpp
  /home/hjkim/PiGraph/rdma/include/network/RDMA.hpp
  /home/hjkim/PiGraph/rdma/include/network/tcp.hpp
- /home/hjkim/PiGraph/rdma/include/query/PageRank.hpp
+ /home/hjkim/PiGraph/rdma/include/query/WeaklyConnectedComponent.hpp
  /home/hjkim/PiGraph/rdma/include/tools/Parser.hpp
  /home/hjkim/PiGraph/rdma/include/tools/ResourceChecker.hpp
  /home/hjkim/PiGraph/rdma/include/tools/ThreadPool.hpp

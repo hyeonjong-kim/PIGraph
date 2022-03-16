@@ -21,6 +21,7 @@ int internalHashFunction(int x){return (x % internalBucket);}
 int externalHashFunction(int x){return (x % externalBucket);}
 
 bool CheckHalt(map<int, SingleSourceShortestPath>& set){
+	
 	map<int, SingleSourceShortestPath>::iterator iter;
 	for(iter = set.begin(); iter != set.end(); iter++){
 		if(iter->second.GetState())return false;
@@ -78,11 +79,10 @@ int main(int argc, const char *argv[]){
 	
 	auto err = parser.parse(argc, argv);
 	if (err) {
-		std::cout << err << std::endl;
+		cerr << err << endl;
 		return -1;
 	}
-	
-	
+	cerr << thread::hardware_concurrency() << endl;
 	int num_thread = thread::hardware_concurrency();
 	int num_mutex = stoi(parser.get<string>("m"));
 	string data_file_name = parser.get<string>("f");
@@ -93,7 +93,6 @@ int main(int argc, const char *argv[]){
 	int source_id = stoi(parser.get<string>("d"));
     char delimiter;
 	
-
     if(p_option == 0){
         delimiter = ' ';
     }
@@ -101,7 +100,7 @@ int main(int argc, const char *argv[]){
         delimiter = '\t';
     }
     else{
-        cout << "partitioning option error" << endl;
+        cerr << "partitioning option error" << endl;
         return 0;
     }
 
@@ -126,14 +125,15 @@ int main(int argc, const char *argv[]){
 	
 	struct timeval start = {};
     struct timeval end = {};
-
-	ThreadPool* threadPool = new ThreadPool(num_thread);
-	ThreadPool* connectionThread = new ThreadPool(num_host);
-	ThreadPool* RDMAconnectionThread = new ThreadPool(num_host);
+	
+	ThreadPool::ThreadPool threadPool(num_thread);
+	ThreadPool::ThreadPool connectionThread(num_host);
+	ThreadPool::ThreadPool RDMAconnectionThread(num_host);
 
 	map<int, SingleSourceShortestPath> singleshortestpath_set;
 	mutex mu[num_mutex];
 	mutex socketmu[num_host];
+	mutex wake_mu[num_mutex];
 	internalBucket = num_mutex;
 	externalBucket = num_host;
 
@@ -142,6 +142,7 @@ int main(int argc, const char *argv[]){
 	
 	host_file.open(host_file_name);
 	
+	std::vector<std::future<void>> futures;
 	for(int i=0; i< num_host; i++){
 		host_file.getline(read_buf, 100);
 		read_str = read_buf;
@@ -149,20 +150,22 @@ int main(int argc, const char *argv[]){
 		strcpy(server_ip[i], read_str.c_str());
 		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+host_num);
 		t[i].SetSocket();
-		connectionThread->EnqueueJob([&t, i](){t[i].ConnectSocket();});
-	}
+		auto f = [&t, i](){
+			t[i].ConnectSocket();
+		};
 
-	while(true){
-		if(connectionThread->getJobs().empty()){
-			if(connectionThread->checkAllThread())break;
-		}
+		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
+	
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
 
 	host_file.close();
     
 	RDMA *rdma = new RDMA[num_host];
 
-	cout<< "Read file" <<endl;
+	cerr<< "Read file" <<endl;
 
 	ifstream data_file(data_file_name);
 	vector<string> split_line;
@@ -196,26 +199,25 @@ int main(int argc, const char *argv[]){
 	data_file.close();
 
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
-	cout << "Time of reading file: " << time << endl;
+	cerr << "Time of reading file: " << time << endl;
 
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
 	for(int j = 0; j < num_host; j++){
-		connectionThread->EnqueueJob([t, j](){
+		auto f = [t, j](){
 			string s = "";
 			while(s.compare("1\n")!= 0){
 				s = t[j].ReadCheckMsg();
 			}
-		});
+		};
+		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
 
-	while(true){
-		if(connectionThread->getJobs().empty()){
-			if(connectionThread->checkAllThread())break;
-		}
-	}
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
 
-	cout << "Complete reading file all node" << endl;
+	cerr << "Complete reading file all node" << endl;
 
 	map<int, SingleSourceShortestPath>::iterator iter;
 	
@@ -248,38 +250,37 @@ int main(int argc, const char *argv[]){
 
 	for(int i = 0; i < num_host; i++){
 		rdma[i].setInfo(&t[i], recv_msg[i], buffer_size, recv_pos, mu, num_mutex);
-		RDMAconnectionThread->EnqueueJob([rdma, i, &t](){
+		auto f = [rdma, i, &t](){
 			rdma[i].ConnectRDMA();
-		});
-		sleep(1);
-	}
+		};
 
-	while(true){
-		if(RDMAconnectionThread->getJobs().empty()){
-			if(RDMAconnectionThread->checkAllThread())break;
-		}
+		futures.emplace_back(RDMAconnectionThread.EnqueueJob(f));
 	}
-
+	
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
+	
+	
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
 	for(int j = 0; j < num_host; j++){
-		connectionThread->EnqueueJob([&t, j](){
+		auto f = [&t, j](){
 			string s = "";
 			while(s.compare("1\n")!= 0){
 				s = t[j].ReadCheckMsg();
 			}
-			cout <<  t[j].GetServerAddr() << " is RDMA connection" << endl;
-		});
+			cerr <<  t[j].GetServerAddr() << " is RDMA connection" << endl;
+		};
+		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
 
-	while(true){
-		if(connectionThread->getJobs().empty()){
-			if(connectionThread->checkAllThread())break;
-		}
-	}
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
 
-	cout << "Complete all node RDMA setting" << endl;
-
+	
+	cerr << "Complete all node RDMA setting" << endl;
 
 	struct timeval start_query = {};
 	struct timeval end_query = {};
@@ -289,58 +290,57 @@ int main(int argc, const char *argv[]){
 	for (int i = 0; i < superstep; i++) {
 		if(i > 0){
 			for(int o = 0; o < num_host; o++){
-				connectionThread->EnqueueJob([&rdma, o, &singleshortestpath_set]{
+				auto f = [rdma, o, &singleshortestpath_set, &wake_mu](){
 					string _msg = rdma[o].GetWakeVertex();
 					vector<string> split_msg = split(_msg, '\n');
 					for(int z = 0; z < split_msg.size(); z++){
+						wake_mu[internalHashFunction(stoi(split_msg[z]))].lock();
 						singleshortestpath_set.find(stoi(split_msg[z]))->second.IsWake();
+						wake_mu[internalHashFunction(stoi(split_msg[z]))].unlock();
 					}
-				});
+					rdma[o].ClearWakeVertex();
+				};
+
+				futures.emplace_back(connectionThread.EnqueueJob(f));				
 			}
 
-			while(true){
-				if(connectionThread->getJobs().empty()){
-					if(connectionThread->checkAllThread()){
-						cout << "superstep " << i << ": wake vertex" << endl;
-						break;
-					}
-				}
-			}
+			for (auto& f_ : futures) {
+    			f_.wait();
+  			}
+
 			if(CheckHalt(singleshortestpath_set))break;
 		}
 		
 		for(iter=singleshortestpath_set.begin(); iter!=singleshortestpath_set.end();iter++){
-			threadPool->EnqueueJob([iter, &t](){
+			auto f = [iter](){
 				if(iter->second.GetState())iter->second.Compute();
-			});
+			};
+			futures.emplace_back(threadPool.EnqueueJob(f));
 		}
 
-		while(true){
-			if(threadPool->getJobs().empty()){
-				if(threadPool->checkAllThread()){
-					cout << "superstep " << i << ": complete computation" << endl;
-					break;
-				}
-				
-			}
-		}
-
+		for (auto& f_ : futures) {
+    		f_.wait();
+  		}
+		
+		cerr << "superstep " << i << " : complete computation" << endl;
+		
 		for(int o = 0; o < num_host; o++){
-			connectionThread->EnqueueJob([rdma,o, &t](){
+			auto f = [&rdma, o, &t](){
 				rdma[o].SendMsg(2147483647, 0.0);
-			});
+			};
+
+			futures.emplace_back(connectionThread.EnqueueJob(f));
 		}
-	
-		while(true){
-			if(connectionThread->getJobs().empty()){
-				if(connectionThread->checkAllThread()){
-					cout << "superstep " << i << ": complete network" << endl;
-					break;
-				}
-			}
+		
+		for (auto& f_ : futures) {
+    		f_.wait();
+  		}
+
+		cerr << "superstep " << i << " : complete network" << endl;
+		
+		for(int o = 0; o < num_host; o++){
+			rdma[o].CheckCommunication();
 		}
-		//cout << t[0].Readmsg() << endl;
-		for(int o = 0; o < num_host; o++)rdma[o].CheckCommunication();		
 	}
 
 	gettimeofday(&end, NULL);
@@ -355,6 +355,6 @@ int main(int argc, const char *argv[]){
 	
 	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	cout << "toal time: " << time << endl;
-
+	
 	return 0;
 }

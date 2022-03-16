@@ -113,9 +113,9 @@ int main(int argc, const char *argv[]){
 	struct timeval start = {};
     struct timeval end = {};
 
-	ThreadPool* threadPool = new ThreadPool(num_thread);
-	ThreadPool* connectionThread = new ThreadPool(num_host);
-	ThreadPool* RDMAconnectionThread = new ThreadPool(num_host);
+	ThreadPool::ThreadPool threadPool(num_thread);
+	ThreadPool::ThreadPool connectionThread(num_host);
+	ThreadPool::ThreadPool RDMAconnectionThread(num_host);
 
 	map<int, PageRank> pagerank_set;
 	mutex mu[num_mutex];
@@ -128,6 +128,7 @@ int main(int argc, const char *argv[]){
 	
 	host_file.open(host_file_name);
 	
+	std::vector<std::future<void>> futures;
 	for(int i=0; i< num_host; i++){
 		host_file.getline(read_buf, 100);
 		read_str = read_buf;
@@ -135,17 +136,16 @@ int main(int argc, const char *argv[]){
 		strcpy(server_ip[i], read_str.c_str());
 		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+host_num);
 		t[i].SetSocket();
-		connectionThread->EnqueueJob([&t, i](){t[i].ConnectSocket();});
+		auto f = [&t, i](){
+			t[i].ConnectSocket();
+		};
+
+		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
 
-	while(true){
-			if(connectionThread->getJobs().empty()){
-				while(true){
-					if(connectionThread->checkAllThread())break;
-				}
-				break;
-			}
-	}
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
 
 	host_file.close();
     
@@ -188,22 +188,18 @@ int main(int argc, const char *argv[]){
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
 	for(int j = 0; j < num_host; j++){
-		connectionThread->EnqueueJob([t, j](){
+		auto f = [t, j](){
 			string s = "";
 			while(s.compare("1\n")!= 0){
 				s = t[j].ReadCheckMsg();
 			}
-		});
+		};
+		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
 
-	while(true){
-		if(connectionThread->getJobs().empty()){
-			while(true){
-				if(connectionThread->checkAllThread())break;
-			}
-			break;
-		}
-	}
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
 
 	cout << "Complete reading file all node" << endl;
 
@@ -238,43 +234,33 @@ int main(int argc, const char *argv[]){
 
 	for(int i = 0; i < num_host; i++){
 		rdma[i].setInfo(&t[i], recv_msg[i], buffer_size, recv_pos, mu, num_mutex);
-		RDMAconnectionThread->EnqueueJob([rdma, i, &t](){
+		auto f = [rdma, i, &t](){
 			rdma[i].ConnectRDMA();
-		});
-		sleep(1);
+		};
+
+		futures.emplace_back(RDMAconnectionThread.EnqueueJob(f));
 	}
 
-	while(true){
-		if(RDMAconnectionThread->getJobs().empty()){
-			while(true){
-				if(RDMAconnectionThread->checkAllThread()){
-					break;
-				}
-			}
-			break;
-		}
-	}
-
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
+	
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
 	for(int j = 0; j < num_host; j++){
-		connectionThread->EnqueueJob([&t, j](){
+		auto f = [&t, j](){
 			string s = "";
 			while(s.compare("1\n")!= 0){
 				s = t[j].ReadCheckMsg();
 			}
-			cout <<  t[j].GetServerAddr() << " is RDMA connection" << endl;
-		});
+			cerr <<  t[j].GetServerAddr() << " is RDMA connection" << endl;
+		};
+		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
 
-	while(true){
-		if(connectionThread->getJobs().empty()){
-			while(true){
-				if(connectionThread->checkAllThread())break;
-			}
-			break;
-		}
-	}
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
 
 	cout << "Complete all node RDMA setting" << endl;
 
@@ -296,34 +282,31 @@ int main(int argc, const char *argv[]){
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-			threadPool->EnqueueJob([iter](){
+			auto f = [iter](){
 				if(iter->second.GetState())iter->second.Compute();
-			});
+			};
+			futures.emplace_back(threadPool.EnqueueJob(f));
 		}
 		
-		while(true){
-			if(threadPool->getJobs().empty()){
-				while(true){
-					if(threadPool->checkAllThread())break;
-				}
-				break;
-			}
-		}
+		for (auto& f_ : futures) {
+    		f_.wait();
+  		}
 		
 		for(int o = 0; o < num_host; o++){
-			connectionThread->EnqueueJob([rdma,o](){rdma[o].SendMsg(2147483647, 0.0);});
+			auto f = [&rdma, o, &t](){
+				rdma[o].SendMsg(2147483647, 0.0);
+			};
+
+			futures.emplace_back(connectionThread.EnqueueJob(f));
 		}
 		
-		while(true){
-			if(connectionThread->getJobs().empty()){
-				while(true){
-					if(connectionThread->checkAllThread())break;
-				}
-				break;
-			}
-		}
+		for (auto& f_ : futures) {
+    		f_.wait();
+  		}
 
-		for(int o = 0; o < num_host; o++)rdma[o].CheckCommunication();
+		for(int o = 0; o < num_host; o++){
+			rdma[o].CheckCommunication();
+		}
 	}
 
 	gettimeofday(&end, NULL);

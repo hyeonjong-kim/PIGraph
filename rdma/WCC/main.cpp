@@ -8,7 +8,7 @@
 #include <sys/types.h>
 #include <sys/sysinfo.h>
 
-#include "PageRank.hpp"
+#include "WeaklyConnectedComponent.hpp"
 #include "tcp.hpp"
 #include "RDMA.hpp"
 #include "ThreadPool.hpp"
@@ -19,6 +19,16 @@ int internalBucket;
 int externalBucket;
 int internalHashFunction(int x){return (x % internalBucket);}
 int externalHashFunction(int x){return (x % externalBucket);}
+
+bool CheckHalt(map<int, WeaklyConnectedComponent>& set){
+	
+	map<int, WeaklyConnectedComponent>::iterator iter;
+	for(iter = set.begin(); iter != set.end(); iter++){
+		if(iter->second.GetState())return false;
+	}
+
+	return true;
+}
 
 string HostToIp(string host) {
     hostent* hostname = gethostbyname(host.c_str());
@@ -113,13 +123,14 @@ int main(int argc, const char *argv[]){
 	struct timeval start = {};
     struct timeval end = {};
 
-	ThreadPool* threadPool = new ThreadPool(num_thread);
-	ThreadPool* connectionThread = new ThreadPool(num_host);
-	ThreadPool* RDMAconnectionThread = new ThreadPool(num_host);
+	ThreadPool::ThreadPool threadPool(num_thread);
+	ThreadPool::ThreadPool connectionThread(num_host);
+	ThreadPool::ThreadPool RDMAconnectionThread(num_host);
 
-	map<int, PageRank> pagerank_set;
+	map<int, WeaklyConnectedComponent> WeaklyConnectedComponent_set;
 	mutex mu[num_mutex];
 	mutex socketmu[num_host];
+	mutex wake_mu[num_mutex];
 	internalBucket = num_mutex;
 	externalBucket = num_host;
 
@@ -128,6 +139,7 @@ int main(int argc, const char *argv[]){
 	
 	host_file.open(host_file_name);
 	
+	std::vector<std::future<void>> futures;
 	for(int i=0; i< num_host; i++){
 		host_file.getline(read_buf, 100);
 		read_str = read_buf;
@@ -135,17 +147,16 @@ int main(int argc, const char *argv[]){
 		strcpy(server_ip[i], read_str.c_str());
 		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+host_num);
 		t[i].SetSocket();
-		connectionThread->EnqueueJob([&t, i](){t[i].ConnectSocket();});
+		auto f = [&t, i](){
+			t[i].ConnectSocket();
+		};
+
+		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
 
-	while(true){
-			if(connectionThread->getJobs().empty()){
-				while(true){
-					if(connectionThread->checkAllThread())break;
-				}
-				break;
-			}
-	}
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
 
 	host_file.close();
     
@@ -160,21 +171,21 @@ int main(int argc, const char *argv[]){
         split_line = split(read_str, delimiter);
 
 		if(externalHashFunction(stoi(split_line[0])) == host_num){
-			if(pagerank_set.count(stoi(split_line[0])) == 1){
-				pagerank_set.find(stoi(split_line[0]))->second.AddOutEdge(stoi(split_line[1]));
+			if(WeaklyConnectedComponent_set.count(stoi(split_line[0])) == 1){
+				WeaklyConnectedComponent_set.find(stoi(split_line[0]))->second.AddOutEdge(stoi(split_line[1]));
 			}
 			else{
-				PageRank p(stoi(split_line[0]),stoi(split_line[1]), NULL, rdma, socketmu, num_host);
-				pagerank_set.insert(pair<int, PageRank>(stoi(split_line[0]), p));
+				WeaklyConnectedComponent w(stoi(split_line[0]), stoi(split_line[1]), NULL, rdma, socketmu, num_host, 1);
+				WeaklyConnectedComponent_set.insert(pair<int, WeaklyConnectedComponent>(stoi(split_line[0]), w));
 			}
 		}
 		if(externalHashFunction(stoi(split_line[1])) == host_num){
-			if(pagerank_set.count(stoi(split_line[1])) == 1){
-				pagerank_set.find(stoi(split_line[1]))->second.AddInEdge(stoi(split_line[0]));
+			if(WeaklyConnectedComponent_set.count(stoi(split_line[1])) == 1){
+				WeaklyConnectedComponent_set.find(stoi(split_line[1]))->second.AddInEdge(stoi(split_line[0]));
 			}
 			else{
-				PageRank p(stoi(split_line[1]), NULL, stoi(split_line[0]), rdma, socketmu, num_host);
-				pagerank_set.insert(pair<int, PageRank>(stoi(split_line[1]), p));
+				WeaklyConnectedComponent w(stoi(split_line[1]), NULL, stoi(split_line[0]), rdma, socketmu, num_host, 1);
+				WeaklyConnectedComponent_set.insert(pair<int, WeaklyConnectedComponent>(stoi(split_line[1]), w));
 			}
 		}
 	}
@@ -188,26 +199,22 @@ int main(int argc, const char *argv[]){
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
 	for(int j = 0; j < num_host; j++){
-		connectionThread->EnqueueJob([t, j](){
+		auto f = [t, j](){
 			string s = "";
 			while(s.compare("1\n")!= 0){
 				s = t[j].ReadCheckMsg();
 			}
-		});
+		};
+		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
 
-	while(true){
-		if(connectionThread->getJobs().empty()){
-			while(true){
-				if(connectionThread->checkAllThread())break;
-			}
-			break;
-		}
-	}
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
 
 	cout << "Complete reading file all node" << endl;
 
-	map<int, PageRank>::iterator iter;
+	map<int, WeaklyConnectedComponent>::iterator iter;
 	
 	map<int, vector<int>> recv_pos;
 	int begin_pos = 0;
@@ -215,7 +222,7 @@ int main(int argc, const char *argv[]){
 	int buffer_size = 0;
 	double** recv_msg = new double*[num_host];
 
-	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
+	for(iter=WeaklyConnectedComponent_set.begin(); iter!=WeaklyConnectedComponent_set.end();iter++){
 		buffer_size += iter->second.GetInEdgeIterator().size();
 		end_pos += iter->second.GetInEdgeIterator().size();
 		
@@ -232,61 +239,44 @@ int main(int argc, const char *argv[]){
 		recv_msg[i] = new double[buffer_size]{0.0};
 	}
 
-	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
+	for(iter=WeaklyConnectedComponent_set.begin(); iter!=WeaklyConnectedComponent_set.end();iter++){
 		iter->second.SetMsgQue(recv_msg);
 	}
 
 	for(int i = 0; i < num_host; i++){
 		rdma[i].setInfo(&t[i], recv_msg[i], buffer_size, recv_pos, mu, num_mutex);
-		RDMAconnectionThread->EnqueueJob([rdma, i, &t](){
+		auto f = [rdma, i, &t](){
 			rdma[i].ConnectRDMA();
-		});
-		sleep(1);
+		};
+
+		futures.emplace_back(RDMAconnectionThread.EnqueueJob(f));
 	}
 
-	while(true){
-		if(RDMAconnectionThread->getJobs().empty()){
-			while(true){
-				if(RDMAconnectionThread->checkAllThread()){
-					break;
-				}
-			}
-			break;
-		}
-	}
-
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
+	
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
 	for(int j = 0; j < num_host; j++){
-		connectionThread->EnqueueJob([&t, j](){
+		auto f = [&t, j](){
 			string s = "";
 			while(s.compare("1\n")!= 0){
 				s = t[j].ReadCheckMsg();
 			}
-			cout <<  t[j].GetServerAddr() << " is RDMA connection" << endl;
-		});
+			cerr <<  t[j].GetServerAddr() << " is RDMA connection" << endl;
+		};
+		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
 
-	while(true){
-		if(connectionThread->getJobs().empty()){
-			while(true){
-				if(connectionThread->checkAllThread())break;
-			}
-			break;
-		}
-	}
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
 
 	cout << "Complete all node RDMA setting" << endl;
 
-
-	int vertex_num = 0;
-
-	for(int i=0; i < num_host; i++)vertex_num += rdma[i].GetVertexNum();
-	
-
-	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-		iter->second.SetValue(1.0/double(vertex_num));
-		iter->second.SetNumVertices(double(vertex_num));
+	for(iter=WeaklyConnectedComponent_set.begin(); iter!=WeaklyConnectedComponent_set.end();iter++){
+		iter->second.SetValue(numeric_limits<double>::max());
 	}
 
 	struct timeval start_query = {};
@@ -295,40 +285,66 @@ int main(int argc, const char *argv[]){
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
-		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-			threadPool->EnqueueJob([iter](){iter->second.Compute();});
-		}
-		
-		while(true){
-			if(threadPool->getJobs().empty()){
-				while(true){
-					if(threadPool->checkAllThread())break;
-				}
-				break;
+		if(i > 0){
+			for(int o = 0; o < num_host; o++){
+				auto f = [rdma, o, &WeaklyConnectedComponent_set, &wake_mu](){
+					string _msg = rdma[o].GetWakeVertex();
+					vector<string> split_msg = split(_msg, '\n');
+					for(int z = 0; z < split_msg.size(); z++){
+						wake_mu[internalHashFunction(stoi(split_msg[z]))].lock();
+						WeaklyConnectedComponent_set.find(stoi(split_msg[z]))->second.IsWake();
+						wake_mu[internalHashFunction(stoi(split_msg[z]))].unlock();
+					}
+					rdma[o].ClearWakeVertex();
+				};
+
+				futures.emplace_back(connectionThread.EnqueueJob(f));				
 			}
+
+			for (auto& f_ : futures) {
+    			f_.wait();
+  			}
+
+			if(CheckHalt(WeaklyConnectedComponent_set))break;
 		}
 		
+		for(iter=WeaklyConnectedComponent_set.begin(); iter!=WeaklyConnectedComponent_set.end();iter++){
+			auto f = [iter](){
+				if(iter->second.GetState())iter->second.Compute();
+			};
+			futures.emplace_back(threadPool.EnqueueJob(f));
+		}
+		
+		for (auto& f_ : futures) {
+    		f_.wait();
+  		}
+		
+		cerr << "superstep " << i << " : complete computation" << endl;
+
 		for(int o = 0; o < num_host; o++){
-			connectionThread->EnqueueJob([rdma,o](){rdma[o].SendMsg(2147483647, 0.0);});
+			auto f = [&rdma, o, &t](){
+				rdma[o].SendMsg(2147483647, 0.0);
+			};
+
+			futures.emplace_back(connectionThread.EnqueueJob(f));
 		}
 		
-		while(true){
-			if(connectionThread->getJobs().empty()){
-				while(true){
-					if(connectionThread->checkAllThread())break;
-				}
-				break;
-			}
+		for (auto& f_ : futures) {
+    		f_.wait();
+  		}
+
+		for(int o = 0; o < num_host; o++){
+			rdma[o].CheckCommunication();
 		}
 
-		for(int o = 0; o < num_host; o++)rdma[o].CheckCommunication();
+		cerr << "superstep " << i << " : complete computation" << endl;
 	}
 
 	gettimeofday(&end, NULL);
 
 	for(int i; i<num_host;i++)t[i].CloseSocket();
 	
-	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
+	for(iter=WeaklyConnectedComponent_set.begin(); iter!=WeaklyConnectedComponent_set.end();iter++){
 	
 		cout << iter->first << ": " <<  iter->second.GetValue() << endl;
 	}
