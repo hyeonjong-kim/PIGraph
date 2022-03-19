@@ -6,3 +6,13 @@ query/CMakeFiles/query.dir/PageRank.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/in
 query/CMakeFiles/query.dir/PageRank.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/include/query/PageRank.hpp
 query/CMakeFiles/query.dir/PageRank.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/src/query/PageRank.cpp
 
+query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/include/core/Vertex.hpp
+query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/include/network/tcp.hpp
+query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/include/query/SingleSourceShortestPath.hpp
+query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/src/query/SingleSourceShortestPath.cpp
+
+query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/include/core/Vertex.hpp
+query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/include/network/tcp.hpp
+query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/include/query/WeaklyConnectedComponent.hpp
+query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/src/query/WeaklyConnectedComponent.cpp
+

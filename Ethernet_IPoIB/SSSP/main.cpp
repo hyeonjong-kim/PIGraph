@@ -6,13 +6,24 @@
 #include <cstdlib>
 #include <netdb.h>
 #include <time.h>
+#include <list>
 
-#include "PageRank.hpp"
+#include "SingleSourceShortestPath.hpp"
 #include "ThreadPool.hpp"
 #include "Parser.hpp"
 #include "tcp.hpp"
 
 using namespace argparse;
+
+bool CheckHalt(map<int, SingleSourceShortestPath>& set){
+	
+	map<int, SingleSourceShortestPath>::iterator iter;
+	for(iter = set.begin(); iter != set.end(); iter++){
+		if(iter->second.GetState())return false;
+	}
+
+	return true;
+}
 
 int internalBucket;
 int internalHashFunction(int x){
@@ -71,11 +82,15 @@ int main(int argc, const char *argv[])
       .names({"-p", "--partitioning"})
       .description("partitioning option")
       .required(true);
+	parser.add_argument()
+      .names({"-d", "--sourceid"})
+      .description("partitioning option")
+      .required(true);
 	parser.enable_help();
 	
 	auto err = parser.parse(argc, argv);
 	if (err) {
-		std::cout << err << std::endl;
+		std::cerr << err << std::endl;
 		return -1;
 	}
 	
@@ -88,6 +103,7 @@ int main(int argc, const char *argv[])
 	int superstep = stoi(parser.get<string>("s"));
 	string network_mode = parser.get<string>("N");
 	int p_option= stoi(parser.get<string>("p"));
+	int source_id = stoi(parser.get<string>("d"));
     char delimiter;
 
 
@@ -98,7 +114,7 @@ int main(int argc, const char *argv[])
         delimiter = '\t';
     }
     else{
-        cout << "partitioning option error" << endl;
+        cerr << "partitioning option error" << endl;
         return 0;
     }
 
@@ -129,17 +145,18 @@ int main(int argc, const char *argv[])
 		host_file = "../hostfile/hostinfo_ib.txt";
 	}
 	else{
-		cout << "network mode error" << endl;
+		cerr << "network mode error" << endl;
 		return 0;
 	}
 
 	struct timeval start = {};
     struct timeval end = {};
 
-	ThreadPool* threadPool = new ThreadPool(num_thread);
-	ThreadPool* connectionThread = new ThreadPool(num_host);
+	ThreadPool::ThreadPool threadPool(num_thread);
+	ThreadPool::ThreadPool connectionThread(num_host);
+
 	map<int, queue<double>>* messages = new map<int, queue<double>>;
-	map<int, PageRank> pagerank_set;
+	map<int, SingleSourceShortestPath> sssp_set;
 	mutex mu[num_mutex];
 	mutex socketmu[num_host];
 	internalBucket = num_mutex;
@@ -151,6 +168,7 @@ int main(int argc, const char *argv[])
 	vector<string> v;
 	hostfile.open(host_file);
 
+	std::vector<std::future<void>> futures;
 	for(int i=0; i<num_host; i++){
 		hostfile.getline(buf, 100);
 		s = buf;
@@ -158,43 +176,43 @@ int main(int argc, const char *argv[])
 		strcpy(server_ip[i], s.c_str());
 		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+hostnum);
 		t[i].SetSocket();
-		connectionThread->EnqueueJob([&t, i](){t[i].ConnectSocket();});
+		
+		auto f = [&t, i](){t[i].ConnectSocket();};
+		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
 
-	while(true){
-			if(connectionThread->getJobs().empty()){
-				while(true){
-					if(connectionThread->checkAllThread())break;
-				}
-				break;
-			}
-	}
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
 
-	cout<< "Read file" <<endl;
+	cerr<< "Read file" <<endl;
 	
 	ifstream data(file_name);
 	
+
 	gettimeofday(&start, NULL);
 	while(getline(data, s)){
         v = split(s, delimiter);
 
 		if(externalHashFunction(stoi(v[0])) == hostnum){
-			if(pagerank_set.count(stoi(v[0])) == 1){
-				pagerank_set.find(stoi(v[0]))->second.AddOutEdge(stoi(v[1]));
+			if(sssp_set.count(stoi(v[0])) == 1){
+				sssp_set.find(stoi(v[0]))->second.AddOutEdge(stoi(v[1]));
+				sssp_set.find(stoi(v[0]))->second.AddOutEdgeValue(1.0);
 			}
 			else{
-				PageRank p(stoi(v[0]),stoi(v[1]), NULL, messages, t, num_host, socketmu);
-				pagerank_set.insert(pair<int, PageRank>(stoi(v[0]), p));
+				SingleSourceShortestPath sssp(stoi(v[0]),stoi(v[1]), NULL, messages, t, num_host, socketmu, source_id, 1.0);
+				sssp_set.insert(pair<int, SingleSourceShortestPath>(stoi(v[0]), sssp));
 			}
 		}
 
 		if(externalHashFunction(stoi(v[1])) == hostnum){
-			if(pagerank_set.count(stoi(v[1])) == 1){
-				pagerank_set.find(stoi(v[1]))->second.AddInEdge(stoi(v[0]));
+			if(sssp_set.count(stoi(v[1])) == 1){
+				sssp_set.find(stoi(v[1]))->second.AddInEdge(stoi(v[0]));
+				sssp_set.find(stoi(v[1]))->second.AddInEdgeValue(1.0);
 			}
 			else{
-				PageRank p(stoi(v[1]), NULL, stoi(v[0]), messages, t, num_host, socketmu);
-				pagerank_set.insert(pair<int, PageRank>(stoi(v[1]), p));
+				SingleSourceShortestPath sssp(stoi(v[1]), NULL, stoi(v[0]), messages, t, num_host, socketmu, source_id, 1.0);
+				sssp_set.insert(pair<int, SingleSourceShortestPath>(stoi(v[1]), sssp));
 			}
 		}
 	}
@@ -202,133 +220,99 @@ int main(int argc, const char *argv[])
 	data.close();
 	
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
-	cout << "time of reading file: " << time << endl;
+	cerr << "time of reading file: " << time << endl;
 
     for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
 	for(int j = 0; j < num_host; j++){
-		connectionThread->EnqueueJob([&t, j](){
+		auto f = [&t, j](){
 			string s = "";
 			while(s.compare("1\n")!= 0){
 				s = t[j].CheckReadfile();
 			}
-			cout <<  t[j].GetServerAddr() << " is complete read file" <<  endl;
-		});
+			cerr <<  t[j].GetServerAddr() << " is complete read file" <<  endl;
+		};
+
+		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
 
-	while(true){
-		if(connectionThread->getJobs().empty()){
-			while(true){
-				if(connectionThread->checkAllThread())break;
-			}
-			break;
-		}
-	}
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
 
-	map<int, PageRank>::iterator iter;
-	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
+	map<int, SingleSourceShortestPath>::iterator iter;
+	for(iter=sssp_set.begin(); iter!=sssp_set.end();iter++){
 		queue<double> q;
 		messages->insert(make_pair(iter->first, q));
 	}
 
-
-	struct timeval start_query = {};
-	struct timeval end_query = {};
-	double average_network = 0;
-	double average_query = 0;
-	double start_network;
-	double end_network[num_host];
-
-	cout<< "start graph query" <<endl;
+	cerr<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
 		
-		gettimeofday(&start_query, NULL);
-		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-			threadPool->EnqueueJob([iter](){iter->second.Compute();});
+		if(CheckHalt(sssp_set))break;
+
+		for(iter=sssp_set.begin(); iter!=sssp_set.end();iter++){
+			auto f = [iter](){if(iter->second.GetState())iter->second.Compute();};
+			futures.emplace_back(threadPool.EnqueueJob(f));
 		}
 
-		while(true){
-			if(threadPool->getJobs().empty()){
-				while(true){
-					if(threadPool->checkAllThread())break;
-				}
-				break;
-			}
-		}
-
+		for (auto& f_ : futures) {
+    		f_.wait();
+  		}
 		
-		gettimeofday(&end_query, NULL);
-
-		   
-		cout <<  "query time is " << end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0 << endl;
-		average_query += end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
-
-		start_network = (double)clock() / CLOCKS_PER_SEC; 
 		for(int j = 0; j < num_host; j++){
-			connectionThread->EnqueueJob([&t, j](){
+			auto f = [&t, j](){
 				
 				t[j].Sendmsg("Q");
-			});
+			};
+
+			futures.emplace_back(connectionThread.EnqueueJob(f));
 		}
 
-		while(true){
-			if(connectionThread->getJobs().empty()){
-				while(true){
-					if(connectionThread->checkAllThread())break;
-				}
-				break;
-			}
-		}
+		for (auto& f_ : futures) {
+    		f_.wait();
+  		}
 
 		for(int j = 0; j < num_host; j++){
-			connectionThread->EnqueueJob([&t, j, &mu, num_host, &pagerank_set,&messages, &end_network](){
+			auto f = [&t, j, &mu, num_host, &sssp_set,&messages](){
 				string read_msg = t[j].Readmsg();
-				end_network[j] = (double)clock() / CLOCKS_PER_SEC;    
 				vector<string> msg;
 				vector<string> result;
 				result = split(read_msg, '\n');
 				for(int k = 0; k < result.size(); k++){
 					msg = split(result[k], ' ');
-					if(msg.size() ==2 && pagerank_set.count(stoi(msg[0])) == 1){
+					if(msg.size() ==2 && sssp_set.count(stoi(msg[0])) == 1){
 						int mu_num = internalHashFunction(stoi(msg[0]));
 						mu[mu_num].lock();
 						messages->find(stoi(msg[0]))->second.push(stod(msg[1]));
-						mu[mu_num].unlock();
+						sssp_set.find(stoi(msg[0]))->second.IsWake();
+						mu[mu_num].unlock();	
 					}
 				}
-			});
+			};
+
+			futures.emplace_back(connectionThread.EnqueueJob(f));
 		}
 
-		while(true){
-			if(connectionThread->getJobs().empty()){
-				while(true){
-					if(connectionThread->checkAllThread())break;
-				}
-				break;
-			}
-		}
-		
-		double network_time = 0.0;
-		for (int j = 0; j < num_host; j++)network_time += (end_network[j] - start_network);
+		for (auto& f_ : futures) {
+    		f_.wait();
+  		}
 
-		cout <<  "network time is " << network_time/num_host << endl;
-		average_network += network_time;
+		cerr << "superstep" << i << endl;
 	}
 
 	gettimeofday(&end, NULL);
 
 	for(int o; o<num_host;o++)t[o].CloseSocket();
 
-	/*
-	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-		cout << iter->second.GetValue() << endl;
+	
+	for(iter=sssp_set.begin(); iter!=sssp_set.end();iter++){
+		cerr << iter->first << " " << iter->second.GetValue() << endl;
 	}
-	*/
+	
 
 	time = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)/1000000000.0;
-	cout << "time: " << time << endl;
-	cout << "average netwokr query: " << average_query/(double)superstep << endl;
-	cout << "average netwokr time: " <<  average_network/(double)superstep << endl;
+	cerr << "time: " << time << endl;
 	return 0;
 }

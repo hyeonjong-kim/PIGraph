@@ -89,11 +89,11 @@ void tcp::ConnectSocket(){
 void tcp::Sendmsg(string _msg){
     if(_msg.compare("Q")!=0){
         this->send_msg += _msg;
+       
     }
     else{
-        
         this->send_msg += _msg;
-        //cout << this->send_msg << endl;
+       
         char msg[this->send_msg.size()];
         strcpy(msg, send_msg.c_str());
         write(this->client_sock , msg , strlen(msg));

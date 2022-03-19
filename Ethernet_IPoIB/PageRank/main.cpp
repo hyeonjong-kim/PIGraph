@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <netdb.h>
 #include <time.h>
+#include <list>
 
 #include "PageRank.hpp"
 #include "ThreadPool.hpp"
@@ -173,6 +174,8 @@ int main(int argc, const char *argv[])
 	
 	ifstream data(file_name);
 	
+	map<int, int> check_vertex_num;
+
 	gettimeofday(&start, NULL);
 	while(getline(data, s)){
         v = split(s, delimiter);
@@ -194,8 +197,12 @@ int main(int argc, const char *argv[])
 			else{
 				PageRank p(stoi(v[1]), NULL, stoi(v[0]), messages, t, num_host, socketmu);
 				pagerank_set.insert(pair<int, PageRank>(stoi(v[1]), p));
+				
 			}
 		}
+
+		if(check_vertex_num.count(stoi(v[0])) != 1)check_vertex_num.insert(pair<int,int>(stoi(v[0]), 1));
+		if(check_vertex_num.count(stoi(v[1])) != 1)check_vertex_num.insert(pair<int,int>(stoi(v[1]), 1));
 	}
 	gettimeofday(&end, NULL);
 	data.close();
@@ -225,6 +232,10 @@ int main(int argc, const char *argv[])
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		queue<double> q;
 		messages->insert(make_pair(iter->first, q));
+	}
+
+	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
+		iter->second.SetValue(1.0/check_vertex_num.size());
 	}
 
 	cerr<< "start graph query" <<endl;
@@ -281,11 +292,11 @@ int main(int argc, const char *argv[])
 
 	for(int o; o<num_host;o++)t[o].CloseSocket();
 
-	/*
+	
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		cerr << iter->second.GetValue() << endl;
 	}
-	*/
+	
 
 	time = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)/1000000000.0;
 	cerr << "time: " << time << endl;

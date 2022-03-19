@@ -23,8 +23,10 @@ netdb.h
 -
 time.h
 -
-PageRank.hpp
-/home/hjkim/PiGraph/Ethernet_IPoIB/WCC/PageRank.hpp
+list
+-
+WeaklyConnectedComponent.hpp
+/home/hjkim/PiGraph/Ethernet_IPoIB/WCC/WeaklyConnectedComponent.hpp
 ThreadPool.hpp
 /home/hjkim/PiGraph/Ethernet_IPoIB/WCC/ThreadPool.hpp
 Parser.hpp
@@ -72,7 +74,7 @@ vector
 sstream
 -
 
-/home/hjkim/PiGraph/Ethernet_IPoIB/include/query/PageRank.hpp
+/home/hjkim/PiGraph/Ethernet_IPoIB/include/query/WeaklyConnectedComponent.hpp
 cmath
 -
 Vertex.hpp
@@ -107,6 +109,26 @@ vector
 -
 
 /home/hjkim/PiGraph/Ethernet_IPoIB/include/tools/ThreadPool.hpp
+chrono
+-
+condition_variable
+-
+cstdio
+-
+functional
+-
+future
+-
+mutex
+-
+queue
+-
+thread
+-
+vector
+-
+iostream
+-
 chrono
 -
 condition_variable

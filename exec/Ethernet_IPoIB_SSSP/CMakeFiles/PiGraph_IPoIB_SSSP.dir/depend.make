@@ -4,7 +4,7 @@
 CMakeFiles/PiGraph_IPoIB_SSSP.dir/main.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/SSSP/main.cpp
 CMakeFiles/PiGraph_IPoIB_SSSP.dir/main.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/include/core/Vertex.hpp
 CMakeFiles/PiGraph_IPoIB_SSSP.dir/main.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/include/network/tcp.hpp
-CMakeFiles/PiGraph_IPoIB_SSSP.dir/main.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/include/query/PageRank.hpp
+CMakeFiles/PiGraph_IPoIB_SSSP.dir/main.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/include/query/SingleSourceShortestPath.hpp
 CMakeFiles/PiGraph_IPoIB_SSSP.dir/main.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/include/tools/Parser.hpp
 CMakeFiles/PiGraph_IPoIB_SSSP.dir/main.cpp.o: /home/hjkim/PiGraph/Ethernet_IPoIB/include/tools/ThreadPool.hpp
 

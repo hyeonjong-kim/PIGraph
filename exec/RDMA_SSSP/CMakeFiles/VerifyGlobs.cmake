@@ -38,9 +38,7 @@ endif()
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/hjkim/PiGraph/rdma/src/tools/*.cpp")
 set(OLD_GLOB
   "/home/hjkim/PiGraph/rdma/src/tools/Parser.cpp"
-  "/home/hjkim/PiGraph/rdma/src/tools/ResourceChecker.cpp"
   "/home/hjkim/PiGraph/rdma/src/tools/ThreadPool.cpp"
-  "/home/hjkim/PiGraph/rdma/src/tools/argparse.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

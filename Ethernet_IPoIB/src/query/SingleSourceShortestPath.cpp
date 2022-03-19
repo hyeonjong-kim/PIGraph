@@ -23,9 +23,9 @@ void SingleSourceShortestPath::Compute(){
     }
     
     double minDist = (this->source_id == GetVertexId()) ? 0.0 : numeric_limits<double>::max();
-
+    
     queue<double>& q = GetMessageAddr()->find(GetVertexId())->second;
-        
+
     while(!q.empty()){
         if(q.front() < minDist)minDist = q.front();
         q.pop();

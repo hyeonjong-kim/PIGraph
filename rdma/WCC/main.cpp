@@ -13,7 +13,6 @@
 #include "RDMA.hpp"
 #include "ThreadPool.hpp"
 #include "Parser.hpp"
-#include "ResourceChecker.hpp"
 
 int internalBucket;
 int externalBucket;
@@ -130,7 +129,7 @@ int main(int argc, const char *argv[]){
 	map<int, WeaklyConnectedComponent> WeaklyConnectedComponent_set;
 	mutex mu[num_mutex];
 	mutex socketmu[num_host];
-	mutex wake_mu[num_mutex];
+	mutex wake_mu[num_host];
 	internalBucket = num_mutex;
 	externalBucket = num_host;
 
@@ -275,10 +274,6 @@ int main(int argc, const char *argv[]){
 
 	cout << "Complete all node RDMA setting" << endl;
 
-	for(iter=WeaklyConnectedComponent_set.begin(); iter!=WeaklyConnectedComponent_set.end();iter++){
-		iter->second.SetValue(numeric_limits<double>::max());
-	}
-
 	struct timeval start_query = {};
 	struct timeval end_query = {};
 	
@@ -345,6 +340,7 @@ int main(int argc, const char *argv[]){
 	for(int i; i<num_host;i++)t[i].CloseSocket();
 	
 	for(iter=WeaklyConnectedComponent_set.begin(); iter!=WeaklyConnectedComponent_set.end();iter++){
+	
 		cout << iter->first << ": " <<  iter->second.GetValue() << endl;
 	}
 	

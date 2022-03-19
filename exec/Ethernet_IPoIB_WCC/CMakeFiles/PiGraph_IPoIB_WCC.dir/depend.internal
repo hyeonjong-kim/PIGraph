@@ -5,6 +5,6 @@ CMakeFiles/PiGraph_IPoIB_WCC.dir/main.cpp.o
  /home/hjkim/PiGraph/Ethernet_IPoIB/WCC/main.cpp
  /home/hjkim/PiGraph/Ethernet_IPoIB/include/core/Vertex.hpp
  /home/hjkim/PiGraph/Ethernet_IPoIB/include/network/tcp.hpp
- /home/hjkim/PiGraph/Ethernet_IPoIB/include/query/PageRank.hpp
+ /home/hjkim/PiGraph/Ethernet_IPoIB/include/query/WeaklyConnectedComponent.hpp
  /home/hjkim/PiGraph/Ethernet_IPoIB/include/tools/Parser.hpp
  /home/hjkim/PiGraph/Ethernet_IPoIB/include/tools/ThreadPool.hpp

@@ -35,8 +35,6 @@ ThreadPool.hpp
 /home/hjkim/PiGraph/rdma/WCC/ThreadPool.hpp
 Parser.hpp
 /home/hjkim/PiGraph/rdma/WCC/Parser.hpp
-ResourceChecker.hpp
-/home/hjkim/PiGraph/rdma/WCC/ResourceChecker.hpp
 
 /home/hjkim/PiGraph/rdma/include/core/Vertex.hpp
 iostream
@@ -153,20 +151,6 @@ unordered_map
 -
 vector
 -
-
-/home/hjkim/PiGraph/rdma/include/tools/ResourceChecker.hpp
-iostream
--
-stdlib.h
-/home/hjkim/PiGraph/rdma/include/tools/stdlib.h
-stdio.h
-/home/hjkim/PiGraph/rdma/include/tools/stdio.h
-string.h
-/home/hjkim/PiGraph/rdma/include/tools/string.h
-sys/times.h
-/home/hjkim/PiGraph/rdma/include/tools/sys/times.h
-sys/vtimes.h
-/home/hjkim/PiGraph/rdma/include/tools/sys/vtimes.h
 
 /home/hjkim/PiGraph/rdma/include/tools/ThreadPool.hpp
 chrono

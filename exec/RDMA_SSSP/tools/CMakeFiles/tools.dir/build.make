@@ -70,22 +70,9 @@ tools/CMakeFiles/tools.dir/Parser.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/tools.dir/Parser.cpp.s"
 	cd /home/hjkim/PiGraph/exec/RDMA_SSSP/tools && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hjkim/PiGraph/rdma/src/tools/Parser.cpp -o CMakeFiles/tools.dir/Parser.cpp.s
 
-tools/CMakeFiles/tools.dir/ResourceChecker.cpp.o: tools/CMakeFiles/tools.dir/flags.make
-tools/CMakeFiles/tools.dir/ResourceChecker.cpp.o: /home/hjkim/PiGraph/rdma/src/tools/ResourceChecker.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/exec/RDMA_SSSP/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object tools/CMakeFiles/tools.dir/ResourceChecker.cpp.o"
-	cd /home/hjkim/PiGraph/exec/RDMA_SSSP/tools && /usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tools.dir/ResourceChecker.cpp.o -c /home/hjkim/PiGraph/rdma/src/tools/ResourceChecker.cpp
-
-tools/CMakeFiles/tools.dir/ResourceChecker.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/tools.dir/ResourceChecker.cpp.i"
-	cd /home/hjkim/PiGraph/exec/RDMA_SSSP/tools && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/hjkim/PiGraph/rdma/src/tools/ResourceChecker.cpp > CMakeFiles/tools.dir/ResourceChecker.cpp.i
-
-tools/CMakeFiles/tools.dir/ResourceChecker.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/tools.dir/ResourceChecker.cpp.s"
-	cd /home/hjkim/PiGraph/exec/RDMA_SSSP/tools && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hjkim/PiGraph/rdma/src/tools/ResourceChecker.cpp -o CMakeFiles/tools.dir/ResourceChecker.cpp.s
-
 tools/CMakeFiles/tools.dir/ThreadPool.cpp.o: tools/CMakeFiles/tools.dir/flags.make
 tools/CMakeFiles/tools.dir/ThreadPool.cpp.o: /home/hjkim/PiGraph/rdma/src/tools/ThreadPool.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/exec/RDMA_SSSP/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object tools/CMakeFiles/tools.dir/ThreadPool.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/exec/RDMA_SSSP/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object tools/CMakeFiles/tools.dir/ThreadPool.cpp.o"
 	cd /home/hjkim/PiGraph/exec/RDMA_SSSP/tools && /usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tools.dir/ThreadPool.cpp.o -c /home/hjkim/PiGraph/rdma/src/tools/ThreadPool.cpp
 
 tools/CMakeFiles/tools.dir/ThreadPool.cpp.i: cmake_force
@@ -96,36 +83,19 @@ tools/CMakeFiles/tools.dir/ThreadPool.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/tools.dir/ThreadPool.cpp.s"
 	cd /home/hjkim/PiGraph/exec/RDMA_SSSP/tools && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hjkim/PiGraph/rdma/src/tools/ThreadPool.cpp -o CMakeFiles/tools.dir/ThreadPool.cpp.s
 
-tools/CMakeFiles/tools.dir/argparse.cpp.o: tools/CMakeFiles/tools.dir/flags.make
-tools/CMakeFiles/tools.dir/argparse.cpp.o: /home/hjkim/PiGraph/rdma/src/tools/argparse.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/exec/RDMA_SSSP/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object tools/CMakeFiles/tools.dir/argparse.cpp.o"
-	cd /home/hjkim/PiGraph/exec/RDMA_SSSP/tools && /usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tools.dir/argparse.cpp.o -c /home/hjkim/PiGraph/rdma/src/tools/argparse.cpp
-
-tools/CMakeFiles/tools.dir/argparse.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/tools.dir/argparse.cpp.i"
-	cd /home/hjkim/PiGraph/exec/RDMA_SSSP/tools && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/hjkim/PiGraph/rdma/src/tools/argparse.cpp > CMakeFiles/tools.dir/argparse.cpp.i
-
-tools/CMakeFiles/tools.dir/argparse.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/tools.dir/argparse.cpp.s"
-	cd /home/hjkim/PiGraph/exec/RDMA_SSSP/tools && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hjkim/PiGraph/rdma/src/tools/argparse.cpp -o CMakeFiles/tools.dir/argparse.cpp.s
-
 # Object files for target tools
 tools_OBJECTS = \
 "CMakeFiles/tools.dir/Parser.cpp.o" \
-"CMakeFiles/tools.dir/ResourceChecker.cpp.o" \
-"CMakeFiles/tools.dir/ThreadPool.cpp.o" \
-"CMakeFiles/tools.dir/argparse.cpp.o"
+"CMakeFiles/tools.dir/ThreadPool.cpp.o"
 
 # External object files for target tools
 tools_EXTERNAL_OBJECTS =
 
 tools/libtools.a: tools/CMakeFiles/tools.dir/Parser.cpp.o
-tools/libtools.a: tools/CMakeFiles/tools.dir/ResourceChecker.cpp.o
 tools/libtools.a: tools/CMakeFiles/tools.dir/ThreadPool.cpp.o
-tools/libtools.a: tools/CMakeFiles/tools.dir/argparse.cpp.o
 tools/libtools.a: tools/CMakeFiles/tools.dir/build.make
 tools/libtools.a: tools/CMakeFiles/tools.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hjkim/PiGraph/exec/RDMA_SSSP/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX static library libtools.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hjkim/PiGraph/exec/RDMA_SSSP/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library libtools.a"
 	cd /home/hjkim/PiGraph/exec/RDMA_SSSP/tools && $(CMAKE_COMMAND) -P CMakeFiles/tools.dir/cmake_clean_target.cmake
 	cd /home/hjkim/PiGraph/exec/RDMA_SSSP/tools && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/tools.dir/link.txt --verbose=$(VERBOSE)
 

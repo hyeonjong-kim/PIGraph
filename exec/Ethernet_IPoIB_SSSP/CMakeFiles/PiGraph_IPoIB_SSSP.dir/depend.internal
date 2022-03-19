@@ -5,6 +5,6 @@ CMakeFiles/PiGraph_IPoIB_SSSP.dir/main.cpp.o
  /home/hjkim/PiGraph/Ethernet_IPoIB/SSSP/main.cpp
  /home/hjkim/PiGraph/Ethernet_IPoIB/include/core/Vertex.hpp
  /home/hjkim/PiGraph/Ethernet_IPoIB/include/network/tcp.hpp
- /home/hjkim/PiGraph/Ethernet_IPoIB/include/query/PageRank.hpp
+ /home/hjkim/PiGraph/Ethernet_IPoIB/include/query/SingleSourceShortestPath.hpp
  /home/hjkim/PiGraph/Ethernet_IPoIB/include/tools/Parser.hpp
  /home/hjkim/PiGraph/Ethernet_IPoIB/include/tools/ThreadPool.hpp

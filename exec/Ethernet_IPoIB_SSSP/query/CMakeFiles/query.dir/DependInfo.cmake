@@ -5,6 +5,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/hjkim/PiGraph/Ethernet_IPoIB/src/query/PageRank.cpp" "/home/hjkim/PiGraph/exec/Ethernet_IPoIB_SSSP/query/CMakeFiles/query.dir/PageRank.cpp.o"
+  "/home/hjkim/PiGraph/Ethernet_IPoIB/src/query/SingleSourceShortestPath.cpp" "/home/hjkim/PiGraph/exec/Ethernet_IPoIB_SSSP/query/CMakeFiles/query.dir/SingleSourceShortestPath.cpp.o"
+  "/home/hjkim/PiGraph/Ethernet_IPoIB/src/query/WeaklyConnectedComponent.cpp" "/home/hjkim/PiGraph/exec/Ethernet_IPoIB_SSSP/query/CMakeFiles/query.dir/WeaklyConnectedComponent.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

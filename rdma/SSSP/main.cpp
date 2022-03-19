@@ -13,7 +13,7 @@
 #include "RDMA.hpp"
 #include "ThreadPool.hpp"
 #include "Parser.hpp"
-#include "ResourceChecker.hpp"
+
 
 int internalBucket;
 int externalBucket;
@@ -293,6 +293,7 @@ int main(int argc, const char *argv[]){
 				auto f = [rdma, o, &singleshortestpath_set, &wake_mu](){
 					string _msg = rdma[o].GetWakeVertex();
 					vector<string> split_msg = split(_msg, '\n');
+					cerr << split_msg.size() << endl;
 					for(int z = 0; z < split_msg.size(); z++){
 						wake_mu[internalHashFunction(stoi(split_msg[z]))].lock();
 						singleshortestpath_set.find(stoi(split_msg[z]))->second.IsWake();
