@@ -22,7 +22,7 @@ void PageRank::Compute(){
             q.pop();
         }
 
-        double value = 0.15/GetNumVertices() + 0.85 * sum;
+        double value = (0.15/GetNumVertices()) + 0.85 * sum;
         SetValue(value);
     }
     
@@ -30,7 +30,7 @@ void PageRank::Compute(){
         const int n = GetOutEdgeIterator().size();
         for(vector<double>::size_type i = 0; i < n; i++){
             int socket_num = externalHashFunction(GetOutEdgeIterator().at(i));
-            SendMessageTo(GetOutEdgeIterator().at(i), GetValue()/n, socket_num);
+            SendMessageTo(GetOutEdgeIterator().at(i), GetValue()/double(n), socket_num);
         }
     }else{
         VoteHalt();

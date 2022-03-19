@@ -269,28 +269,31 @@ int main(int argc, const char *argv[]){
 
 	for(int i=0; i < num_host; i++)vertex_num += rdma[i].GetVertexNum();
 	
-
+	int edge = 0;
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		iter->second.SetValue(1.0/double(vertex_num));
 		iter->second.SetNumVertices(double(vertex_num));
+		edge += iter->second.GetOutEdgeIterator().size();
 	}
-
-	struct timeval start_query = {};
-	struct timeval end_query = {};
 	
+	cerr << edge << endl;
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start, NULL);
 	for (int i = 0; i < superstep; i++) {
+		cerr << "superstep " << i << endl;
+
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			auto f = [iter](){
 				if(iter->second.GetState())iter->second.Compute();
 			};
 			futures.emplace_back(threadPool.EnqueueJob(f));
 		}
-		
+
 		for (auto& f_ : futures) {
     		f_.wait();
   		}
+
+		cerr << "superstep " << i << endl;
 		
 		for(int o = 0; o < num_host; o++){
 			auto f = [&rdma, o, &t](){
@@ -307,6 +310,8 @@ int main(int argc, const char *argv[]){
 		for(int o = 0; o < num_host; o++){
 			rdma[o].CheckCommunication();
 		}
+
+		cerr << "superstep " << i << endl;
 	}
 
 	gettimeofday(&end, NULL);
@@ -314,7 +319,6 @@ int main(int argc, const char *argv[]){
 	for(int i; i<num_host;i++)t[i].CloseSocket();
 	
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-	
 		cout << iter->first << ": " <<  iter->second.GetValue() << endl;
 	}
 	

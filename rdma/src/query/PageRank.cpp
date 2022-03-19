@@ -11,8 +11,6 @@ PageRank::~PageRank(){
 
 void PageRank::Compute(){
 
-    int Vertexidx = GetVertexId();
-    
     if(GetSuperstep() >=1){
         double sum = 0;
         for(int i = 0; i < GetExternalBucket(); i++){
@@ -21,7 +19,6 @@ void PageRank::Compute(){
                 sum += GetMsgQue()[i][j];
             }
         }
-        
         double value = (0.15/GetNumVertices()) + 0.85 * sum;
         SetValue(value);
     }
@@ -33,6 +30,7 @@ void PageRank::Compute(){
             SendMessageTo(GetOutEdgeIterator().at(i), GetValue()/double(n), rdma_num);
         }
     }
+
     else{
         VoteHalt();
     }

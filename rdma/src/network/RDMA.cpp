@@ -46,7 +46,7 @@ void RDMA::setInfo(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector
   this->qp_num = this->GetQueuePairNumber(this->qp);
   this->recv_msg = _recv_msg;
   this->buffer_size = _buffer_size;
-  this->recv_mr = RegisterMemoryRegion(this->protection_domain, this->recv_msg, _buffer_size*sizeof(double) );
+  this->recv_mr = RegisterMemoryRegion(this->protection_domain, this->recv_msg, _buffer_size*sizeof(double));
   this->recv_pos = _recv_pos;
   this->vertex_mu = _vertex_mu;
   this->internalBucket = mu_num;
@@ -270,17 +270,22 @@ void RDMA::SendMsg(int vertex_id, double value){
   if(vertex_id != 2147483647){
     this->vertex_mu[this->internalHashFunction(vertex_id)].lock();
     *(this->tmp_send_msg[this->send_pos.find(vertex_id)->second[0] + this->send_pos_cnt.find(vertex_id)->second]) = value;
+    //cerr << *(this->tmp_send_msg[this->send_pos.find(vertex_id)->second[0] + this->send_pos_cnt.find(vertex_id)->second]) << endl;
     this->send_pos_cnt.find(vertex_id)->second++;
+
     this->vertex_mu[this->internalHashFunction(vertex_id)].unlock();
   }
   else{
-    
-    for (size_t i = 0; i < stoi(this->RDMAInfo.find("len")->second); i++){
+    for(size_t i = 0; i < stoi(this->RDMAInfo.find("len")->second); i++){
       this->send_msg[i] = *(this->tmp_send_msg[i]);
+      //cerr << this->send_msg[i] << endl;
     }
+
     map<int, int>::iterator iter;
     for(iter=this->send_pos_cnt.begin(); iter != this->send_pos_cnt.end(); iter++){
-      this->send_msg[this->send_pos.find(iter->first)->second[0] + iter->second] = 0.0;
+      if((this->send_pos.find(iter->first)->second[0] + iter->second) != (this->send_pos.find(iter->first)->second[1])){
+        this->send_msg[this->send_pos.find(iter->first)->second[0] + iter->second] = 0.0;
+      }
       if(iter->second != 0){
         this->t->Sendmsg(to_string(iter->first) + "\n");
       }
@@ -292,6 +297,7 @@ void RDMA::SendMsg(int vertex_id, double value){
       this->PostRdmaRead(this->qp, this->recv_mr, this->recv_msg, this->buffer_size);
       this->PollCompletion(this->completion_queue);
     });
+
     ReadRDMAmsg.join();
     
     this->PollCompletion(this->completion_queue);

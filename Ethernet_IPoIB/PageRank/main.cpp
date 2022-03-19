@@ -294,7 +294,7 @@ int main(int argc, const char *argv[])
 
 	
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-		cerr << iter->second.GetValue() << endl;
+		cerr << iter->first << ": " << iter->second.GetValue() << endl;
 	}
 	
 

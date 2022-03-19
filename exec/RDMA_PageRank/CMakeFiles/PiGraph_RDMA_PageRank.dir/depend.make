@@ -7,6 +7,5 @@ CMakeFiles/PiGraph_RDMA_PageRank.dir/main.cpp.o: /home/hjkim/PiGraph/rdma/includ
 CMakeFiles/PiGraph_RDMA_PageRank.dir/main.cpp.o: /home/hjkim/PiGraph/rdma/include/network/tcp.hpp
 CMakeFiles/PiGraph_RDMA_PageRank.dir/main.cpp.o: /home/hjkim/PiGraph/rdma/include/query/PageRank.hpp
 CMakeFiles/PiGraph_RDMA_PageRank.dir/main.cpp.o: /home/hjkim/PiGraph/rdma/include/tools/Parser.hpp
-CMakeFiles/PiGraph_RDMA_PageRank.dir/main.cpp.o: /home/hjkim/PiGraph/rdma/include/tools/ResourceChecker.hpp
 CMakeFiles/PiGraph_RDMA_PageRank.dir/main.cpp.o: /home/hjkim/PiGraph/rdma/include/tools/ThreadPool.hpp
 
