@@ -309,7 +309,7 @@ int main(int argc, const char *argv[]){
 
 	gettimeofday(&end_query, NULL);
 
-	for(int o; o<num_host;o++)t[o].CloseSocket();
+	for(int o = 0 ; o<num_host;o++)t[o].CloseSocket();
 
 	gettimeofday(&end, NULL);
 	

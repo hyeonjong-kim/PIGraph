@@ -9,9 +9,9 @@ WeaklyConnectedComponent::~WeaklyConnectedComponent(){
 }
 
 void WeaklyConnectedComponent::Compute(){
-     std::cerr << "flag 7" << endl;
+
     double currentComponent = GetValue();
-    
+
     if(GetSuperstep() == 0){
         for(int i = 0; i < GetOutEdgeIterator().size(); i++){
             double neighbor = double(GetOutEdgeIterator().at(i));
@@ -32,14 +32,16 @@ void WeaklyConnectedComponent::Compute(){
         }
 
         VoteHalt();
+        
+        NextSuperstep();
 
         return;
     }
-
+    
     bool changed = false;
-    std::cerr << "flag 5" << endl;
+
     queue<double>& q = GetMessageAddr()->find(GetVertexId())->second;
-        
+    
     while(!q.empty()){
         double candidateComponent = q.front();
         if(candidateComponent < currentComponent){
@@ -48,18 +50,17 @@ void WeaklyConnectedComponent::Compute(){
         }
         q.pop();
     }
-    std::cerr << "flag 2" << endl;
 
     if(changed){
         SetValue(currentComponent);
         const int n = GetOutEdgeIterator().size();
         for(vector<double>::size_type i = 0; i < n; i++){
-            int rdma_num = externalHashFunction(GetOutEdgeIterator().at(i));
-            SendMessageTo(GetOutEdgeIterator().at(i), currentComponent, rdma_num);
+            int tcp_num = externalHashFunction(GetOutEdgeIterator().at(i));
+            SendMessageTo(GetOutEdgeIterator().at(i), GetValue(), tcp_num);
         }
     }
 
-    std::cerr << "flag 3" << endl;
-
     VoteHalt();
+
+    NextSuperstep();
 }

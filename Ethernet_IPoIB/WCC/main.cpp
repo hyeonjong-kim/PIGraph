@@ -22,7 +22,7 @@ bool CheckHalt(map<int, WeaklyConnectedComponent>& set){
 		//cerr << iter->first << endl;
 		if(iter->second.GetState())return false;
 	}
-
+	cerr << "fdsa" << endl;
 	return true;
 }
 
@@ -252,10 +252,14 @@ int main(int argc, const char *argv[]){
 	gettimeofday(&start_query, NULL);
 	for (int i = 0; i < superstep; i++) {
 		cerr << "superstep " << i << endl;
-		if(i > 0 ){
-			if(CheckHalt(wcc_set))break;
-		}
-	
+		
+		
+			if(CheckHalt(wcc_set)){
+				cerr << "fdsafds" << endl;
+				break;
+			}
+			
+		cerr << "superstep " << i << endl;
 		for(iter=wcc_set.begin(); iter!=wcc_set.end();iter++){
 			auto f = [iter](){if(iter->second.GetState())iter->second.Compute();};
 			futures.emplace_back(threadPool.EnqueueJob(f));
@@ -264,7 +268,7 @@ int main(int argc, const char *argv[]){
 		for (auto& f_ : futures) {
     		f_.wait();
   		}
-		
+		cerr << "superstep " << i << endl;
 	
 
 		for(int j = 0; j < num_host; j++){
@@ -278,39 +282,54 @@ int main(int argc, const char *argv[]){
 		for (auto& f_ : futures) {
     		f_.wait();
   		}
-		
+		cerr << "superstep " << i << endl;
 		for(int j = 0; j < num_host; j++){
 			auto f = [&t, j, &mu, num_host, &wcc_set,&messages](){
 				string read_msg = t[j].Readmsg();
 				vector<string> msg;
 				vector<string> result;
 				result = split(read_msg, '\n');
+				int count = 0;
 				for(int k = 0; k < result.size(); k++){
 					msg = split(result[k], ' ');
 					if(msg.size() ==2 && wcc_set.count(stoi(msg[0])) == 1){
 						int mu_num = internalHashFunction(stoi(msg[0]));
 						mu[mu_num].lock();
 						messages->find(stoi(msg[0]))->second.push(stod(msg[1]));
-						wcc_set.find(stoi(msg[0]))->second.IsWake();
+						if(!wcc_set.find(stoi(msg[0]))->second.GetState()){
+							wcc_set.find(stoi(msg[0]))->second.IsWake();
+							count++;
+						}
+						
 						mu[mu_num].unlock();	
 					}
+
+					
 				}
+				cerr << count << endl;
 			};
 
 			futures.emplace_back(connectionThread.EnqueueJob(f));
 		}
-
+		
+		
 		for (auto& f_ : futures) {
     		f_.wait();
   		}
-		
+
+		int ff = 0;
+		for(iter = wcc_set.begin(); iter != wcc_set.end(); iter++){
+			if(iter->second.GetState())ff++;
+		}
+		cerr << ff << endl;
+		cerr << "superstep " << i << endl;
 	}
+	cerr << "1234" << endl;
 	
 	gettimeofday(&end_query, NULL);
-
-	
-	for(int o; o<num_host;o++)t[o].CloseSocket();
-	
+	cerr << "1234" << endl;
+	for(int o = 0 ; o <num_host;o++)t[o].CloseSocket();
+	cerr << "1234" << endl;
 	gettimeofday(&end, NULL);
 	
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
