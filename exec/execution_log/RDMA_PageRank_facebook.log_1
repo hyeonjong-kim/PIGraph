@@ -1,6 +1,6 @@
 192.168.0.100 is ready to communication
 Read file
-Time of reading file: 0.344275
+Time of reading file: 0.348998
 Complete reading file all node
 Connect RDMA based on 192.168.0.100
 192.168.0.100 is RDMA connection
@@ -4075,5 +4075,5 @@ superstep 29
 4036: 5.62137e-05
 4037: 6.04756e-05
 4038: 0.000381456
-toal query time: 2.45413
-toal time: 3.05621
+toal query time: 1.21507
+toal time: 1.801

@@ -185,13 +185,6 @@ void RDMA::ExchangeInfo(){
   this->t->Sendmsg("Q");
 
   this->send_msg = new double[stoi(RDMAInfo.find("len")->second)];
-  this->tmp_send_msg = new double* [stoi(RDMAInfo.find("len")->second)];
-  
-  for (size_t i = 0; i < stoi(RDMAInfo.find("len")->second); i++)
-  {
-    this->tmp_send_msg[i] = new double(0.0);
-  }
-  
   this->send_mr = RegisterMemoryRegion(this->protection_domain, this->send_msg , stoi(RDMAInfo.find("len")->second) * sizeof(double));
 
   string result = this->t->Readmsg();
@@ -269,19 +262,14 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
 void RDMA::SendMsg(int vertex_id, double value){
   if(vertex_id != 2147483647){
     this->vertex_mu[this->internalHashFunction(vertex_id)].lock();
-    *(this->tmp_send_msg[this->send_pos.find(vertex_id)->second[0] + this->send_pos_cnt.find(vertex_id)->second]) = value;
-    //cerr << *(this->tmp_send_msg[this->send_pos.find(vertex_id)->second[0] + this->send_pos_cnt.find(vertex_id)->second]) << endl;
+    this->send_msg[this->send_pos.find(vertex_id)->second[0] + this->send_pos_cnt.find(vertex_id)->second] = value;
     this->send_pos_cnt.find(vertex_id)->second++;
-
     this->vertex_mu[this->internalHashFunction(vertex_id)].unlock();
   }
-  else{
-    for(size_t i = 0; i < stoi(this->RDMAInfo.find("len")->second); i++){
-      this->send_msg[i] = *(this->tmp_send_msg[i]);
-      //cerr << this->send_msg[i] << endl;
-    }
 
+  else{
     map<int, int>::iterator iter;
+    
     for(iter=this->send_pos_cnt.begin(); iter != this->send_pos_cnt.end(); iter++){
       if((this->send_pos.find(iter->first)->second[0] + iter->second) != (this->send_pos.find(iter->first)->second[1])){
         this->send_msg[this->send_pos.find(iter->first)->second[0] + iter->second] = 0.0;

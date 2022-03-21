@@ -136,7 +136,7 @@ int main(int argc, const char *argv[]){
 	map<int, WeaklyConnectedComponent> WeaklyConnectedComponent_set;
 	mutex mu[num_mutex];
 	mutex socketmu[num_host];
-	mutex wake_mu[num_host];
+	mutex wake_mu[num_mutex];
 	internalBucket = num_mutex;
 	externalBucket = num_host;
 
@@ -279,6 +279,11 @@ int main(int argc, const char *argv[]){
   	}
 
 	cout << "Complete all node RDMA setting" << endl;
+	
+	for(iter=WeaklyConnectedComponent_set.begin(); iter!=WeaklyConnectedComponent_set.end();iter++){
+		iter->second.SetValue(numeric_limits<double>::max());
+	}
+	
 
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start_query, NULL);
@@ -290,12 +295,15 @@ int main(int argc, const char *argv[]){
 				auto f = [rdma, o, &WeaklyConnectedComponent_set, &wake_mu](){
 					string _msg = rdma[o].GetWakeVertex();
 					vector<string> split_msg = split(_msg, '\n');
+					int msg_count = 0;
 					for(int z = 0; z < split_msg.size(); z++){
 						wake_mu[internalHashFunction(stoi(split_msg[z]))].lock();
 						WeaklyConnectedComponent_set.find(stoi(split_msg[z]))->second.IsWake();
+						msg_count++;
 						wake_mu[internalHashFunction(stoi(split_msg[z]))].unlock();
 					}
 					rdma[o].ClearWakeVertex();
+					cerr << msg_count << endl;
 				};
 
 				futures.emplace_back(connectionThread.EnqueueJob(f));				
@@ -346,9 +354,11 @@ int main(int argc, const char *argv[]){
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	double time_query = end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
 
+	
 	for(iter=WeaklyConnectedComponent_set.begin(); iter!=WeaklyConnectedComponent_set.end();iter++){
 		cerr << iter->first << ": " <<  iter->second.GetValue() << endl;
 	}
+	
 
 	cerr << "toal query time: " << time_query << endl;
 	cerr << "toal time: " << time << endl;

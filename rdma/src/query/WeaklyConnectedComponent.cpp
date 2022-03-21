@@ -32,7 +32,7 @@ void WeaklyConnectedComponent::Compute(){
         }
 
         VoteHalt();
-
+        NextSuperstep();
         return;
     }
 
@@ -57,5 +57,7 @@ void WeaklyConnectedComponent::Compute(){
             SendMessageTo(GetOutEdgeIterator().at(i), currentComponent, rdma_num);
         }
     }
+    
     VoteHalt();
+    NextSuperstep();
 }
