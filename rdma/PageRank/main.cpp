@@ -40,6 +40,16 @@ vector<string> split(string input, char delimiter) {
 using namespace argparse;
 
 int main(int argc, const char *argv[]){
+	struct timeval start = {};
+    struct timeval end = {};
+
+	struct timeval start_reading = {};
+    struct timeval end_reading = {};
+
+	struct timeval start_query = {};
+    struct timeval end_query = {};
+
+	gettimeofday(&start, NULL);
 	ArgumentParser parser("Pigraph", "Pigraph execution");
 	parser.add_argument()
       .names({"-m", "--mutex"})
@@ -69,11 +79,10 @@ int main(int argc, const char *argv[]){
 		return -1;
 	}
 	
-	
 	int num_thread = thread::hardware_concurrency();
 	int num_mutex = stoi(parser.get<string>("m"));
 	string data_file_name = parser.get<string>("f");
-	string host_file_name = "../hostfile/hostinfo.txt";
+	string host_file_name = "hostfile/hostinfo.txt";
 	int num_host = stoi(parser.get<string>("n"));
 	int superstep = stoi(parser.get<string>("s"));
 	int p_option= stoi(parser.get<string>("p"));
@@ -110,9 +119,6 @@ int main(int argc, const char *argv[]){
 	}
 	host_file.close();
 	
-	struct timeval start = {};
-    struct timeval end = {};
-
 	ThreadPool::ThreadPool threadPool(num_thread);
 	ThreadPool::ThreadPool connectionThread(num_host);
 	ThreadPool::ThreadPool RDMAconnectionThread(num_host);
@@ -155,7 +161,7 @@ int main(int argc, const char *argv[]){
 
 	ifstream data_file(data_file_name);
 	vector<string> split_line;
-	gettimeofday(&start, NULL);
+	gettimeofday(&start_reading, NULL);
 	while(getline(data_file, read_str)){
         split_line = split(read_str, delimiter);
 
@@ -178,12 +184,11 @@ int main(int argc, const char *argv[]){
 			}
 		}
 	}
-
-	gettimeofday(&end, NULL);
+	gettimeofday(&end_reading, NULL);
 	data_file.close();
 
-	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
-	cout << "Time of reading file: " << time << endl;
+	double time_reading = end_reading.tv_sec + end_reading.tv_usec / 1000000.0 - start_reading.tv_sec - start_reading.tv_usec / 1000000.0;
+	cerr << "Time of reading file: " << time_reading << endl;
 
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
@@ -262,7 +267,7 @@ int main(int argc, const char *argv[]){
     	f_.wait();
   	}
 
-	cout << "Complete all node RDMA setting" << endl;
+	cerr << "Complete all node RDMA setting" << endl;
 
 
 	int vertex_num = 0;
@@ -276,9 +281,8 @@ int main(int argc, const char *argv[]){
 		edge += iter->second.GetOutEdgeIterator().size();
 	}
 	
-	cerr << edge << endl;
 	cout<< "start graph query" <<endl;
-	gettimeofday(&start, NULL);
+	gettimeofday(&start_query, NULL);
 	for (int i = 0; i < superstep; i++) {
 		cerr << "superstep " << i << endl;
 
@@ -293,8 +297,6 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 
-		cerr << "superstep " << i << endl;
-		
 		for(int o = 0; o < num_host; o++){
 			auto f = [&rdma, o, &t](){
 				rdma[o].SendMsg(2147483647, 0.0);
@@ -310,23 +312,23 @@ int main(int argc, const char *argv[]){
 		for(int o = 0; o < num_host; o++){
 			rdma[o].CheckCommunication();
 		}
-
-		cerr << "superstep " << i << endl;
 	}
-
-	gettimeofday(&end, NULL);
+	gettimeofday(&end_query, NULL);
 
 	for(int i; i<num_host;i++)t[i].CloseSocket();
-	
-	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-		cout << iter->first << ": " <<  iter->second.GetValue() << endl;
-	}
-	
 	for(int o = 0; o < num_host; o++)rdma[o].CloseRDMA();
 	
+	gettimeofday(&end, NULL);
+	
+	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
+	double time_query = end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
+	
+	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
+		cerr << iter->first << ": " <<  iter->second.GetValue() << endl;
+	}
 
-	time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
-	cout << "toal time: " << time << endl;
+	cerr << "toal query time: " << time_query << endl;
+	cerr << "toal time: " << time << endl;
 
 	return 0;
 }

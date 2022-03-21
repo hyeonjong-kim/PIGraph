@@ -88,25 +88,13 @@ sstream
 map
 -
 
-/home/hjkim/PiGraph/rdma/include/query/SingleSourceShortestPath.hpp
-cmath
--
-limits
--
-Vertex.hpp
-/home/hjkim/PiGraph/rdma/include/query/Vertex.hpp
-
-/home/hjkim/PiGraph/rdma/include/query/WeaklyConnectedComponent.hpp
+/home/hjkim/PiGraph/rdma/include/query/PageRank.hpp
 cmath
 -
 Vertex.hpp
 /home/hjkim/PiGraph/rdma/include/query/Vertex.hpp
 
-/home/hjkim/PiGraph/rdma/src/query/SingleSourceShortestPath.cpp
-SingleSourceShortestPath.hpp
-/home/hjkim/PiGraph/rdma/src/query/SingleSourceShortestPath.hpp
-
-/home/hjkim/PiGraph/rdma/src/query/WeaklyConnectedComponent.cpp
-WeaklyConnectedComponent.hpp
-/home/hjkim/PiGraph/rdma/src/query/WeaklyConnectedComponent.hpp
+/home/hjkim/PiGraph/rdma/src/query/PageRank.cpp
+PageRank.hpp
+/home/hjkim/PiGraph/rdma/src/query/PageRank.hpp
 
