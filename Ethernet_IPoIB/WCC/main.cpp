@@ -108,6 +108,8 @@ int main(int argc, const char *argv[]){
 	int superstep = stoi(parser.get<string>("s"));
 	string network_mode = parser.get<string>("N");
 	int p_option= stoi(parser.get<string>("p"));
+	int msg_processing_thread_num = num_thread/num_host;
+
     char delimiter;
 
 
@@ -276,22 +278,44 @@ int main(int argc, const char *argv[]){
   		}
 		
 		for(int j = 0; j < num_host; j++){
-			auto f = [&t, j, &mu, num_host, &wcc_set,&messages](){
+			auto f = [&t, j, &mu, num_host, &wcc_set,&messages, msg_processing_thread_num](){
 				string read_msg = t[j].Readmsg();
-				vector<string> msg;
 				vector<string> result;
 				result = split(read_msg, '\n');
-				for(int k = 0; k < result.size(); k++){
-					msg = split(result[k], ' ');
-					if(msg.size() ==2 && wcc_set.count(stoi(msg[0])) == 1){
-						int mu_num = internalHashFunction(stoi(msg[0]));
-						mu[mu_num].lock();
-						messages->find(stoi(msg[0]))->second.push(stod(msg[1]));
-						if(!wcc_set.find(stoi(msg[0]))->second.GetState()){
-							wcc_set.find(stoi(msg[0]))->second.IsWake();
+				int start = 0;
+				int end_interval = int(result.size()) / int(msg_processing_thread_num);
+				int end = end_interval;
+				thread t[msg_processing_thread_num];
+				for (size_t u = 0; u < msg_processing_thread_num; u++){
+					t[u] = thread([&result, &wcc_set, &messages, start, end, &mu](){
+						vector<string> msg;
+						//int msg_count = 0;
+						for(int k = start; k < end; k++){
+							msg = split(result[k], ' ');
+							if(msg.size() ==2 && wcc_set.count(stoi(msg[0])) == 1){
+								int mu_num = internalHashFunction(stoi(msg[0]));
+								mu[mu_num].lock();
+								messages->find(stoi(msg[0]))->second.push(stod(msg[1]));
+								if(!wcc_set.find(stoi(msg[0]))->second.GetState()){
+									wcc_set.find(stoi(msg[0]))->second.IsWake();
+								}
+								mu[mu_num].unlock();
+							}
 						}
-						mu[mu_num].unlock();	
+						//cerr << msg_count << endl;
+					});
+					
+					start = end;
+					
+					if(u+1 == msg_processing_thread_num-1){
+						end = result.size();						
 					}
+					else{
+						end = end + end_interval;
+					}
+				}
+				for (size_t u = 0; u < msg_processing_thread_num; u++){
+					t[u].join();
 				}
 			};
 			futures.emplace_back(connectionThread.EnqueueJob(f));

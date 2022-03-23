@@ -291,6 +291,9 @@ int main(int argc, const char *argv[]){
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start_query, NULL);
 	for (int i = 0; i < superstep; i++) {
+		
+		cerr << "superstep " << i << endl;
+		
 		if(i > 0){
 			for(int o = 0; o < num_host; o++){
 				auto f = [rdma, o, &singleshortestpath_set, &wake_mu](){
@@ -325,8 +328,6 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 		
-		cerr << "superstep " << i << " : complete computation" << endl;
-		
 		for(int o = 0; o < num_host; o++){
 			auto f = [&rdma, o, &t](){
 				rdma[o].SendMsg(2147483647, 0.0);
@@ -338,8 +339,6 @@ int main(int argc, const char *argv[]){
 		for (auto& f_ : futures) {
     		f_.wait();
   		}
-
-		cerr << "superstep " << i << " : complete network" << endl;
 		
 		for(int o = 0; o < num_host; o++){
 			rdma[o].CheckCommunication();

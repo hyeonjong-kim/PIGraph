@@ -269,7 +269,7 @@ void RDMA::SendMsg(int vertex_id, double value){
 
   else{
     map<int, int>::iterator iter;
-    
+
     for(iter=this->send_pos_cnt.begin(); iter != this->send_pos_cnt.end(); iter++){
       if((this->send_pos.find(iter->first)->second[0] + iter->second) != (this->send_pos.find(iter->first)->second[1])){
         this->send_msg[this->send_pos.find(iter->first)->second[0] + iter->second] = 0.0;

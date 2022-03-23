@@ -112,6 +112,8 @@ string tcp::Readmsg(){
         this->read_char = this->buffer;
         this->result += this->read_char;
     }
+    
+    this->result=this->result.substr(0, this->result.length()-1);
     return this->result;
 }
 

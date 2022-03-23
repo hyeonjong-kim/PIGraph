@@ -1,4 +1,0 @@
-Linux 5.4.0-94-generic (MN) 	2022년 03월 21일 	_x86_64_	(16 CPU)
-
-15시 59분 55초   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-15시 59분 56초  1004     22354  100.00   39.00    0.00    1.00  100.00    12  PiGraph_RDMA_Pa

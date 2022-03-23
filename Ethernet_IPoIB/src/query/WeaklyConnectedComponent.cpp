@@ -9,7 +9,6 @@ WeaklyConnectedComponent::~WeaklyConnectedComponent(){
 }
 
 void WeaklyConnectedComponent::Compute(){
-
     double currentComponent = GetValue();
 
     if(GetSuperstep() == 0){
@@ -32,9 +31,7 @@ void WeaklyConnectedComponent::Compute(){
         }
 
         VoteHalt();
-        
         NextSuperstep();
-
         return;
     }
     
@@ -61,6 +58,5 @@ void WeaklyConnectedComponent::Compute(){
     }
 
     VoteHalt();
-
     NextSuperstep();
 }
