@@ -1,0 +1,9 @@
+Ethernet_PageRank_facebook.log_cpu_1 : 20.392307692307693
+Ethernet_SSSP_facebook.log_cpu_1 : 13.57
+Ethernet_WCC_facebook.log_cpu_1 : 15.39
+IPoIB_PageRank_facebook.log_cpu_1 : 20.66076923076923
+IPoIB_SSSP_facebook.log_cpu_1 : 13.86
+IPoIB_WCC_facebook.log_cpu_1 : 15.645
+RDMA_PageRank_facebook.log_cpu_1 : 25.75
+RDMA_SSSP_facebook.log_cpu_1 : 10.23
+RDMA_WCC_facebook.log_cpu_1 : 0

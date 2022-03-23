@@ -1,0 +1,9 @@
+Ethernet_PageRank_facebook.log_mem_1 : 0.05538461538461539
+Ethernet_SSSP_facebook.log_mem_1 : 0.03
+Ethernet_WCC_facebook.log_mem_1 : 0.04
+IPoIB_PageRank_facebook.log_mem_1 : 0.053076923076923084
+IPoIB_SSSP_facebook.log_mem_1 : 0.03
+IPoIB_WCC_facebook.log_mem_1 : 0.035
+RDMA_PageRank_facebook.log_mem_1 : 0.34
+RDMA_SSSP_facebook.log_mem_1 : 0.34
+RDMA_WCC_facebook.log_mem_1 : 0
