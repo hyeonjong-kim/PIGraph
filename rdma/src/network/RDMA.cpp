@@ -270,7 +270,6 @@ void RDMA::SendMsg(int vertex_id, double value){
     this->send_pos_cnt.find(vertex_id)->second++;
     this->vertex_mu[this->internalHashFunction(vertex_id)].unlock();
   }
-
   else{
     map<int, int>::iterator iter;
     this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)* sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
@@ -289,7 +288,7 @@ void RDMA::SendMsg(int vertex_id, double value){
         iter->second = 0;
       }
     }
-
+    
     this->t->Sendmsg("Q");
   }
 }

@@ -7,7 +7,9 @@ partition_opt=$6
 file_name=$7
 
 #RDMA_PageRank
-nohup ./RDMA_PageRank/PiGraph_RDMA_PageRank -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt 1 > execution_log/RDMA_PageRank_$file_name.log_$host_num 2>&1 &
+./RDMA_PageRank/PiGraph_RDMA_PageRank -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt > execution_log/RDMA_PageRank_$file_name.log_$host_num 
+sleep 5s
+nohup ./RDMA_PageRank/PiGraph_RDMA_PageRank -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt 1 > check_resource_execution_log/RDMA_PageRank_$file_name.log_$host_num 2>&1 &
 pidof PiGraph_RDMA_PageRank > pid
 RDMA_PageRank_pid=`cat pid`
 
@@ -27,7 +29,9 @@ done
 
 
 #RDMA_SSSP
-nohup ./RDMA_SSSP/PiGraph_RDMA_SSSP -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt -d $source_id 1 > execution_log/RDMA_SSSP_$file_name.log_$host_num 2>&1 &
+./RDMA_SSSP/PiGraph_RDMA_SSSP -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt -d $source_id > execution_log/RDMA_SSSP_$file_name.log_$host_num
+sleep 5s
+nohup ./RDMA_SSSP/PiGraph_RDMA_SSSP -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt -d $source_id 1 > check_resource_execution_log/RDMA_SSSP_$file_name.log_$host_num 2>&1 &
 pidof PiGraph_RDMA_SSSP > pid
 RDMA_SSSP_pid=`cat pid`
 
@@ -48,7 +52,9 @@ done
 
 
 #RDMA_WCC
-nohup ./RDMA_WCC/PiGraph_RDMA_WCC -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt 1 > execution_log/RDMA_WCC_$file_name.log_$host_num 2>&1 &
+./RDMA_WCC/PiGraph_RDMA_WCC -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt > execution_log/RDMA_WCC_$file_name.log_$host_num 
+sleep 5s
+nohup ./RDMA_WCC/PiGraph_RDMA_WCC -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt 1 > check_resource_execution_log/RDMA_WCC_$file_name.log_$host_num 2>&1 &
 pidof PiGraph_RDMA_WCC > pid
 RDMA_WCC_pid=`cat pid`
 
@@ -69,7 +75,9 @@ done
 
 #Ethernet_PageRank
 
-nohup ./Ethernet_IPoIB_PageRank/PiGraph_IPoIB_PageRank -m $mutex -f $file -n $host_num -s $superstep -N ethernet -p $partition_opt 1 > execution_log/Ethernet_PageRank_$file_name.log_$host_num 2>&1 &
+./Ethernet_IPoIB_PageRank/PiGraph_IPoIB_PageRank -m $mutex -f $file -n $host_num -s $superstep -N ethernet -p $partition_opt > execution_log/Ethernet_PageRank_$file_name.log_$host_num 
+sleep 5s
+nohup ./Ethernet_IPoIB_PageRank/PiGraph_IPoIB_PageRank -m $mutex -f $file -n $host_num -s $superstep -N ethernet -p $partition_opt 1 > check_resource_execution_log/Ethernet_PageRank_$file_name.log_$host_num 2>&1 &
 pidof PiGraph_IPoIB_PageRank > pid
 Ethernet_PageRank_pid=`cat pid`
 
@@ -90,7 +98,9 @@ done
 
 #Ethernet_SSSP
 
-nohup ./Ethernet_IPoIB_SSSP/PiGraph_IPoIB_SSSP -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt -N ethernet -d 1 1 > execution_log/Ethernet_SSSP_$file_name.log_$host_num 2>&1 &
+./Ethernet_IPoIB_SSSP/PiGraph_IPoIB_SSSP -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt -N ethernet -d 1 > execution_log/Ethernet_SSSP_$file_name.log_$host_num
+sleep 5s
+nohup ./Ethernet_IPoIB_SSSP/PiGraph_IPoIB_SSSP -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt -N ethernet -d 1 1 > check_resource_execution_log/Ethernet_SSSP_$file_name.log_$host_num 2>&1 &
 pidof PiGraph_IPoIB_SSSP > pid
 Ethernet_SSSP_pid=`cat pid`
 
@@ -110,8 +120,9 @@ do
 done
 
 #Ethernet_WCC
-
-nohup ./Ethernet_IPoIB_WCC/PiGraph_IPoIB_WCC -m $mutex -f $file -n $host_num -s $superstep -N ethernet -p $partition_opt   1 > execution_log/Ethernet_WCC_$file_name.log_$host_num 2>&1 &
+./Ethernet_IPoIB_WCC/PiGraph_IPoIB_WCC -m $mutex -f $file -n $host_num -s $superstep -N ethernet -p $partition_opt > execution_log/Ethernet_WCC_$file_name.log_$host_num
+sleep 5s
+nohup ./Ethernet_IPoIB_WCC/PiGraph_IPoIB_WCC -m $mutex -f $file -n $host_num -s $superstep -N ethernet -p $partition_opt   1 > check_resource_execution_log/Ethernet_WCC_$file_name.log_$host_num 2>&1 &
 pidof PiGraph_IPoIB_WCC > pid
 Ethernet_WCC_pid=`cat pid`
 
@@ -131,8 +142,9 @@ do
 done
 
 #IPoIB_PageRank
-
-nohup ./Ethernet_IPoIB_PageRank/PiGraph_IPoIB_PageRank -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt  1 > execution_log/IPoIB_PageRank_$file_name.log_$host_num 2>&1 &
+./Ethernet_IPoIB_PageRank/PiGraph_IPoIB_PageRank -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt > execution_log/IPoIB_PageRank_$file_name.log_$host_num
+sleep 5s
+nohup ./Ethernet_IPoIB_PageRank/PiGraph_IPoIB_PageRank -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt  1 > check_resource_execution_log/IPoIB_PageRank_$file_name.log_$host_num 2>&1 &
 pidof PiGraph_IPoIB_PageRank > pid
 IPoIB_PageRank_pid=`cat pid`
 
@@ -152,8 +164,9 @@ do
 done
 
 #IPoIB_SSSP
-
-nohup ./Ethernet_IPoIB_SSSP/PiGraph_IPoIB_SSSP -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt -d 1 1 > execution_log/IPoIB_SSSP_$file_name.log_$host_num 2>&1 &
+./Ethernet_IPoIB_SSSP/PiGraph_IPoIB_SSSP -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt -d $source_id > execution_log/IPoIB_SSSP_$file_name.log_$host_num
+sleep 5s
+nohup ./Ethernet_IPoIB_SSSP/PiGraph_IPoIB_SSSP -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt -d $source_id 1 > check_resource_execution_log/IPoIB_SSSP_$file_name.log_$host_num 2>&1 &
 pidof PiGraph_IPoIB_SSSP > pid
 IPoIB_SSSP_pid=`cat pid`
 
@@ -173,8 +186,9 @@ do
 done
 
 #IPoIB_WCC
-
-nohup ./Ethernet_IPoIB_WCC/PiGraph_IPoIB_WCC -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt 1 > execution_log/IPoIB_WCC_$file_name.log_$host_num 2>&1 &
+./Ethernet_IPoIB_WCC/PiGraph_IPoIB_WCC -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt > execution_log/IPoIB_WCC_$file_name.log_$host_num
+sleep 5s
+nohup ./Ethernet_IPoIB_WCC/PiGraph_IPoIB_WCC -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt 1 > check_resource_execution_log/IPoIB_WCC_$file_name.log_$host_num 2>&1 &
 pidof PiGraph_IPoIB_WCC > pid
 IPoIB_WCC_pid=`cat pid`
 
