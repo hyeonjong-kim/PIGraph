@@ -1,4 +1,4 @@
-Linux 5.4.0-94-generic (MN) 	2022년 03월 23일 	_x86_64_	(16 CPU)
+Linux 5.4.0-94-generic (MN) 	2022년 03월 24일 	_x86_64_	(16 CPU)
 
-19시 45분 21초   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-19시 45분 22초  1004     32637   6328.00      0.00 2368872   21512   0.03  PiGraph_IPoIB_S
+17시 40분 21초   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+17시 40분 22초  1004     17833   5692.00      0.00 232881492   19816   0.03  PiGraph_IPoIB_S

@@ -2,7 +2,7 @@
 3141592
 3141592
 Read file
-Time of reading file: 0.433706
+Time of reading file: 0.549245
 192.168.1.100 is complete read file
 start graph query
 superstep0
@@ -4056,5 +4056,5 @@ superstep11
 4036 7
 4037 7
 4038 7
-toal query time: 0.456191
-toal time: 0.90187
+toal query time: 0.569975
+toal time: 1.13183

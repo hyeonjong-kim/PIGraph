@@ -1,4 +1,4 @@
-Linux 5.4.0-94-generic (MN) 	2022년 03월 23일 	_x86_64_	(16 CPU)
+Linux 5.4.0-94-generic (MN) 	2022년 03월 24일 	_x86_64_	(16 CPU)
 
-19시 45분 22초   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-19시 45분 23초  1004       524  100.00   90.00    0.00    0.00   26.77     9  PiGraph_IPoIB_W
+17시 40분 23초   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+17시 40분 24초  1004     18169  100.00  100.00    0.00    0.00   21.66    14  PiGraph_IPoIB_W

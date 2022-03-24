@@ -1,71 +1,101 @@
 192.168.0.100 is ready to communication
 Read file
-Time of reading file: 0.35074
+Time of reading file: 0.452668
 Complete reading file all node
 Connect RDMA based on 192.168.0.100
 192.168.0.100 is RDMA connection
 Complete all node RDMA setting
 start graph query
 superstep 0
-88234
+0.0328521
+1.29488e-05
 superstep 1
-88234
+0.0303419
+1.10816e-05
 superstep 2
-88234
+0.0317279
+1.00337e-05
 superstep 3
-88234
+0.031751
+1.39218e-05
 superstep 4
-88234
+0.0367189
+1.90293e-05
 superstep 5
-88234
+0.0310539
+1.50337e-05
 superstep 6
-88234
+0.0322129
+1.3991e-05
 superstep 7
-88234
+0.0323231
+3.5969e-05
 superstep 8
-88234
+0.0418971
+1.609e-05
 superstep 9
-88234
+0.032362
+1.50084e-05
 superstep 10
-88234
+0.031237
+2.89738e-05
 superstep 11
-88234
+0.0346281
+1.79e-05
 superstep 12
-88234
+0.0346509
+1.59972e-05
 superstep 13
-88234
+0.0349209
+1.71023e-05
 superstep 14
-88234
+0.035603
+1.60554e-05
 superstep 15
-88234
+0.0338421
+1.18826e-05
 superstep 16
-88234
+0.049303
+4.10478e-05
 superstep 17
-88234
+0.0307909
+1.50492e-05
 superstep 18
-88234
+0.030109
+1.8092e-05
 superstep 19
-88234
+0.034163
+1.5089e-05
 superstep 20
-88234
+0.032833
+1.79186e-05
 superstep 21
-88234
+0.0358171
+1.50242e-05
 superstep 22
-88234
+0.036197
+1.79814e-05
 superstep 23
-88234
+0.033749
+4.2108e-05
 superstep 24
-88234
+0.0331499
+1.70436e-05
 superstep 25
-88234
+0.031223
+1.49702e-05
 superstep 26
-88234
+0.0307499
+1.88999e-05
 superstep 27
-88234
+0.039634
+1.60397e-05
 superstep 28
-88234
+0.0344729
+1.49894e-05
 superstep 29
-88234
+0.0314321
+1.59518e-05
 0: 3.71379e-05
 1: 3.72289e-05
 2: 3.72289e-05
@@ -4105,5 +4135,5 @@ superstep 29
 4036: 5.62137e-05
 4037: 6.04756e-05
 4038: 0.000381456
-toal query time: 1.2592
-toal time: 1.827
+toal query time: 1.56899
+toal time: 2.25651
