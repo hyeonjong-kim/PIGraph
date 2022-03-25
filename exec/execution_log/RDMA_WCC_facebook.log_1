@@ -1,7 +1,7 @@
 nohup: ignoring input
 192.168.0.100 is ready to communication
 Read file
-Time of reading file: 0.457867
+Time of reading file: 0.480472
 Complete reading file all node
 Connect RDMA based on 192.168.0.100
 192.168.0.100 is RDMA connection
@@ -9,19 +9,12 @@ Complete all node RDMA setting
 start graph query
 superstep 0
 superstep 1
-4032
 superstep 2
-3958
 superstep 3
-3447
 superstep 4
-2323
 superstep 5
-537
 superstep 6
-39
 superstep 7
-0
 0: 1
 1: 48
 2: 1
@@ -4061,5 +4054,5 @@ superstep 7
 4036: 1
 4037: 1
 4038: 1
-toal query time: 0.313706
-toal time: 0.995944
+toal query time: 0.311707
+toal time: 0.998449

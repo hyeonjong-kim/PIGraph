@@ -3,7 +3,7 @@ nohup: ignoring input
 3141592
 3141592
 Read file
-Time of reading file: 0.536723
+Time of reading file: 0.558681
 192.168.1.100 is complete read file
 start graph query
 superstep0
@@ -4057,5 +4057,5 @@ superstep11
 4036 7
 4037 7
 4038 7
-toal query time: 0.581475
-toal time: 1.13188
+toal query time: 0.540436
+toal time: 1.11318

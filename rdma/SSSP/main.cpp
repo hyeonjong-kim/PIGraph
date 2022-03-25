@@ -101,6 +101,8 @@ int main(int argc, const char *argv[]){
 	int superstep = stoi(parser.get<string>("s"));
 	int p_option= stoi(parser.get<string>("p"));
 	int source_id = stoi(parser.get<string>("d"));
+	int wake_thread_num = num_thread/num_host;
+
     char delimiter;
 	
     if(p_option == 0){
@@ -296,18 +298,40 @@ int main(int argc, const char *argv[]){
 		
 		if(i > 0){
 			for(int o = 0; o < num_host; o++){
-				auto f = [rdma, o, &singleshortestpath_set, &wake_mu](){
+				auto f = [rdma, o, &singleshortestpath_set, &wake_mu, wake_thread_num](){
 					string _msg = rdma[o].GetWakeVertex();
 					vector<string> split_msg = split(_msg, '\n');
-					for(int z = 0; z < split_msg.size(); z++){
-						wake_mu[internalHashFunction(stoi(split_msg[z]))].lock();
-						singleshortestpath_set.find(stoi(split_msg[z]))->second.IsWake();
-						wake_mu[internalHashFunction(stoi(split_msg[z]))].unlock();
+					
+					int start = 0;
+					int end_interval = int(split_msg.size()) / int(wake_thread_num);
+					int end = end_interval;
+					thread t[wake_thread_num];
+
+					for (size_t u = 0; u < wake_thread_num; u++){
+						t[u] = thread([&wake_mu, start, end, &singleshortestpath_set, &split_msg](){
+							for (size_t z = start; z < end; z++){
+								wake_mu[internalHashFunction(stoi(split_msg[z]))].lock();
+								singleshortestpath_set.find(stoi(split_msg[z]))->second.IsWake();
+								wake_mu[internalHashFunction(stoi(split_msg[z]))].unlock();
+							}
+						});
+						start = end;
+						if(u+1 == wake_thread_num-1){
+							end = split_msg.size();						
+						}
+						else{
+							end = end + end_interval;
+						}
 					}
+
+					for (size_t u = 0; u < wake_thread_num; u++){
+						t[u].join();
+					}
+					
 					rdma[o].ClearWakeVertex();
 				};
 
-				futures.emplace_back(connectionThread.EnqueueJob(f));				
+				futures.emplace_back(connectionThread.EnqueueJob(f));
 			}
 
 			for (auto& f_ : futures) {

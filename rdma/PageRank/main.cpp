@@ -293,6 +293,7 @@ int main(int argc, const char *argv[]){
 			auto f = [iter](){
 				if(iter->second.GetState())iter->second.Compute();
 			};
+			
 			futures.emplace_back(threadPool.EnqueueJob(f));
 		}
 
