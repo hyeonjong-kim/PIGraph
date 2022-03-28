@@ -282,13 +282,11 @@ int main(int argc, const char *argv[]){
 	}
 	
 	cout<< "start graph query" <<endl;
-	struct timeval start_tmp = {};
-    struct timeval end_tmp = {};
-
+	
 	gettimeofday(&start_query, NULL);
 	for (int i = 0; i < superstep; i++) {
 		cerr << "superstep " << i << endl;
-		gettimeofday(&start_tmp, NULL);
+		
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			auto f = [iter](){
 				if(iter->second.GetState())iter->second.Compute();
@@ -300,29 +298,18 @@ int main(int argc, const char *argv[]){
 		for (auto& f_ : futures) {
     		f_.wait();
   		}
-		gettimeofday(&end_tmp, NULL);
-		double time_tmp = end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0;
-		cerr << time_tmp << endl;
 		
-		gettimeofday(&start_tmp, NULL);
 		for(int o = 0; o < num_host; o++){
 			auto f = [&rdma, o, &t](){
-				rdma[o].SendMsg(2147483647, 0.0);
+				rdma[o].SendMsg(NULL, 0.0);
 			};
 
 			futures.emplace_back(connectionThread.EnqueueJob(f));
 		}
-		gettimeofday(&end_tmp, NULL);
-		time_tmp = end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0;
-		cerr << time_tmp << endl;
-
+		
 		for (auto& f_ : futures) {
     		f_.wait();
   		}
-		
-		for(int o = 0; o < num_host; o++){
-			rdma[o].CheckCommunication();
-		}
 	}
 	gettimeofday(&end_query, NULL);
 

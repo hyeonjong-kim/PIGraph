@@ -108,6 +108,7 @@ int main(int argc, const char *argv[]){
 	int superstep = stoi(parser.get<string>("s"));
 	string network_mode = parser.get<string>("N");
 	int p_option= stoi(parser.get<string>("p"));
+	bool check_alive_worker = true;
 	int msg_processing_thread_num = num_thread/num_host;
 
     char delimiter;
@@ -253,35 +254,40 @@ int main(int argc, const char *argv[]){
 	cerr<< "start graph query" <<endl;
 	gettimeofday(&start_query, NULL);
 	for (int i = 0; i < superstep; i++) {
-		cerr << "superstep " << i << endl;
-		if(CheckHalt(wcc_set))break;
+		cerr << "superstep" << i << endl;
+		
+		if(check_alive_worker){
+			for(iter=wcc_set.begin(); iter!=wcc_set.end();iter++){
+				auto f = [iter](){if(iter->second.GetState())iter->second.Compute();};
+				futures.emplace_back(threadPool.EnqueueJob(f));
+			}
+
+			for (auto& f_ : futures) {
+				f_.wait();
+			}
 			
-		for(iter=wcc_set.begin(); iter!=wcc_set.end();iter++){
-			auto f = [iter](){if(iter->second.GetState())iter->second.Compute();};
-			futures.emplace_back(threadPool.EnqueueJob(f));
+			for(int j = 0; j < num_host; j++){
+				auto f = [&t, j](){
+					
+					t[j].Sendmsg("Q");
+				};
+
+				futures.emplace_back(connectionThread.EnqueueJob(f));
+			}
+
+			for (auto& f_ : futures) {
+				f_.wait();
+			}
 		}
 		
-		for (auto& f_ : futures) {
-    		f_.wait();
-  		}
+		check_alive_worker = false;
 
-		for(int j = 0; j < num_host; j++){
-			auto f = [&t, j](){
-				t[j].Sendmsg("Q");
-			};
-
-			futures.emplace_back(connectionThread.EnqueueJob(f));
-		}
-
-		for (auto& f_ : futures) {
-    		f_.wait();
-  		}
-		
 		for(int j = 0; j < num_host; j++){
 			auto f = [&t, j, &mu, num_host, &wcc_set,&messages, msg_processing_thread_num](){
 				string read_msg = t[j].Readmsg();
 				vector<string> result;
 				result = split(read_msg, '\n');
+
 				int start = 0;
 				int end_interval = int(result.size()) / int(msg_processing_thread_num);
 				int end = end_interval;
@@ -289,7 +295,6 @@ int main(int argc, const char *argv[]){
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
 					t[u] = thread([&result, &wcc_set, &messages, start, end, &mu](){
 						vector<string> msg;
-						//int msg_count = 0;
 						for(int k = start; k < end; k++){
 							msg = split(result[k], ' ');
 							if(msg.size() ==2 && wcc_set.count(stoi(msg[0])) == 1){
@@ -302,11 +307,8 @@ int main(int argc, const char *argv[]){
 								mu[mu_num].unlock();
 							}
 						}
-						//cerr << msg_count << endl;
 					});
-					
 					start = end;
-					
 					if(u+1 == msg_processing_thread_num-1){
 						end = result.size();						
 					}
@@ -314,16 +316,37 @@ int main(int argc, const char *argv[]){
 						end = end + end_interval;
 					}
 				}
+
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
 					t[u].join();
 				}
 			};
+
 			futures.emplace_back(connectionThread.EnqueueJob(f));
 		}
-		
+
 		for (auto& f_ : futures) {
     		f_.wait();
+  		}
+
+		if(CheckHalt(wcc_set)){
+			for (size_t u = 0; u < num_host; u++){
+				t[u].Sendmsg("dead");
+				t[u].Sendmsg("Q");
+			}
 		}
+		else{
+			for (size_t u = 0; u < num_host; u++){
+				t[u].Sendmsg("alive");
+				t[u].Sendmsg("Q");
+			}
+		}
+			
+		for (size_t u = 0; u < num_host; u++){
+			if(t[u].Readmsg().compare("alive") == 0)check_alive_worker = true;
+		}
+
+		if(check_alive_worker == false)break;
 	}
 	gettimeofday(&end_query, NULL);
 	

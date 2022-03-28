@@ -113,6 +113,7 @@ int main(int argc, const char *argv[]){
 	int p_option= stoi(parser.get<string>("p"));
 	int source_id = stoi(parser.get<string>("d"));
 	int msg_processing_thread_num = num_thread/num_host;
+	bool check_alive_worker = true;
     char delimiter;
 
 
@@ -255,30 +256,33 @@ int main(int argc, const char *argv[]){
 	cerr<< "start graph query" <<endl;
 	gettimeofday(&start_query, NULL);
 	for (int i = 0; i < superstep; i++) {
+		cerr << "superstep" << i << endl;
 		
-		if(CheckHalt(sssp_set))break;
+		if(check_alive_worker){
+			for(iter=sssp_set.begin(); iter!=sssp_set.end();iter++){
+				auto f = [iter](){if(iter->second.GetState())iter->second.Compute();};
+				futures.emplace_back(threadPool.EnqueueJob(f));
+			}
 
-		for(iter=sssp_set.begin(); iter!=sssp_set.end();iter++){
-			auto f = [iter](){if(iter->second.GetState())iter->second.Compute();};
-			futures.emplace_back(threadPool.EnqueueJob(f));
+			for (auto& f_ : futures) {
+				f_.wait();
+			}
+			
+			for(int j = 0; j < num_host; j++){
+				auto f = [&t, j](){
+					
+					t[j].Sendmsg("Q");
+				};
+
+				futures.emplace_back(connectionThread.EnqueueJob(f));
+			}
+
+			for (auto& f_ : futures) {
+				f_.wait();
+			}
 		}
-
-		for (auto& f_ : futures) {
-    		f_.wait();
-  		}
 		
-		for(int j = 0; j < num_host; j++){
-			auto f = [&t, j](){
-				
-				t[j].Sendmsg("Q");
-			};
-
-			futures.emplace_back(connectionThread.EnqueueJob(f));
-		}
-
-		for (auto& f_ : futures) {
-    		f_.wait();
-  		}
+		check_alive_worker = false;
 
 		for(int j = 0; j < num_host; j++){
 			auto f = [&t, j, &mu, num_host, &sssp_set,&messages, msg_processing_thread_num](){
@@ -327,7 +331,24 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 
-		cerr << "superstep" << i << endl;
+		if(CheckHalt(sssp_set)){
+			for (size_t u = 0; u < num_host; u++){
+				t[u].Sendmsg("dead");
+				t[u].Sendmsg("Q");
+			}
+		}
+		else{
+			for (size_t u = 0; u < num_host; u++){
+				t[u].Sendmsg("alive");
+				t[u].Sendmsg("Q");
+			}
+		}
+			
+		for (size_t u = 0; u < num_host; u++){
+			if(t[u].Readmsg().compare("alive") == 0)check_alive_worker = true;
+		}
+
+		if(check_alive_worker == false)break;
 	}
 
 	gettimeofday(&end_query, NULL);
@@ -340,9 +361,10 @@ int main(int argc, const char *argv[]){
 	double time_query = end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
 	
 	for(iter=sssp_set.begin(); iter!=sssp_set.end();iter++){
-		cerr << iter->first << " " << iter->second.GetValue() << endl;
+		cerr << iter->first << ": " << iter->second.GetValue() << endl;
 	}
 	
+
 	cerr << "toal query time: " << time_query << endl;
 	cerr << "toal time: " << time << endl;
 	

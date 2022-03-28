@@ -18,7 +18,6 @@ RDMA::RDMA(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _
   this->protection_domain = ibv_alloc_pd(this->context);
   this->cq_size = 0x10;
   this->completion_queue = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
-  //this->completion_queue_recv = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
   this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue);
   this->lid = this->GetLocalId(this->context, PORT);
   this->qp_num = this->GetQueuePairNumber(this->qp);
@@ -40,7 +39,6 @@ void RDMA::setInfo(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector
   this->protection_domain = ibv_alloc_pd(this->context);
   this->cq_size = 0x10;
   this->completion_queue = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
-  //this->completion_queue_recv = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
   this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue);
   this->lid = this->GetLocalId(this->context, PORT);
   this->qp_num = this->GetQueuePairNumber(this->qp);
@@ -260,7 +258,7 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
 }
 
 void RDMA::SendMsg(int vertex_id, double value){
-  if(vertex_id != 2147483647){
+  if(vertex_id != NULL){
     this->vertex_mu[this->internalHashFunction(vertex_id)].lock();
     int start_pos = this->send_pos.find(vertex_id)->second[0];
     int end_pos = this->send_pos.find(vertex_id)->second[1];
@@ -290,11 +288,11 @@ void RDMA::SendMsg(int vertex_id, double value){
     }
     
     this->t->Sendmsg("Q");
+    this->wake_vertex = this->t->Readmsg();
   }
 }
 
 bool RDMA::CheckCommunication(){
-  this->wake_vertex = this->t->Readmsg();
 }
 
 void RDMA::CloseRDMA(){

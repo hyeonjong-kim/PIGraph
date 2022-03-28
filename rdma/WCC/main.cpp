@@ -97,6 +97,7 @@ int main(int argc, const char *argv[]){
 	int superstep = stoi(parser.get<string>("s"));
 	int p_option= stoi(parser.get<string>("p"));
 	int wake_thread_num = num_thread/num_host;
+	bool check_alive_worker = true;
 	
     char delimiter;
 	
@@ -292,8 +293,34 @@ int main(int argc, const char *argv[]){
 	for (int i = 0; i < superstep; i++) {
 		cerr << "superstep " << i << endl;
 		
-		if(i > 0){
+		if(check_alive_worker){
+			for(iter=WeaklyConnectedComponent_set.begin(); iter!=WeaklyConnectedComponent_set.end();iter++){
+				auto f = [iter](){
+					if(iter->second.GetState())iter->second.Compute();
+				};
+				futures.emplace_back(threadPool.EnqueueJob(f));
+			}
+
+			for (auto& f_ : futures) {
+				f_.wait();
+			}
+			
 			for(int o = 0; o < num_host; o++){
+				auto f = [&rdma, o, &t](){
+					rdma[o].SendMsg(NULL, 0.0);
+				};
+
+				futures.emplace_back(connectionThread.EnqueueJob(f));
+			}
+			
+			for (auto& f_ : futures) {
+				f_.wait();
+			}
+		}
+		
+		check_alive_worker = false;
+
+		for(int o = 0; o < num_host; o++){
 				auto f = [rdma, o, &WeaklyConnectedComponent_set, &wake_mu, wake_thread_num](){
 					string _msg = rdma[o].GetWakeVertex();
 					vector<string> split_msg = split(_msg, '\n');
@@ -327,42 +354,31 @@ int main(int argc, const char *argv[]){
 					rdma[o].ClearWakeVertex();
 				};
 
-				futures.emplace_back(connectionThread.EnqueueJob(f));				
+				futures.emplace_back(connectionThread.EnqueueJob(f));
 			}
 
 			for (auto& f_ : futures) {
     			f_.wait();
   			}
 
-			if(CheckHalt(WeaklyConnectedComponent_set))break;
-		}
-		
-		for(iter=WeaklyConnectedComponent_set.begin(); iter!=WeaklyConnectedComponent_set.end();iter++){
-			auto f = [iter](){
-				if(iter->second.GetState())iter->second.Compute();
-			};
-			futures.emplace_back(threadPool.EnqueueJob(f));
-		}
-		
-		for (auto& f_ : futures) {
-    		f_.wait();
-  		}
-		
-		for(int o = 0; o < num_host; o++){
-			auto f = [&rdma, o, &t](){
-				rdma[o].SendMsg(2147483647, 0.0);
-			};
+			if(CheckHalt(WeaklyConnectedComponent_set)){
+				for (size_t u = 0; u < num_host; u++){
+					t[u].Sendmsg("dead");
+					t[u].Sendmsg("Q");
+				}
+			}
+			else{
+				for (size_t u = 0; u < num_host; u++){
+					t[u].Sendmsg("alive");
+					t[u].Sendmsg("Q");
+				}
+			}
+			
+			for (size_t u = 0; u < num_host; u++){
+				if(t[u].Readmsg().compare("alive") == 0)check_alive_worker = true;
+			}
 
-			futures.emplace_back(connectionThread.EnqueueJob(f));
-		}
-		
-		for (auto& f_ : futures) {
-    		f_.wait();
-  		}
-
-		for(int o = 0; o < num_host; o++){
-			rdma[o].CheckCommunication();
-		}
+			if(check_alive_worker == false)break;
 	}
 
 	gettimeofday(&end_query, NULL);
