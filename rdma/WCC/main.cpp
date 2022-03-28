@@ -375,7 +375,9 @@ int main(int argc, const char *argv[]){
 			}
 			
 			for (size_t u = 0; u < num_host; u++){
-				if(t[u].Readmsg().compare("alive") == 0)check_alive_worker = true;
+				string tmp_s = t[u].Readmsg();
+				cerr << tmp_s << endl;
+				if(tmp_s.compare("alive") == 0)check_alive_worker = true;
 			}
 
 			if(check_alive_worker == false)break;
