@@ -95,6 +95,10 @@ string tcp::Readmsg(){
     this->result = "";
     this->read_char= "";
     
+    FILE *fp;
+    fp = fdopen(this->new_socket, "rw");
+    fflush(fp);
+    
     while(result.back() != 'Q'){
         bzero(this->buffer, sizeof(this->buffer));
         this->valread = read(this->new_socket , this->buffer, sizeof(this->buffer)-1);

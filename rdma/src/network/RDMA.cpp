@@ -288,12 +288,13 @@ void RDMA::SendMsg(int vertex_id, double value){
     }
     
     this->t->Sendmsg("Q");
+    this->wake_vertex = this->t->Readmsg();
     
   }
 }
 
 bool RDMA::CheckCommunication(){
-  this->wake_vertex = this->t->Readmsg();
+  
 }
 
 void RDMA::CloseRDMA(){

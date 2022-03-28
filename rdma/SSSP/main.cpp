@@ -323,12 +323,6 @@ int main(int argc, const char *argv[]){
 			}
 
 			cerr << "flag 2 " << endl;
-
-			for (size_t o = 0; o < num_host; o++){
-				rdma[o].CheckCommunication();
-			}
-			
-
 		}
 		
 		check_alive_worker = false;
