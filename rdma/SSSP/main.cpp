@@ -313,8 +313,6 @@ int main(int argc, const char *argv[]){
 				f_.wait();
 			}
 			futures.clear();
-
-			cerr << "flag 1 " << endl;
 			
 			for(int o = 0; o < num_host; o++){
 				auto f = [&rdma, o, &t](){
@@ -328,8 +326,6 @@ int main(int argc, const char *argv[]){
 				f_.wait();
 			}
 			futures.clear();
-			
-			cerr << "flag 2-1 " << endl;
 			
 		}
 		
@@ -376,7 +372,6 @@ int main(int argc, const char *argv[]){
     			f_.wait();
   			}
 			futures.clear();
-			cerr << "flag 3 " << endl;
 			
 			if(CheckHalt(singleshortestpath_set)){
 				for (size_t u = 0; u < num_host; u++){
@@ -390,14 +385,13 @@ int main(int argc, const char *argv[]){
 					t[u].Sendmsg("Q");
 				}
 			}
-			cerr << "flag 4 " << endl;
 
 			for (size_t u = 0; u < num_host; u++){
 				string tmp_s = t[u].Readmsg();
 				cerr << tmp_s << endl;
 				if(tmp_s.compare("alive") == 0)check_alive_worker = true;
 			}
-			cerr << "flag 5 " << endl;
+
 			if(check_alive_worker == false)break;
 	}
 

@@ -152,6 +152,7 @@ int main(int argc, const char *argv[]){
 	for (auto& f_ : futures) {
     	f_.wait();
   	}
+	futures.clear();
 
 	host_file.close();
     
@@ -205,6 +206,7 @@ int main(int argc, const char *argv[]){
 	for (auto& f_ : futures) {
     	f_.wait();
   	}
+	futures.clear();
 
 	cout << "Complete reading file all node" << endl;
 
@@ -249,6 +251,7 @@ int main(int argc, const char *argv[]){
 	for (auto& f_ : futures) {
     	f_.wait();
   	}
+	futures.clear();
 	
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
@@ -266,6 +269,7 @@ int main(int argc, const char *argv[]){
 	for (auto& f_ : futures) {
     	f_.wait();
   	}
+	futures.clear();
 
 	cerr << "Complete all node RDMA setting" << endl;
 
@@ -298,6 +302,7 @@ int main(int argc, const char *argv[]){
 		for (auto& f_ : futures) {
     		f_.wait();
   		}
+		futures.clear();
 		
 		for(int o = 0; o < num_host; o++){
 			auto f = [&rdma, o, &t](){
@@ -310,6 +315,7 @@ int main(int argc, const char *argv[]){
 		for (auto& f_ : futures) {
     		f_.wait();
   		}
+		futures.clear();
 	}
 	gettimeofday(&end_query, NULL);
 
