@@ -310,7 +310,6 @@ int main(int argc, const char *argv[]){
 		for (auto& f_ : futures) {
     		f_.wait();
   		}
-		
 	}
 	gettimeofday(&end_query, NULL);
 

@@ -322,11 +322,10 @@ int main(int argc, const char *argv[]){
 				f_.wait();
 			}
 
-			
-
 			for (size_t o = 0; o < num_host; o++){
 				rdma[o].CheckCommunication();
 			}
+			
 			cerr << "flag 2 " << endl;
 			
 		}
