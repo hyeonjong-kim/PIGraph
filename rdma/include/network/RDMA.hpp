@@ -85,7 +85,7 @@ class RDMA {
         void SendMsg(int vertex_id, double value);
 
 
-        bool CheckCommunication();
+        bool ReadWakeVertex();
         
         void CloseRDMA();
         bool PollCompletion(struct ibv_cq* cq);

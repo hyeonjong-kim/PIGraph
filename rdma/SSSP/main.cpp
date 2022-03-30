@@ -170,6 +170,7 @@ int main(int argc, const char *argv[]){
 	for (auto& f_ : futures) {
     	f_.wait();
   	}
+	futures.clear();
 
 	host_file.close();
     
@@ -226,6 +227,8 @@ int main(int argc, const char *argv[]){
     	f_.wait();
   	}
 
+	futures.clear();
+
 	cerr << "Complete reading file all node" << endl;
 
 	map<int, SingleSourceShortestPath>::iterator iter;
@@ -270,6 +273,8 @@ int main(int argc, const char *argv[]){
     	f_.wait();
   	}
 	
+	futures.clear();
+	
 	
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
@@ -287,8 +292,8 @@ int main(int argc, const char *argv[]){
 	for (auto& f_ : futures) {
     	f_.wait();
   	}
+	futures.clear();
 
-	
 	cerr << "Complete all node RDMA setting" << endl;
 
 	cout<< "start graph query" <<endl;
@@ -307,6 +312,7 @@ int main(int argc, const char *argv[]){
 			for (auto& f_ : futures) {
 				f_.wait();
 			}
+			futures.clear();
 
 			cerr << "flag 1 " << endl;
 			
@@ -321,13 +327,9 @@ int main(int argc, const char *argv[]){
 			for (auto& f_ : futures) {
 				f_.wait();
 			}
-			cerr << "flag 2-1 " << endl;
-
-			for (size_t o = 0; o < num_host; o++){
-				rdma[o].CheckCommunication();
-			}
+			futures.clear();
 			
-			cerr << "flag 2 " << endl;
+			cerr << "flag 2-1 " << endl;
 			
 		}
 		
@@ -373,7 +375,9 @@ int main(int argc, const char *argv[]){
 			for (auto& f_ : futures) {
     			f_.wait();
   			}
+			futures.clear();
 			cerr << "flag 3 " << endl;
+			
 			if(CheckHalt(singleshortestpath_set)){
 				for (size_t u = 0; u < num_host; u++){
 					t[u].Sendmsg("dead");
@@ -407,10 +411,11 @@ int main(int argc, const char *argv[]){
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	double time_query = end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
 	
+	/*
 	for(iter=singleshortestpath_set.begin(); iter!=singleshortestpath_set.end();iter++){
 		cout << iter->first << ": " <<  iter->second.GetValue() << endl;
 	}
-	
+	*/
 
 	cerr << "toal query time: " << time_query << endl;
 	cerr << "toal time: " << time << endl;

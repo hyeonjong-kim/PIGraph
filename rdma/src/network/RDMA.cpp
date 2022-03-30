@@ -292,7 +292,7 @@ void RDMA::SendMsg(int vertex_id, double value){
   }
 }
 
-bool RDMA::CheckCommunication(){
+bool RDMA::ReadWakeVertex(){
   
 }
 
