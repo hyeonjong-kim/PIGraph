@@ -164,6 +164,10 @@ void tcp::SendRDMAInfo(string _msg){
 string tcp::ReadCheckMsg(){
     this->result="";
     char buf[2];
+
+    FILE *fp;
+    fp = fdopen(this->new_socket, "rw");
+    fflush(fp);
     
     while(this->result.back() != '\n'){
         this->valread = read(this->new_socket , buf, sizeof(buf)-1);
