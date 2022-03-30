@@ -275,7 +275,7 @@ void RDMA::SendMsg(int vertex_id, double value){
     
     this->PostRdmaRead(this->qp, this->recv_mr, this->recv_msg, this->buffer_size);
     this->PollCompletion(this->completion_queue);
-  
+    cerr << this->t->GetServerAddr() << endl;
     cerr << "flag 7" << endl;
     this->PollCompletion(this->completion_queue);
     for(iter=this->send_pos_cnt.begin();iter!=this->send_pos_cnt.end();iter++){
