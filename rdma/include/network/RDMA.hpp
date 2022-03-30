@@ -89,6 +89,7 @@ class RDMA {
         
         void CloseRDMA();
         bool PollCompletion(struct ibv_cq* cq);
+        
 
         void SetVertexMu(mutex* _vertex_mu){this->vertex_mu = _vertex_mu;}
         mutex* GetVertexMu(){return this->vertex_mu;}

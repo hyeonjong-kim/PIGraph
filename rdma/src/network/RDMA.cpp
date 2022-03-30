@@ -248,6 +248,20 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
   } while (result == 0);
   if (result > 0 && wc.status == ibv_wc_status::IBV_WC_SUCCESS) {
     // success
+    switch (wc.opcode)
+    {
+    case IBV_WC_RDMA_WRITE:
+      cerr << "send" << endl;
+      break;
+    
+    case IBV_WC_RECV_RDMA_WITH_IMM:
+      cerr << "recv" << endl;
+      break;
+    
+    default:
+      break;
+    }
+    //cerr << wc.opcode << endl;
     return true;
   }
   
@@ -271,8 +285,12 @@ void RDMA::SendMsg(int vertex_id, double value){
   else{
     map<int, int>::iterator iter;
     this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)* sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
-    this->PostRdmaRead(this->qp, this->recv_mr, this->recv_msg, this->buffer_size);
-    this->PollCompletion(this->completion_queue);
+    
+    thread ReadRDMAmsg([this](){
+      this->PostRdmaRead(this->qp, this->recv_mr, this->recv_msg, this->buffer_size);
+      this->PollCompletion(this->completion_queue);
+    });
+    ReadRDMAmsg.join();
     
     this->PollCompletion(this->completion_queue);
     for(iter=this->send_pos_cnt.begin();iter!=this->send_pos_cnt.end();iter++){
@@ -281,14 +299,12 @@ void RDMA::SendMsg(int vertex_id, double value){
         iter->second = 0;
       }
     }
-    
-    this->t->Sendmsg("Q");
-    this->wake_vertex = this->t->Readmsg();
   }
 }
 
 bool RDMA::ReadWakeVertex(){
-  
+  this->t->Sendmsg("Q");
+  this->wake_vertex = this->t->Readmsg();
 }
 
 void RDMA::CloseRDMA(){

@@ -5,6 +5,7 @@
         "*.tcc": "cpp",
         "sstream": "cpp",
         "iosfwd": "cpp",
-        "future": "cpp"
+        "future": "cpp",
+        "thread": "cpp"
     }
 }
