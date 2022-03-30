@@ -100,7 +100,6 @@ string tcp::Readmsg(){
         this->valread = read(this->new_socket , this->buffer, sizeof(this->buffer)-1);
         this->read_char = this->buffer;
         this->result += this->read_char;
-        cout << this->result << endl;
     }
 
     this->result=this->result.substr(0, this->result.length()-1);  
