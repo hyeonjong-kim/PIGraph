@@ -287,11 +287,13 @@ void RDMA::SendMsg(int vertex_id, double value){
     cerr << "flag 8" << endl;
     this->t->Sendmsg("Q");
     cerr << "flag 9" << endl;
+    this->wake_vertex = this->t->Readmsg();
+    cerr << "flag 10" << endl;
   }
 }
 
 bool RDMA::CheckCommunication(){
-  this->wake_vertex = this->t->Readmsg();
+  
 }
 
 void RDMA::CloseRDMA(){

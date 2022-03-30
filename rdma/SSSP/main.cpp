@@ -321,6 +321,7 @@ int main(int argc, const char *argv[]){
 			for (auto& f_ : futures) {
 				f_.wait();
 			}
+			cerr << "flag 2-1 " << endl;
 
 			for (size_t o = 0; o < num_host; o++){
 				rdma[o].CheckCommunication();
