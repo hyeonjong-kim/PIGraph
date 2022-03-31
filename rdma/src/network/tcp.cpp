@@ -163,35 +163,6 @@ string tcp::ReadCheckMsg(){
     return this->result;
 }
 
-void tcp::Sendmsg(string _msg){
-    if(_msg.compare("Q")!=0){
-        this->send_msg += _msg;
-        
-    }
-    else{
-        this->send_msg += _msg;
-        char msg[this->send_msg.size()];
-        strcpy(msg, send_msg.c_str());
-        write(this->client_sock , msg , strlen(msg));
-        this->send_msg="";
-    }
-}
-
-string tcp::Readmsg(){
-    this->result = "";
-    this->read_char= "";
-    
-    while(result.back() != 'Q'){
-        bzero(this->buffer, sizeof(this->buffer));
-        this->valread = read(this->new_socket , this->buffer, sizeof(this->buffer)-1);
-        this->read_char = this->buffer;
-        this->result += this->read_char;
-    }
-
-    this->result=this->result.substr(0, this->result.length()-1);  
-    return this->result;
-}
-
 void tcp::SendAliveMsg(string _msg){
     if(_msg.compare("Q")!=0){
         this->send_msg += _msg;
