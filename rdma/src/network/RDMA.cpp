@@ -260,20 +260,7 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
           fprintf(stderr, "Completion errror\n");
           return false;
       }
-  
-      switch (wc.opcode) {
-      case IBV_WC_RDMA_WRITE:
-          printf("poll send wc: wr_id=0x%016" PRIx64 "\n", wc.wr_id);
-          break;
-
-      case IBV_WC_RECV_RDMA_WITH_IMM:
-          printf("poll recv wc: wr_id=0x%016" PRIx64 "\n", wc.wr_id);
-          break;
-
-      default:
-          return false;
-      }
-
+      
       num_wr--;        
   }
   
@@ -312,13 +299,14 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
 }
 
 void RDMA::SendMsg(int vertex_id, double value){
-  if(vertex_id != NULL){
+  if(vertex_id != numeric_limits<int>::max()){
     this->vertex_mu[this->internalHashFunction(vertex_id)].lock();
     int start_pos = this->send_pos.find(vertex_id)->second[0];
     int end_pos = this->send_pos.find(vertex_id)->second[1];
     int cnt = this->send_pos_cnt.find(vertex_id)->second;
+
     this->send_msg[start_pos + cnt] = value;
-    if(end_pos < start_pos+cnt + 1)this->send_msg[start_pos + cnt + 1] = 0.0;
+    if(end_pos < start_pos+cnt+1)this->send_msg[start_pos+cnt+1] = 0.0;
     this->send_pos_cnt.find(vertex_id)->second++;
     this->vertex_mu[this->internalHashFunction(vertex_id)].unlock();
   }

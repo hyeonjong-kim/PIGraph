@@ -30,7 +30,6 @@ void PageRank::Compute(){
             SendMessageTo(GetOutEdgeIterator().at(i), GetValue()/double(n), rdma_num);
         }
     }
-
     else{
         VoteHalt();
     }

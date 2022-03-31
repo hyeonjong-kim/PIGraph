@@ -160,14 +160,13 @@ int main(int argc, const char *argv[]){
     
 	RDMA *rdma = new RDMA[num_host];
 
-	cout<< "Read file" <<endl;
+	cerr << "Read file" <<endl;
 
 	ifstream data_file(data_file_name);
 	vector<string> split_line;
 	gettimeofday(&start_reading, NULL);
 	while(getline(data_file, read_str)){
         split_line = split(read_str, delimiter);
-
 		if(externalHashFunction(stoi(split_line[0])) == host_num){
 			if(pagerank_set.count(stoi(split_line[0])) == 1){
 				pagerank_set.find(stoi(split_line[0]))->second.AddOutEdge(stoi(split_line[1]));
@@ -291,6 +290,8 @@ int main(int argc, const char *argv[]){
 		edge += iter->second.GetOutEdgeIterator().size();
 	}
 	
+	cerr << vertex_num << endl;
+	cerr << buffer_size << endl;
 	
 	cout<< "start graph query" <<endl;
 	
@@ -306,37 +307,15 @@ int main(int argc, const char *argv[]){
 			
 			futures.emplace_back(threadPool.EnqueueJob(f));
 		}
-
+		
 		for (auto& f_ : futures) {
     		f_.wait();
   		}
 		futures.clear();
-		
-		for(int j = 0; j < num_host; j++){
-			auto f = [&t, j](){
-				t[j].SendCheckmsg();
-				string s = "";
-				while(s.compare("1\n")!= 0){
-					s = t[j].ReadCheckMsg();
-				}
-				cerr <<  t[j].GetServerAddr() << " is completion query" << endl;
-				return;
-			};
-			
-			futures.emplace_back(connectionThread.EnqueueJob(f));
-		}
-
-		for (auto& f_ : futures) {
-			f_.wait();
-		}
-	
-		futures.clear();
-
-		cerr << "flag 1" << endl;
 
 		for(int o = 0; o < num_host; o++){
 			auto f = [&rdma, o, &t](){
-				rdma[o].SendMsg(NULL, 0.0);
+				rdma[o].SendMsg(numeric_limits<int>::max(), 0.0);
 				rdma[o].ReadWakeVertex();
 				rdma[o].ClearWakeVertex();
 				return;
@@ -348,26 +327,6 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 		futures.clear();
-
-		for(int j = 0; j < num_host; j++){
-			auto f = [&t, j](){
-				t[j].SendCheckmsg();
-				string s = "";
-				while(s.compare("1\n")!= 0){
-					s = t[j].ReadCheckMsg();
-				}
-				cerr <<  t[j].GetServerAddr() << " is network query" << endl;
-				return;
-			};
-			
-			futures.emplace_back(connectionThread.EnqueueJob(f));
-		}
-
-		for (auto& f_ : futures) {
-			f_.wait();
-		}
-
-		cerr << "flag 2" << endl;
 	}
 	gettimeofday(&end_query, NULL);
 
