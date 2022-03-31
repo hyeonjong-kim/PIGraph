@@ -83,7 +83,6 @@ void tcp::Sendmsg(string _msg){
     }
     else{
         this->send_msg += _msg;
-        //cout << this->send_msg << endl;
         char msg[this->send_msg.size()];
         strcpy(msg, send_msg.c_str());
         write(this->client_sock , msg , strlen(msg));
@@ -117,10 +116,7 @@ void tcp::SendCheckmsg(){
     string checkMsg = "1\n";
     char msg[checkMsg.size()];
     strcpy(msg, checkMsg.c_str());
-    int remainSize;
-    ioctl(this->client_sock, SIOCOUTQ, &remainSize);
-    cerr << "remain data size: " << remainSize << endl;
-    write(this->client_sock , msg , strlen(msg));
+    write(this->new_socket, msg , strlen(msg));
 }
 
 void tcp::ShutdownSocket(){
@@ -166,14 +162,13 @@ string tcp::ReadCheckMsg(){
     
     while(this->result.back() != '\n'){
         bzero(buf, sizeof(buf));
-        this->valread = read(this->new_socket , buf, sizeof(buf)-1);
+        this->valread = read(this->client_sock , buf, sizeof(buf)-1);
         this->read_char = buf;
 
         if(this->read_char!=""){
             this->result += this->read_char;
         }
-        cerr << this->GetServerAddr() << " " << this->result << endl;
     }
-   
+    
     return this->result;
 }
