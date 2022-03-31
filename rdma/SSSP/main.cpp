@@ -316,7 +316,7 @@ int main(int argc, const char *argv[]){
 			cerr << "flag 9" << endl;
 			for(int o = 0; o < num_host; o++){
 				auto f = [&rdma, o, &t](){
-					rdma[o].SendMsg(NULL, 0.0);
+					rdma[o].SendMsg(numeric_limits<int>::max(), 0.0);
 					rdma[o].ReadWakeVertex();
 				};
 
@@ -375,28 +375,25 @@ int main(int argc, const char *argv[]){
     			f_.wait();
   			}
 			futures.clear();
-			cerr << "flag 11" << endl;
 
 			if(CheckHalt(singleshortestpath_set)){
 				for (size_t u = 0; u < num_host; u++){
-					t[u].Sendmsg("dead");
-					t[u].Sendmsg("Q");
+					t[u].SendAliveMsg("dead");
+					t[u].SendAliveMsg("Q");
 				}
 			}
 			else{
 				for (size_t u = 0; u < num_host; u++){
-					t[u].Sendmsg("alive");
-					t[u].Sendmsg("Q");
+					t[u].SendAliveMsg("alive");
+					t[u].SendAliveMsg("Q");
 				}
 			}
-			cerr << "flag 12" << endl;
 
 			for (size_t u = 0; u < num_host; u++){
-				string tmp_s = t[u].Readmsg();
+				string tmp_s = t[u].ReadAliveMsg();
 				cerr << tmp_s << endl;
 				if(tmp_s.compare("alive") == 0)check_alive_worker = true;
 			}
-			cerr << "flag 13" << endl;
 
 			if(check_alive_worker == false)break;
 	}
@@ -411,11 +408,11 @@ int main(int argc, const char *argv[]){
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	double time_query = end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
 	
-	/*
+	
 	for(iter=singleshortestpath_set.begin(); iter!=singleshortestpath_set.end();iter++){
 		cout << iter->first << ": " <<  iter->second.GetValue() << endl;
 	}
-	*/
+	
 
 	cerr << "toal query time: " << time_query << endl;
 	cerr << "toal time: " << time << endl;

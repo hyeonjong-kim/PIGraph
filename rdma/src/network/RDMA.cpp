@@ -260,42 +260,11 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
           fprintf(stderr, "Completion errror\n");
           return false;
       }
-      
+
       num_wr--;        
   }
   
   return true;
-  /*
-  struct ibv_wc wc;
-  int result;
-  
-  do {
-    result = ibv_poll_cq(cq, 1, &wc);
-  } while (result == 0);
-  if (result > 0 && wc.status == ibv_wc_status::IBV_WC_SUCCESS) {
-    // success
-    switch (wc.opcode)
-    {
-    case IBV_WC_RDMA_WRITE:
-      cerr << "send" << endl;
-      break;
-    
-    case IBV_WC_RECV_RDMA_WITH_IMM:
-      cerr << "recv" << endl;
-      break;
-    
-    default:
-      break;
-    }
-    //cerr << wc.opcode << endl;
-    return true;
-  }
-  
-  // You can identify which WR failed with wc.wr_id.
-  printf("Poll failed with status %s (work request ID: %llu)\n", ibv_wc_status_str(wc.status), wc.wr_id);
-  
-  return false;
-  */
 }
 
 void RDMA::SendMsg(int vertex_id, double value){
