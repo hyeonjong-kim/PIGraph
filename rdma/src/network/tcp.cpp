@@ -8,7 +8,7 @@ tcp::tcp(int socket_num, int port, char _server_addr[], int num_host, int _clien
 }
 
 tcp::~tcp(){
-    
+   
 }
 
 void tcp::SetSocket(){
@@ -117,6 +117,9 @@ void tcp::SendCheckmsg(){
     string checkMsg = "1\n";
     char msg[checkMsg.size()];
     strcpy(msg, checkMsg.c_str());
+    int remainSize;
+    ioctl(this->client_sock, SIOCOUTQ, &remainSize);
+    cerr << "remain data size: " << remainSize << endl;
     write(this->client_sock , msg , strlen(msg));
 }
 
@@ -167,6 +170,7 @@ string tcp::ReadCheckMsg(){
         if(this->read_char!=""){
             this->result += this->read_char;
         }
+        cerr << this->GetServerAddr() << " " << this->result << endl;
     }
    
     return this->result;

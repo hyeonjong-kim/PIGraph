@@ -286,6 +286,7 @@ int main(int argc, const char *argv[]){
 		edge += iter->second.GetOutEdgeIterator().size();
 	}
 	
+	/*
 	cout<< "start graph query" <<endl;
 	
 	gettimeofday(&start_query, NULL);
@@ -339,6 +340,6 @@ int main(int argc, const char *argv[]){
 	
 	cerr << "toal query time: " << time_query << endl;
 	cerr << "toal time: " << time << endl;
-
+	*/
 	return 0;
 }
