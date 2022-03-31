@@ -254,10 +254,15 @@ int main(int argc, const char *argv[]){
   	}
 	futures.clear();
 	
+	for (size_t i = 0; i < num_host; i++)
+	{
+		t[i].SendCheckmsg();
+	}
+	
 	
 	for(int j = 0; j < num_host; j++){
 		auto f = [&t, j](){
-			t[j].SendCheckmsg();
+			
 			string s = "";
 			while(s.compare("1\n")!= 0){
 				s = t[j].ReadCheckMsg();
