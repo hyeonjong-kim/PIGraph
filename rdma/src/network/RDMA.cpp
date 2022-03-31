@@ -174,13 +174,16 @@ void RDMA::ExchangeInfo(){
   this->t->SendRDMAInfo(to_string(this->lid)+"\n");
   this->t->SendRDMAInfo(to_string(this->qp_num)+"\n");
   this->RDMAInfo = this->t->ReadRDMAInfo();
-
+  cerr << "flag 1" << endl;
+  
   map<int,vector<int>>::iterator iter;
   for(iter=this->recv_pos.begin(); iter!=this->recv_pos.end(); iter++){
     this->t->Sendmsg(to_string(iter->first) + " " + to_string(iter->second[0])+ " " + to_string(iter->second[1])+ "\n");
   }
+  
 
   this->t->Sendmsg("Q");
+  cerr << "flag 2" << endl;
 
   this->send_msg = new double[stoi(RDMAInfo.find("len")->second)];
   this->send_mr = RegisterMemoryRegion(this->protection_domain, this->send_msg , stoi(RDMAInfo.find("len")->second) * sizeof(double));
