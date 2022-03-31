@@ -229,13 +229,18 @@ int main(int argc, const char *argv[]){
 	double time_reading = end_reading.tv_sec + end_reading.tv_usec / 1000000.0 - start_reading.tv_sec - start_reading.tv_usec / 1000000.0;
 	cerr << "Time of reading file: " << time_reading << endl;
 
-    for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
-	
+	map<int, SingleSourceShortestPath>::iterator iter;
+	for(iter=sssp_set.begin(); iter!=sssp_set.end();iter++){
+		queue<double> q;
+		messages->insert(make_pair(iter->first, q));
+	}
+
 	for(int j = 0; j < num_host; j++){
 		auto f = [&t, j](){
+			t[j].SendCheckmsg();
 			string s = "";
 			while(s.compare("1\n")!= 0){
-				s = t[j].CheckReadfile();
+				s = t[j].ReadCheckmsg();
 			}
 			cerr <<  t[j].GetServerAddr() << " is complete read file" <<  endl;
 		};
@@ -246,13 +251,7 @@ int main(int argc, const char *argv[]){
 	for (auto& f_ : futures) {
     	f_.wait();
   	}
-
-	map<int, SingleSourceShortestPath>::iterator iter;
-	for(iter=sssp_set.begin(); iter!=sssp_set.end();iter++){
-		queue<double> q;
-		messages->insert(make_pair(iter->first, q));
-	}
-
+	
 	cerr<< "start graph query" <<endl;
 	gettimeofday(&start_query, NULL);
 	for (int i = 0; i < superstep; i++) {
@@ -333,19 +332,19 @@ int main(int argc, const char *argv[]){
 
 		if(CheckHalt(sssp_set)){
 			for (size_t u = 0; u < num_host; u++){
-				t[u].Sendmsg("dead");
-				t[u].Sendmsg("Q");
+				t[u].SendAliveMsg("dead");
+				t[u].SendAliveMsg("Q");
 			}
 		}
 		else{
 			for (size_t u = 0; u < num_host; u++){
-				t[u].Sendmsg("alive");
-				t[u].Sendmsg("Q");
+				t[u].SendAliveMsg("alive");
+				t[u].SendAliveMsg("Q");
 			}
 		}
 			
 		for (size_t u = 0; u < num_host; u++){
-			if(t[u].Readmsg().compare("alive") == 0)check_alive_worker = true;
+			if(t[u].ReadAliveMsg().compare("alive") == 0)check_alive_worker = true;
 		}
 
 		if(check_alive_worker == false)break;

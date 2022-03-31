@@ -363,21 +363,19 @@ int main(int argc, const char *argv[]){
 
 			if(CheckHalt(WeaklyConnectedComponent_set)){
 				for (size_t u = 0; u < num_host; u++){
-					t[u].Sendmsg("dead");
-					t[u].Sendmsg("Q");
+					t[u].SendAliveMsg("dead");
+					t[u].SendAliveMsg("Q");
 				}
 			}
 			else{
 				for (size_t u = 0; u < num_host; u++){
-					t[u].Sendmsg("alive");
-					t[u].Sendmsg("Q");
+					t[u].SendAliveMsg("alive");
+					t[u].SendAliveMsg("Q");
 				}
 			}
 			
 			for (size_t u = 0; u < num_host; u++){
-				string tmp_s = t[u].Readmsg();
-				cerr << tmp_s << endl;
-				if(tmp_s.compare("alive") == 0)check_alive_worker = true;
+				if(t[u].ReadAliveMsg().compare("alive") == 0)check_alive_worker = true;
 			}
 
 			if(check_alive_worker == false)break;

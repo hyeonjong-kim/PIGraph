@@ -124,29 +124,58 @@ void tcp::SetInfo(int socket_num, int port, char _server_addr[], int num_host, i
     this->client_port = _client_port;
 }
 
-string tcp::CheckReadfile(){
-    this->result="";
-
-    this->valread = read(this->new_socket , this->buffer, 1);
-    this->read_char = this->buffer;
-    this->result = this->result+this->read_char;
-
-    while(result.back() != '\n'){
-        this->valread = read(this->new_socket , this->buffer, 1);
-        this->read_char = this->buffer;
-        if(this->read_char!=""){
-            this->result += this->read_char;
-        }
-    }
-
-    return this->result;
-}
-
 void tcp::SendCheckmsg(){
     string checkMsg = "1\n";
     char msg[checkMsg.size()];
     strcpy(msg, checkMsg.c_str());
-    write(this->client_sock , msg , strlen(msg));
+    write(this->new_socket, msg , strlen(msg));
+}
+
+string tcp::ReadCheckmsg(){
+    this->result="";
+    char buf[2];
+    
+    while(this->result.back() != '\n'){
+        bzero(buf, sizeof(buf));
+        this->valread = read(this->client_sock , buf, sizeof(buf)-1);
+        this->read_char = buf;
+
+        if(this->read_char!=""){
+            this->result += this->read_char;
+        }
+    }
+    
+    return this->result;
+}
+
+void tcp::SendAliveMsg(string _msg){
+    if(_msg.compare("Q")!=0){
+        this->send_msg += _msg;
+        
+    }
+    else{
+        this->send_msg += _msg;
+        char msg[this->send_msg.size()];
+        strcpy(msg, send_msg.c_str());
+        write(this->new_socket , msg , strlen(msg));
+        this->send_msg="";
+    }
+}
+
+string tcp::ReadAliveMsg(){
+    this->result = "";
+    this->read_char = "";
+    char buf[2];
+    
+    while(result.back() != 'Q'){
+        bzero(buf, sizeof(buf));
+        this->valread = read(this->client_sock , buf, sizeof(buf)-1);
+        this->read_char = buf;
+        this->result += this->read_char;
+    }
+
+    this->result=this->result.substr(0, this->result.length()-1);  
+    return this->result;
 }
 
 void tcp::ShutdownSocket(){

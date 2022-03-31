@@ -44,8 +44,10 @@ class tcp{
         void ConnectSocket();
         string Readmsg();
         void Sendmsg(string _msg);
-        string CheckReadfile();
+        string ReadCheckmsg();
         void SendCheckmsg();
+        string ReadAliveMsg();
+        void SendAliveMsg(string _msg);
         char* GetServerAddr(){return this->server_addr;}
         void CloseSocket();
         void ShutdownSocket();

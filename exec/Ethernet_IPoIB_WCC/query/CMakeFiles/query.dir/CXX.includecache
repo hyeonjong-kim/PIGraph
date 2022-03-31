@@ -46,11 +46,33 @@ vector
 sstream
 -
 
+/home/hjkim/PiGraph/Ethernet_IPoIB/include/query/PageRank.hpp
+cmath
+-
+Vertex.hpp
+/home/hjkim/PiGraph/Ethernet_IPoIB/include/query/Vertex.hpp
+
+/home/hjkim/PiGraph/Ethernet_IPoIB/include/query/SingleSourceShortestPath.hpp
+cmath
+-
+limits
+-
+Vertex.hpp
+/home/hjkim/PiGraph/Ethernet_IPoIB/include/query/Vertex.hpp
+
 /home/hjkim/PiGraph/Ethernet_IPoIB/include/query/WeaklyConnectedComponent.hpp
 cmath
 -
 Vertex.hpp
 /home/hjkim/PiGraph/Ethernet_IPoIB/include/query/Vertex.hpp
+
+/home/hjkim/PiGraph/Ethernet_IPoIB/src/query/PageRank.cpp
+PageRank.hpp
+/home/hjkim/PiGraph/Ethernet_IPoIB/src/query/PageRank.hpp
+
+/home/hjkim/PiGraph/Ethernet_IPoIB/src/query/SingleSourceShortestPath.cpp
+SingleSourceShortestPath.hpp
+/home/hjkim/PiGraph/Ethernet_IPoIB/src/query/SingleSourceShortestPath.hpp
 
 /home/hjkim/PiGraph/Ethernet_IPoIB/src/query/WeaklyConnectedComponent.cpp
 WeaklyConnectedComponent.hpp
