@@ -164,6 +164,7 @@ string tcp::ReadCheckMsg(){
     char buf[2];
     
     while(this->result.back() != '\n'){
+        bzero(buf, sizeof(buf));
         this->valread = read(this->new_socket , buf, sizeof(buf)-1);
         this->read_char = buf;
 
