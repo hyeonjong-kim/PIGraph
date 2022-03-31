@@ -100,8 +100,8 @@ struct ibv_qp* RDMA::CreateQueuePair(struct ibv_pd* pd, struct ibv_cq* cq) {
   queue_pair_init_attr.sq_sig_all = 1;       
   queue_pair_init_attr.send_cq = cq;         
   queue_pair_init_attr.recv_cq = cq;         
-  queue_pair_init_attr.cap.max_send_wr = 1;  
-  queue_pair_init_attr.cap.max_recv_wr = 1;  
+  queue_pair_init_attr.cap.max_send_wr = 32;  
+  queue_pair_init_attr.cap.max_recv_wr = 32;  
   queue_pair_init_attr.cap.max_send_sge = 1; 
   queue_pair_init_attr.cap.max_recv_sge = 1; 
 
@@ -240,6 +240,45 @@ void RDMA::PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint3
 }
 
 bool RDMA::PollCompletion(struct ibv_cq* cq) {
+  
+  int num_wr = 2;
+  struct ibv_wc wc;
+  int ret;
+
+  while (num_wr > 0) {
+      ret = ibv_poll_cq(cq, 1, &wc);
+
+      if (ret == 0)
+          continue; /* polling */
+
+      if (ret < 0) {
+          fprintf(stderr, "Failure: ibv_poll_cq\n");
+          return false;
+      }
+      
+      if (wc.status != IBV_WC_SUCCESS) {
+          fprintf(stderr, "Completion errror\n");
+          return false;
+      }
+  
+      switch (wc.opcode) {
+      case IBV_WC_RDMA_WRITE:
+          printf("poll send wc: wr_id=0x%016" PRIx64 "\n", wc.wr_id);
+          break;
+
+      case IBV_WC_RECV_RDMA_WITH_IMM:
+          printf("poll recv wc: wr_id=0x%016" PRIx64 "\n", wc.wr_id);
+          break;
+
+      default:
+          return false;
+      }
+
+      num_wr--;        
+  }
+  
+  return true;
+  /*
   struct ibv_wc wc;
   int result;
   
@@ -269,6 +308,7 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
   printf("Poll failed with status %s (work request ID: %llu)\n", ibv_wc_status_str(wc.status), wc.wr_id);
   
   return false;
+  */
 }
 
 void RDMA::SendMsg(int vertex_id, double value){
@@ -289,15 +329,12 @@ void RDMA::SendMsg(int vertex_id, double value){
     
     thread ReadRDMAmsg([this](){
       this->PostRdmaRead(this->qp, this->recv_mr, this->recv_msg, this->buffer_size);
+      this->PollCompletion(this->completion_queue);
     });
     this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)* sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
     
     ReadRDMAmsg.join();
-
-    cerr << "flag 4" << endl;
-
-    this->PollCompletion(this->completion_queue);
-    this->PollCompletion(this->completion_queue);
+    
     cerr << "flag 5" << endl;
 
     for(iter=this->send_pos_cnt.begin();iter!=this->send_pos_cnt.end();iter++){

@@ -152,6 +152,7 @@ int main(int argc, const char *argv[]){
 	for (auto& f_ : futures) {
     	f_.wait();
   	}
+	
 	futures.clear();
 
 	host_file.close();
@@ -309,8 +310,9 @@ int main(int argc, const char *argv[]){
 		for(int o = 0; o < num_host; o++){
 			auto f = [&rdma, o, &t](){
 				rdma[o].SendMsg(NULL, 0.0);
+				rdma[o].ReadWakeVertex();
+				rdma[o].ClearWakeVertex();
 			};
-
 			futures.emplace_back(connectionThread.EnqueueJob(f));
 		}
 		
@@ -334,7 +336,7 @@ int main(int argc, const char *argv[]){
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		cerr << iter->first << ": " <<  iter->second.GetValue() << endl;
 	}
-
+	
 	cerr << "toal query time: " << time_query << endl;
 	cerr << "toal time: " << time << endl;
 
