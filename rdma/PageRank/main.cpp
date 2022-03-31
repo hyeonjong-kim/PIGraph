@@ -144,6 +144,7 @@ int main(int argc, const char *argv[]){
 		t[i].SetSocket();
 		auto f = [&t, i](){
 			t[i].ConnectSocket();
+			return;
 		};
 
 		futures.emplace_back(connectionThread.EnqueueJob(f));
@@ -200,6 +201,7 @@ int main(int argc, const char *argv[]){
 			while(s.compare("1\n")!= 0){
 				s = t[j].ReadCheckMsg();
 			}
+			return;
 		};
 		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
@@ -244,6 +246,7 @@ int main(int argc, const char *argv[]){
 		rdma[i].setInfo(&t[i], recv_msg[i], buffer_size, recv_pos, mu, num_mutex);
 		auto f = [rdma, i, &t](){
 			rdma[i].ConnectRDMA();
+			return;
 		};
 
 		futures.emplace_back(RDMAconnectionThread.EnqueueJob(f));
@@ -268,6 +271,7 @@ int main(int argc, const char *argv[]){
 				s = t[j].ReadCheckMsg();
 			}
 			cerr <<  t[j].GetServerAddr() << " is RDMA connection" << endl;
+			return;
 		};
 		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
@@ -302,6 +306,7 @@ int main(int argc, const char *argv[]){
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			auto f = [iter](){
 				if(iter->second.GetState())iter->second.Compute();
+				return;
 			};
 			
 			futures.emplace_back(threadPool.EnqueueJob(f));
@@ -319,6 +324,7 @@ int main(int argc, const char *argv[]){
 				rdma[o].SendMsg(NULL, 0.0);
 				rdma[o].ReadWakeVertex();
 				rdma[o].ClearWakeVertex();
+				return;
 			};
 			futures.emplace_back(connectionThread.EnqueueJob(f));
 		}

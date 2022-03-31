@@ -44,15 +44,19 @@ class tcp{
         ~tcp();
         void SetSocket();
         void ConnectSocket();
-        string Readmsg();
+        
         void Sendmsg(string _msg);
+        string Readmsg();
+        void SendRDMAInfo(string _msg);
+        map<string, string> ReadRDMAInfo();
         void SendCheckmsg();
-        char* GetServerAddr(){return this->server_addr;}
+        string ReadCheckMsg();
+        void SendAliveMsg(string _msg);
+        string ReadAliveMsg();
+
         void CloseSocket();
         void ShutdownSocket();
-        map<string, string> ReadRDMAInfo();
-        void SendRDMAInfo(string _msg);
-        string ReadCheckMsg();
+        char* GetServerAddr(){return this->server_addr;}
         
 };
 

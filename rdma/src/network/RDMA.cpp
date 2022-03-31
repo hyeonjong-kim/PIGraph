@@ -324,9 +324,7 @@ void RDMA::SendMsg(int vertex_id, double value){
   }
   else{
     map<int, int>::iterator iter;
-  
-    cerr << "flag 3" << endl;
-    
+
     thread ReadRDMAmsg([this](){
       this->PostRdmaRead(this->qp, this->recv_mr, this->recv_msg, this->buffer_size);
       this->PollCompletion(this->completion_queue);
@@ -334,8 +332,6 @@ void RDMA::SendMsg(int vertex_id, double value){
     this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)* sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
     
     ReadRDMAmsg.join();
-    
-    cerr << "flag 5" << endl;
 
     for(iter=this->send_pos_cnt.begin();iter!=this->send_pos_cnt.end();iter++){
       if(iter->second != 0){
@@ -343,15 +339,12 @@ void RDMA::SendMsg(int vertex_id, double value){
         iter->second = 0;
       }
     }
-    cerr << "flag 6" << endl;
   }
 }
 
 bool RDMA::ReadWakeVertex(){
   this->t->Sendmsg("Q");
-  cerr << "flag 7" << endl;
   this->wake_vertex = this->t->Readmsg();
-  cerr << "flag 8" << endl;
 }
 
 void RDMA::CloseRDMA(){
