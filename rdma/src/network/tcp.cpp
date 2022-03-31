@@ -140,6 +140,7 @@ map<string, string> tcp::ReadRDMAInfo(){
         this->result="";
         this->read_char = "";
         while(result.back() != '\n'){
+            bzero(this->buffer, sizeof(this->buffer));
             this->valread = read(this->new_socket , this->buffer, 1);
             this->read_char = this->buffer;
             if(this->read_char!=""){
