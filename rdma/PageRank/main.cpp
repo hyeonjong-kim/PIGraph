@@ -256,16 +256,11 @@ int main(int argc, const char *argv[]){
     	f_.wait();
   	}
 	futures.clear();
-	
-	for (size_t i = 0; i < num_host; i++)
-	{
-		t[i].SendCheckmsg();
-	}
-	
-	
+
+
 	for(int j = 0; j < num_host; j++){
 		auto f = [&t, j](){
-			
+			t[j].SendCheckmsg();
 			string s = "";
 			while(s.compare("1\n")!= 0){
 				s = t[j].ReadCheckMsg();
@@ -317,6 +312,26 @@ int main(int argc, const char *argv[]){
   		}
 		futures.clear();
 		
+		for(int j = 0; j < num_host; j++){
+			auto f = [&t, j](){
+				t[j].SendCheckmsg();
+				string s = "";
+				while(s.compare("1\n")!= 0){
+					s = t[j].ReadCheckMsg();
+				}
+				cerr <<  t[j].GetServerAddr() << " is completion query" << endl;
+				return;
+			};
+			
+			futures.emplace_back(connectionThread.EnqueueJob(f));
+		}
+
+		for (auto& f_ : futures) {
+			f_.wait();
+		}
+	
+		futures.clear();
+
 		cerr << "flag 1" << endl;
 
 		for(int o = 0; o < num_host; o++){
@@ -333,6 +348,24 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 		futures.clear();
+
+		for(int j = 0; j < num_host; j++){
+			auto f = [&t, j](){
+				t[j].SendCheckmsg();
+				string s = "";
+				while(s.compare("1\n")!= 0){
+					s = t[j].ReadCheckMsg();
+				}
+				cerr <<  t[j].GetServerAddr() << " is network query" << endl;
+				return;
+			};
+			
+			futures.emplace_back(connectionThread.EnqueueJob(f));
+		}
+
+		for (auto& f_ : futures) {
+			f_.wait();
+		}
 
 		cerr << "flag 2" << endl;
 	}
