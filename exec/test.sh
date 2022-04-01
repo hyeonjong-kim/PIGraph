@@ -27,6 +27,7 @@ do
     fi
 done
 
+sleep 3s
 
 #RDMA_SSSP
 nohup ./RDMA_SSSP/PiGraph_RDMA_SSSP -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt -d $source_id 1 > execution_log/RDMA_SSSP_$file_name.log_$host_num 2>&1
@@ -50,6 +51,7 @@ do
 
 done
 
+sleep 3s
 
 #RDMA_WCC
 nohup ./RDMA_WCC/PiGraph_RDMA_WCC -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt 1 > execution_log/RDMA_WCC_$file_name.log_$host_num 2>&1
@@ -72,6 +74,8 @@ do
     fi
     
 done
+
+sleep 3s
 
 #Ethernet_PageRank
 
@@ -96,6 +100,8 @@ do
     
 done
 
+sleep 3s
+
 #Ethernet_SSSP
 
 nohup ./Ethernet_IPoIB_SSSP/PiGraph_IPoIB_SSSP -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt -N ethernet -d $source_id 1 > execution_log/Ethernet_SSSP_$file_name.log_$host_num 2>&1
@@ -119,6 +125,8 @@ do
     
 done
 
+sleep 3s
+
 #Ethernet_WCC
 nohup ./Ethernet_IPoIB_WCC/PiGraph_IPoIB_WCC -m $mutex -f $file -n $host_num -s $superstep -N ethernet -p $partition_opt   1 > execution_log/Ethernet_WCC_$file_name.log_$host_num 2>&1
 sleep 5s
@@ -140,6 +148,8 @@ do
     fi
     
 done
+
+sleep 3s
 
 #IPoIB_PageRank
 nohup ./Ethernet_IPoIB_PageRank/PiGraph_IPoIB_PageRank -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt  1 > execution_log/IPoIB_PageRank_$file_name.log_$host_num 2>&1
@@ -163,6 +173,8 @@ do
     
 done
 
+sleep 3s
+
 #IPoIB_SSSP
 nohup ./Ethernet_IPoIB_SSSP/PiGraph_IPoIB_SSSP -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt -d $source_id 1 > execution_log/IPoIB_SSSP_$file_name.log_$host_num 2>&1
 sleep 5s
@@ -184,6 +196,8 @@ do
     fi
     
 done
+
+sleep 3s
 
 #IPoIB_WCC
 nohup ./Ethernet_IPoIB_WCC/PiGraph_IPoIB_WCC -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt 1 > execution_log/IPoIB_WCC_$file_name.log_$host_num 2>&1
