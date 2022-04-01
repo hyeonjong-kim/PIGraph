@@ -1,102 +1,44 @@
 nohup: ignoring input
 192.168.0.100 is ready to communication
 Read file
-Time of reading file: 0.352873
+Time of reading file: 0.322419
 Complete reading file all node
 Connect RDMA based on 192.168.0.100
 192.168.0.100 is RDMA connection
 Complete all node RDMA setting
+4039
+88234
 start graph query
 superstep 0
-0.0282799
-9.96545e-06
 superstep 1
-0.024442
-1.00044e-05
 superstep 2
-0.024747
-1.01121e-05
 superstep 3
-0.0259141
-1.00606e-05
 superstep 4
-0.026311
-1.31003e-05
 superstep 5
-0.024619
-1.30258e-05
 superstep 6
-0.0240001
-2.10123e-05
 superstep 7
-0.02753
-1.69293e-05
 superstep 8
-0.028832
-1.39279e-05
 superstep 9
-0.023747
-2.30407e-05
 superstep 10
-0.023877
-1.20433e-05
 superstep 11
-0.0243649
-1.2899e-05
 superstep 12
-0.023683
-1.39075e-05
 superstep 13
-0.0239111
-2.10626e-05
 superstep 14
-0.023823
-1.19214e-05
 superstep 15
-0.025544
-1.19311e-05
 superstep 16
-0.0287181
-1.30646e-05
 superstep 17
-0.024329
-1.39002e-05
 superstep 18
-0.023915
-1.2917e-05
 superstep 19
-0.023824
-1.10105e-05
 superstep 20
-0.02438
-1.41177e-05
 superstep 21
-0.0239451
-1.19209e-05
 superstep 22
-0.0269891
-1.19136e-05
 superstep 23
-0.0243731
-1.40751e-05
 superstep 24
-0.024447
-1.79439e-05
 superstep 25
-0.0243809
-1.8016e-05
 superstep 26
-0.0247181
-1.40266e-05
 superstep 27
-0.0250329
-1.20301e-05
 superstep 28
-0.0241791
-1.29812e-05
 superstep 29
-0.024395
-1.30592e-05
 0: 3.71379e-05
 1: 3.72289e-05
 2: 3.72289e-05
@@ -4136,5 +4078,5 @@ superstep 29
 4036: 5.62137e-05
 4037: 6.04756e-05
 4038: 0.000381456
-toal query time: 1.08707
-toal time: 1.65298
+toal query time: 1.08347
+toal time: 1.94631

@@ -253,7 +253,7 @@ int main(int argc, const char *argv[]){
 	cerr<< "start graph query" <<endl;
 	gettimeofday(&start_query, NULL);
 	for (int i = 0; i < superstep; i++) {
-		cerr << "superstep" << i << endl;
+		cerr << "superstep " << i << endl;
 		
 		if(check_alive_worker){
 			for(iter=wcc_set.begin(); iter!=wcc_set.end();iter++){

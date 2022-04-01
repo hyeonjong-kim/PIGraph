@@ -313,7 +313,7 @@ int main(int argc, const char *argv[]){
 				f_.wait();
 			}
 			futures.clear();
-			cerr << "flag 9" << endl;
+			
 			for(int o = 0; o < num_host; o++){
 				auto f = [&rdma, o, &t](){
 					rdma[o].SendMsg(numeric_limits<int>::max(), 0.0);
@@ -327,9 +327,6 @@ int main(int argc, const char *argv[]){
 				f_.wait();
 			}
 			futures.clear();
-			cerr << "flag 10" << endl;
-
-			
 		}
 		
 		check_alive_worker = false;

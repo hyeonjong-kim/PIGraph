@@ -307,7 +307,8 @@ int main(int argc, const char *argv[]){
 			
 			for(int o = 0; o < num_host; o++){
 				auto f = [&rdma, o, &t](){
-					rdma[o].SendMsg(NULL, 0.0);
+					rdma[o].SendMsg(numeric_limits<int>::max(), 0.0);
+					rdma[o].ReadWakeVertex();
 				};
 
 				futures.emplace_back(connectionThread.EnqueueJob(f));

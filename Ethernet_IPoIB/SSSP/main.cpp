@@ -359,6 +359,7 @@ int main(int argc, const char *argv[]){
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	double time_query = end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
 	
+	
 	for(iter=sssp_set.begin(); iter!=sssp_set.end();iter++){
 		cerr << iter->first << ": " << iter->second.GetValue() << endl;
 	}

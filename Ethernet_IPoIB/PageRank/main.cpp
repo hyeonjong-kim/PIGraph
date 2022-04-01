@@ -247,6 +247,8 @@ int main(int argc, const char *argv[]){
 	cerr<< "start graph query" <<endl;
 	gettimeofday(&start_query, NULL);
 	for (int i = 0; i < superstep; i++) {
+		cerr << "supertstep " << i <<  endl;
+		
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			auto f = [iter](){iter->second.Compute();};
 			futures.emplace_back(threadPool.EnqueueJob(f));
