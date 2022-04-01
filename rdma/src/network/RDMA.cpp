@@ -182,7 +182,7 @@ void RDMA::ExchangeInfo(){
   
   this->t->Sendmsg("Q");
 
-  this->send_msg = new double[stoi(RDMAInfo.find("len")->second)];
+  this->send_msg = new double[stoi(RDMAInfo.find("len")->second)]{0.0,};
   this->send_mr = RegisterMemoryRegion(this->protection_domain, this->send_msg , stoi(RDMAInfo.find("len")->second) * sizeof(double));
 
   string result = this->t->Readmsg();
@@ -286,6 +286,7 @@ void RDMA::SendMsg(int vertex_id, double value){
       this->PostRdmaRead(this->qp, this->recv_mr, this->recv_msg, this->buffer_size);
       this->PollCompletion(this->completion_queue);
     });
+    
     this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)* sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
     
     ReadRDMAmsg.join();

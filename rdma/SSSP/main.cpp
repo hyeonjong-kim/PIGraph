@@ -205,6 +205,7 @@ int main(int argc, const char *argv[]){
 			}
 		}
 	}
+	
 	gettimeofday(&end_reading, NULL);
 	data_file.close();
 	

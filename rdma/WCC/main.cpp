@@ -392,12 +392,14 @@ int main(int argc, const char *argv[]){
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	double time_query = end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
 
-	
+	map<double, int> check_wcc_count;
+
 	for(iter=WeaklyConnectedComponent_set.begin(); iter!=WeaklyConnectedComponent_set.end();iter++){
 		cerr << iter->first << ": " <<  iter->second.GetValue() << endl;
+		if(check_wcc_count.count(iter->second.GetValue()) != 1)check_wcc_count.insert(pair<double,int>(iter->second.GetValue(), 1));
 	}
 	
-
+	cerr << "numbers of WCC: " << check_wcc_count.size() << endl;
 	cerr << "toal query time: " << time_query << endl;
 	cerr << "toal time: " << time << endl;
 
