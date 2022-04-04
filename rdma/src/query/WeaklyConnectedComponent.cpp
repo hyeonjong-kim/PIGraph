@@ -40,7 +40,7 @@ void WeaklyConnectedComponent::Compute(){
 
     for(int i = 0; i < GetExternalBucket(); i++){    
         for(int j = this->begin_pos; j < this->end_pos; j++){
-            if(GetMsgQue()[i][j] == 0.0)break;
+            if(GetMsgQue()[i][j] == numeric_limits<double>::max())break;
             double candidateComponent = GetMsgQue()[i][j];
             if(candidateComponent < currentComponent){
                currentComponent = candidateComponent;

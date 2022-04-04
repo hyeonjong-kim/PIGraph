@@ -82,7 +82,7 @@ class RDMA {
         
         void PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length, string r_addr, string r_key);
         void PostRdmaRead(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length);
-        void SendMsg(int vertex_id, double value);
+        void SendMsg(string vertex_id, double value);
 
 
         bool ReadWakeVertex();
