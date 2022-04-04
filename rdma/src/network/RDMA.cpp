@@ -182,7 +182,7 @@ void RDMA::ExchangeInfo(){
   
   this->t->Sendmsg("Q");
 
-  this->send_msg = new double[stoi(RDMAInfo.find("len")->second)]{0.0,};
+  this->send_msg = new double[stoi(RDMAInfo.find("len")->second)]{numeric_limits<double>::max(),};
   this->send_mr = RegisterMemoryRegion(this->protection_domain, this->send_msg , stoi(RDMAInfo.find("len")->second) * sizeof(double));
 
   string result = this->t->Readmsg();
