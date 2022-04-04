@@ -330,6 +330,9 @@ int main(int argc, const char *argv[]){
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		cerr << iter->first << ": " << iter->second.GetValue() << endl;
 	}
+
+
+	
 	
 	cerr << "toal query time: " << time_query << endl;
 	cerr << "toal time: " << time << endl;

@@ -67,23 +67,18 @@ void tcp::ConnectSocket(){
             exit(EXIT_FAILURE);
         }
         else{
-            //cout << "Server Connection success" << endl;
+           
         }
     }, ref(this->new_socket), ref(this->server_socket), ref(this->address), ref(this->addrlen));
     
     thread connect_client([](int& sock, struct sockaddr_in& serv_addr){
         while(connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0){
-           //cout << "Wait connection" << endl;
+          
         }
-        //cout << "Clinet Connection success" << endl;
     }, ref(this->client_sock), ref(this->serv_addr));
 
     connect_server.join();
     connect_client.join();
-    
-    cout << this->server_addr << endl;
-    cout << this->client_port << endl;
-    cout << this->port << endl;
 }
 
 void tcp::Sendmsg(string _msg){

@@ -275,7 +275,7 @@ void RDMA::SendMsg(int vertex_id, double value){
     int cnt = this->send_pos_cnt.find(vertex_id)->second;
 
     this->send_msg[start_pos + cnt] = value;
-    if(end_pos < start_pos+cnt+1)this->send_msg[start_pos+cnt+1] = 0.0;
+    if(end_pos > start_pos+cnt+1)this->send_msg[start_pos+cnt+1] = 0.0;
     this->send_pos_cnt.find(vertex_id)->second++;
     this->vertex_mu[this->internalHashFunction(vertex_id)].unlock();
   }

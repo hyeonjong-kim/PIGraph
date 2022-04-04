@@ -54,7 +54,7 @@ void WeaklyConnectedComponent::Compute(){
         const int n = GetOutEdgeIterator().size();
         for(vector<double>::size_type i = 0; i < n; i++){
             int rdma_num = externalHashFunction(GetOutEdgeIterator().at(i));
-            SendMessageTo(GetOutEdgeIterator().at(i), currentComponent, rdma_num);
+            SendMessageTo(GetOutEdgeIterator().at(i), GetValue(), rdma_num);
         }
     }
     
