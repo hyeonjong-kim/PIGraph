@@ -286,7 +286,7 @@ void RDMA::SendMsg(string vertex_id, double value){
   }
   else{
     map<int, int>::iterator iter;
-
+    
     thread ReadRDMAmsg([this](){
       this->PostRdmaRead(this->qp, this->recv_mr, this->recv_msg, this->buffer_size);
       this->PollCompletion(this->completion_queue);
