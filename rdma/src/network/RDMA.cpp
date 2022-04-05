@@ -185,9 +185,9 @@ void RDMA::ExchangeInfo(){
   //fill_n(this->recv_msg, stoi(RDMAInfo.find("len")->second), numeric_limits<double>::max());
   for (size_t i = 0; i < stoi(RDMAInfo.find("len")->second); i++)
   {
-    this->send_msg[i] = numeric_limits<double>::max();
+    this->send_msg[i] = 1.79769e+308;
   }
-  
+
   this->send_mr = RegisterMemoryRegion(this->protection_domain, this->send_msg , stoi(RDMAInfo.find("len")->second) * sizeof(double));
 
   string result = this->t->Readmsg();
@@ -197,9 +197,9 @@ void RDMA::ExchangeInfo(){
     value_split = split(msg_split[k], ' ');
     if(value_split.size() == 3 && this->send_pos.count(stoi(value_split[0]))==0){
       vector<int> pos;
-		  pos.push_back(stoi(value_split[1]));
-		  pos.push_back(stoi(value_split[2]));
-		  this->send_pos.insert(make_pair(stoi(value_split[0]), pos));
+      pos.push_back(stoi(value_split[1]));
+      pos.push_back(stoi(value_split[2]));
+      this->send_pos.insert(make_pair(stoi(value_split[0]), pos));
       this->send_pos_cnt.insert(make_pair(stoi(value_split[0]), 0));
     }
   }
@@ -280,7 +280,7 @@ void RDMA::SendMsg(string vertex_id, double value){
     int cnt = this->send_pos_cnt.find(stoi(vertex_id))->second;
 
     this->send_msg[start_pos + cnt] = value;
-    if(end_pos > start_pos+cnt+1)this->send_msg[start_pos+cnt+1] = numeric_limits<double>::max();
+    if(end_pos > start_pos+cnt+1)this->send_msg[start_pos+cnt+1] = 1.79769e+308;
     this->send_pos_cnt.find(stoi(vertex_id))->second++;
     this->vertex_mu[this->internalHashFunction(stoi(vertex_id))].unlock();
   }
