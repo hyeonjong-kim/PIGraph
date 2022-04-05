@@ -364,8 +364,9 @@ int main(int argc, const char *argv[]){
 		if(check_wcc_count.count(iter->second.GetValue()) != 1)check_wcc_count.insert(pair<double,int>(iter->second.GetValue(), 1));
 	}
 	
-	cerr << "numbers of WCC: " << check_wcc_count.size() << endl;
+	cerr << "Time of reading file: " << time_reading << endl;
 	cerr << "toal query time: " << time_query << endl;
+	cerr << "query + reading + preprocessing: " << time_reading + time_query<< endl;
 	cerr << "toal time: " << time << endl;
 	
 	return 0;

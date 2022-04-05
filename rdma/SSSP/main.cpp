@@ -254,7 +254,7 @@ int main(int argc, const char *argv[]){
 	}
 
 	for(int i = 0; i < num_host; i++){
-		recv_msg[i] = new double[buffer_size]{0.0};
+		recv_msg[i] = new double[buffer_size];
 	}
 
 	for(iter=singleshortestpath_set.begin(); iter!=singleshortestpath_set.end();iter++){
@@ -409,8 +409,9 @@ int main(int argc, const char *argv[]){
 		cout << iter->first << ": " <<  iter->second.GetValue() << endl;
 	}
 	
-
+	cerr << "Time of reading file: " << time_reading << endl;
 	cerr << "toal query time: " << time_query << endl;
+	cerr << "query + reading + preprocessing" << endl;
 	cerr << "toal time: " << time << endl;
 
 	

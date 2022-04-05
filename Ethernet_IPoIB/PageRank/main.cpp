@@ -330,11 +330,10 @@ int main(int argc, const char *argv[]){
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		cerr << iter->first << ": " << iter->second.GetValue() << endl;
 	}
-
-
 	
-	
+	cerr << "Time of reading file: " << time_reading << endl;
 	cerr << "toal query time: " << time_query << endl;
+	cerr << "query + reading + preprocessing: " << time_reading + time_query<< endl;
 	cerr << "toal time: " << time << endl;
 
 	return 0;
