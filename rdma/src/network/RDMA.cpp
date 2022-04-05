@@ -182,11 +182,13 @@ void RDMA::ExchangeInfo(){
   
   this->t->Sendmsg("Q");
   this->send_msg = new double[stoi(RDMAInfo.find("len")->second)];
-  //fill_n(this->recv_msg, stoi(RDMAInfo.find("len")->second), numeric_limits<double>::max());
+  fill_n(this->recv_msg, this->buffer_size, numeric_limits<double>::max());
+  fill_n(this->send_msg, stoi(RDMAInfo.find("len")->second), numeric_limits<double>::max());
+  /*
   for (size_t i = 0; i < stoi(RDMAInfo.find("len")->second); i++){
-    this->send_msg[i] = numeric_limits<int>::max();
+    this->send_msg[i] = numeric_limits<double>::max();
   }
-
+  */
   this->send_mr = RegisterMemoryRegion(this->protection_domain, this->send_msg , stoi(RDMAInfo.find("len")->second) * sizeof(double));
 
   string result = this->t->Readmsg();
@@ -204,6 +206,7 @@ void RDMA::ExchangeInfo(){
   }
   
   this->vertex_num = this->send_pos.size();
+  
 
 }
 
@@ -279,7 +282,7 @@ void RDMA::SendMsg(string vertex_id, double value){
     int cnt = this->send_pos_cnt.find(stoi(vertex_id))->second;
 
     this->send_msg[start_pos + cnt] = value;
-    if(end_pos > start_pos+cnt+1)this->send_msg[start_pos+cnt+1] = numeric_limits<int>::max();
+    if(end_pos > start_pos+cnt+1)this->send_msg[start_pos+cnt+1] = numeric_limits<double>::max();
     this->send_pos_cnt.find(stoi(vertex_id))->second++;
     this->vertex_mu[this->internalHashFunction(stoi(vertex_id))].unlock();
   }

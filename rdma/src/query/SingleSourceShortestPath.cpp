@@ -26,7 +26,7 @@ void SingleSourceShortestPath::Compute(){
 
     for(int i = 0; i < GetExternalBucket(); i++){
         for(int j = this->begin_pos; j < this->end_pos; j++){
-            if(GetMsgQue()[i][j] == numeric_limits<int>::max())break;
+            if(GetMsgQue()[i][j] == numeric_limits<double>::max())break;
             if(GetMsgQue()[i][j] < minDist){
                 minDist = GetMsgQue()[i][j];
             }
