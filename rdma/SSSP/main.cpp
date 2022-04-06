@@ -411,7 +411,7 @@ int main(int argc, const char *argv[]){
 	
 	cerr << "Time of reading file: " << time_reading << endl;
 	cerr << "toal query time: " << time_query << endl;
-	cerr << "query + reading + preprocessing" << endl;
+	cerr << "query + reading + preprocessing: " << time_reading + time_query<< endl;
 	cerr << "toal time: " << time << endl;
 
 	
