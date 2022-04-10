@@ -283,9 +283,21 @@ int main(int argc, const char *argv[]){
 				vector<string> result;
 				result = split(read_msg, '\n');
 				int start = 0;
-				int end_interval = int(result.size()) / int(msg_processing_thread_num);
-				int end = end_interval;
+				//int end_interval = int(result.size()) / int(msg_processing_thread_num);
+				//int end = end_interval;
+				vector<string> msg;
+				for(int k = start; k < result.size(); k++){
+					msg = split(result[k], ' ');
+					if(msg.size() ==2 && pagerank_set.count(stoi(msg[0])) == 1){
+						int mu_num = internalHashFunction(stoi(msg[0]));
+						mu[mu_num].lock();
+						messages->find(stoi(msg[0]))->second.push(stod(msg[1]));
+						mu[mu_num].unlock();
+					}
+				}
+				/*
 				thread t[msg_processing_thread_num];
+				
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
 					t[u] = thread([&result, &pagerank_set, &messages, start, end, &mu](){
 						vector<string> msg;
@@ -307,10 +319,12 @@ int main(int argc, const char *argv[]){
 						end = end + end_interval;
 					}
 				}
+				
 
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
 					t[u].join();
 				}
+				*/
 
 			};
 
@@ -321,6 +335,7 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 		
+
 		gettimeofday(&end_tmp, NULL);
 		cerr << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
 		
