@@ -7,7 +7,9 @@ tcp::tcp(int socket_num, int port, char _server_addr[], int num_host, int _clien
     this->client_port = _client_port;
     this->mu = new mutex[num_mu];
     this->internalBucket = num_mu;
-    this->send_msg.reserve(num_mu);
+    for (size_t i = 0; i < this->internalBucket; i++)this->send_msg.push_back("");
+    
+    
 }
 
 tcp::tcp(){
@@ -26,6 +28,8 @@ void tcp::SetInfo(int socket_num, int port, char _server_addr[], int num_host, i
     this->mu = new mutex[num_mu];
     this->internalBucket = num_mu;
     this->send_msg.reserve(num_mu);
+    for (size_t i = 0; i < this->internalBucket; i++)this->send_msg.push_back("");
+    
 }
 
 void tcp::SetSocket(){

@@ -261,14 +261,9 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 		
-		for(int j = 0; j < num_host; j++){
-			
-				
-				t[j].Sendmsg("Q", 0);
-
-			//futures.emplace_back(connectionThread.EnqueueJob(f));
-		}
-		/*
+	
+		
+		
 		for(int j = 0; j < num_host; j++){
 			auto f = [&t, j](){
 				
@@ -281,7 +276,7 @@ int main(int argc, const char *argv[]){
 		for (auto& f_ : futures) {
     		f_.wait();
   		}
-		*/
+		
 		gettimeofday(&end_tmp, NULL);
 
 		cerr << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
