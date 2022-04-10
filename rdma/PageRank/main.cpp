@@ -49,6 +49,10 @@ int main(int argc, const char *argv[]){
 	struct timeval start_query = {};
     struct timeval end_query = {};
 
+	struct timeval start_tmp = {};
+    struct timeval end_tmp = {};
+
+
 	gettimeofday(&start, NULL);
 	ArgumentParser parser("Pigraph", "Pigraph execution");
 	parser.add_argument()
@@ -298,7 +302,7 @@ int main(int argc, const char *argv[]){
 	gettimeofday(&start_query, NULL);
 	for (int i = 0; i < superstep; i++) {
 		cerr << "superstep " << i << endl;
-		
+		gettimeofday(&start_tmp, NULL);
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			auto f = [iter](){
 				if(iter->second.GetState())iter->second.Compute();
@@ -312,7 +316,9 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 		futures.clear();
-
+		gettimeofday(&end_tmp, NULL);
+		cerr << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
+		gettimeofday(&start_tmp, NULL);
 		for(int o = 0; o < num_host; o++){
 			auto f = [&rdma, o, &t](){
 				rdma[o].SendMsg("Q", 0.0);
@@ -327,6 +333,8 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 		futures.clear();
+		gettimeofday(&end_tmp, NULL);
+		cerr << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
 	}
 	gettimeofday(&end_query, NULL);
 
