@@ -1,10 +1,13 @@
 #include "tcp.hpp"
 
-tcp::tcp(int socket_num, int port, char _server_addr[], int num_host, int _client_port){
+tcp::tcp(int socket_num, int port, char _server_addr[], int num_host, int _client_port, int num_mu){
     this->port = port + socket_num;
     this->server_addr = _server_addr;
     this->num_host = num_host;
     this->client_port = _client_port;
+    this->mu = new mutex[num_mu];
+    this->internalBucket = num_mu;
+    this->send_msg.reserve(num_mu);
 }
 
 tcp::tcp(){
@@ -13,6 +16,16 @@ tcp::tcp(){
 
 tcp::~tcp(){
     
+}
+
+void tcp::SetInfo(int socket_num, int port, char _server_addr[], int num_host, int _client_port, int num_mu){
+    this->port = port + socket_num;
+    this->server_addr = _server_addr;
+    this->num_host = num_host;
+    this->client_port = _client_port;
+    this->mu = new mutex[num_mu];
+    this->internalBucket = num_mu;
+    this->send_msg.reserve(num_mu);
 }
 
 void tcp::SetSocket(){
@@ -81,18 +94,25 @@ void tcp::ConnectSocket(){
     connect_client.join();
 }
 
-void tcp::Sendmsg(string _msg){
+void tcp::Sendmsg(string _msg, int vertex_id){
     if(_msg.compare("Q")!=0){
-        this->send_msg += _msg;
-       
+        this->mu[this->internalHashFunction(vertex_id)].lock();
+        this->send_msg[internalHashFunction(vertex_id)] += _msg;
+        this->mu[this->internalHashFunction(vertex_id)].unlock();
     }
     else{
-        this->send_msg += _msg;
-       
-        char msg[this->send_msg.size()];
-        strcpy(msg, send_msg.c_str());
+        this->combine_send_msg = "";
+
+        for (size_t i = 0; i < this->internalBucket; i++)
+        {
+            this->combine_send_msg += this->send_msg[i];
+            this->send_msg[i] = "";
+        }
+        this->combine_send_msg += _msg;
+        char msg[this->combine_send_msg.size()];
+        strcpy(msg, this->combine_send_msg.c_str());
         write(this->client_sock , msg , strlen(msg));
-        this->send_msg="";
+        this->combine_send_msg = "";
     }
 }
 
@@ -112,12 +132,7 @@ string tcp::Readmsg(){
     return this->result;
 }
 
-void tcp::SetInfo(int socket_num, int port, char _server_addr[], int num_host, int _client_port){
-    this->port = port + socket_num;
-    this->server_addr = _server_addr;
-    this->num_host = num_host;
-    this->client_port = _client_port;
-}
+
 
 void tcp::SendCheckmsg(){
     string checkMsg = "1\n";
@@ -145,15 +160,15 @@ string tcp::ReadCheckmsg(){
 
 void tcp::SendAliveMsg(string _msg){
     if(_msg.compare("Q")!=0){
-        this->send_msg += _msg;
+        this->alive_msg += _msg;
         
     }
     else{
-        this->send_msg += _msg;
-        char msg[this->send_msg.size()];
-        strcpy(msg, send_msg.c_str());
+        this->alive_msg += _msg;
+        char msg[this->alive_msg.size()];
+        strcpy(msg, alive_msg.c_str());
         write(this->new_socket , msg , strlen(msg));
-        this->send_msg="";
+        this->alive_msg="";
     }
 }
 

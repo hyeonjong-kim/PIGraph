@@ -169,7 +169,7 @@ int main(int argc, const char *argv[]){
 		s = buf;
 		s = HostToIp(s);
 		strcpy(server_ip[i], s.c_str());
-		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+hostnum);
+		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+hostnum, num_mutex);
 		t[i].SetSocket();
 		
 		auto f = [&t, i](){t[i].ConnectSocket();};
@@ -264,7 +264,7 @@ int main(int argc, const char *argv[]){
 		for(int j = 0; j < num_host; j++){
 			auto f = [&t, j](){
 				
-				t[j].Sendmsg("Q");
+				t[j].Sendmsg("Q", 0);
 			};
 
 			futures.emplace_back(connectionThread.EnqueueJob(f));

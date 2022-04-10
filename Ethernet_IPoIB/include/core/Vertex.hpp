@@ -103,12 +103,11 @@ Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::~Vertex(){
 
 template<typename VertexValue, typename EdgeValue, typename MessageValue,typename Vertexidx>
 void Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::SendMessageTo(const Vertexidx& dest_vertex, const MessageValue& message, int socket_num){
-    string s1 = to_string(dest_vertex);
-    string s2 = to_string(message);
-    string s3 = s1 + " " + s2 + "\n";
-    this->socket_mu[socket_num].lock();
-    this->msgThread[socket_num].Sendmsg(s3);
-    this->socket_mu[socket_num].unlock();
+    
+    //cerr << dest_vertex << endl;
+    //this->socket_mu[socket_num].lock();
+    this->msgThread[socket_num].Sendmsg(to_string(dest_vertex) + " " + to_string(message) + "\n", dest_vertex);
+    //this->socket_mu[socket_num].unlock();
 }
 
 #endif

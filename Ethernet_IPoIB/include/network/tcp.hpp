@@ -13,6 +13,8 @@
 #include <chrono>
 #include <vector>
 #include <sstream>
+#include <mutex>
+#include <vector>
 
 using namespace std;
 
@@ -32,18 +34,23 @@ class tcp{
         int client_port;
         string result;
         string read_char;
-        string send_msg ="";
+        vector<string> send_msg;
+        string alive_msg;
         int send_msg_size;
+        mutex* mu;
+        int internalBucket;
+        string combine_send_msg;
+        
 
     public:
-        tcp(int socket_num, int port, char _server_addr[], int num_host, int _client_port);
+        tcp(int socket_num, int port, char _server_addr[], int num_host, int _client_port, int num_mu);
         tcp();
-        void SetInfo(int socket_num, int port, char _server_addr[], int num_host, int _client_port);
+        void SetInfo(int socket_num, int port, char _server_addr[], int num_host, int _client_port, int num_mu);
         ~tcp();
         void SetSocket();
         void ConnectSocket();
         string Readmsg();
-        void Sendmsg(string _msg);
+        void Sendmsg(string _msg, int vertex_id);
         string ReadCheckmsg();
         void SendCheckmsg();
         string ReadAliveMsg();
@@ -51,6 +58,7 @@ class tcp{
         char* GetServerAddr(){return this->server_addr;}
         void CloseSocket();
         void ShutdownSocket();
+        int internalHashFunction(int x){return (x % this->internalBucket);}
 };
 
 #endif

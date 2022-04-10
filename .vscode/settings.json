@@ -6,6 +6,7 @@
         "sstream": "cpp",
         "iosfwd": "cpp",
         "future": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "mutex": "cpp"
     }
 }
