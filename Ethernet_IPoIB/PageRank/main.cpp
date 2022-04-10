@@ -276,15 +276,16 @@ int main(int argc, const char *argv[]){
 
 		gettimeofday(&end_tmp, NULL);
 		cerr << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
-		gettimeofday(&start_query, NULL);
+		gettimeofday(&start_tmp, NULL);
 		for(int j = 0; j < num_host; j++){
 			auto f = [&t, j, &mu, num_host, &pagerank_set,&messages, msg_processing_thread_num](){
 				string read_msg = t[j].Readmsg();
 				vector<string> result;
 				result = split(read_msg, '\n');
 				int start = 0;
-				//int end_interval = int(result.size()) / int(msg_processing_thread_num);
-				//int end = end_interval;
+				int end_interval = int(result.size()) / int(msg_processing_thread_num);
+				int end = end_interval;
+				/*
 				vector<string> msg;
 				for(int k = start; k < result.size(); k++){
 					msg = split(result[k], ' ');
@@ -295,7 +296,8 @@ int main(int argc, const char *argv[]){
 						mu[mu_num].unlock();
 					}
 				}
-				/*
+				*/
+				
 				thread t[msg_processing_thread_num];
 				
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
@@ -324,7 +326,6 @@ int main(int argc, const char *argv[]){
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
 					t[u].join();
 				}
-				*/
 
 			};
 
