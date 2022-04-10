@@ -39,7 +39,7 @@ class tcp{
         int send_msg_size;
         mutex* mu;
         int internalBucket;
-        string combine_send_msg;
+        string combine_send_msg = "";
         
 
     public:
