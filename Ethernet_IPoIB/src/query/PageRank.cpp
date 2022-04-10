@@ -2,7 +2,7 @@
 
 
 PageRank::PageRank(int vertex_id, int out_edge, int in_edge, map<int, queue<double>>* _messsage_addr, tcp* _t, int host_num, mutex* socketmu):Vertex<double, double, double, int>(vertex_id, out_edge, in_edge, _messsage_addr, _t, host_num, socketmu){
-    SetValue(1.0/GetNumVertices());
+
 }
 
 PageRank::~PageRank(){

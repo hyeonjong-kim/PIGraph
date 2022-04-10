@@ -269,8 +269,8 @@ int main(int argc, const char *argv[]){
 			
 			for(int j = 0; j < num_host; j++){
 				auto f = [&t, j](){
-					
-					t[j].Sendmsg("Q", 0);
+					string end_msg = "Q";
+					t[j].Sendmsg(end_msg, 0);	
 				};
 
 				futures.emplace_back(connectionThread.EnqueueJob(f));

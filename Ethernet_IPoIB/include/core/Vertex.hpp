@@ -106,7 +106,8 @@ void Vertex<VertexValue, EdgeValue, MessageValue, Vertexidx>::SendMessageTo(cons
     
     //cerr << dest_vertex << endl;
     //this->socket_mu[socket_num].lock();
-    this->msgThread[socket_num].Sendmsg(to_string(dest_vertex) + " " + to_string(message) + "\n", dest_vertex);
+    string msg_s = to_string(dest_vertex) + " " + to_string(message) + "\n";
+    this->msgThread[socket_num].Sendmsg(msg_s, dest_vertex);
     //this->socket_mu[socket_num].unlock();
 }
 

@@ -98,7 +98,7 @@ void tcp::ConnectSocket(){
     connect_client.join();
 }
 
-void tcp::Sendmsg(string _msg, int vertex_id){
+void tcp::Sendmsg(string& _msg, int vertex_id){
     if(_msg.compare("Q")!=0){
         this->mu[this->internalHashFunction(vertex_id)].lock();
         this->send_msg[internalHashFunction(vertex_id)] += _msg;

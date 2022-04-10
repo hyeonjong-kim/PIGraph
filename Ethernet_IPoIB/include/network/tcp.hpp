@@ -50,7 +50,7 @@ class tcp{
         void SetSocket();
         void ConnectSocket();
         string Readmsg();
-        void Sendmsg(string _msg, int vertex_id);
+        void Sendmsg(string& _msg, int vertex_id);
         string ReadCheckmsg();
         void SendCheckmsg();
         string ReadAliveMsg();
