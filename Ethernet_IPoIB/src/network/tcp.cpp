@@ -101,17 +101,17 @@ void tcp::ConnectSocket(){
 void tcp::Sendmsg(string& _msg, int vertex_id){
     if(_msg.compare("Q")!=0){
         this->mu[this->internalHashFunction(vertex_id)].lock();
-        this->send_msg[internalHashFunction(vertex_id)] += _msg;
+        this->send_msg[this->internalHashFunction(vertex_id)] += _msg;
         this->mu[this->internalHashFunction(vertex_id)].unlock();
     }
     else{
-        this->combine_send_msg = "";
-
+        
         for (size_t i = 0; i < this->internalBucket; i++)
         {
             this->combine_send_msg += this->send_msg[i];
             this->send_msg[i] = "";
         }
+    
         this->combine_send_msg += _msg;
         char msg[this->combine_send_msg.size()];
         strcpy(msg, this->combine_send_msg.c_str());
