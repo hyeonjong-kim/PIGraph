@@ -7,5 +7,5 @@ add_library(network STATIC ${SRC_FILES})
 target_include_directories(network PUBLIC ../../include/network)
 
 target_link_libraries(network PRIVATE pthread)
-
+add_compile_options(-O3)
 

@@ -6,4 +6,5 @@ add_library(core STATIC ${SRC_FILES})
 
 target_include_directories(core PUBLIC ../../include/core)
 target_link_libraries(core PRIVATE network)
+add_compile_options(-O3)
 #target_compile_options(core PRIVATE -Wall -Werror)

@@ -12,3 +12,4 @@ add_executable (PiGraph_IPoIB_WCC ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
 
 target_link_libraries(PiGraph_IPoIB_WCC core query tools network)
 target_compile_features(PiGraph_IPoIB_WCC PRIVATE cxx_std_17)
+add_compile_options(-O3)

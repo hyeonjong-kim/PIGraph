@@ -252,7 +252,7 @@ int main(int argc, const char *argv[]){
 	gettimeofday(&start_query, NULL);
 	for (int i = 0; i < superstep; i++) {
 		cerr << "supertstep " << i <<  endl;
-		gettimeofday(&start_tmp, NULL);
+
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			auto f = [iter](){iter->second.Compute();};
 			futures.emplace_back(threadPool.EnqueueJob(f));
@@ -276,10 +276,7 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 		futures.clear();
-		gettimeofday(&end_tmp, NULL);
 
-		cerr << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
-		gettimeofday(&start_tmp, NULL);
 		for(int j = 0; j < num_host; j++){
 			auto f = [&t, j, &mu, num_host, &pagerank_set,&messages, msg_processing_thread_num](){
 				string read_msg = t[j].Readmsg();
@@ -312,7 +309,6 @@ int main(int argc, const char *argv[]){
 					}
 				}
 				
-
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
 					t[u].join();
 				}
@@ -326,9 +322,6 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 		futures.clear();
-
-		gettimeofday(&end_tmp, NULL);
-		cerr << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
 		
 	}
 	

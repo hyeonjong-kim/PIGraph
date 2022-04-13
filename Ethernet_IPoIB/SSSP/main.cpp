@@ -35,7 +35,7 @@ int externalHashFunction(int x){
 	return (x % externalBucket);
 }
 
-vector<string> split(string input, char delimiter) {
+vector<string> split(string& input, char delimiter) {
 	vector<string> answer;
     stringstream ss(input);
     string temp;
