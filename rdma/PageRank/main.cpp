@@ -121,6 +121,7 @@ int main(int argc, const char *argv[]){
 		}
 		host_num++;
 	}
+	
 	host_file.close();
 	
 	ThreadPool::ThreadPool threadPool(num_thread);

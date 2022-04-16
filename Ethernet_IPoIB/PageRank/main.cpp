@@ -25,14 +25,58 @@ int externalHashFunction(int x){
 	return (x % externalBucket);
 }
 
-vector<string> split(string& input, char delimiter) {
+vector<string> split_simple(string& input, char delimiter) {
 	vector<string> answer;
-    stringstream ss(input);
+	stringstream ss(input);
     string temp;
 
     while (getline(ss, temp, delimiter)) {
         answer.push_back(temp);
     }
+
+    return answer;
+}
+
+
+vector<vector<string>> split(string& input, char delimiter, int _msg_processing_thread_num) {
+	vector<vector<string>> answer;
+	for (size_t i = 0; i < _msg_processing_thread_num; i++)
+	{
+		vector<string> answer_element;
+		answer.push_back(answer_element);
+	}
+	
+	thread t_[_msg_processing_thread_num];
+	int interval = input.size()/_msg_processing_thread_num;
+	int start = 0;
+	string input_tmp[_msg_processing_thread_num];
+
+	for (size_t i = 0; i < _msg_processing_thread_num; i++){
+		input_tmp[i]= "";
+		input_tmp[i] = input.substr(start, interval);
+
+		if(i < _msg_processing_thread_num-1){
+			while (input_tmp[i].back() != '\n'){
+				input_tmp[i] += input[start+interval];
+				interval++;
+			}
+		}
+
+		t_[i] = thread([&answer, i, &input_tmp, delimiter](){
+			stringstream ss(input_tmp[i]);
+    		string temp;
+    		while (getline(ss, temp, delimiter)) {
+				
+				answer[i].push_back(temp);
+    		}
+		});
+
+		start += interval;
+	}
+
+	for (size_t i = 0; i < _msg_processing_thread_num; i++){
+		t_[i].join();
+	}
 
     return answer;
 }
@@ -185,7 +229,7 @@ int main(int argc, const char *argv[]){
 
 	gettimeofday(&start_reading, NULL);
 	while(getline(data, s)){
-        v = split(s, delimiter);
+        v = split_simple(s, delimiter);
 
 		if(externalHashFunction(stoi(v[0])) == hostnum){
 			if(pagerank_set.count(stoi(v[0])) == 1){
@@ -278,52 +322,27 @@ int main(int argc, const char *argv[]){
 			auto f = [&t, j, &mu, num_host, &pagerank_set,&messages, msg_processing_thread_num](){
 				struct timeval start_tmp  = {};
     			struct timeval end_tmp = {};
-				gettimeofday(&start_tmp, NULL);
+				
 				string read_msg = t[j].Readmsg();
-				gettimeofday(&end_tmp, NULL);
-				cerr << "time 1 : " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
-
-				
-				gettimeofday(&start_tmp, NULL);
-				vector<string> result;
-				result = split(read_msg, '\n');
-				gettimeofday(&end_tmp, NULL);
-				cerr << "time 2 : " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
-				
-				gettimeofday(&start_tmp, NULL);
-				int start = 0;
-				int end_interval = int(result.size()) / int(msg_processing_thread_num);
-				int end = end_interval;
+				vector<vector<string>> result = split(read_msg, '\n', msg_processing_thread_num);
 				thread t[msg_processing_thread_num];
-				gettimeofday(&end_tmp, NULL);
-				cerr << "time 3 : " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
 				
-				gettimeofday(&start_tmp, NULL);
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
-					t[u] = thread([&result, &pagerank_set, &messages, start, end, &mu](){
+					t[u] = thread([&result, &pagerank_set, &messages, &mu, u](){
 						vector<string> msg;
-						for(int k = start; k < end; k++){
-							msg = split(result[k], ' ');
-								int mu_num = internalHashFunction(stoi(msg[0]));
-								mu[mu_num].lock();
-								messages->find(stoi(msg[0]))->second.push(stod(msg[1]));
-								mu[mu_num].unlock();
+						for(int k = 0; k < result[u].size(); k++){
+							msg = split_simple(result[u][k], ' ');
+							int mu_num = internalHashFunction(stoi(msg[0]));
+							mu[mu_num].lock();
+							messages->find(stoi(msg[0]))->second.push(stod(msg[1]));
+							mu[mu_num].unlock();
 						}
 					});
-					start = end;
-					if(u+1 == msg_processing_thread_num-1){
-						end = result.size();						
-					}
-					else{
-						end = end + end_interval;
-					}
 				}
 				
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
 					t[u].join();
 				}
-				gettimeofday(&end_tmp, NULL);
-				cerr << "time 4 : " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
 			};
 
 			futures.emplace_back(connectionThread.EnqueueJob(f));
