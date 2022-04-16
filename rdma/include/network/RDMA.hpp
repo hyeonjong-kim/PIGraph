@@ -58,8 +58,11 @@ class RDMA {
 
         string wake_vertex = "";
 
-    public:
+        struct ibv_comp_channel *channel;
+        void *cq_context = NULL;
 
+
+    public:
         RDMA(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos, mutex* _vertex_mu, int mu_num);
         RDMA();
         ~RDMA();
@@ -67,7 +70,7 @@ class RDMA {
         void setInfo(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _recv_pos, mutex* _vertex_mu, int mu_num);
         
         struct ibv_context* CreateContext();
-        struct ibv_qp* CreateQueuePair(struct ibv_pd* pd, struct ibv_cq* cq);
+        struct ibv_qp* CreateQueuePair(struct ibv_pd* pd, struct ibv_cq* cq, struct ibv_cq* cq_recv);
         struct ibv_mr* RegisterMemoryRegion(struct ibv_pd* pd, void* buffer, size_t size);
 
         bool ChangeQueuePairStateToInit(struct ibv_qp* queue_pair);
@@ -101,7 +104,7 @@ class RDMA {
         string GetWakeVertex(){return this->wake_vertex;}
         void ClearWakeVertex(){this->wake_vertex = "";}
 
-        vector<string> split(string input, char delimiter);
+        vector<string> split(string& input, char delimiter);
 };
 
 #endif

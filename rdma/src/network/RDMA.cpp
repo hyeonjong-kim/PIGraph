@@ -1,6 +1,6 @@
 #include "RDMA.hpp"
 
-vector<string> RDMA::split(string input, char delimiter) {
+vector<string> RDMA::split(string& input, char delimiter) {
 	vector<string> answer;
     stringstream ss(input);
     string temp;
@@ -16,9 +16,13 @@ RDMA::RDMA(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector<int>> _
   this->t = _t;
   this->context = this->CreateContext();
   this->protection_domain = ibv_alloc_pd(this->context);
-  this->cq_size = 0x10;
-  this->completion_queue = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
-  this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue);
+  this->cq_size = 64;
+  this->channel = ibv_create_comp_channel(this->context);
+
+  this->completion_queue = ibv_create_cq(this->context, this->cq_size, this->cq_context, this->channel, 0);
+  this->completion_queue_recv = ibv_create_cq(this->context, this->cq_size, this->cq_context, this->channel, 0);
+
+  this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue, this->completion_queue_recv);
   this->lid = this->GetLocalId(this->context, PORT);
   this->qp_num = this->GetQueuePairNumber(this->qp);
   this->recv_msg = _recv_msg;
@@ -37,9 +41,13 @@ void RDMA::setInfo(tcp* _t, double* _recv_msg, int _buffer_size, map<int, vector
   this->t = _t;
   this->context = this->CreateContext();
   this->protection_domain = ibv_alloc_pd(this->context);
-  this->cq_size = 0x10;
-  this->completion_queue = ibv_create_cq(this->context, this->cq_size, nullptr, nullptr, 0);
-  this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue);
+  this->cq_size = 64;
+  this->channel = ibv_create_comp_channel(this->context);
+  
+  this->completion_queue = ibv_create_cq(this->context, this->cq_size, this->cq_context, this->channel, 0);
+  this->completion_queue_recv = ibv_create_cq(this->context, this->cq_size, this->cq_context, this->channel, 0);
+
+  this-> qp = this->CreateQueuePair(this->protection_domain, this->completion_queue, this->completion_queue_recv);
   this->lid = this->GetLocalId(this->context, PORT);
   this->qp_num = this->GetQueuePairNumber(this->qp);
   this->recv_msg = _recv_msg;
@@ -93,17 +101,18 @@ struct ibv_context* RDMA::CreateContext() {
   return context;
 }
 
-struct ibv_qp* RDMA::CreateQueuePair(struct ibv_pd* pd, struct ibv_cq* cq) {
+struct ibv_qp* RDMA::CreateQueuePair(struct ibv_pd* pd, struct ibv_cq* cq, struct ibv_cq* cq_recv) {
   struct ibv_qp_init_attr queue_pair_init_attr;
   memset(&queue_pair_init_attr, 0, sizeof(queue_pair_init_attr));
   queue_pair_init_attr.qp_type = IBV_QPT_RC;
   queue_pair_init_attr.sq_sig_all = 1;       
   queue_pair_init_attr.send_cq = cq;         
-  queue_pair_init_attr.recv_cq = cq;         
+  queue_pair_init_attr.recv_cq = cq_recv;         
   queue_pair_init_attr.cap.max_send_wr = 32;  
   queue_pair_init_attr.cap.max_recv_wr = 32;  
   queue_pair_init_attr.cap.max_send_sge = 1; 
   queue_pair_init_attr.cap.max_recv_sge = 1; 
+  
 
   return ibv_create_qp(pd, &queue_pair_init_attr);
 }
@@ -184,11 +193,7 @@ void RDMA::ExchangeInfo(){
   this->send_msg = new double[stoi(RDMAInfo.find("len")->second)];
   fill_n(this->recv_msg, this->buffer_size, numeric_limits<double>::max());
   fill_n(this->send_msg, stoi(RDMAInfo.find("len")->second), numeric_limits<double>::max());
-  /*
-  for (size_t i = 0; i < stoi(RDMAInfo.find("len")->second); i++){
-    this->send_msg[i] = numeric_limits<double>::max();
-  }
-  */
+
   this->send_mr = RegisterMemoryRegion(this->protection_domain, this->send_msg , stoi(RDMAInfo.find("len")->second) * sizeof(double));
 
   string result = this->t->Readmsg();
@@ -252,11 +257,48 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
   struct ibv_wc wc;
   int ret;
 
+  int solicited_only = 0;
+
+  ibv_req_notify_cq(cq, solicited_only);
+  ret = ibv_get_cq_event(channel, &cq, &(this->cq_context));
+  ret = ibv_poll_cq(cq, 1, &wc);
+  
+  if (ret < 0) {
+      fprintf(stderr, "Failure: ibv_poll_cq\n");
+      return false;
+  }
+  
+  if (wc.status != IBV_WC_SUCCESS) {
+      fprintf(stderr, "Completion errror\n");
+      return false;
+  }
+  ibv_req_notify_cq(cq, 0);
+  ibv_ack_cq_events(cq, 1);
+
+  /*
+  ret = ibv_poll_cq(cq, 1, &wc);
+
+  if (ret == 0)
+      continue;
+
+  if (ret < 0) {
+      fprintf(stderr, "Failure: ibv_poll_cq\n");
+      return false;
+  }
+  
+  if (wc.status != IBV_WC_SUCCESS) {
+      fprintf(stderr, "Completion errror\n");
+      return false;
+  }
+  */
+  
+  
+  /*
   while (num_wr > 0) {
       ret = ibv_poll_cq(cq, 1, &wc);
 
       if (ret == 0)
-          continue; /* polling */
+          continue; 
 
       if (ret < 0) {
           fprintf(stderr, "Failure: ibv_poll_cq\n");
@@ -270,7 +312,7 @@ bool RDMA::PollCompletion(struct ibv_cq* cq) {
 
       num_wr--;        
   }
-  
+  */
   return true;
 }
 
@@ -288,14 +330,14 @@ void RDMA::SendMsg(string vertex_id, double value){
   }
   else{
     map<int, int>::iterator iter;
+    this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)* sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
     
     thread ReadRDMAmsg([this](){
       this->PostRdmaRead(this->qp, this->recv_mr, this->recv_msg, this->buffer_size);
-      this->PollCompletion(this->completion_queue);
+      this->PollCompletion(this->completion_queue_recv);
     });
     
-    this->PostRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)* sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
-    
+    this->PollCompletion(this->completion_queue);
     ReadRDMAmsg.join();
 
     for(iter=this->send_pos_cnt.begin();iter!=this->send_pos_cnt.end();iter++){
