@@ -73,10 +73,6 @@ int main(int argc, const char *argv[]){
       .description("number of host")
       .required(true);
 	parser.add_argument()
-      .names({"-s", "--superstep"})
-      .description("sperstep")
-      .required(true);
-	parser.add_argument()
       .names({"-p", "--partitioning"})
       .description("partitioning option")
       .required(true);
@@ -290,8 +286,9 @@ int main(int argc, const char *argv[]){
 
 	cout<< "start graph query" <<endl;
 	gettimeofday(&start_query, NULL);
-	for (int i = 0; i < superstep; i++) {
-		cerr << "superstep " << i << endl;
+	int i = 0;
+	while (true){
+		cerr << "superstep " << i++ << endl;
 		
 		if(check_alive_worker){
 			for(iter=WeaklyConnectedComponent_set.begin(); iter!=WeaklyConnectedComponent_set.end();iter++){

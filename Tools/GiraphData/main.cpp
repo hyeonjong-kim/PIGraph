@@ -22,7 +22,7 @@ vector<string> split(string input, char delimiter) {
 }
 
 int main(){
-    string path = "../../../data/soc-LiveJournal1.txt";
+    string path = "../../../data/web-Google.txt";
     char delimiter  = '\t';
     ifstream data(path);
     string s;

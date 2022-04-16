@@ -54,9 +54,6 @@ int main(int argc, const char *argv[]){
 	struct timeval start_query = {};
     struct timeval end_query = {};
 
-	struct timeval start_tmp  = {};
-    struct timeval end_tmp = {};
-
 	gettimeofday(&start, NULL);
 	ArgumentParser parser("Pigraph", "Pigraph execution");
 	parser.add_argument()
@@ -279,25 +276,38 @@ int main(int argc, const char *argv[]){
 
 		for(int j = 0; j < num_host; j++){
 			auto f = [&t, j, &mu, num_host, &pagerank_set,&messages, msg_processing_thread_num](){
+				struct timeval start_tmp  = {};
+    			struct timeval end_tmp = {};
+				gettimeofday(&start_tmp, NULL);
 				string read_msg = t[j].Readmsg();
+				gettimeofday(&end_tmp, NULL);
+				cerr << "time 1 : " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
+
+				
+				gettimeofday(&start_tmp, NULL);
 				vector<string> result;
 				result = split(read_msg, '\n');
+				gettimeofday(&end_tmp, NULL);
+				cerr << "time 2 : " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
+				
+				gettimeofday(&start_tmp, NULL);
 				int start = 0;
 				int end_interval = int(result.size()) / int(msg_processing_thread_num);
 				int end = end_interval;
 				thread t[msg_processing_thread_num];
+				gettimeofday(&end_tmp, NULL);
+				cerr << "time 3 : " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
 				
+				gettimeofday(&start_tmp, NULL);
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
 					t[u] = thread([&result, &pagerank_set, &messages, start, end, &mu](){
 						vector<string> msg;
 						for(int k = start; k < end; k++){
 							msg = split(result[k], ' ');
-							if(msg.size() ==2 && pagerank_set.count(stoi(msg[0])) == 1){
 								int mu_num = internalHashFunction(stoi(msg[0]));
 								mu[mu_num].lock();
 								messages->find(stoi(msg[0]))->second.push(stod(msg[1]));
 								mu[mu_num].unlock();
-							}
 						}
 					});
 					start = end;
@@ -312,7 +322,8 @@ int main(int argc, const char *argv[]){
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
 					t[u].join();
 				}
-
+				gettimeofday(&end_tmp, NULL);
+				cerr << "time 4 : " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
 			};
 
 			futures.emplace_back(connectionThread.EnqueueJob(f));
@@ -322,6 +333,7 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 		futures.clear();
+
 		
 	}
 	

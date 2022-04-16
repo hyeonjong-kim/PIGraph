@@ -254,8 +254,9 @@ int main(int argc, const char *argv[]){
 	
 	cerr<< "start graph query" <<endl;
 	gettimeofday(&start_query, NULL);
-	for (int i = 0; i < superstep; i++) {
-		cerr << "superstep" << i << endl;
+	int i = 0;
+	while(true){
+		cerr << "superstep" << i++ << endl;
 		
 		if(check_alive_worker){
 			for(iter=sssp_set.begin(); iter!=sssp_set.end();iter++){

@@ -294,9 +294,6 @@ int main(int argc, const char *argv[]){
 		edge += iter->second.GetOutEdgeIterator().size();
 	}
 	
-	cerr << vertex_num << endl;
-	cerr << buffer_size << endl;
-	
 	cout<< "start graph query" <<endl;
 	
 	gettimeofday(&start_query, NULL);

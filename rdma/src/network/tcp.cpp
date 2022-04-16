@@ -72,8 +72,6 @@ void tcp::ConnectSocket(){
 
     connect_server.join();
     connect_client.join();
-
-    cout << this->GetServerAddr() << " is ready to communication" << endl;
 }
 
 void tcp::Sendmsg(string _msg){
