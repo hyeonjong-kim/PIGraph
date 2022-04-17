@@ -38,7 +38,7 @@ vector<string> split_simple(string& input, char delimiter) {
 }
 
 
-vector<vector<string>>& split(string& input, char delimiter, int _msg_processing_thread_num) {
+vector<vector<string>> split(string& input, char delimiter, int _msg_processing_thread_num) {
 	vector<vector<string>> answer;
 	for (size_t i = 0; i < _msg_processing_thread_num; i++)
 	{
@@ -328,7 +328,8 @@ int main(int argc, const char *argv[]){
 				cerr << "time 1: " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
 				
 				gettimeofday(&start_tmp, NULL);
-				vector<vector<string>>& result = split(read_msg, '\n', msg_processing_thread_num);
+				vector<vector<string>> result = split(read_msg, '\n', msg_processing_thread_num);
+				
 				gettimeofday(&end_tmp, NULL);
 				cerr << "time 2: " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
 
@@ -362,6 +363,7 @@ int main(int argc, const char *argv[]){
 		for (auto& f_ : futures) {
     		f_.wait();
   		}
+
 		futures.clear();
 	}
 	
