@@ -35,7 +35,7 @@ int externalHashFunction(int x){
 	return (x % externalBucket);
 }
 
-vector<string> split_simple(string& input, char delimiter) {
+vector<string> split(string& input, char delimiter) {
 	vector<string> answer;
     stringstream ss(input);
     string temp;
@@ -43,48 +43,6 @@ vector<string> split_simple(string& input, char delimiter) {
     while (getline(ss, temp, delimiter)) {
         answer.push_back(temp);
     }
-
-    return answer;
-}
-
-vector<vector<string>>& split(string& input, char delimiter, int _msg_processing_thread_num) {
-	vector<vector<string>> answer;
-	for (size_t i = 0; i < _msg_processing_thread_num; i++)
-	{
-		vector<string> answer_element;
-		answer.push_back(answer_element);
-	}
-	
-	thread t_[_msg_processing_thread_num];
-	int interval = input.size()/_msg_processing_thread_num;
-	int start = 0;
-	string input_tmp[_msg_processing_thread_num];
-
-	for (size_t i = 0; i < _msg_processing_thread_num; i++){
-		input_tmp[i] = input.substr(start, interval);
-
-		if(i < _msg_processing_thread_num-1){
-			while (input_tmp[i].back() != '\n'){
-				input_tmp[i] += input[start+interval];
-				interval++;
-			}
-		}
-
-		t_[i] = thread([&answer, i, &input_tmp, delimiter](){
-			stringstream ss(input_tmp[i]);
-    		string temp;
-    		while (getline(ss, temp, delimiter)) {
-				
-				answer[i].push_back(temp);
-    		}
-		});
-
-		start += interval;
-	}
-
-	for (size_t i = 0; i < _msg_processing_thread_num; i++){
-		t_[i].join();
-	}
 
     return answer;
 }
@@ -154,7 +112,7 @@ int main(int argc, const char *argv[]){
 	string network_mode = parser.get<string>("N");
 	int p_option= stoi(parser.get<string>("p"));
 	int source_id = stoi(parser.get<string>("d"));
-	int msg_processing_thread_num = num_thread/num_host;
+	int msg_processing_thread_num = thread::hardware_concurrency() * 2;
 	bool check_alive_worker = true;
     char delimiter;
 
@@ -241,7 +199,7 @@ int main(int argc, const char *argv[]){
 
 	gettimeofday(&start_reading, NULL);
 	while(getline(data, s)){
-        v = split_simple(s, delimiter);
+        v = split(s, delimiter);
 
 		if(externalHashFunction(stoi(v[0])) == hostnum){
 			if(sssp_set.count(stoi(v[0])) == 1){
@@ -329,23 +287,34 @@ int main(int argc, const char *argv[]){
 		for(int j = 0; j < num_host; j++){
 			auto f = [&t, j, &mu, num_host, &sssp_set,&messages, msg_processing_thread_num](){
 				string read_msg = t[j].Readmsg();
-				vector<vector<string>>& result = split(read_msg, '\n', msg_processing_thread_num);
+				vector<string> result;
+				result = split(read_msg, '\n');
 
+				int start = 0;
+				int end_interval = int(result.size()) / int(msg_processing_thread_num);
+				int end = end_interval;
 				thread t[msg_processing_thread_num];
-					for (size_t u = 0; u < msg_processing_thread_num; u++){
-						t[u] = thread([&result, &messages, &mu, u, &sssp_set](){
-							vector<string> msg;
-							for(int k = 0; k < result[u].size(); k++){
-								msg = split_simple(result[u][k], ' ');
-								int mu_num = internalHashFunction(stoi(msg[0]));
-								mu[mu_num].lock();
-								messages->find(stoi(msg[0]))->second.push(stod(msg[1]));
-								if(!sssp_set.find(stoi(msg[0]))->second.GetState()){
-									sssp_set.find(stoi(msg[0]))->second.IsWake();
-								}
-								mu[mu_num].unlock();
+				for (size_t u = 0; u < msg_processing_thread_num; u++){
+					t[u] = thread([&result, &sssp_set, &messages, start, end, &mu](){
+						vector<string> msg;
+						for(int k = start; k < end; k++){
+							msg = split(result[k], ' ');
+							int mu_num = internalHashFunction(stoi(msg[0]));
+							mu[mu_num].lock();
+							messages->find(stoi(msg[0]))->second.push(stod(msg[1]));
+							if(!sssp_set.find(stoi(msg[0]))->second.GetState()){
+								sssp_set.find(stoi(msg[0]))->second.IsWake();
 							}
+							mu[mu_num].unlock();
+						}
 					});
+					start = end;
+					if(u+1 == msg_processing_thread_num-1){
+						end = result.size();						
+					}
+					else{
+						end = end + end_interval;
+					}
 				}
 
 				for (size_t u = 0; u < msg_processing_thread_num; u++){

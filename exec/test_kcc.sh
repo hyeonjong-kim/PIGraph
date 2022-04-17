@@ -8,7 +8,7 @@ file_name=$7
 
 #RDMA_PageRank
 nohup ./RDMA_PageRank/PiGraph_RDMA_PageRank -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt 1 > execution_log/RDMA_PageRank_$file_name.log_$host_num 2>&1
-sleep 5s
+sleep 60s
 nohup ./RDMA_PageRank/PiGraph_RDMA_PageRank -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt 1 > check_resource_execution_log/RDMA_PageRank_$file_name.log_$host_num 2>&1 &
 pidof PiGraph_RDMA_PageRank > pid
 RDMA_PageRank_pid=`cat pid`
@@ -27,11 +27,11 @@ do
     fi
 done
 
-sleep 3s
+sleep 60s
 
 #RDMA_SSSP
 nohup ./RDMA_SSSP/PiGraph_RDMA_SSSP -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt -d $source_id 1 > execution_log/RDMA_SSSP_$file_name.log_$host_num 2>&1
-sleep 5s
+sleep 60s
 nohup ./RDMA_SSSP/PiGraph_RDMA_SSSP -m $mutex -f $file -n $host_num -s $superstep -p $partition_opt -d $source_id 1 > check_resource_execution_log/RDMA_SSSP_$file_name.log_$host_num 2>&1 &
 pidof PiGraph_RDMA_SSSP > pid
 RDMA_SSSP_pid=`cat pid`
@@ -51,11 +51,11 @@ do
 
 done
 
-sleep 3s
+sleep 60s
 
 #IPoIB_PageRank
 nohup ./Ethernet_IPoIB_PageRank/PiGraph_IPoIB_PageRank -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt  1 > execution_log/IPoIB_PageRank_$file_name.log_$host_num 2>&1
-sleep 5s
+sleep 60s
 nohup ./Ethernet_IPoIB_PageRank/PiGraph_IPoIB_PageRank -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt  1 > check_resource_execution_log/IPoIB_PageRank_$file_name.log_$host_num 2>&1 &
 pidof PiGraph_IPoIB_PageRank > pid
 IPoIB_PageRank_pid=`cat pid`
@@ -75,11 +75,11 @@ do
     
 done
 
-sleep 3s
+sleep 60s
 
 #IPoIB_SSSP
 nohup ./Ethernet_IPoIB_SSSP/PiGraph_IPoIB_SSSP -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt -d $source_id 1 > execution_log/IPoIB_SSSP_$file_name.log_$host_num 2>&1
-sleep 5s
+sleep 60s
 nohup ./Ethernet_IPoIB_SSSP/PiGraph_IPoIB_SSSP -m $mutex -f $file -n $host_num -s $superstep -N ipoib -p $partition_opt -d $source_id 1 > check_resource_execution_log/IPoIB_SSSP_$file_name.log_$host_num 2>&1 &
 pidof PiGraph_IPoIB_SSSP > pid
 IPoIB_SSSP_pid=`cat pid`
@@ -99,4 +99,4 @@ do
     
 done
 
-sleep 3s
+sleep 60s
