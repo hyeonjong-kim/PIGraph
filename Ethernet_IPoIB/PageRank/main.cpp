@@ -38,7 +38,7 @@ vector<string> split_simple(string& input, char delimiter) {
 }
 
 
-vector<vector<string>> split(string& input, char delimiter, int _msg_processing_thread_num) {
+vector<vector<string>>& split(string& input, char delimiter, int _msg_processing_thread_num) {
 	vector<vector<string>> answer;
 	for (size_t i = 0; i < _msg_processing_thread_num; i++)
 	{
@@ -52,7 +52,6 @@ vector<vector<string>> split(string& input, char delimiter, int _msg_processing_
 	string input_tmp[_msg_processing_thread_num];
 
 	for (size_t i = 0; i < _msg_processing_thread_num; i++){
-		input_tmp[i]= "";
 		input_tmp[i] = input.substr(start, interval);
 
 		if(i < _msg_processing_thread_num-1){
@@ -319,16 +318,26 @@ int main(int argc, const char *argv[]){
 		futures.clear();
 
 		for(int j = 0; j < num_host; j++){
-			auto f = [&t, j, &mu, num_host, &pagerank_set,&messages, msg_processing_thread_num](){
+			auto f = [&t, j, &mu, num_host,&messages, msg_processing_thread_num](){
 				struct timeval start_tmp  = {};
     			struct timeval end_tmp = {};
 				
+				gettimeofday(&start_tmp, NULL);
 				string read_msg = t[j].Readmsg();
-				vector<vector<string>> result = split(read_msg, '\n', msg_processing_thread_num);
+				gettimeofday(&end_tmp, NULL);
+				cerr << "time 1: " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
+				
+				gettimeofday(&start_tmp, NULL);
+				vector<vector<string>>& result = split(read_msg, '\n', msg_processing_thread_num);
+				gettimeofday(&end_tmp, NULL);
+				cerr << "time 2: " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
+
+
+				gettimeofday(&start_tmp, NULL);
 				thread t[msg_processing_thread_num];
 				
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
-					t[u] = thread([&result, &pagerank_set, &messages, &mu, u](){
+					t[u] = thread([&result, &messages, &mu, u](){
 						vector<string> msg;
 						for(int k = 0; k < result[u].size(); k++){
 							msg = split_simple(result[u][k], ' ');
@@ -339,10 +348,12 @@ int main(int argc, const char *argv[]){
 						}
 					});
 				}
-				
+
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
 					t[u].join();
 				}
+				gettimeofday(&end_tmp, NULL);
+				cerr << "time 3: " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
 			};
 
 			futures.emplace_back(connectionThread.EnqueueJob(f));
@@ -352,8 +363,6 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 		futures.clear();
-
-		
 	}
 	
 	gettimeofday(&end_query, NULL);
