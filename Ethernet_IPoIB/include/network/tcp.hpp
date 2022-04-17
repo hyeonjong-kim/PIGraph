@@ -25,7 +25,7 @@ class tcp{
         struct sockaddr_in serv_addr;
         int opt = 1;
         int addrlen = sizeof(address);
-        char buffer[1048676] = {0};
+        char buffer[104867600] = {0,};
         int port;
         int valread;
         char* server_addr;

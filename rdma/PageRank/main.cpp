@@ -83,7 +83,7 @@ int main(int argc, const char *argv[]){
 		return -1;
 	}
 	
-	int num_thread = thread::hardware_concurrency();
+	int num_thread = thread::hardware_concurrency() * 2;
 	int num_mutex = stoi(parser.get<string>("m"));
 	string data_file_name = parser.get<string>("f");
 	string host_file_name = "hostfile/hostinfo.txt";

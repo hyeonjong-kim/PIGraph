@@ -132,7 +132,7 @@ int main(int argc, const char *argv[]){
 	}
 	
 	//Parameter
-	int num_thread = thread::hardware_concurrency();
+	int num_thread = thread::hardware_concurrency() * 2;
 	int num_mutex = stoi(parser.get<string>("m"));
 	string file_name = parser.get<string>("f");
 	string host_file = "hostfile/hostinfo.txt";
@@ -140,7 +140,7 @@ int main(int argc, const char *argv[]){
 	int superstep = stoi(parser.get<string>("s"));
 	string network_mode = parser.get<string>("N");
 	int p_option= stoi(parser.get<string>("p"));
-	int msg_processing_thread_num = num_thread/num_host;
+	int msg_processing_thread_num = thread::hardware_concurrency() * 2;
     
 	char delimiter;
 
@@ -319,24 +319,10 @@ int main(int argc, const char *argv[]){
 
 		for(int j = 0; j < num_host; j++){
 			auto f = [&t, j, &mu, num_host,&messages, msg_processing_thread_num](){
-				struct timeval start_tmp  = {};
-    			struct timeval end_tmp = {};
-				
-				gettimeofday(&start_tmp, NULL);
-				string read_msg = t[j].Readmsg();
-				gettimeofday(&end_tmp, NULL);
-				cerr << "time 1: " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
-				
-				gettimeofday(&start_tmp, NULL);
+				string read_msg = t[j].Readmsg();			
 				vector<vector<string>> result = split(read_msg, '\n', msg_processing_thread_num);
 				
-				gettimeofday(&end_tmp, NULL);
-				cerr << "time 2: " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
-
-
-				gettimeofday(&start_tmp, NULL);
 				thread t[msg_processing_thread_num];
-				
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
 					t[u] = thread([&result, &messages, &mu, u](){
 						vector<string> msg;
@@ -353,8 +339,6 @@ int main(int argc, const char *argv[]){
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
 					t[u].join();
 				}
-				gettimeofday(&end_tmp, NULL);
-				cerr << "time 3: " << end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0 << endl;
 			};
 
 			futures.emplace_back(connectionThread.EnqueueJob(f));

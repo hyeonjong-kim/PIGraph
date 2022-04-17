@@ -93,7 +93,7 @@ int main(int argc, const char *argv[]){
 		return -1;
 	}
 
-	int num_thread = thread::hardware_concurrency();
+	int num_thread = thread::hardware_concurrency() * 2;
 	int num_mutex = stoi(parser.get<string>("m"));
 	string data_file_name = parser.get<string>("f");
 	string host_file_name = "hostfile/hostinfo.txt";
@@ -101,7 +101,7 @@ int main(int argc, const char *argv[]){
 	int superstep = stoi(parser.get<string>("s"));
 	int p_option= stoi(parser.get<string>("p"));
 	int source_id = stoi(parser.get<string>("d"));
-	int wake_thread_num = num_thread/num_host;
+	int wake_thread_num = thread::hardware_concurrency() * 2;
 	bool check_alive_worker = true;
 
     char delimiter;
