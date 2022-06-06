@@ -1,9 +1,0 @@
-MN.ib
-SN01.ib
-SN02.ib
-SN03.ib
-SN04.ib
-SN05.ib
-SN06.ib
-SN07.ib
-SN08.ib

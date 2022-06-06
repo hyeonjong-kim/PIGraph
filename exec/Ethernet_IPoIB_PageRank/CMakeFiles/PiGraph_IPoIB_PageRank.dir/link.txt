@@ -1,1 +1,0 @@
-/usr/bin/g++     CMakeFiles/PiGraph_IPoIB_PageRank.dir/main.cpp.o  -o PiGraph_IPoIB_PageRank  core/libcore.a query/libquery.a tools/libtools.a network/libnetwork.a core/libcore.a network/libnetwork.a -lpthread 
