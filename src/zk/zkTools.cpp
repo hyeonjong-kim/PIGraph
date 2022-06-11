@@ -157,3 +157,23 @@ bool zkTools::zkGet(zhandle_t *zh, char* path, char* buffer){
 	cerr << "[ERROR]FAIL TO GET DATA" << endl;
 	return false;
 }
+
+bool zkTools::zkSet(zhandle_t *zh, char* path, char* data){
+	struct Stat stat;
+	int rc = 0;
+	int len = 512;
+	
+	rc = zoo_exists(zh, path, 0, &stat);
+	if(rc == ZNONODE){
+		cerr << "[ERROR]DO NOT EXIST ZNODE" << endl;
+		return false;
+	}
+	else{
+		cerr << "[INFO]SUCESS TO SET DATA" << endl;
+		zoo_set(zh, path, data, len, 0);
+		return true;
+	}
+
+	cerr << "[ERROR]FAIL TO SET DATA" << endl;
+	return false;
+}

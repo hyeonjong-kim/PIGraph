@@ -14,4 +14,5 @@ class zkTools{
         bool zkWget(zhandle_t *zh, char* path, char* buffer);
         bool zkGet(zhandle_t *zh, char* path, char* buffer);
         bool zkClose(zhandle_t *zh);
+        bool zkSet(zhandle_t *zh, char* path, char* data);
 };

@@ -25,7 +25,7 @@ void Propagation::resourceMonitoring(){
     
     for(int i = 0; i < this->workerManagers.size(); i++){
         char* buffer = "0";
-        this->zktools.zkCreateEphemeral(this->zh, (char*)(string(persistentPath) + workerManagers[i]).c_str(), buffer);
+        this->zktools.zkCreateEphemeral(this->zh, (char*)(string(persistentPath) + "/" + workerManagers[i]).c_str(), buffer);
         this->resourceBuffer.insert(pair<string, char*>(workerManagers[i], buffer));
         this->zktools.zkWget(this->zh, (char*)(string(persistentPath) + workerManagers[i]).c_str(), this->resourceBuffer.find(workerManagers[i])->second);
     }
