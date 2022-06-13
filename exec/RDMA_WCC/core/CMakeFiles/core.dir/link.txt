@@ -1,2 +1,2 @@
-/usr/bin/ar qc libcore.a  CMakeFiles/core.dir/Vertex.cpp.o
-/usr/bin/ranlib libcore.a
+/opt/rh/devtoolset-8/root/usr/bin/ar qc libcore.a CMakeFiles/core.dir/Vertex.cpp.o
+/opt/rh/devtoolset-8/root/usr/bin/ranlib libcore.a

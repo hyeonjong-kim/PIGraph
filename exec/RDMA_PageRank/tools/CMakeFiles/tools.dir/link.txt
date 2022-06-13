@@ -1,2 +1,2 @@
-/usr/bin/ar qc libtools.a  CMakeFiles/tools.dir/Parser.cpp.o CMakeFiles/tools.dir/ThreadPool.cpp.o
-/usr/bin/ranlib libtools.a
+/opt/rh/devtoolset-8/root/usr/bin/ar qc libtools.a CMakeFiles/tools.dir/Parser.cpp.o CMakeFiles/tools.dir/ThreadPool.cpp.o
+/opt/rh/devtoolset-8/root/usr/bin/ranlib libtools.a

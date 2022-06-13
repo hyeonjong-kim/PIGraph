@@ -1,2 +1,2 @@
-/usr/bin/ar qc libnetwork.a  CMakeFiles/network.dir/tcp.cpp.o
-/usr/bin/ranlib libnetwork.a
+/opt/rh/devtoolset-8/root/usr/bin/ar qc libnetwork.a CMakeFiles/network.dir/tcp.cpp.o
+/opt/rh/devtoolset-8/root/usr/bin/ranlib libnetwork.a
