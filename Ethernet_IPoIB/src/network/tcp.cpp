@@ -93,7 +93,7 @@ void tcp::ConnectSocket(){
           
         }
     }, ref(this->client_sock), ref(this->serv_addr));
-
+    cerr << "[INFO]" << this->GetServerAddr() << " - SUCCESS TO IPoIB CONNECTION" << endl;
     connect_server.join();
     connect_client.join();
 }

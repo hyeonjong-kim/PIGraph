@@ -202,29 +202,10 @@ int main(int argc, const char *argv[]){
 	mutex socketmu[num_host];
 	internalBucket = num_mutex;
 	externalBucket = num_host;
-	
 	tcp *t = new tcp[num_host];
-	
-	vector<char[15]> server_ip(num_host);
 	vector<string> v;
-	hostfile.open(host_file);
-
-	std::vector<std::future<void>> futures;
-	for(int i=0; i<num_host; i++){
-		hostfile.getline(buf, 100);
-		s = buf;
-		s = HostToIp(s);
-		strcpy(server_ip[i], s.c_str());
-		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+hostnum, num_mutex);
-		t[i].SetSocket();
-		
-		auto f = [&t, i](){t[i].ConnectSocket();};
-		futures.emplace_back(connectionThread.EnqueueJob(f));
-	}
-
-	for (auto& f_ : futures) {
-    	f_.wait();
-  	}
+	
+	
 	cerr << "[INFO]CREATE GRAPH" <<endl;
 	//cerr<< "Read file" <<endl;
 	
@@ -273,6 +254,28 @@ int main(int argc, const char *argv[]){
 	cerr << "EDGES: " << edges << endl;
 	cerr << "------------------------------" << endl;
 	
+	cerr << endl;
+	cerr << "[INFO]NETWORK CONFIGURATION" << endl;
+	
+	
+	vector<char[15]> server_ip(num_host);
+	hostfile.open(host_file);
+	std::vector<std::future<void>> futures;
+	for(int i=0; i<num_host; i++){
+		hostfile.getline(buf, 100);
+		s = buf;
+		s = HostToIp(s);
+		strcpy(server_ip[i], s.c_str());
+		t[i].SetInfo(i, 3141592, server_ip[i], num_host, 3141592+hostnum, num_mutex);
+		t[i].SetSocket();
+		
+		auto f = [&t, i](){t[i].ConnectSocket();};
+		futures.emplace_back(connectionThread.EnqueueJob(f));
+	}
+
+	for (auto& f_ : futures) {
+    	f_.wait();
+  	}
 	
 	//cerr << "Time of reading file: " << time_reading << endl;
 
@@ -302,7 +305,8 @@ int main(int argc, const char *argv[]){
 	for (auto& f_ : futures) {
     	f_.wait();
   	}
-
+	  
+	cerr << endl;
 	//cerr<< "start graph query" <<endl;
 	futures.clear();
 	gettimeofday(&start_query, NULL);
@@ -392,10 +396,11 @@ int main(int argc, const char *argv[]){
 	
 	*/
 	ofstream writeFile;
-	writeFile.open("test.txt");
+	writeFile.open("./Result/IPoIB_PageRank.txt");
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		writeFile << (to_string(iter->first) + ": " + to_string(iter->second.GetValue()) + "\n");
 	}
+
 	cerr << "[INFO]TOTAL SUPERSTEP: " << time_query << "s" << endl;
 	
 	/*
