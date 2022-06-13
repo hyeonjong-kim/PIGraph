@@ -52,6 +52,9 @@ int main(int argc, const char *argv[]){
 	struct timeval start_tmp = {};
     struct timeval end_tmp = {};
 
+	struct timeval start_network = {};
+    struct timeval end_network = {};
+
 
 	gettimeofday(&start, NULL);
 	ArgumentParser parser("Pigraph", "Pigraph execution");
@@ -165,29 +168,34 @@ int main(int argc, const char *argv[]){
     
 	RDMA *rdma = new RDMA[num_host];
 
-	cerr << "Read file" <<endl;
+	cerr << "[INFO]CREATE GRAPH" <<endl;
 
 	ifstream data_file(data_file_name);
 	vector<string> split_line;
 	gettimeofday(&start_reading, NULL);
+	int edges = 0;
 	while(getline(data_file, read_str)){
         split_line = split(read_str, delimiter);
 		if(externalHashFunction(stoi(split_line[0])) == host_num){
 			if(pagerank_set.count(stoi(split_line[0])) == 1){
 				pagerank_set.find(stoi(split_line[0]))->second.AddOutEdge(stoi(split_line[1]));
+				edges++;
 			}
 			else{
 				PageRank p(stoi(split_line[0]),stoi(split_line[1]), NULL, rdma, socketmu, num_host);
 				pagerank_set.insert(pair<int, PageRank>(stoi(split_line[0]), p));
+				edges++;
 			}
 		}
 		if(externalHashFunction(stoi(split_line[1])) == host_num){
 			if(pagerank_set.count(stoi(split_line[1])) == 1){
 				pagerank_set.find(stoi(split_line[1]))->second.AddInEdge(stoi(split_line[0]));
+				edges++;
 			}
 			else{
 				PageRank p(stoi(split_line[1]), NULL, stoi(split_line[0]), rdma, socketmu, num_host);
 				pagerank_set.insert(pair<int, PageRank>(stoi(split_line[1]), p));
+				edges++;
 			}
 		}
 	}
@@ -195,8 +203,12 @@ int main(int argc, const char *argv[]){
 	data_file.close();
 
 	double time_reading = end_reading.tv_sec + end_reading.tv_usec / 1000000.0 - start_reading.tv_sec - start_reading.tv_usec / 1000000.0;
-	cerr << "Time of reading file: " << time_reading << endl;
-
+	cerr << "[INFO]TIME OF READING FILE: " << time_reading  << "s"<< endl;
+	cerr << "----------GRAPH DATA----------" <<endl;
+	cerr << "VERTIECS: " << pagerank_set.size()<< endl;
+	cerr << "EDGES: " << edges << endl;
+	cerr << "------------------------------" << endl;
+	
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
 	for(int j = 0; j < num_host; j++){
@@ -215,8 +227,9 @@ int main(int argc, const char *argv[]){
   	}
 	futures.clear();
 
-	cout << "Complete reading file all node" << endl;
-
+	//cout << "Complete reading file all node" << endl;
+	cerr << endl;
+	cerr << "[INFO]NETWORK CONFIGURATION" << endl;
 	map<int, PageRank>::iterator iter;
 	
 	map<int, vector<int>> recv_pos;
@@ -269,7 +282,7 @@ int main(int argc, const char *argv[]){
 			while(s.compare("1\n")!= 0){
 				s = t[j].ReadCheckMsg();
 			}
-			cerr <<  t[j].GetServerAddr() << " is RDMA connection" << endl;
+			cerr <<  "[INFO]" << t[j].GetServerAddr() << " - SUCCESS TO RDMA CONNECTION" << endl;
 			return;
 		};
 		futures.emplace_back(connectionThread.EnqueueJob(f));
@@ -281,7 +294,7 @@ int main(int argc, const char *argv[]){
 	
 	futures.clear();
 
-	cerr << "Complete all node RDMA setting" << endl;
+	//cerr << "Complete all node RDMA setting" << endl;
 
 
 	int vertex_num = 0;
@@ -295,11 +308,12 @@ int main(int argc, const char *argv[]){
 		edge += iter->second.GetOutEdgeIterator().size();
 	}
 	
-	cout<< "start graph query" <<endl;
+	cerr << endl;
 	
 	gettimeofday(&start_query, NULL);
-	for (int i = 0; i < superstep; i++) {
-		cerr << "superstep " << i << endl;
+	for (int i = 0; i <= superstep; i++) {
+		cout<< "[INFO]START GRAPH PROCESSING - SUPERSTEP " << i <<endl;
+		gettimeofday(&start_tmp, NULL);
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			auto f = [iter](){
 				if(iter->second.GetState())iter->second.Compute();
@@ -313,7 +327,10 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 		futures.clear();
-
+		gettimeofday(&end_tmp, NULL);
+		double processing_time = end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0;
+		cout<< "[INFO]START NETWORK - SUPERSTEP " << i <<endl;
+		gettimeofday(&start_network, NULL);
 		for(int o = 0; o < num_host; o++){
 			auto f = [&rdma, o, &t](){
 				rdma[o].SendMsg("Q", 0.0);
@@ -328,7 +345,16 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 		futures.clear();
+		gettimeofday(&end_network, NULL);
+		double network_time = end_network.tv_sec + end_network.tv_usec / 1000000.0 - start_network.tv_sec - start_network.tv_usec / 1000000.0;
+		cerr << endl;
+		cerr <<  "---------------SUPERSTEP " << i << "---------------" << endl;
+		cerr << "PROCESSING: " << processing_time << "s" << endl;
+		cerr << "NETWORK: " << network_time << "s" << endl;
+		cerr << "------------------------------------------" <<  endl;
+		cerr << endl;
 	}
+
 	gettimeofday(&end_query, NULL);
 
 	for(int i; i<num_host;i++)t[i].CloseSocket();
@@ -339,14 +365,16 @@ int main(int argc, const char *argv[]){
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	double time_query = end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
 	
+	ofstream writeFile;
+	writeFile.open("./Result/RDMA_PageRank.txt");
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
-		cerr << iter->first << ": " <<  iter->second.GetValue() << endl;
+		writeFile << (to_string(iter->first) + ": " + to_string(iter->second.GetValue()) + "\n");
 	}
 	
-	cerr << "Time of reading file: " << time_reading << endl;
-	cerr << "toal query time: " << time_query << endl;
-	cerr << "query + reading + preprocessing: " << time_reading + time_query<< endl;
-	cerr << "toal time: " << time << endl;
-	
+	//cerr << "Time of reading file: " << time_reading << endl;
+	cerr << "[INFO]TOTAL SUPERSTEP: " << time_query << "s" << endl;
+	//cerr << "query + reading + preprocessing: " << time_reading + time_query<< endl;
+	//cerr << "toal time: " << time << endl;
+
 	return 0;
 }

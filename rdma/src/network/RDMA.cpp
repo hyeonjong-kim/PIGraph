@@ -186,11 +186,14 @@ void RDMA::ExchangeInfo(){
   
   map<int,vector<int>>::iterator iter;
   for(iter=this->recv_pos.begin(); iter!=this->recv_pos.end(); iter++){
+    cerr <<  to_string(iter->first) + " " + to_string(iter->second[0])+ " " + to_string(iter->second[1])+ "\n" << endl;
     this->t->Sendmsg(to_string(iter->first) + " " + to_string(iter->second[0])+ " " + to_string(iter->second[1])+ "\n");
   }
-  
+  cerr << "flag1" << endl;
   this->t->Sendmsg("Q");
+  cerr << "flag2" << endl;
   this->send_msg = new double[stoi(RDMAInfo.find("len")->second)];
+  cerr << "flag2" << endl;
   fill_n(this->recv_msg, this->buffer_size, numeric_limits<double>::max());
   fill_n(this->send_msg, stoi(RDMAInfo.find("len")->second), numeric_limits<double>::max());
 
@@ -203,6 +206,8 @@ void RDMA::ExchangeInfo(){
     value_split = split(msg_split[k], ' ');
     if(value_split.size() == 3 && this->send_pos.count(stoi(value_split[0]))==0){
       vector<int> pos;
+      cerr << stoi(value_split[1]) <<endl;
+      cerr << stoi(value_split[2]) <<endl;
       pos.push_back(stoi(value_split[1]));
       pos.push_back(stoi(value_split[2]));
       this->send_pos.insert(make_pair(stoi(value_split[0]), pos));
@@ -220,7 +225,7 @@ void RDMA::ConnectRDMA(){
   this->ChangeQueuePairStateToInit(this->qp);
   this->ChangeQueuePairStateToRTR(this->qp, PORT, stoi(this->RDMAInfo.find("qp_num")->second), stoi(this->RDMAInfo.find("lid")->second));
   this->ChangeQueuePairStateToRTS(this->qp);
-  cout << "Connect RDMA based on " << this->t->GetServerAddr() << endl;
+  //cout << "Connect RDMA based on " << this->t->GetServerAddr() << endl;
 }
 
 void RDMA::PostRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length, string r_addr, string r_key){

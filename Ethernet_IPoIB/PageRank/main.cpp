@@ -97,6 +97,12 @@ int main(int argc, const char *argv[]){
 	struct timeval start_query = {};
     struct timeval end_query = {};
 
+	struct timeval start_tmp = {};
+    struct timeval end_tmp = {};
+
+	struct timeval start_network = {};
+    struct timeval end_network = {};
+
 	gettimeofday(&start, NULL);
 	ArgumentParser parser("Pigraph", "Pigraph execution");
 	parser.add_argument()
@@ -132,7 +138,7 @@ int main(int argc, const char *argv[]){
 	}
 	
 	//Parameter
-	int num_thread = thread::hardware_concurrency() * 2;
+	int num_thread = thread::hardware_concurrency();
 	int num_mutex = stoi(parser.get<string>("m"));
 	string file_name = parser.get<string>("f");
 	string host_file = "hostfile/hostinfo.txt";
@@ -140,7 +146,7 @@ int main(int argc, const char *argv[]){
 	int superstep = stoi(parser.get<string>("s"));
 	string network_mode = parser.get<string>("N");
 	int p_option= stoi(parser.get<string>("p"));
-	int msg_processing_thread_num = thread::hardware_concurrency() * 2;
+	int msg_processing_thread_num = thread::hardware_concurrency();
     
 	char delimiter;
 
@@ -219,13 +225,13 @@ int main(int argc, const char *argv[]){
 	for (auto& f_ : futures) {
     	f_.wait();
   	}
-
-	cerr<< "Read file" <<endl;
+	cerr << "[INFO]CREATE GRAPH" <<endl;
+	//cerr<< "Read file" <<endl;
 	
 	ifstream data(file_name);
 	
 	map<int, int> check_vertex_num;
-
+	int edges = 0;
 	gettimeofday(&start_reading, NULL);
 	while(getline(data, s)){
         v = split_simple(s, delimiter);
@@ -233,21 +239,24 @@ int main(int argc, const char *argv[]){
 		if(externalHashFunction(stoi(v[0])) == hostnum){
 			if(pagerank_set.count(stoi(v[0])) == 1){
 				pagerank_set.find(stoi(v[0]))->second.AddOutEdge(stoi(v[1]));
+				edges++;
 			}
 			else{
 				PageRank p(stoi(v[0]),stoi(v[1]), NULL, messages, t, num_host, socketmu);
 				pagerank_set.insert(pair<int, PageRank>(stoi(v[0]), p));
+				edges++;
 			}
 		}
 
 		if(externalHashFunction(stoi(v[1])) == hostnum){
 			if(pagerank_set.count(stoi(v[1])) == 1){
 				pagerank_set.find(stoi(v[1]))->second.AddInEdge(stoi(v[0]));
+				edges++;
 			}
 			else{
 				PageRank p(stoi(v[1]), NULL, stoi(v[0]), messages, t, num_host, socketmu);
 				pagerank_set.insert(pair<int, PageRank>(stoi(v[1]), p));
-				
+				edges++;
 			}
 		}
 
@@ -258,7 +267,14 @@ int main(int argc, const char *argv[]){
 	data.close();
 	
 	double time_reading = end_reading.tv_sec + end_reading.tv_usec / 1000000.0 - start_reading.tv_sec - start_reading.tv_usec / 1000000.0;
-	cerr << "Time of reading file: " << time_reading << endl;
+	cerr << "[INFO]TIME OF READING FILE: " << time_reading  << "s"<< endl;
+	cerr << "----------GRAPH DATA----------" <<endl;
+	cerr << "VERTIECS: " << pagerank_set.size()<< endl;
+	cerr << "EDGES: " << edges << endl;
+	cerr << "------------------------------" << endl;
+	
+	
+	//cerr << "Time of reading file: " << time_reading << endl;
 
 	map<int, PageRank>::iterator iter;
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
@@ -277,7 +293,7 @@ int main(int argc, const char *argv[]){
 			while(s.compare("1\n")!= 0){
 				s = t[j].ReadCheckmsg();
 			}
-			cerr <<  t[j].GetServerAddr() << " is complete read file" <<  endl;
+			//cerr <<  t[j].GetServerAddr() << " is complete read file" <<  endl;
 		};
 
 		futures.emplace_back(connectionThread.EnqueueJob(f));
@@ -287,12 +303,12 @@ int main(int argc, const char *argv[]){
     	f_.wait();
   	}
 
-	cerr<< "start graph query" <<endl;
+	//cerr<< "start graph query" <<endl;
 	futures.clear();
 	gettimeofday(&start_query, NULL);
 	for (int i = 0; i < superstep; i++) {
-		cerr << "supertstep " << i <<  endl;
-
+		cout<< "[INFO]START GRAPH PROCESSING - SUPERSTEP " << i <<endl;
+		gettimeofday(&start_tmp, NULL);
 		for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 			auto f = [iter](){iter->second.Compute();};
 			futures.emplace_back(threadPool.EnqueueJob(f));
@@ -302,7 +318,11 @@ int main(int argc, const char *argv[]){
     		f_.wait();
   		}
 		futures.clear();
+		gettimeofday(&end_tmp, NULL);
+		double processing_time = end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0;
 
+		cout<< "[INFO]START NETWORK - SUPERSTEP " << i <<endl;
+		gettimeofday(&start_network, NULL);
 		for(int j = 0; j < num_host; j++){
 			auto f = [&t, j](){
 				string end_msg = "Q";
@@ -321,7 +341,6 @@ int main(int argc, const char *argv[]){
 			auto f = [&t, j, &mu, num_host,&messages, msg_processing_thread_num](){
 				string read_msg = t[j].Readmsg();			
 				vector<vector<string>> result = split(read_msg, '\n', msg_processing_thread_num);
-				
 				thread t[msg_processing_thread_num];
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
 					t[u] = thread([&result, &messages, &mu, u](){
@@ -335,12 +354,10 @@ int main(int argc, const char *argv[]){
 						}
 					});
 				}
-
 				for (size_t u = 0; u < msg_processing_thread_num; u++){
 					t[u].join();
 				}
 			};
-
 			futures.emplace_back(connectionThread.EnqueueJob(f));
 		}
 
@@ -349,6 +366,14 @@ int main(int argc, const char *argv[]){
   		}
 
 		futures.clear();
+		gettimeofday(&end_network, NULL);
+		double network_time = end_network.tv_sec + end_network.tv_usec / 1000000.0 - start_network.tv_sec - start_network.tv_usec / 1000000.0;
+		cerr << endl;
+		cerr <<  "---------------SUPERSTEP " << i << "---------------" << endl;
+		cerr << "PROCESSING: " << processing_time << "s" << endl;
+		cerr << "NETWORK: " << network_time << "s" << endl;
+		cerr << "------------------------------------------" <<  endl;
+		cerr << endl;
 	}
 	
 	gettimeofday(&end_query, NULL);
@@ -360,15 +385,24 @@ int main(int argc, const char *argv[]){
 	
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	double time_query = end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
-
+	/*
 	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
 		cerr << iter->first << ": " << iter->second.GetValue() << endl;
 	}
 	
+	*/
+	ofstream writeFile;
+	writeFile.open("test.txt");
+	for(iter=pagerank_set.begin(); iter!=pagerank_set.end();iter++){
+		writeFile << (to_string(iter->first) + ": " + to_string(iter->second.GetValue()) + "\n");
+	}
+	cerr << "[INFO]TOTAL SUPERSTEP: " << time_query << "s" << endl;
+	
+	/*
 	cerr << "Time of reading file: " << time_reading << endl;
 	cerr << "toal query time: " << time_query << endl;
 	cerr << "query + reading + preprocessing: " << time_reading + time_query<< endl;
 	cerr << "toal time: " << time << endl;
-
+	*/
 	return 0;
 }

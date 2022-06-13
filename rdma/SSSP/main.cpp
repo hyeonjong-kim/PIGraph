@@ -59,6 +59,12 @@ int main(int argc, const char *argv[]){
 	struct timeval start_query = {};
     struct timeval end_query = {};
 
+	struct timeval start_tmp = {};
+    struct timeval end_tmp = {};
+
+	struct timeval start_network = {};
+    struct timeval end_network = {};
+
 	gettimeofday(&start, NULL);
 	ArgumentParser parser("Pigraph", "Pigraph execution");
 	parser.add_argument()
@@ -176,11 +182,13 @@ int main(int argc, const char *argv[]){
     
 	RDMA *rdma = new RDMA[num_host];
 
-	cerr<< "Read file" <<endl;
+	//cerr<< "Read file" <<endl;
+	cerr << "[INFO]CREATE GRAPH" <<endl;
 
 	ifstream data_file(data_file_name);
 	vector<string> split_line;
 	gettimeofday(&start_reading, NULL);
+	int edges = 0;
 	while(getline(data_file, read_str)){
         split_line = split(read_str, delimiter);
 
@@ -188,20 +196,24 @@ int main(int argc, const char *argv[]){
 			if(singleshortestpath_set.count(stoi(split_line[0])) == 1){
 				singleshortestpath_set.find(stoi(split_line[0]))->second.AddOutEdge(stoi(split_line[1]));
 				singleshortestpath_set.find(stoi(split_line[0]))->second.AddOutEdgeValue(1.0);
+				edges++;
 			}
 			else{
 				SingleSourceShortestPath singleshortestpath(stoi(split_line[0]),stoi(split_line[1]), NULL, rdma, socketmu, num_host, source_id, 1.0);
 				singleshortestpath_set.insert(pair<int, SingleSourceShortestPath>(stoi(split_line[0]), singleshortestpath));
+				edges++;			
 			}
 		}
 		if(externalHashFunction(stoi(split_line[1])) == host_num){
 			if(singleshortestpath_set.count(stoi(split_line[1])) == 1){
 				singleshortestpath_set.find(stoi(split_line[1]))->second.AddInEdge(stoi(split_line[0]));
 				singleshortestpath_set.find(stoi(split_line[1]))->second.AddInEdgeValue(1.0);
+				edges++;
 			}
 			else{
 				SingleSourceShortestPath singleshortestpath(stoi(split_line[1]), NULL, stoi(split_line[0]), rdma, socketmu, num_host, source_id, 1.0);
 				singleshortestpath_set.insert(pair<int, SingleSourceShortestPath>(stoi(split_line[1]), singleshortestpath));
+				edges++;
 			}
 		}
 	}
@@ -210,7 +222,12 @@ int main(int argc, const char *argv[]){
 	data_file.close();
 	
 	double time_reading = end_reading.tv_sec + end_reading.tv_usec / 1000000.0 - start_reading.tv_sec - start_reading.tv_usec / 1000000.0;
-	cerr << "Time of reading file: " << time_reading << endl;
+	cerr << "[INFO]TIME OF READING FILE: " << time_reading  << "s"<< endl;
+	cerr << "----------GRAPH DATA----------" <<endl;
+	cerr << "VERTIECS: " << singleshortestpath_set.size()<< endl;
+	cerr << "EDGES: " << edges << endl;
+	cerr << "------------------------------" << endl;
+	//cerr << "Time of reading file: " << time_reading << endl;
 
 	for(int i = 0; i < num_host; i++)t[i].SendCheckmsg();
 	
@@ -230,7 +247,9 @@ int main(int argc, const char *argv[]){
 
 	futures.clear();
 
-	cerr << "Complete reading file all node" << endl;
+	//cerr << "Complete reading file all node" << endl;
+	cerr << endl;
+	cerr << "[INFO]NETWORK CONFIGURATION" << endl;
 
 	map<int, SingleSourceShortestPath>::iterator iter;
 	
@@ -285,7 +304,7 @@ int main(int argc, const char *argv[]){
 			while(s.compare("1\n")!= 0){
 				s = t[j].ReadCheckMsg();
 			}
-			cerr <<  t[j].GetServerAddr() << " is RDMA connection" << endl;
+			cerr <<  "[INFO]" << t[j].GetServerAddr() << " - SUCCESS TO RDMA CONNECTION" << endl;
 		};
 		futures.emplace_back(connectionThread.EnqueueJob(f));
 	}
@@ -295,14 +314,16 @@ int main(int argc, const char *argv[]){
   	}
 	futures.clear();
 
-	cerr << "Complete all node RDMA setting" << endl;
+	//cerr << "Complete all node RDMA setting" << endl;
 
-	cout<< "start graph query" <<endl;
+	//cout<< "start graph query" <<endl;
 	gettimeofday(&start_query, NULL);
 	int i = 0;
 	while (true){
-		cerr << "superstep " << i++ << endl;
 		
+		//cerr << "superstep " << i++ << endl;
+		cout<< "[INFO]START GRAPH PROCESSING - SUPERSTEP " << i <<endl;
+		gettimeofday(&start_tmp, NULL);
 		if(check_alive_worker){
 			for(iter=singleshortestpath_set.begin(); iter!=singleshortestpath_set.end();iter++){
 				auto f = [iter](){
@@ -330,9 +351,12 @@ int main(int argc, const char *argv[]){
 			}
 			futures.clear();
 		}
-		
+		gettimeofday(&end_tmp, NULL);
+		double processing_time = end_tmp.tv_sec + end_tmp.tv_usec / 1000000.0 - start_tmp.tv_sec - start_tmp.tv_usec / 1000000.0;
 		check_alive_worker = false;
-
+		
+		cout<< "[INFO]START NETWORK - SUPERSTEP " << i <<endl;
+		gettimeofday(&start_network, NULL);
 		for(int o = 0; o < num_host; o++){
 				auto f = [rdma, o, &singleshortestpath_set, &wake_mu, wake_thread_num](){
 					string _msg = rdma[o].GetWakeVertex();
@@ -368,31 +392,41 @@ int main(int argc, const char *argv[]){
 				};
 
 				futures.emplace_back(connectionThread.EnqueueJob(f));
-			}
+		}
 
-			for (auto& f_ : futures) {
-    			f_.wait();
-  			}
-			futures.clear();
-
-			if(CheckHalt(singleshortestpath_set)){
-				for (size_t u = 0; u < num_host; u++){
-					t[u].SendAliveMsg("dead");
-					t[u].SendAliveMsg("Q");
-				}
-			}
-			else{
-				for (size_t u = 0; u < num_host; u++){
-					t[u].SendAliveMsg("alive");
-					t[u].SendAliveMsg("Q");
-				}
-			}
-
+		for (auto& f_ : futures) {
+			f_.wait();
+		}
+		futures.clear();
+		
+		if(CheckHalt(singleshortestpath_set)){
 			for (size_t u = 0; u < num_host; u++){
-				if(t[u].ReadAliveMsg().compare("alive") == 0)check_alive_worker = true;
+				t[u].SendAliveMsg("dead");
+				t[u].SendAliveMsg("Q");
 			}
+		}
+		else{
+			for (size_t u = 0; u < num_host; u++){
+				t[u].SendAliveMsg("alive");
+				t[u].SendAliveMsg("Q");
+			}
+		}
 
-			if(check_alive_worker == false)break;
+		for (size_t u = 0; u < num_host; u++){
+			if(t[u].ReadAliveMsg().compare("alive") == 0)check_alive_worker = true;
+		}
+		gettimeofday(&end_network, NULL);
+		double network_time = end_network.tv_sec + end_network.tv_usec / 1000000.0 - start_network.tv_sec - start_network.tv_usec / 1000000.0;
+		cerr << endl;
+		cerr <<  "---------------SUPERSTEP " << i << "---------------" << endl;
+		cerr << "PROCESSING: " << processing_time << "s" << endl;
+		cerr << "NETWORK: " << network_time << "s" << endl;
+		cerr << "------------------------------------------" <<  endl;
+		cerr << endl;
+		i++;
+
+		if(check_alive_worker == false)break;
+		
 	}
 
 	gettimeofday(&end_query, NULL);
@@ -405,15 +439,17 @@ int main(int argc, const char *argv[]){
 	double time = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 	double time_query = end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
 	
-	
+	/*
 	for(iter=singleshortestpath_set.begin(); iter!=singleshortestpath_set.end();iter++){
 		cout << iter->first << ": " <<  iter->second.GetValue() << endl;
 	}
-	
-	cerr << "Time of reading file: " << time_reading << endl;
-	cerr << "toal query time: " << time_query << endl;
-	cerr << "query + reading + preprocessing: " << time_reading + time_query<< endl;
-	cerr << "toal time: " << time << endl;
+	*/
+
+	//cerr << "Time of reading file: " << time_reading << endl;
+	cerr << "[INFO]TOTAL SUPERSTEP: " << time_query << "s" << endl;
+	//cerr << "toal query time: " << time_query << endl;
+	//cerr << "query + reading + preprocessing: " << time_reading + time_query<< endl;
+	//cerr << "toal time: " << time << endl;
 
 	
 	return 0;
