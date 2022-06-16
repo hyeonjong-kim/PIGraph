@@ -251,7 +251,7 @@ int main(int argc, const char *argv[]){
 	cerr << "[INFO]TIME OF READING FILE: " << time_reading  << "s"<< endl;
 	cerr << "----------GRAPH DATA----------" <<endl;
 	cerr << "VERTIECS: " << pagerank_set.size()<< endl;
-	cerr << "EDGES: " << edges << endl;
+	cerr << "EDGES: " << edges/2 << endl;
 	cerr << "------------------------------" << endl;
 	
 	cerr << endl;
