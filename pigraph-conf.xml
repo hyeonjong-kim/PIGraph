@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property>
+		<name>hadoop.tmp.dir</name>
+		<value>/home/hjkim/hadoop-2.10.1/tmp</value>
+	</property>
+	<property>
+		<name>fs.default.name</name>
+		<value>hdfs://MN:54310</value>
+	</property>
+</configuration>
