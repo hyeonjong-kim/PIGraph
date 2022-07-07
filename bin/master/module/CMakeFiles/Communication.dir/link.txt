@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCommunication.a CMakeFiles/Communication.dir/home/hjkim/PiGraph/src/modules/Communication.cpp.o
+/usr/bin/ranlib libCommunication.a

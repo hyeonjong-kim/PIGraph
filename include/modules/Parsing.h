@@ -59,6 +59,10 @@ bool Parsing::argParse(int argc, const char *argv[]){
         .names({"-P", "--Port"})
         .description("information of port")
         .required(true);
+        this->parser->add_argument()
+        .names({"-q", "--query"})
+        .description("information of port")
+        .required(true);
         this->parser->enable_help();
 	
         auto err = parser->parse(argc, argv);
@@ -74,6 +78,7 @@ bool Parsing::argParse(int argc, const char *argv[]){
         this->config.insert({"networkType", this->parser->get<string>("n")});
         this->config.insert({"processingUnit", this->parser->get<string>("u")});
         this->config.insert({"port", this->parser->get<string>("P")});
+        this->config.insert({"query", this->parser->get<string>("q")});
 
         return true;
 }

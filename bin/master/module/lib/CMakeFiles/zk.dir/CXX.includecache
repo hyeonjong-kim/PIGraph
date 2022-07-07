@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/hjkim/PiGraph/include/zk/zkTools.h
+iostream
+-
+zookeeper/zookeeper.h
+-
+unistd.h
+-
+
+/home/hjkim/PiGraph/src/zk/zkTools.cpp
+../../include/zk/zkTools.h
+/home/hjkim/PiGraph/include/zk/zkTools.h
+

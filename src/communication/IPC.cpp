@@ -13,6 +13,7 @@ bool IPC::setData(int shmId, string data){
     }
 
     sprintf(shm, "%s", (char*) data.c_str());
+    this->detachShm(shm);
     return true;
 }
 
@@ -21,8 +22,10 @@ string IPC::getData(int shmId){
     if(shm == (char*) -1){
         perror("shmat fild");
     }
-    
-    return string(shm);
+
+    string msg = string(shm);
+    this->detachShm(shm);
+    return msg;
 }
 
 bool IPC::deleteShm(int shmId){
@@ -39,4 +42,8 @@ bool IPC::detachShm(const void *shmaddr){
     }
     
     return true;
+}
+
+char* IPC::getShm(int shmId){
+    return (char*) shmat(shmId,(void*)0,0);
 }

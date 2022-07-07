@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/hjkim/PiGraph/include/communication/IPC.h
+iostream
+-
+sys/ipc.h
+-
+sys/shm.h
+-
+stdio.h
+-
+
+/home/hjkim/PiGraph/src/communication/IPC.cpp
+IPC.h
+/home/hjkim/PiGraph/src/communication/IPC.h
+
