@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property>
+		<name>workers</name>
+		<value>SN01,SN02,SN03,SN04,SN05,SN06</value>
+	</property>
+	<property>
+		<name>number_of_mutex</name>
+		<value>256</value>
+	</property>
+	<property>
+		<name>number_of_thread</name>
+		<value>4</value>
+	</property>
+	<property>
+		<name>HDFS_info</name>
+		<value>114.70.235.40:10100</value>
+	</property>
+	<property>
+		<name>zk_info</name>
+		<value>114.70.235.40:10100</value>
+	</property>
+</configuration>

@@ -1,4 +1,4 @@
-#include "zkTools.h"
+#include "../../include/zk/zkTools.h"
 
 void watcher(zhandle_t *, int event, int state, const char *path, void*v) {
 	if (state == ZOO_EXPIRED_SESSION_STATE)

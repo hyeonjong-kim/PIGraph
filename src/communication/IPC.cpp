@@ -1,7 +1,8 @@
 #include "IPC.h"
 
-int IPC::createShm(key_t key, size_t size, int shmflg){
+int IPC::createShm(key_t key){
     int shmId = shmget(key, 1024, 0666|IPC_CREAT);
+    return shmId;
 }
 
 bool IPC::setData(int shmId, string data){
@@ -19,7 +20,6 @@ string IPC::getData(int shmId){
     char *shm = (char*) shmat(shmId,(void*)0,0);
     if(shm == (char*) -1){
         perror("shmat fild");
-        return false;
     }
     
     return string(shm);
