@@ -1,5 +1,0 @@
-/home/hjkim/PiGraph/lib/CMakeFiles/rebuild_cache.dir
-/home/hjkim/PiGraph/lib/CMakeFiles/edit_cache.dir
-/home/hjkim/PiGraph/lib/CMakeFiles/communication.dir
-/home/hjkim/PiGraph/lib/CMakeFiles/zk.dir
-/home/hjkim/PiGraph/lib/CMakeFiles/utils.dir
