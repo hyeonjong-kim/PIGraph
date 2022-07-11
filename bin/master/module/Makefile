@@ -131,6 +131,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+module/CMakeFiles/Configuration.dir/rule:
+	cd /home/hjkim/PiGraph/bin/master && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Configuration.dir/rule
+.PHONY : module/CMakeFiles/Configuration.dir/rule
+
+# Convenience name for target.
+Configuration: module/CMakeFiles/Configuration.dir/rule
+
+.PHONY : Configuration
+
+# fast build rule for target.
+Configuration/fast:
+	cd /home/hjkim/PiGraph/bin/master && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Configuration.dir/build.make module/CMakeFiles/Configuration.dir/build
+.PHONY : Configuration/fast
+
+# Convenience name for target.
 module/CMakeFiles/Communication.dir/rule:
 	cd /home/hjkim/PiGraph/bin/master && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Communication.dir/rule
 .PHONY : module/CMakeFiles/Communication.dir/rule
@@ -187,6 +202,33 @@ home/hjkim/PiGraph/src/modules/Communication.cpp.s:
 	cd /home/hjkim/PiGraph/bin/master && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Communication.dir/build.make module/CMakeFiles/Communication.dir/home/hjkim/PiGraph/src/modules/Communication.cpp.s
 .PHONY : home/hjkim/PiGraph/src/modules/Communication.cpp.s
 
+home/hjkim/PiGraph/src/modules/Configuration.o: home/hjkim/PiGraph/src/modules/Configuration.cpp.o
+
+.PHONY : home/hjkim/PiGraph/src/modules/Configuration.o
+
+# target to build an object file
+home/hjkim/PiGraph/src/modules/Configuration.cpp.o:
+	cd /home/hjkim/PiGraph/bin/master && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Configuration.dir/build.make module/CMakeFiles/Configuration.dir/home/hjkim/PiGraph/src/modules/Configuration.cpp.o
+.PHONY : home/hjkim/PiGraph/src/modules/Configuration.cpp.o
+
+home/hjkim/PiGraph/src/modules/Configuration.i: home/hjkim/PiGraph/src/modules/Configuration.cpp.i
+
+.PHONY : home/hjkim/PiGraph/src/modules/Configuration.i
+
+# target to preprocess a source file
+home/hjkim/PiGraph/src/modules/Configuration.cpp.i:
+	cd /home/hjkim/PiGraph/bin/master && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Configuration.dir/build.make module/CMakeFiles/Configuration.dir/home/hjkim/PiGraph/src/modules/Configuration.cpp.i
+.PHONY : home/hjkim/PiGraph/src/modules/Configuration.cpp.i
+
+home/hjkim/PiGraph/src/modules/Configuration.s: home/hjkim/PiGraph/src/modules/Configuration.cpp.s
+
+.PHONY : home/hjkim/PiGraph/src/modules/Configuration.s
+
+# target to generate assembly for a file
+home/hjkim/PiGraph/src/modules/Configuration.cpp.s:
+	cd /home/hjkim/PiGraph/bin/master && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Configuration.dir/build.make module/CMakeFiles/Configuration.dir/home/hjkim/PiGraph/src/modules/Configuration.cpp.s
+.PHONY : home/hjkim/PiGraph/src/modules/Configuration.cpp.s
+
 home/hjkim/PiGraph/src/modules/Parsing.o: home/hjkim/PiGraph/src/modules/Parsing.cpp.o
 
 .PHONY : home/hjkim/PiGraph/src/modules/Parsing.o
@@ -223,10 +265,14 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Communication"
+	@echo "... Configuration"
 	@echo "... Parsing"
 	@echo "... home/hjkim/PiGraph/src/modules/Communication.o"
 	@echo "... home/hjkim/PiGraph/src/modules/Communication.i"
 	@echo "... home/hjkim/PiGraph/src/modules/Communication.s"
+	@echo "... home/hjkim/PiGraph/src/modules/Configuration.o"
+	@echo "... home/hjkim/PiGraph/src/modules/Configuration.i"
+	@echo "... home/hjkim/PiGraph/src/modules/Configuration.s"
 	@echo "... home/hjkim/PiGraph/src/modules/Parsing.o"
 	@echo "... home/hjkim/PiGraph/src/modules/Parsing.i"
 	@echo "... home/hjkim/PiGraph/src/modules/Parsing.s"

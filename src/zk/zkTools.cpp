@@ -42,7 +42,7 @@ void wgetWatcher(zhandle_t *zh , int event, int state, const char *path, void* w
 	}
 }
 
-zhandle_t* zkTools::zkInit(char* hostInfo){
+zhandle_t* zkTools::zkInit(const char* hostInfo){
     const int RECV_TIMEOUT = 10000;
     zhandle_t *zh = zookeeper_init(hostInfo, watcher, RECV_TIMEOUT, 0, 0, 0);
     return zh;

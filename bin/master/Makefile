@@ -144,6 +144,19 @@ master/fast:
 .PHONY : master/fast
 
 #=============================================================================
+# Target rules for targets named Configuration
+
+# Build rule for target.
+Configuration: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Configuration
+.PHONY : Configuration
+
+# fast build rule for target.
+Configuration/fast:
+	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Configuration.dir/build.make module/CMakeFiles/Configuration.dir/build
+.PHONY : Configuration/fast
+
+#=============================================================================
 # Target rules for targets named Communication
 
 # Build rule for target.
@@ -244,6 +257,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Communication"
+	@echo "... Configuration"
 	@echo "... Parsing"
 	@echo "... communication"
 	@echo "... master"

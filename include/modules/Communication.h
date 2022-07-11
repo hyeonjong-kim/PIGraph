@@ -3,6 +3,11 @@
 #include <string>
 #include <mutex>
 #include <condition_variable>
+#include <vector>
+#include <sstream>
+#include <unistd.h>
+#include <thread>
+#include <chrono>
 
 #include "../communication/IPC.h"
 
@@ -12,10 +17,11 @@ class Communication{
 
     private:
         IPC ipc;
-        mutex mu;
         condition_variable cv;
-
+        mutex mu;
     public:
         bool client(map<string, string>& config);
-        map<string, string>& master();
+        map<string, string> master();
+        
 };
+

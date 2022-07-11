@@ -15,6 +15,18 @@ sys/shm.h
 -
 stdio.h
 -
+errno.h
+-
+sys/types.h
+-
+sys/ipc.h
+-
+sys/sem.h
+-
+unistd.h
+-
+stdlib.h
+-
 
 /home/hjkim/PiGraph/src/communication/IPC.cpp
 IPC.h

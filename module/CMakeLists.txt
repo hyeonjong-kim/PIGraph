@@ -11,6 +11,12 @@ add_compile_options(-O3 -std=c++17)
 
 add_library(Communication STATIC ../src/modules/Communication.cpp)
 target_include_directories(Communication PUBLIC ../include/modules)
-target_link_libraries(Communication PRIVATE communication)
+target_link_libraries(Communication PRIVATE communication pthread)
 
 add_compile_options(-O3 -std=c++17)
+
+add_library(Configuration STATIC ../src/modules/Configuration.cpp)
+target_include_directories(Configuration PUBLIC ../include/modules)
+target_link_libraries(Configuration PRIVATE zk)
+
+#add_compile_options(-O3 -std=c++17)

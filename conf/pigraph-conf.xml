@@ -5,19 +5,19 @@
 		<value>SN01,SN02,SN03,SN04,SN05,SN06</value>
 	</property>
 	<property>
-		<name>number_of_mutex</name>
+		<name>mutex</name>
 		<value>256</value>
 	</property>
 	<property>
-		<name>number_of_thread</name>
+		<name>thread</name>
 		<value>4</value>
 	</property>
 	<property>
-		<name>HDFS_info</name>
+		<name>HDFS</name>
 		<value>114.70.235.40:10100</value>
 	</property>
 	<property>
-		<name>zk_info</name>
-		<value>114.70.235.40:10100</value>
+		<name>zk</name>
+		<value>localhost.ib:2181</value>
 	</property>
 </configuration>

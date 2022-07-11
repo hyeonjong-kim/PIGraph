@@ -19,6 +19,18 @@ sys/shm.h
 -
 stdio.h
 -
+errno.h
+-
+sys/types.h
+-
+sys/ipc.h
+-
+sys/sem.h
+-
+unistd.h
+-
+stdlib.h
+-
 
 /home/hjkim/PiGraph/include/modules/Communication.h
 iostream
@@ -30,6 +42,16 @@ string
 mutex
 -
 condition_variable
+-
+vector
+-
+sstream
+-
+unistd.h
+-
+thread
+-
+chrono
 -
 ../communication/IPC.h
 /home/hjkim/PiGraph/include/communication/IPC.h
