@@ -12,11 +12,13 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/home/hjkim/PiGraph/module/../include/modules"
   "/home/hjkim/PiGraph/lib/../include/zk"
+  "/home/hjkim/PiGraph/lib/../include/communication"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
   "/home/hjkim/PiGraph/bin/module/lib/CMakeFiles/zk.dir/DependInfo.cmake"
+  "/home/hjkim/PiGraph/bin/module/lib/CMakeFiles/communication.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

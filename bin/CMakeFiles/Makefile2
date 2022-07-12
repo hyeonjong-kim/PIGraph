@@ -200,6 +200,7 @@ CMakeFiles/master.dir/clean:
 # Target rules for target module/CMakeFiles/Configuration.dir
 
 # All Build rule for target.
+module/CMakeFiles/Configuration.dir/all: module/lib/CMakeFiles/communication.dir/all
 module/CMakeFiles/Configuration.dir/all: module/lib/CMakeFiles/zk.dir/all
 	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Configuration.dir/build.make module/CMakeFiles/Configuration.dir/depend
 	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Configuration.dir/build.make module/CMakeFiles/Configuration.dir/build
@@ -208,7 +209,7 @@ module/CMakeFiles/Configuration.dir/all: module/lib/CMakeFiles/zk.dir/all
 
 # Build rule for subdir invocation for target.
 module/CMakeFiles/Configuration.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/bin/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/bin/CMakeFiles 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Configuration.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/bin/CMakeFiles 0
 .PHONY : module/CMakeFiles/Configuration.dir/rule

@@ -6,6 +6,28 @@
 
 #IncludeRegexTransform: 
 
+/home/hjkim/PiGraph/include/communication/IPC.h
+iostream
+-
+sys/ipc.h
+-
+sys/shm.h
+-
+stdio.h
+-
+errno.h
+-
+sys/types.h
+-
+sys/ipc.h
+-
+sys/sem.h
+-
+unistd.h
+-
+stdlib.h
+-
+
 /home/hjkim/PiGraph/include/modules/Configuration.h
 iostream
 -
@@ -15,6 +37,8 @@ vector
 -
 ../zk/zkTools.h
 /home/hjkim/PiGraph/include/zk/zkTools.h
+../communication/IPC.h
+/home/hjkim/PiGraph/include/communication/IPC.h
 
 /home/hjkim/PiGraph/include/zk/zkTools.h
 iostream

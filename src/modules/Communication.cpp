@@ -13,12 +13,20 @@ vector<string> split_simple(string& input, char delimiter) {
 }
 
 bool Communication::client(map<string, string>& config){
-    int shmId = this->ipc.createShm((key_t)3141592);
-    if (shmId == -1){
+    int configShmId = this->ipc.createShm((key_t)3141592);
+    if (configShmId == -1){
 		cerr << "[ERROR]FAIL TO CREATE OR GET SHM" << endl;
         return false;
 	}
     
+    int resultShmId = this->ipc.createShm((key_t)190507);
+    if (resultShmId == -1){
+		cerr << "[ERROR]FAIL TO CREATE OR GET SHM" << endl;
+        return false;
+	}
+
+    this->ipc.setData(resultShmId, "");
+
     string msg = "";
 
     map<string, string>::iterator iter;
@@ -26,10 +34,17 @@ bool Communication::client(map<string, string>& config){
         msg += iter->first + " " + iter->second + "\n";
     }
     
-    if(!this->ipc.setData(shmId, msg)){
+    if(!this->ipc.setData(configShmId, msg)){
         cerr << "[ERROR]FAIL TO SET SHM" << endl;
         return false;
     }
+    
+    while(msg == ""){
+        msg = this->ipc.getData(resultShmId);
+        this_thread::sleep_for(chrono::milliseconds(50));
+    }
+    
+    cerr << "[INFO]RESULT: " << msg << endl;
 
     return true;
 }

@@ -1,3 +1,6 @@
+#ifndef PARSING_H
+#define PARSING_H
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -109,3 +112,5 @@ bool Parsing::run(int argc, const char *argv[]){
         
         return true;
 }
+
+#endif

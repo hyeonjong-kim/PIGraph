@@ -69,6 +69,8 @@ vector
 -
 ../zk/zkTools.h
 /home/hjkim/PiGraph/include/zk/zkTools.h
+../communication/IPC.h
+/home/hjkim/PiGraph/include/communication/IPC.h
 
 /home/hjkim/PiGraph/include/zk/zkTools.h
 iostream

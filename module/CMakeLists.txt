@@ -17,6 +17,6 @@ add_compile_options(-O3 -std=c++17)
 
 add_library(Configuration STATIC ../src/modules/Configuration.cpp)
 target_include_directories(Configuration PUBLIC ../include/modules)
-target_link_libraries(Configuration PRIVATE zk)
+target_link_libraries(Configuration PRIVATE zk communication)
 
 #add_compile_options(-O3 -std=c++17)

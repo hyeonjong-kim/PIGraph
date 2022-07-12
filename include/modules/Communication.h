@@ -1,3 +1,6 @@
+#ifndef COMMUNICATION_H
+#define COMMUNICATION_H
+
 #include <iostream>
 #include <map>
 #include <string>
@@ -17,11 +20,10 @@ class Communication{
 
     private:
         IPC ipc;
-        condition_variable cv;
-        mutex mu;
     public:
         bool client(map<string, string>& config);
         map<string, string> master();
         
 };
 
+#endif

@@ -1,3 +1,6 @@
+#ifndef IPC_H
+#define IPC_H
+
 #include <iostream>
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -12,12 +15,6 @@
 
 using namespace std;
 
-union semun {
-    int val;
-    struct semid_ds *buf;
-    unsigned short *array;
-};
-
 class IPC{
     public:
         int createShm(key_t key);
@@ -26,7 +23,6 @@ class IPC{
         bool setData(int shmId, string data);
         bool detachShm(const void *shmaddr);
         bool deleteShm(int shmId);
-        int initSem(key_t semKey);
-        int semLock(int semId);
-        int semUnlock(int semId);
 };
+
+#endif

@@ -1,1 +1,1 @@
-/usr/local/bin/c++ CMakeFiles/master.dir/master_main.cpp.o -o master  module/libCommunication.a module/libConfiguration.a module/lib/libcommunication.a -lpthread module/lib/libzk.a -lzookeeper_mt 
+/usr/local/bin/c++ CMakeFiles/master.dir/master_main.cpp.o -o master  module/libCommunication.a module/libConfiguration.a -lpthread module/lib/libcommunication.a module/lib/libzk.a -lzookeeper_mt 
