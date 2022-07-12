@@ -39,7 +39,11 @@
         "type_traits": "cpp",
         "tuple": "cpp",
         "typeinfo": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "cstring": "cpp",
+        "deque": "cpp",
+        "iomanip": "cpp",
+        "numeric": "cpp"
     }
 }
 

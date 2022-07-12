@@ -5,3 +5,5 @@ CMakeFiles/master.dir/master_main.cpp.o
  /home/hjkim/PiGraph/bin/master_main.cpp
  /home/hjkim/PiGraph/include/communication/IPC.h
  /home/hjkim/PiGraph/include/modules/Communication.h
+ /home/hjkim/PiGraph/include/modules/Configuration.h
+ /home/hjkim/PiGraph/include/zk/zkTools.h

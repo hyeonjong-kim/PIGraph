@@ -7,8 +7,12 @@
 #IncludeRegexTransform: 
 
 /home/hjkim/PiGraph/bin/master_main.cpp
-../../include/modules/Communication.h
-/home/hjkim/include/modules/Communication.h
+signal.h
+-
+../include/modules/Communication.h
+/home/hjkim/PiGraph/include/modules/Communication.h
+../include/modules/Configuration.h
+/home/hjkim/PiGraph/include/modules/Configuration.h
 
 /home/hjkim/PiGraph/include/communication/IPC.h
 iostream
@@ -55,4 +59,22 @@ chrono
 -
 ../communication/IPC.h
 /home/hjkim/PiGraph/include/communication/IPC.h
+
+/home/hjkim/PiGraph/include/modules/Configuration.h
+iostream
+-
+map
+-
+vector
+-
+../zk/zkTools.h
+/home/hjkim/PiGraph/include/zk/zkTools.h
+
+/home/hjkim/PiGraph/include/zk/zkTools.h
+iostream
+-
+zookeeper/zookeeper.h
+-
+unistd.h
+-
 

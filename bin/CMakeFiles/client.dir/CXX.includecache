@@ -7,10 +7,10 @@
 #IncludeRegexTransform: 
 
 /home/hjkim/PiGraph/bin/client_main.cpp
-../../include/modules/Parsing.h
-/home/hjkim/include/modules/Parsing.h
-../../include/modules/Communication.h
-/home/hjkim/include/modules/Communication.h
+../include/modules/Parsing.h
+/home/hjkim/PiGraph/include/modules/Parsing.h
+../include/modules/Communication.h
+/home/hjkim/PiGraph/include/modules/Communication.h
 
 /home/hjkim/PiGraph/include/communication/IPC.h
 iostream

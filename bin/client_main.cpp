@@ -1,5 +1,5 @@
-#include "../../include/modules/Parsing.h"
-#include "../../include/modules/Communication.h"
+#include "../include/modules/Parsing.h"
+#include "../include/modules/Communication.h"
 
 int main(int argc, const char *argv[]){
     Parsing* parsing = new Parsing();
