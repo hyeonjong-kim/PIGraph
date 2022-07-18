@@ -21,7 +21,7 @@ class Communication{
     private:
         IPC ipc;
     public:
-        bool client(map<string, string>& config);
+        bool client(map<string, string> config);
         map<string, string> master();
         
 };

@@ -17,20 +17,16 @@ class Parsing{
 
     private:
         ArgumentParser* parser;
-        TiXmlDocument* readDoc;
-        map<string, string> config;
+        map<string, string> argConfig;
 
     public:
         Parsing(){
             this->parser = new ArgumentParser("Pigraph", "Pigraph execution");
-            this->readDoc =  new TiXmlDocument();
         }
         
-        map<string,string>& getConfig(){return this->config;}
+        map<string,string> getArgConfig(){return this->argConfig;}
 
         bool argParse(int argc, const char *argv[]);
-        bool xmlParse();
-        bool run(int argc, const char *argv[]);
 };
 
 bool Parsing::argParse(int argc, const char *argv[]){    
@@ -78,38 +74,16 @@ bool Parsing::argParse(int argc, const char *argv[]){
 		return -1;
 	}
         
-        this->config.insert({"filePath", this->parser->get<string>("f")});
-        this->config.insert({"numWorker", this->parser->get<string>("w")});
-        this->config.insert({"superstep", this->parser->get<string>("s")});
-        this->config.insert({"patitionOpt", this->parser->get<string>("p")});
-        this->config.insert({"networkType", this->parser->get<string>("n")});
-        this->config.insert({"processingUnit", this->parser->get<string>("u")});
-        this->config.insert({"port", this->parser->get<string>("P")});
-        this->config.insert({"query", this->parser->get<string>("q")});
-        this->config.insert({"jobId", this->parser->get<string>("j")});
+        this->argConfig.insert({"filePath", this->parser->get<string>("f")});
+        this->argConfig.insert({"numWorker", this->parser->get<string>("w")});
+        this->argConfig.insert({"superstep", this->parser->get<string>("s")});
+        this->argConfig.insert({"patitionOpt", this->parser->get<string>("p")});
+        this->argConfig.insert({"networkType", this->parser->get<string>("n")});
+        this->argConfig.insert({"processingUnit", this->parser->get<string>("u")});
+        this->argConfig.insert({"port", this->parser->get<string>("P")});
+        this->argConfig.insert({"query", this->parser->get<string>("q")});
+        this->argConfig.insert({"jobId", this->parser->get<string>("j")});
 
-        return true;
-}
-
-bool Parsing::xmlParse(){
-        this->readDoc->LoadFile("/home/hjkim/PiGraph/conf/pigraph-conf.xml");
-        TiXmlElement* rootElement = this->readDoc->FirstChildElement( "configuration" );
-        TiXmlElement* element = rootElement->FirstChildElement("property");
-
-        while(element){
-                string name = element->FirstChildElement("name")->GetText();
-                string value = element->FirstChildElement("value")->GetText();
-                this->config.insert({name, value});
-                element = element->NextSiblingElement("property");
-        }
-
-        return true;
-}
-
-bool Parsing::run(int argc, const char *argv[]){
-        if(!this->argParse(argc, argv))return false;
-        if(!this->xmlParse())return false;
-        
         return true;
 }
 
