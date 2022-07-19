@@ -4,7 +4,7 @@ add_subdirectory(../module module)
 project(PiGraph)
 
 add_executable (master master_main.cpp)
-target_link_libraries(master PRIVATE Communication Configuration)
+target_link_libraries(master PRIVATE Communication Configuration Coordination pthread)
 
 add_executable (client client_main.cpp)
 target_link_libraries(client PRIVATE Parsing Communication)

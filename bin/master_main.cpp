@@ -3,8 +3,15 @@
 #include "../include/modules/Communication.h"
 #include "../include/modules/Configuration.h"
 #include "../include/modules/Coordination.h"
+#include "../include/utils/ThreadPool.h"
+
+Communication *communication = new Communication();
+Configuration *configuration = new Configuration();
+Coordination *coordination = new Coordination();
+
 
 vector<map<string, map<string,string>>> jobConfigLog;
+ThreadPool::ThreadPool threadPool(2);
 
 vector<string> split_simple(string& input, char delimiter) {
 	vector<string> answer;
@@ -19,7 +26,6 @@ vector<string> split_simple(string& input, char delimiter) {
 }
 
 void interruptHandler(int sig){
-    Configuration *configuration = new Configuration();
     configuration->deleteAllJobConfig(jobConfigLog);
 
     cerr << "[INFO]MASTER STOP" << endl;
@@ -28,14 +34,16 @@ void interruptHandler(int sig){
 
 int main(int argc, const char *argv[]){
     signal(SIGINT, interruptHandler);
-    Communication *communication = new Communication();
-    Configuration *configuration = new Configuration();
     configuration->xmlParse();
     map<string,string> xmlConfig = configuration->getXmlConfig();
-    Coordination* coordination = new Coordination(xmlConfig.find("zk")->second, split_simple(xmlConfig.find("workers")->second, ','));
     
-    //thread로 바꿀 것
-    coordination->resourceMonitoring();
+    
+    coordination->setResourceMonitoring(xmlConfig.find("zk")->second, split_simple(xmlConfig.find("workers")->second, ','));
+    std::vector<std::future<void>> futures;
+    auto f1 = [](){coordination->resourceMonitoring_CPU();};
+    auto f2 = [](){coordination->resourceMonitoring_GPU();};
+    futures.emplace_back(threadPool.EnqueueJob(f1));
+    futures.emplace_back(threadPool.EnqueueJob(f2));
     
     while(true){
         map<string,string> argConfig = communication->master();
@@ -44,7 +52,13 @@ int main(int argc, const char *argv[]){
         config.insert({"arg", argConfig});
         configuration->submitJobConfig(config);
         jobConfigLog.push_back(config);
-        coordination->executionQuery(stoi(argConfig.find("numWorkers")->second), argConfig.find("jobId")->second, argConfig.find("query")->second);
+        if(argConfig.find("processingUnit")->second == "cpu"){
+            coordination->executionQuery_CPU(stoi(argConfig.find("numWorkers")->second), argConfig.find("jobId")->second, argConfig.find("query")->second);
+        }
+        else if(argConfig.find("processingUnit")->second == "gpu"){
+            coordination->executionQuery_GPU(stoi(argConfig.find("numWorkers")->second), argConfig.find("jobId")->second, argConfig.find("query")->second);
+        }
+        
     }
     
     return 0;
