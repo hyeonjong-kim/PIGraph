@@ -6,6 +6,7 @@ CMakeFiles/client.dir/client_main.cpp.o: /home/hjkim/PiGraph/include/communicati
 CMakeFiles/client.dir/client_main.cpp.o: /home/hjkim/PiGraph/include/modules/Communication.h
 CMakeFiles/client.dir/client_main.cpp.o: /home/hjkim/PiGraph/include/modules/Parsing.h
 CMakeFiles/client.dir/client_main.cpp.o: /home/hjkim/PiGraph/include/utils/ArgParsing.h
+CMakeFiles/client.dir/client_main.cpp.o: /home/hjkim/PiGraph/include/utils/Tools.h
 CMakeFiles/client.dir/client_main.cpp.o: /home/hjkim/PiGraph/include/utils/tinystr.h
 CMakeFiles/client.dir/client_main.cpp.o: /home/hjkim/PiGraph/include/utils/tinyxml.h
 

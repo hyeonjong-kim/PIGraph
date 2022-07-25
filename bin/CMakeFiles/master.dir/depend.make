@@ -5,5 +5,10 @@ CMakeFiles/master.dir/master_main.cpp.o: master_main.cpp
 CMakeFiles/master.dir/master_main.cpp.o: /home/hjkim/PiGraph/include/communication/IPC.h
 CMakeFiles/master.dir/master_main.cpp.o: /home/hjkim/PiGraph/include/modules/Communication.h
 CMakeFiles/master.dir/master_main.cpp.o: /home/hjkim/PiGraph/include/modules/Configuration.h
+CMakeFiles/master.dir/master_main.cpp.o: /home/hjkim/PiGraph/include/modules/Coordination.h
+CMakeFiles/master.dir/master_main.cpp.o: /home/hjkim/PiGraph/include/utils/ThreadPool.h
+CMakeFiles/master.dir/master_main.cpp.o: /home/hjkim/PiGraph/include/utils/Tools.h
+CMakeFiles/master.dir/master_main.cpp.o: /home/hjkim/PiGraph/include/utils/tinystr.h
+CMakeFiles/master.dir/master_main.cpp.o: /home/hjkim/PiGraph/include/utils/tinyxml.h
 CMakeFiles/master.dir/master_main.cpp.o: /home/hjkim/PiGraph/include/zk/zkTools.h
 

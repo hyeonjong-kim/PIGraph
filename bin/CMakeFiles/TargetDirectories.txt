@@ -4,6 +4,7 @@
 /home/hjkim/PiGraph/bin/CMakeFiles/master.dir
 /home/hjkim/PiGraph/bin/module/CMakeFiles/rebuild_cache.dir
 /home/hjkim/PiGraph/bin/module/CMakeFiles/edit_cache.dir
+/home/hjkim/PiGraph/bin/module/CMakeFiles/Coordination.dir
 /home/hjkim/PiGraph/bin/module/CMakeFiles/Configuration.dir
 /home/hjkim/PiGraph/bin/module/CMakeFiles/Communication.dir
 /home/hjkim/PiGraph/bin/module/CMakeFiles/Parsing.dir

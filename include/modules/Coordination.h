@@ -1,3 +1,6 @@
+#ifndef COORDINATION_H
+#define COORDINATION_H
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -18,7 +21,6 @@ class Coordination{
         vector<pair<string, double>> resourceSort_CPU;
         vector<pair<string, double>> resourceSort_GPU;
         mutex mu;
-
     public:
         Coordination();
         ~Coordination();
@@ -28,3 +30,5 @@ class Coordination{
         void executionQuery_CPU(int numWorker, string jobId, string query);
         void executionQuery_GPU(int numWorker, string jobId, string query);
 };
+
+#endif

@@ -51,6 +51,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/client.dir/DependInfo.cmake"
   "CMakeFiles/master.dir/DependInfo.cmake"
+  "module/CMakeFiles/Coordination.dir/DependInfo.cmake"
   "module/CMakeFiles/Configuration.dir/DependInfo.cmake"
   "module/CMakeFiles/Communication.dir/DependInfo.cmake"
   "module/CMakeFiles/Parsing.dir/DependInfo.cmake"

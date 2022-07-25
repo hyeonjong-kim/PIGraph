@@ -57,6 +57,8 @@ chrono
 -
 ../communication/IPC.h
 /home/hjkim/PiGraph/include/communication/IPC.h
+../utils/Tools.h
+/home/hjkim/PiGraph/include/utils/Tools.h
 
 /home/hjkim/PiGraph/include/modules/Parsing.h
 iostream
@@ -98,6 +100,14 @@ stdexcept
 string
 -
 unordered_map
+-
+vector
+-
+
+/home/hjkim/PiGraph/include/utils/Tools.h
+iostream
+-
+sstream
 -
 vector
 -

@@ -1,13 +1,12 @@
 #include "../../include/modules/Configuration.h"
 
 Configuration::Configuration(){
-
+    
 }
 
 Configuration::~Configuration(){
     this->zktools.zkClose(this->zh);
 }
-
 
 bool Configuration::submitJobConfig(map<string, map<string,string>> config){
     int resultShmId = this->ipc.createShm((key_t)190507);
@@ -17,18 +16,18 @@ bool Configuration::submitJobConfig(map<string, map<string,string>> config){
 	}
     
     if(this->host == ""){
-        string host =  config.find("xml")->second.find("zk")->second;
+        this->host =  config.find("xml")->second.find("zk")->second;
         this->zh = this->zktools.zkInit(host.c_str());
+        this->zktools.zkCreatePersistent(this->zh, "/PiGraph/job", "job");
     }
+    
+
     else if(this->host != config.find("xml")->second.find("zk")->second){
         this->ipc.setData(resultShmId, "[ERROR]ZOOKEEPER HOST IS DIFFERENT");
         return false;
     }
-
-    string jobPath = "/PiGraph/job";
-    this->zktools.zkCreatePersistent(this->zh, (char*) jobPath.c_str(), "job");
     
-    string jobIdPath = jobPath + config.find("arg")->second.find("jobId")->second;
+    string jobIdPath = "/PiGraph/job/" + config.find("arg")->second.find("jobId")->second;
     this->zktools.zkCreatePersistent(this->zh, (char*)jobIdPath.c_str(), "jobId");
     
     map<string,string>::iterator iter;
@@ -43,7 +42,7 @@ bool Configuration::submitJobConfig(map<string, map<string,string>> config){
             this->zktools.zkCreatePersistent(this->zh, (char*)(string(jobIdPath+"/"+iter->first).c_str()), (char*)(iter->second.c_str()));
         }
     }
-
+    
     this->ipc.setData(resultShmId, "[INFO]SUCCESS TO SUBMIT JOB CONFIGURATION");
     return true;
 }
@@ -78,7 +77,7 @@ bool Configuration::xmlParse(){
     this->readDoc->LoadFile("/home/hjkim/PiGraph/conf/pigraph-conf.xml");
     TiXmlElement* rootElement = this->readDoc->FirstChildElement( "configuration" );
     TiXmlElement* element = rootElement->FirstChildElement("property");
-
+    
     while(element){
         string name = element->FirstChildElement("name")->GetText();
         string value = element->FirstChildElement("value")->GetText();

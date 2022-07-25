@@ -17,7 +17,7 @@ class Configuration{
         zhandle_t* zh;
         string host = "";
         IPC ipc;
-        TiXmlDocument* readDoc;
+        TiXmlDocument* readDoc = new TiXmlDocument();
         map<string, string> xmlConfig;
 
     public:
@@ -30,8 +30,6 @@ class Configuration{
         bool submitJobConfig(map<string, map<string,string>> config);
         bool deleteJobConfig(string jobId);
         bool deleteAllJobConfig(vector<map<string, map<string,string>>> allJobConfig);
-
-
 };
 
 #endif

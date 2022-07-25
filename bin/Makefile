@@ -157,6 +157,19 @@ master/fast:
 .PHONY : master/fast
 
 #=============================================================================
+# Target rules for targets named Coordination
+
+# Build rule for target.
+Coordination: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Coordination
+.PHONY : Coordination
+
+# fast build rule for target.
+Coordination/fast:
+	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Coordination.dir/build.make module/CMakeFiles/Coordination.dir/build
+.PHONY : Coordination/fast
+
+#=============================================================================
 # Target rules for targets named Configuration
 
 # Build rule for target.
@@ -298,6 +311,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... Communication"
 	@echo "... Configuration"
+	@echo "... Coordination"
 	@echo "... Parsing"
 	@echo "... client"
 	@echo "... communication"

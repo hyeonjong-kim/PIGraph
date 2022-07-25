@@ -3,5 +3,6 @@
 
 module/CMakeFiles/Communication.dir/home/hjkim/PiGraph/src/modules/Communication.cpp.o: /home/hjkim/PiGraph/include/communication/IPC.h
 module/CMakeFiles/Communication.dir/home/hjkim/PiGraph/src/modules/Communication.cpp.o: /home/hjkim/PiGraph/include/modules/Communication.h
+module/CMakeFiles/Communication.dir/home/hjkim/PiGraph/src/modules/Communication.cpp.o: /home/hjkim/PiGraph/include/utils/Tools.h
 module/CMakeFiles/Communication.dir/home/hjkim/PiGraph/src/modules/Communication.cpp.o: /home/hjkim/PiGraph/src/modules/Communication.cpp
 

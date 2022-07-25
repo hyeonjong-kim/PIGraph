@@ -310,6 +310,33 @@ home/hjkim/PiGraph/src/utils/ThreadPool.cpp.s:
 	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/lib/CMakeFiles/utils.dir/build.make module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/ThreadPool.cpp.s
 .PHONY : home/hjkim/PiGraph/src/utils/ThreadPool.cpp.s
 
+home/hjkim/PiGraph/src/utils/Tools.o: home/hjkim/PiGraph/src/utils/Tools.cpp.o
+
+.PHONY : home/hjkim/PiGraph/src/utils/Tools.o
+
+# target to build an object file
+home/hjkim/PiGraph/src/utils/Tools.cpp.o:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/lib/CMakeFiles/utils.dir/build.make module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/Tools.cpp.o
+.PHONY : home/hjkim/PiGraph/src/utils/Tools.cpp.o
+
+home/hjkim/PiGraph/src/utils/Tools.i: home/hjkim/PiGraph/src/utils/Tools.cpp.i
+
+.PHONY : home/hjkim/PiGraph/src/utils/Tools.i
+
+# target to preprocess a source file
+home/hjkim/PiGraph/src/utils/Tools.cpp.i:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/lib/CMakeFiles/utils.dir/build.make module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/Tools.cpp.i
+.PHONY : home/hjkim/PiGraph/src/utils/Tools.cpp.i
+
+home/hjkim/PiGraph/src/utils/Tools.s: home/hjkim/PiGraph/src/utils/Tools.cpp.s
+
+.PHONY : home/hjkim/PiGraph/src/utils/Tools.s
+
+# target to generate assembly for a file
+home/hjkim/PiGraph/src/utils/Tools.cpp.s:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/lib/CMakeFiles/utils.dir/build.make module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/Tools.cpp.s
+.PHONY : home/hjkim/PiGraph/src/utils/Tools.cpp.s
+
 home/hjkim/PiGraph/src/utils/tinystr.o: home/hjkim/PiGraph/src/utils/tinystr.cpp.o
 
 .PHONY : home/hjkim/PiGraph/src/utils/tinystr.o
@@ -471,6 +498,9 @@ help:
 	@echo "... home/hjkim/PiGraph/src/utils/ThreadPool.o"
 	@echo "... home/hjkim/PiGraph/src/utils/ThreadPool.i"
 	@echo "... home/hjkim/PiGraph/src/utils/ThreadPool.s"
+	@echo "... home/hjkim/PiGraph/src/utils/Tools.o"
+	@echo "... home/hjkim/PiGraph/src/utils/Tools.i"
+	@echo "... home/hjkim/PiGraph/src/utils/Tools.s"
 	@echo "... home/hjkim/PiGraph/src/utils/tinystr.o"
 	@echo "... home/hjkim/PiGraph/src/utils/tinystr.i"
 	@echo "... home/hjkim/PiGraph/src/utils/tinystr.s"

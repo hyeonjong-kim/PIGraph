@@ -51,6 +51,16 @@ chrono
 -
 ../communication/IPC.h
 /home/hjkim/PiGraph/include/communication/IPC.h
+../utils/Tools.h
+/home/hjkim/PiGraph/include/utils/Tools.h
+
+/home/hjkim/PiGraph/include/utils/Tools.h
+iostream
+-
+sstream
+-
+vector
+-
 
 /home/hjkim/PiGraph/src/modules/Communication.cpp
 ../../include/modules/Communication.h

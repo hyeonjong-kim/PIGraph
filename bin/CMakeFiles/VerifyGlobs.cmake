@@ -19,6 +19,7 @@ file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/hjkim/PiGraph/lib/../sr
 set(OLD_GLOB
   "/home/hjkim/PiGraph/lib/../src/utils/ArgParsing.cpp"
   "/home/hjkim/PiGraph/lib/../src/utils/ThreadPool.cpp"
+  "/home/hjkim/PiGraph/lib/../src/utils/Tools.cpp"
   "/home/hjkim/PiGraph/lib/../src/utils/tinystr.cpp"
   "/home/hjkim/PiGraph/lib/../src/utils/tinyxml.cpp"
   "/home/hjkim/PiGraph/lib/../src/utils/tinyxmlerror.cpp"

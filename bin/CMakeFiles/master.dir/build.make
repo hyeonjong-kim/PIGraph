@@ -100,7 +100,9 @@ master: CMakeFiles/master.dir/master_main.cpp.o
 master: CMakeFiles/master.dir/build.make
 master: module/libCommunication.a
 master: module/libConfiguration.a
+master: module/libCoordination.a
 master: module/lib/libcommunication.a
+master: module/lib/libutils.a
 master: module/lib/libzk.a
 master: CMakeFiles/master.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable master"

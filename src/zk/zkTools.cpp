@@ -55,16 +55,16 @@ bool zkTools::zkCreatePersistent(zhandle_t *zh, char* path, char* data){
 	
 	rc = zoo_exists(zh, path, 0, &stat);
 	if(rc == ZNONODE){
-		rc = zoo_create(zh, path, data, sizeof(data), &ZOO_OPEN_ACL_UNSAFE, 0, newPath, sizeof(newPath)-1);
-		cerr << "[INFO]SUCESS CREATE PERSISTENT ZNODE" << endl;
+		rc = zoo_create(zh, path, data, strlen(data), &ZOO_OPEN_ACL_UNSAFE, 0, newPath, sizeof(newPath)-1);
+		cerr << "[INFO]SUCESS CREATE PERSISTENT ZNODE: "<< path << endl;
 		return 	true;
 	}
 	else{
-		cerr << "[ERROR]EXIST ZNODE" << endl;
+		cerr << "[ERROR]EXIST ZNODE: "<< path << endl;
 		return 	false;
 	}
 
-	cerr << "[ERROR]FAIL CREATE PERSISTENT ZNODE" << endl;
+	cerr << "[ERROR]FAIL CREATE PERSISTENT ZNODE: "<< path << endl;
 	return false;
 }
 
@@ -81,16 +81,16 @@ bool zkTools::zkCreateEphemeral(zhandle_t *zh, char* path, char* data){
 	
 	rc = zoo_exists(zh, path, 0, &stat);
 	if(rc == ZNONODE){
-		rc = zoo_create(zh, path, data, sizeof(data), &ZOO_READ_ACL_UNSAFE, ZOO_EPHEMERAL, newPath, sizeof(newPath));
-		cerr << "[INFO]SUCESS CREATE EHEMERAL ZNODE" << endl;
+		rc = zoo_create(zh, path, data, strlen(data), &ZOO_READ_ACL_UNSAFE, ZOO_EPHEMERAL, newPath, sizeof(newPath));
+		cerr << "[INFO]SUCESS CREATE EHEMERAL ZNODE: "<< path << endl;
 		return 	true;
 	}
 	else{
-		cerr << "[ERROR]EXIST ZNODE" << endl;
+		cerr << "[ERROR]EXIST ZNODE: "<< path << endl;
 		return 	false;
 	}
 
-	cerr << "[ERROR]FAIL CREATE EHEMERAL ZNODE" << endl;
+	cerr << "[ERROR]FAIL CREATE EHEMERAL ZNODE : "<< path << endl;
 	return false;
 }
 
@@ -99,16 +99,16 @@ bool zkTools::zkDelete(zhandle_t *zh, char* path){
 	struct Stat stat;
 	rc = zoo_exists(zh, path, 0, &stat);
 	if(rc == ZNONODE){
-		cerr << "[ERROR]DO NOT EXIST ZNODE" << endl;
+		cerr << "[ERROR]DO NOT EXIST ZNODE: "<< path << endl;
 		return 	false;
 	}
 	else{
 		zoo_delete(zh, path, 0);
-		cerr << "[INFO]SUCESS DELETE " << path << " ZNODE"<< endl;
+		cerr << "[INFO]SUCESS DELETE: " << path << " ZNODE"<< endl;
 		return 	true;
 	}
 
- 	cerr << "[ERROR]FAIL TO DELETE ZNODE" << endl;
+ 	cerr << "[ERROR]FAIL TO DELETE ZNODE: "<< path << endl;
 	return false;
 }
 
@@ -125,16 +125,16 @@ bool zkTools::zkWget(zhandle_t *zh, char* path, char* buffer){
 
 	rc = zoo_exists(zh, path, 0, &stat);
 	if(rc == ZNONODE){
-		cerr << "[ERROR]DO NOT EXIST ZNODE" << endl;
+		cerr << "[ERROR]DO NOT EXIST ZNODE: "<< path << endl;
 		return false;
 	}
 	else{
-		cerr << "[INFO]SUCESS TO GET DATA" << endl;
 		zoo_wget(zh, path, wgetWatcher, buffer, buffer, &len, &stat);
+		cerr << "[INFO]SUCESS TO GET DATA: "<< path << endl;
 		return true;
 	}
 
-	cerr << "[ERROR]FAIL TO GET DATA" << endl;
+	cerr << "[ERROR]FAIL TO GET DATA: "<< path << endl;
 	return false;
 }
 
@@ -145,35 +145,35 @@ bool zkTools::zkGet(zhandle_t *zh, char* path, char* buffer){
 
 	rc = zoo_exists(zh, path, 0, &stat);
 	if(rc == ZNONODE){
-		cerr << "[ERROR]DO NOT EXIST ZNODE" << endl;
+		cerr << "[ERROR]DO NOT EXIST ZNODE: " << path << endl;
 		return false;
 	}
 	else{
-		cerr << "[INFO]SUCESS TO GET DATA" << endl;
+		cerr << "[INFO]SUCESS TO GET DATA: " << path << endl;
 		zoo_get(zh, path, 0, buffer, &len, &stat);
 		return true;
 	}
 
-	cerr << "[ERROR]FAIL TO GET DATA" << endl;
+	cerr << "[ERROR]FAIL TO GET DATA: " << path << endl;
 	return false;
 }
 
 bool zkTools::zkSet(zhandle_t *zh, char* path, char* data){
 	struct Stat stat;
 	int rc = 0;
-	int len = 512;
+	int len = strlen(data);
 	
 	rc = zoo_exists(zh, path, 0, &stat);
 	if(rc == ZNONODE){
-		cerr << "[ERROR]DO NOT EXIST ZNODE" << endl;
+		cerr << "[ERROR]DO NOT EXIST ZNODE: "<< path << endl;
 		return false;
 	}
 	else{
-		cerr << "[INFO]SUCESS TO SET DATA" << endl;
+		cerr << "[INFO]SUCESS TO SET DATA: "<< path <<  endl;
 		zoo_set(zh, path, data, len, 0);
 		return true;
 	}
 
-	cerr << "[ERROR]FAIL TO SET DATA" << endl;
+	cerr << "[ERROR]FAIL TO SET DATA: "<< path << endl;
 	return false;
 }

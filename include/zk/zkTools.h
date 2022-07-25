@@ -1,6 +1,10 @@
+#ifndef ZKTOOLS_H
+#define ZKTOOLS_H
+
 #include <iostream>
 #include <zookeeper/zookeeper.h>
 #include <unistd.h>
+#include <string.h>
 
 using namespace std;
 
@@ -16,3 +20,5 @@ class zkTools{
         bool zkClose(zhandle_t *zh);
         bool zkSet(zhandle_t *zh, char* path, char* data);
 };
+
+#endif

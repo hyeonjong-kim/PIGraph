@@ -131,6 +131,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+module/CMakeFiles/Coordination.dir/rule:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Coordination.dir/rule
+.PHONY : module/CMakeFiles/Coordination.dir/rule
+
+# Convenience name for target.
+Coordination: module/CMakeFiles/Coordination.dir/rule
+
+.PHONY : Coordination
+
+# fast build rule for target.
+Coordination/fast:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Coordination.dir/build.make module/CMakeFiles/Coordination.dir/build
+.PHONY : Coordination/fast
+
+# Convenience name for target.
 module/CMakeFiles/Configuration.dir/rule:
 	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Configuration.dir/rule
 .PHONY : module/CMakeFiles/Configuration.dir/rule
@@ -229,6 +244,33 @@ home/hjkim/PiGraph/src/modules/Configuration.cpp.s:
 	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Configuration.dir/build.make module/CMakeFiles/Configuration.dir/home/hjkim/PiGraph/src/modules/Configuration.cpp.s
 .PHONY : home/hjkim/PiGraph/src/modules/Configuration.cpp.s
 
+home/hjkim/PiGraph/src/modules/Coordination.o: home/hjkim/PiGraph/src/modules/Coordination.cpp.o
+
+.PHONY : home/hjkim/PiGraph/src/modules/Coordination.o
+
+# target to build an object file
+home/hjkim/PiGraph/src/modules/Coordination.cpp.o:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Coordination.dir/build.make module/CMakeFiles/Coordination.dir/home/hjkim/PiGraph/src/modules/Coordination.cpp.o
+.PHONY : home/hjkim/PiGraph/src/modules/Coordination.cpp.o
+
+home/hjkim/PiGraph/src/modules/Coordination.i: home/hjkim/PiGraph/src/modules/Coordination.cpp.i
+
+.PHONY : home/hjkim/PiGraph/src/modules/Coordination.i
+
+# target to preprocess a source file
+home/hjkim/PiGraph/src/modules/Coordination.cpp.i:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Coordination.dir/build.make module/CMakeFiles/Coordination.dir/home/hjkim/PiGraph/src/modules/Coordination.cpp.i
+.PHONY : home/hjkim/PiGraph/src/modules/Coordination.cpp.i
+
+home/hjkim/PiGraph/src/modules/Coordination.s: home/hjkim/PiGraph/src/modules/Coordination.cpp.s
+
+.PHONY : home/hjkim/PiGraph/src/modules/Coordination.s
+
+# target to generate assembly for a file
+home/hjkim/PiGraph/src/modules/Coordination.cpp.s:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Coordination.dir/build.make module/CMakeFiles/Coordination.dir/home/hjkim/PiGraph/src/modules/Coordination.cpp.s
+.PHONY : home/hjkim/PiGraph/src/modules/Coordination.cpp.s
+
 home/hjkim/PiGraph/src/modules/Parsing.o: home/hjkim/PiGraph/src/modules/Parsing.cpp.o
 
 .PHONY : home/hjkim/PiGraph/src/modules/Parsing.o
@@ -266,6 +308,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... Communication"
 	@echo "... Configuration"
+	@echo "... Coordination"
 	@echo "... Parsing"
 	@echo "... home/hjkim/PiGraph/src/modules/Communication.o"
 	@echo "... home/hjkim/PiGraph/src/modules/Communication.i"
@@ -273,6 +316,9 @@ help:
 	@echo "... home/hjkim/PiGraph/src/modules/Configuration.o"
 	@echo "... home/hjkim/PiGraph/src/modules/Configuration.i"
 	@echo "... home/hjkim/PiGraph/src/modules/Configuration.s"
+	@echo "... home/hjkim/PiGraph/src/modules/Coordination.o"
+	@echo "... home/hjkim/PiGraph/src/modules/Coordination.i"
+	@echo "... home/hjkim/PiGraph/src/modules/Coordination.s"
 	@echo "... home/hjkim/PiGraph/src/modules/Parsing.o"
 	@echo "... home/hjkim/PiGraph/src/modules/Parsing.i"
 	@echo "... home/hjkim/PiGraph/src/modules/Parsing.s"

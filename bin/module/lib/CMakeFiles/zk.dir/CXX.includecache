@@ -13,6 +13,8 @@ zookeeper/zookeeper.h
 -
 unistd.h
 -
+string.h
+-
 
 /home/hjkim/PiGraph/src/zk/zkTools.cpp
 ../../include/zk/zkTools.h

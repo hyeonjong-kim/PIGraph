@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCoordination.a CMakeFiles/Coordination.dir/home/hjkim/PiGraph/src/modules/Coordination.cpp.o
+/usr/bin/ranlib libCoordination.a

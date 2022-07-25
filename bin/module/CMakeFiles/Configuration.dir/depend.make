@@ -3,6 +3,8 @@
 
 module/CMakeFiles/Configuration.dir/home/hjkim/PiGraph/src/modules/Configuration.cpp.o: /home/hjkim/PiGraph/include/communication/IPC.h
 module/CMakeFiles/Configuration.dir/home/hjkim/PiGraph/src/modules/Configuration.cpp.o: /home/hjkim/PiGraph/include/modules/Configuration.h
+module/CMakeFiles/Configuration.dir/home/hjkim/PiGraph/src/modules/Configuration.cpp.o: /home/hjkim/PiGraph/include/utils/tinystr.h
+module/CMakeFiles/Configuration.dir/home/hjkim/PiGraph/src/modules/Configuration.cpp.o: /home/hjkim/PiGraph/include/utils/tinyxml.h
 module/CMakeFiles/Configuration.dir/home/hjkim/PiGraph/src/modules/Configuration.cpp.o: /home/hjkim/PiGraph/include/zk/zkTools.h
 module/CMakeFiles/Configuration.dir/home/hjkim/PiGraph/src/modules/Configuration.cpp.o: /home/hjkim/PiGraph/src/modules/Configuration.cpp
 

@@ -13,6 +13,7 @@
 #include <chrono>
 
 #include "../communication/IPC.h"
+#include "../utils/Tools.h"
 
 using namespace std;
 
@@ -20,6 +21,7 @@ class Communication{
 
     private:
         IPC ipc;
+        Tools tools;
     public:
         bool client(map<string, string> config);
         map<string, string> master();

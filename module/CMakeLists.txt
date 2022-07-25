@@ -13,7 +13,7 @@ target_link_libraries(Communication PRIVATE communication pthread)
 
 add_library(Configuration STATIC ../src/modules/Configuration.cpp)
 target_include_directories(Configuration PUBLIC ../include/modules)
-target_link_libraries(Configuration PRIVATE zk communication)
+target_link_libraries(Configuration PRIVATE zk communication utils)
 
 add_library(Coordination STATIC ../src/modules/Coordination.cpp)
 target_include_directories(Coordination PUBLIC ../include/modules)

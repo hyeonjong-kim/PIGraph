@@ -7,6 +7,5 @@ int main(int argc, const char *argv[]){
     
     Communication communication;
     communication.client(parsing->getArgConfig());
-    
     return 0;
 }

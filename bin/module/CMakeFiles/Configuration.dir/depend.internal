@@ -4,5 +4,7 @@
 module/CMakeFiles/Configuration.dir/home/hjkim/PiGraph/src/modules/Configuration.cpp.o
  /home/hjkim/PiGraph/include/communication/IPC.h
  /home/hjkim/PiGraph/include/modules/Configuration.h
+ /home/hjkim/PiGraph/include/utils/tinystr.h
+ /home/hjkim/PiGraph/include/utils/tinyxml.h
  /home/hjkim/PiGraph/include/zk/zkTools.h
  /home/hjkim/PiGraph/src/modules/Configuration.cpp

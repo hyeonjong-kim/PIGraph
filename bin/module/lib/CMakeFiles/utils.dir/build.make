@@ -102,9 +102,22 @@ module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/ThreadPool.cpp.s: c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/ThreadPool.cpp.s"
 	cd /home/hjkim/PiGraph/bin/module/lib && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hjkim/PiGraph/src/utils/ThreadPool.cpp -o CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/ThreadPool.cpp.s
 
+module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/Tools.cpp.o: module/lib/CMakeFiles/utils.dir/flags.make
+module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/Tools.cpp.o: /home/hjkim/PiGraph/src/utils/Tools.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/Tools.cpp.o"
+	cd /home/hjkim/PiGraph/bin/module/lib && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/Tools.cpp.o -c /home/hjkim/PiGraph/src/utils/Tools.cpp
+
+module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/Tools.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/Tools.cpp.i"
+	cd /home/hjkim/PiGraph/bin/module/lib && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/hjkim/PiGraph/src/utils/Tools.cpp > CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/Tools.cpp.i
+
+module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/Tools.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/Tools.cpp.s"
+	cd /home/hjkim/PiGraph/bin/module/lib && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hjkim/PiGraph/src/utils/Tools.cpp -o CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/Tools.cpp.s
+
 module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinystr.cpp.o: module/lib/CMakeFiles/utils.dir/flags.make
 module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinystr.cpp.o: /home/hjkim/PiGraph/src/utils/tinystr.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinystr.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinystr.cpp.o"
 	cd /home/hjkim/PiGraph/bin/module/lib && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinystr.cpp.o -c /home/hjkim/PiGraph/src/utils/tinystr.cpp
 
 module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinystr.cpp.i: cmake_force
@@ -117,7 +130,7 @@ module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinystr.cpp.s: cmak
 
 module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxml.cpp.o: module/lib/CMakeFiles/utils.dir/flags.make
 module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxml.cpp.o: /home/hjkim/PiGraph/src/utils/tinyxml.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxml.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxml.cpp.o"
 	cd /home/hjkim/PiGraph/bin/module/lib && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxml.cpp.o -c /home/hjkim/PiGraph/src/utils/tinyxml.cpp
 
 module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxml.cpp.i: cmake_force
@@ -130,7 +143,7 @@ module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxml.cpp.s: cmak
 
 module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlerror.cpp.o: module/lib/CMakeFiles/utils.dir/flags.make
 module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlerror.cpp.o: /home/hjkim/PiGraph/src/utils/tinyxmlerror.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlerror.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlerror.cpp.o"
 	cd /home/hjkim/PiGraph/bin/module/lib && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlerror.cpp.o -c /home/hjkim/PiGraph/src/utils/tinyxmlerror.cpp
 
 module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlerror.cpp.i: cmake_force
@@ -143,7 +156,7 @@ module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlerror.cpp.s:
 
 module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlparser.cpp.o: module/lib/CMakeFiles/utils.dir/flags.make
 module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlparser.cpp.o: /home/hjkim/PiGraph/src/utils/tinyxmlparser.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlparser.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlparser.cpp.o"
 	cd /home/hjkim/PiGraph/bin/module/lib && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlparser.cpp.o -c /home/hjkim/PiGraph/src/utils/tinyxmlparser.cpp
 
 module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlparser.cpp.i: cmake_force
@@ -158,6 +171,7 @@ module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlparser.cpp.s
 utils_OBJECTS = \
 "CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/ArgParsing.cpp.o" \
 "CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/ThreadPool.cpp.o" \
+"CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/Tools.cpp.o" \
 "CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinystr.cpp.o" \
 "CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxml.cpp.o" \
 "CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlerror.cpp.o" \
@@ -168,13 +182,14 @@ utils_EXTERNAL_OBJECTS =
 
 module/lib/libutils.a: module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/ArgParsing.cpp.o
 module/lib/libutils.a: module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/ThreadPool.cpp.o
+module/lib/libutils.a: module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/Tools.cpp.o
 module/lib/libutils.a: module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinystr.cpp.o
 module/lib/libutils.a: module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxml.cpp.o
 module/lib/libutils.a: module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlerror.cpp.o
 module/lib/libutils.a: module/lib/CMakeFiles/utils.dir/home/hjkim/PiGraph/src/utils/tinyxmlparser.cpp.o
 module/lib/libutils.a: module/lib/CMakeFiles/utils.dir/build.make
 module/lib/libutils.a: module/lib/CMakeFiles/utils.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX static library libutils.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX static library libutils.a"
 	cd /home/hjkim/PiGraph/bin/module/lib && $(CMAKE_COMMAND) -P CMakeFiles/utils.dir/cmake_clean_target.cmake
 	cd /home/hjkim/PiGraph/bin/module/lib && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/utils.dir/link.txt --verbose=$(VERBOSE)
 
