@@ -19,6 +19,7 @@ class Configuration{
         IPC ipc;
         TiXmlDocument* readDoc = new TiXmlDocument();
         map<string, string> xmlConfig;
+        vector<map<string, map<string,string>>> allJobConfig;
 
     public:
         Configuration();
@@ -29,7 +30,6 @@ class Configuration{
         bool xmlParse();
         bool submitJobConfig(map<string, map<string,string>> config);
         bool deleteJobConfig(string jobId);
-        bool deleteAllJobConfig(vector<map<string, map<string,string>>> allJobConfig);
 };
 
 #endif

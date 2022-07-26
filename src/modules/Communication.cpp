@@ -1,4 +1,15 @@
 #include "../../include/modules/Communication.h"
+Communication::Communication(string type_){
+    this->type = type_;
+}
+
+Communication::~Communication(){
+    if(this->type == "master"){
+        this->ipc.deleteShm(3141592);
+        this->ipc.deleteShm(190507);
+    }
+}
+
 bool Communication::client(map<string, string> config){
     int argConfigShmId = this->ipc.createShm((key_t)3141592);
     if (argConfigShmId == -1){
@@ -42,8 +53,7 @@ map<string, string> Communication::master(){
     if (argConfigShmId == -1){
 		cerr << "[ERROR]FAIL TO CREATE OR GET SHM" << endl;
 	}
-    
-    //wait
+
     this->ipc.setData(argConfigShmId, "");
     string msg = this->ipc.getData(argConfigShmId);
     

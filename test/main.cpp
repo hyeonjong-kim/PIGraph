@@ -9,7 +9,7 @@ int main(){
     zhandle_t* zh = zk.zkInit("localhost:2181");
     char* buffer = new char[5];
     
-    zk.zkWget(zh, "/PiGraph/Resource/CPU/SN01", buffer);
+    zk.zkWget(zh, "/PiGraph/Query/CPU/SN01", buffer);
     map<string, char*> resourceBuffer_GPU;
     resourceBuffer_GPU.insert({"asdf", buffer});
     

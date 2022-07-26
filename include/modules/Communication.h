@@ -22,9 +22,16 @@ class Communication{
     private:
         IPC ipc;
         Tools tools;
+        string type;
+
     public:
+        
+        Communication(string type_);
+        ~Communication();
+
         bool client(map<string, string> config);
         map<string, string> master();
+
         
 };
 

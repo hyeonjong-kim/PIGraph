@@ -6,18 +6,19 @@
 #include "../include/utils/ThreadPool.h"
 #include "../include/utils/Tools.h"
 
-Communication *communication = new Communication();
+Communication *communication = new Communication("master");
 Configuration *configuration = new Configuration();
 Coordination *coordination = new Coordination();
-
+Tools tools;
 
 vector<map<string, map<string,string>>> jobConfigLog;
-ThreadPool::ThreadPool threadPool(2);
+ThreadPool::ThreadPool* threadPool =  new ThreadPool::ThreadPool(2);
 
 void interruptHandler(int sig){
-    configuration->deleteAllJobConfig(jobConfigLog);
     delete coordination;
     delete configuration;
+    delete communication;
+    delete threadPool;
     
     cerr << "[INFO]MASTER STOP" << endl;
     exit(0);
@@ -25,15 +26,17 @@ void interruptHandler(int sig){
 
 int main(int argc, const char *argv[]){
     signal(SIGINT, interruptHandler);
-    
+    signal(SIGKILL, interruptHandler);
+    signal(SIGSTOP, interruptHandler);
+    signal(SIGTERM, interruptHandler);
+
     configuration->xmlParse();
     map<string,string> xmlConfig = configuration->getXmlConfig();
-    Tools tools;
     coordination->setResourceMonitoring(xmlConfig.find("zk")->second, tools.split_simple(xmlConfig.find("workers")->second, ','));
     
     std::vector<std::future<void>> futures;
     auto f1 = [](){coordination->resourceMonitoring();};
-    futures.emplace_back(threadPool.EnqueueJob(f1));
+    futures.emplace_back(threadPool->EnqueueJob(f1));
 
     while(true){
         const map<string,string> argConfig = communication->master();
@@ -41,7 +44,6 @@ int main(int argc, const char *argv[]){
         config.insert({"xml", xmlConfig});
         config.insert({"arg", argConfig});
         configuration->submitJobConfig(config);
-        jobConfigLog.push_back(config);
 
         if(argConfig.find("processingUnit")->second == "cpu"){
             coordination->executionQuery_CPU(stoi(argConfig.find("numWorker")->second), argConfig.find("jobId")->second);

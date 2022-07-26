@@ -53,19 +53,43 @@ bool zkTools::zkCreatePersistent(zhandle_t *zh, char* path, char* data){
 	char newPath[512];
 	int rc = 0;
 	
-	rc = zoo_exists(zh, path, 0, &stat);
-	if(rc == ZNONODE){
-		rc = zoo_create(zh, path, data, strlen(data), &ZOO_OPEN_ACL_UNSAFE, 0, newPath, sizeof(newPath)-1);
-		cerr << "[INFO]SUCESS CREATE PERSISTENT ZNODE: "<< path << endl;
-		return 	true;
+	rc = zoo_create(zh, path, data, strlen(data), &ZOO_OPEN_ACL_UNSAFE, 0, newPath, sizeof(newPath)-1);
+	if(rc == ZOK){
+		cerr << "[INFO]SUCESS TO CREATE PERSISTENT ZNODE: "<< path << endl;
+		return true;
 	}
-	else{
-		cerr << "[ERROR]EXIST ZNODE: "<< path << endl;
+	else if(rc == ZNONODE){
+		cerr << "[ERROR]The parent node does not exist: " << path << endl;
 		return 	false;
 	}
-
-	cerr << "[ERROR]FAIL CREATE PERSISTENT ZNODE: "<< path << endl;
-	return false;
+	else if(rc == ZNODEEXISTS){
+		cerr << "[ERROR]The node already exists: " << path << " ZNODE"<< endl;
+		return false;
+	}
+	else if(rc == ZNOAUTH){
+		cerr << "[ERROR]The client does not have permission: " << path << endl;
+		return false;
+	}
+	else if(rc == ZNOCHILDRENFOREPHEMERALS){
+		cerr << "[ERROR]Cannot create children of ephemeral nodes: " << path << endl;
+		return false;
+	}
+	else if(rc == ZINVALIDSTATE){
+		cerr << "[ERROR]Zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE: " << path << endl;
+		return false;
+	}
+	else if(rc == ZBADARGUMENTS){
+		cerr << "[ERROR]Invalid input parameters: " << path << endl;
+		return false;
+	}
+	else if(rc == ZMARSHALLINGERROR){
+		cerr << "[ERROR]Failed to marshall a request; possibly, out of memory " << path << endl;
+		return false;
+	}
+	else{
+		cerr << "[ERROR]FAIL TO DELETE ZNODE: "<< path << endl;
+		return false;
+	}
 }
 
 bool zkTools::zkExists(zhandle_t *zh,  char* path){
@@ -78,38 +102,90 @@ bool zkTools::zkCreateEphemeral(zhandle_t *zh, char* path, char* data){
 	struct Stat stat;
 	char newPath[512];
 	int rc = 0;
-	
-	rc = zoo_exists(zh, path, 0, &stat);
-	if(rc == ZNONODE){
-		rc = zoo_create(zh, path, data, strlen(data), &ZOO_READ_ACL_UNSAFE, ZOO_EPHEMERAL, newPath, sizeof(newPath));
-		cerr << "[INFO]SUCESS CREATE EHEMERAL ZNODE: "<< path << endl;
-		return 	true;
+
+	rc = zoo_create(zh, path, data, strlen(data), &ZOO_READ_ACL_UNSAFE, ZOO_EPHEMERAL, newPath, sizeof(newPath)-1);
+	if(rc == ZOK){
+		cerr << "[INFO]SUCESS TO CREATE PERSISTENT ZNODE: "<< path << endl;
+		return true;
 	}
-	else{
-		cerr << "[ERROR]EXIST ZNODE: "<< path << endl;
+	else if(rc == ZNONODE){
+		cerr << "[ERROR]The parent node does not exist: " << path << endl;
 		return 	false;
 	}
-
-	cerr << "[ERROR]FAIL CREATE EHEMERAL ZNODE : "<< path << endl;
-	return false;
+	else if(rc == ZNODEEXISTS){
+		cerr << "[ERROR]The node already exists: " << path << " ZNODE"<< endl;
+		return false;
+	}
+	else if(rc == ZNOAUTH){
+		cerr << "[ERROR]The client does not have permission: " << path << endl;
+		return false;
+	}
+	else if(rc == ZNOCHILDRENFOREPHEMERALS){
+		cerr << "[ERROR]Cannot create children of ephemeral nodes: " << path << endl;
+		return false;
+	}
+	else if(rc == ZINVALIDSTATE){
+		cerr << "[ERROR]Zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE: " << path << endl;
+		return false;
+	}
+	else if(rc == ZBADARGUMENTS){
+		cerr << "[ERROR]Invalid input parameters: " << path << endl;
+		return false;
+	}
+	else if(rc == ZMARSHALLINGERROR){
+		cerr << "[ERROR]Failed to marshall a request; possibly, out of memory " << path << endl;
+		return false;
+	}
+	else{
+		cerr << "[ERROR]FAIL TO DELETE ZNODE: "<< path << endl;
+		return false;
+	}
 }
 
 bool zkTools::zkDelete(zhandle_t *zh, char* path){
 	int rc = 0;
 	struct Stat stat;
-	rc = zoo_exists(zh, path, 0, &stat);
-	if(rc == ZNONODE){
-		cerr << "[ERROR]DO NOT EXIST ZNODE: "<< path << endl;
+	int len = 512;
+	char buffer[512];
+
+	zoo_get(zh, path, 0, buffer, &len, &stat);
+	rc = zoo_delete(zh, path, stat.version);
+	if(rc == ZOK){
+		cerr << "[INFO]SUCESS DELETE: " << path << " ZNODE"<< endl;
+		return true;
+	}
+	else if(rc == ZNONODE){
+		cerr << "[ERROR]The Znode does not exist: " << path << endl;
 		return 	false;
 	}
-	else{
-		zoo_delete(zh, path, 0);
-		cerr << "[INFO]SUCESS DELETE: " << path << " ZNODE"<< endl;
-		return 	true;
+	else if(rc == ZNOAUTH){
+		cerr << "[ERROR]The client does not have permission: " << path << " ZNODE"<< endl;
+		return false;
 	}
-
- 	cerr << "[ERROR]FAIL TO DELETE ZNODE: "<< path << endl;
-	return false;
+	else if(rc == ZNOTEMPTY){
+		cerr << "[ERROR]Children are present: " << path << endl;
+		return false;
+	}
+	else if(rc == ZBADVERSION){
+		cerr << "[ERROR]Expected version does not match actual version: " << path << endl;
+		return false;
+	}
+	else if(rc == ZINVALIDSTATE){
+		cerr << "[ERROR]Zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE: " << path << endl;
+		return false;
+	}
+	else if(rc == ZBADARGUMENTS){
+		cerr << "[ERROR]Invalid input parameters: " << path << endl;
+		return false;
+	}
+	else if(rc == ZMARSHALLINGERROR){
+		cerr << "[ERROR]Failed to marshall a request; possibly, out of memory " << path << endl;
+		return false;
+	}
+	else{
+		cerr << "[ERROR]FAIL TO DELETE ZNODE: "<< path << endl;
+		return false;
+	}
 }
 
 bool zkTools::zkClose(zhandle_t *zh){
@@ -122,7 +198,7 @@ bool zkTools::zkWget(zhandle_t *zh, char* path, char* buffer){
 	struct Stat stat;
 	int rc = 0;
 	int len = 512;
-
+	
 	rc = zoo_exists(zh, path, 0, &stat);
 	if(rc == ZNONODE){
 		cerr << "[ERROR]DO NOT EXIST ZNODE: "<< path << endl;
@@ -131,6 +207,7 @@ bool zkTools::zkWget(zhandle_t *zh, char* path, char* buffer){
 	else{
 		zoo_wget(zh, path, wgetWatcher, buffer, buffer, &len, &stat);
 		cerr << "[INFO]SUCESS TO GET DATA: "<< path << endl;
+		cerr << stat.version << endl;
 		return true;
 	}
 
@@ -164,6 +241,7 @@ bool zkTools::zkSet(zhandle_t *zh, char* path, char* data){
 	int len = strlen(data);
 	
 	rc = zoo_exists(zh, path, 0, &stat);
+	
 	if(rc == ZNONODE){
 		cerr << "[ERROR]DO NOT EXIST ZNODE: "<< path << endl;
 		return false;

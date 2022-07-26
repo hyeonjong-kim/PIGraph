@@ -5,6 +5,25 @@ Configuration::Configuration(){
 }
 
 Configuration::~Configuration(){
+    map<string,string>::iterator iter;
+    for(size_t i = 0; i < this->allJobConfig.size(); i++){
+        string jobIdPath = "/PiGraph/job/" + this->allJobConfig[i].find("arg")->second.find("jobId")->second;
+
+        for(iter = this->allJobConfig[i].find("arg")->second.begin(); iter != this->allJobConfig[i].find("arg")->second.end(); iter++){
+            if(iter->first != "jobId"){
+                this-zktools.zkDelete(this->zh, (char*)(string(jobIdPath+"/"+iter->first).c_str()));
+            }
+        }
+
+        for(iter = this->allJobConfig[i].find("xml")->second.begin(); iter != this->allJobConfig[i].find("xml")->second.end(); iter++){
+            if(iter->first != "zk"){
+                this-zktools.zkDelete(this->zh, (char*)(string(jobIdPath+"/"+iter->first).c_str()));
+            }
+        }
+        this->zktools.zkDelete(this->zh, (char*) jobIdPath.c_str());
+    }
+
+    this->zktools.zkDelete(this->zh, "/PiGraph/job");
     this->zktools.zkClose(this->zh);
 }
 
@@ -21,7 +40,6 @@ bool Configuration::submitJobConfig(map<string, map<string,string>> config){
         this->zktools.zkCreatePersistent(this->zh, "/PiGraph/job", "job");
     }
     
-
     else if(this->host != config.find("xml")->second.find("zk")->second){
         this->ipc.setData(resultShmId, "[ERROR]ZOOKEEPER HOST IS DIFFERENT");
         return false;
@@ -44,33 +62,13 @@ bool Configuration::submitJobConfig(map<string, map<string,string>> config){
     }
     
     this->ipc.setData(resultShmId, "[INFO]SUCCESS TO SUBMIT JOB CONFIGURATION");
+
+    this->allJobConfig.push_back(config);
     return true;
 }
 
 bool Configuration::deleteJobConfig(string joibId){
 
-}
-
-bool Configuration::deleteAllJobConfig(vector<map<string, map<string,string>>> allJobConfig){
-    map<string,string>::iterator iter;
-    for(size_t i = 0; i < allJobConfig.size(); i++){
-        string jobIdPath = "/PiGraph/job/" + allJobConfig[i].find("arg")->second.find("jobId")->second;
-
-        for(iter = allJobConfig[i].find("arg")->second.begin(); iter != allJobConfig[i].find("arg")->second.end(); iter++){
-            if(iter->first != "jobId"){
-                this-zktools.zkDelete(this->zh, (char*)(string(jobIdPath+"/"+iter->first).c_str()));
-            }
-        }
-
-        for(iter = allJobConfig[i].find("xml")->second.begin(); iter != allJobConfig[i].find("xml")->second.end(); iter++){
-            if(iter->first != "zk"){
-                this-zktools.zkDelete(this->zh, (char*)(string(jobIdPath+"/"+iter->first).c_str()));
-            }
-        }
-        this->zktools.zkDelete(this->zh, (char*) jobIdPath.c_str());
-    }
-    
-    return true;
 }
 
 bool Configuration::xmlParse(){

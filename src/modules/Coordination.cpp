@@ -20,23 +20,27 @@ Coordination::~Coordination(){
     }
     this->zktools.zkDelete(this->zh, (char*) resourcePath.c_str());
 
-    char* queryPath = "/PiGraph/Query/CPU";
+    string queryPath = "/PiGraph/Query/CPU";
     for(int i = 0; i < this->workerManagers.size(); i++){
-        this->zktools.zkDelete(this->zh, (char*)(string(queryPath) + "/" + workerManagers[i]).c_str());
+        this->zktools.zkDelete(this->zh, (char*)(queryPath + "/" + workerManagers[i]).c_str());
     }
-    this->zktools.zkDelete(this->zh, queryPath);
+    this->zktools.zkDelete(this->zh, (char*) queryPath.c_str());
 
     queryPath = "/PiGraph/Query/GPU";
     for(int i = 0; i < this->workerManagers.size(); i++){
-        this->zktools.zkDelete(this->zh, (char*)(string(queryPath) + "/" + workerManagers[i]).c_str());
+        this->zktools.zkDelete(this->zh, (char*)(queryPath + "/" + workerManagers[i]).c_str());
     }
-    this->zktools.zkDelete(this->zh, queryPath);
+    this->zktools.zkDelete(this->zh, (char*) queryPath.c_str());
+    
+    this->zktools.zkDelete(this->zh,  "/PiGraph/Resource");
+    this->zktools.zkDelete(this->zh, "/PiGraph/Query");
 
     this->zktools.zkClose(this->zh);
 }
 
 void Coordination::setResourceMonitoring(string zooHost, vector<string> workerManagers){
     this->zh = zktools.zkInit((char*) zooHost.c_str());
+    this->zktools.zkCreatePersistent(this->zh, "/PiGraph", "PiGraph");
     this->workerManagers = workerManagers;
     
     string resourcePath = "/PiGraph/Resource";
@@ -46,15 +50,12 @@ void Coordination::setResourceMonitoring(string zooHost, vector<string> workerMa
     for(int i = 0; i < this->workerManagers.size(); i++){
         char* buffer = "0";
         this->zktools.zkCreatePersistent(this->zh, (char*)(resourcePath + "/CPU" + "/" + workerManagers[i]).c_str(), buffer);
-        //this->resourceBuffer_CPU.insert(pair<string, char*>(workerManagers[i], buffer));
     }
 
     this->zktools.zkCreatePersistent(this->zh, (char*) (resourcePath + "/GPU").c_str(), "Resource monitoring");
-
     for(int i = 0; i < this->workerManagers.size(); i++){
         char* buffer = "0";
         this->zktools.zkCreatePersistent(this->zh, (char*)(resourcePath + "/GPU" + "/" + workerManagers[i]).c_str(), buffer);
-        //this->resourceBuffer_GPU.insert(pair<string, char*>(workerManagers[i], buffer));
     }
 
     string queryPath = "/PiGraph/Query";
