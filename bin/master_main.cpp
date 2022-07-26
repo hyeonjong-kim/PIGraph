@@ -16,6 +16,9 @@ ThreadPool::ThreadPool threadPool(2);
 
 void interruptHandler(int sig){
     configuration->deleteAllJobConfig(jobConfigLog);
+    delete coordination;
+    delete configuration;
+    
     cerr << "[INFO]MASTER STOP" << endl;
     exit(0);
 }
@@ -29,24 +32,22 @@ int main(int argc, const char *argv[]){
     coordination->setResourceMonitoring(xmlConfig.find("zk")->second, tools.split_simple(xmlConfig.find("workers")->second, ','));
     
     std::vector<std::future<void>> futures;
-    auto f1 = [](){coordination->resourceMonitoring_CPU();};
-    auto f2 = [](){coordination->resourceMonitoring_GPU();};
+    auto f1 = [](){coordination->resourceMonitoring();};
     futures.emplace_back(threadPool.EnqueueJob(f1));
-    futures.emplace_back(threadPool.EnqueueJob(f2));
 
     while(true){
-        map<string,string> argConfig = communication->master();
+        const map<string,string> argConfig = communication->master();
         map<string, map<string,string>> config;
         config.insert({"xml", xmlConfig});
         config.insert({"arg", argConfig});
         configuration->submitJobConfig(config);
         jobConfigLog.push_back(config);
-        
+
         if(argConfig.find("processingUnit")->second == "cpu"){
-            coordination->executionQuery_CPU(stoi(argConfig.find("numWorker")->second), argConfig.find("jobId")->second, argConfig.find("query")->second);
+            coordination->executionQuery_CPU(stoi(argConfig.find("numWorker")->second), argConfig.find("jobId")->second);
         }
         else if(argConfig.find("processingUnit")->second == "gpu"){
-            coordination->executionQuery_GPU(stoi(argConfig.find("numWorker")->second), argConfig.find("jobId")->second, argConfig.find("query")->second);
+            coordination->executionQuery_GPU(stoi(argConfig.find("numWorker")->second), argConfig.find("jobId")->second);
         }
     }
     return 0;

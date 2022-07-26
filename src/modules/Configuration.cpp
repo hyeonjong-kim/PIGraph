@@ -54,7 +54,7 @@ bool Configuration::deleteJobConfig(string joibId){
 bool Configuration::deleteAllJobConfig(vector<map<string, map<string,string>>> allJobConfig){
     map<string,string>::iterator iter;
     for(size_t i = 0; i < allJobConfig.size(); i++){
-        string jobIdPath = "/PiGraph/job" + allJobConfig[i].find("arg")->second.find("jobId")->second;
+        string jobIdPath = "/PiGraph/job/" + allJobConfig[i].find("arg")->second.find("jobId")->second;
 
         for(iter = allJobConfig[i].find("arg")->second.begin(); iter != allJobConfig[i].find("arg")->second.end(); iter++){
             if(iter->first != "jobId"){

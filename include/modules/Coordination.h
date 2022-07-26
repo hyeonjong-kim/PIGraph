@@ -25,10 +25,9 @@ class Coordination{
         Coordination();
         ~Coordination();
         void setResourceMonitoring(string zooHost, vector<string> workerManagers);
-        void resourceMonitoring_CPU();
-        void resourceMonitoring_GPU();
-        void executionQuery_CPU(int numWorker, string jobId, string query);
-        void executionQuery_GPU(int numWorker, string jobId, string query);
+        void resourceMonitoring();
+        void executionQuery_CPU(int numWorker, string jobId);
+        void executionQuery_GPU(int numWorker, string jobId);
 };
 
 #endif
