@@ -1,7 +1,10 @@
+#ifndef RESOURSE_H
+#define RESOURSE_H
+
 #include <stdio.h>
 #include <string.h>
 
-#include "zkTools.h"
+#include "../zk/zkTools.h"
 
 #define ONE_LINE 80
 #define PAST 0
@@ -26,8 +29,44 @@ class Resource{
 
     public:
         Resource();
+        ~Resource();
         double getCurrentValueCPU();
-        double getCurrentValueRAM();
         void resourceChecker();
-        void run();
 };
+
+Resource::Resource(){
+    this->zh = this->zktools.zkInit("localhost.ib:2181");
+    gethostname(this->hostName, sizeof(this->hostName));
+    cerr << this->hostName << endl;
+
+}
+
+Resource::~Resource(){
+    this->zktools.zkClose(this->zh);
+}
+
+double Resource::getCurrentValueCPU(){
+    int idx;
+    statFile = fopen("/proc/stat", "r");
+    fscanf(this->statFile, "%s %d %d %d %d", this->cpuId, &this->jiffies[PRESENT][USER], &this->jiffies[PRESENT][USER_NICE], &this->jiffies[PRESENT][SYSTEM], &this->jiffies[PRESENT][IDLE]);
+    for(idx = 0, this->totalJiffies = 0; idx < JIFFIES_NUM; ++idx){
+        this->diffJiffies[idx] = this->jiffies[PRESENT][idx] - this->jiffies[PAST][idx];
+        this->totalJiffies = this->totalJiffies + this->diffJiffies[idx];
+    }
+    memcpy(this->jiffies[PAST], this->jiffies[PRESENT], sizeof(int)*JIFFIES_NUM);
+    fclose(statFile);
+    return 100.0*(1.0-(this->diffJiffies[IDLE] / (double)this->totalJiffies));
+}
+
+void Resource::resourceChecker(){
+    char* persistentPath = "/PiGraph/Resource/CPU";
+
+    while(true){
+        double cpu = this->getCurrentValueCPU();
+        cerr << (char*)to_string(cpu).c_str() << endl;
+        this->zktools.zkSet(this->zh, (char*)(string(persistentPath)+ "/" + string(this->hostName)).c_str(), (char*)to_string(cpu).c_str());
+        sleep(5);
+    }
+}
+
+#endif

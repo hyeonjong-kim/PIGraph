@@ -207,7 +207,6 @@ bool zkTools::zkWget(zhandle_t *zh, char* path, char* buffer){
 	else{
 		zoo_wget(zh, path, wgetWatcher, buffer, buffer, &len, &stat);
 		cerr << "[INFO]SUCESS TO GET DATA: "<< path << endl;
-		cerr << stat.version << endl;
 		return true;
 	}
 
@@ -238,20 +237,32 @@ bool zkTools::zkGet(zhandle_t *zh, char* path, char* buffer){
 bool zkTools::zkSet(zhandle_t *zh, char* path, char* data){
 	struct Stat stat;
 	int rc = 0;
-	int len = strlen(data);
-	
-	rc = zoo_exists(zh, path, 0, &stat);
-	
-	if(rc == ZNONODE){
-		cerr << "[ERROR]DO NOT EXIST ZNODE: "<< path << endl;
-		return false;
-	}
-	else{
+	int len = 512;
+	char buffer[512];
+
+	zoo_get(zh, path, 0, buffer, &len, &stat);
+	rc = zoo_set(zh, path, data, (size_t)strlen(data), stat.version);
+	if(rc == ZOK){
 		cerr << "[INFO]SUCESS TO SET DATA: "<< path <<  endl;
-		zoo_set(zh, path, data, len, 0);
 		return true;
 	}
-
+	else if(rc == ZNOAUTH){
+		cerr << "[ERROR]The client does not have permission: "<< path << endl;
+		return false;
+	}
+	else if(rc == ZINVALIDSTATE){
+		cerr << "[ERROR]Zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE: " << path << endl;
+		return false;
+	}
+	else if(rc == ZBADARGUMENTS){
+		cerr << "[ERROR]Invalid input parameters: " << path << endl;
+		return false;
+	}
+	else if(rc == ZMARSHALLINGERROR){
+		cerr << "[ERROR]Failed to marshall a request; possibly, out of memory " << path << endl;
+		return false;
+	}
+	
 	cerr << "[ERROR]FAIL TO SET DATA: "<< path << endl;
 	return false;
 }

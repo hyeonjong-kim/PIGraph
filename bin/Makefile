@@ -131,6 +131,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named wm
+
+# Build rule for target.
+wm: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 wm
+.PHONY : wm
+
+# fast build rule for target.
+wm/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/wm.dir/build.make CMakeFiles/wm.dir/build
+.PHONY : wm/fast
+
+#=============================================================================
 # Target rules for targets named client
 
 # Build rule for target.
@@ -155,6 +168,19 @@ master: cmake_check_build_system
 master/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/master.dir/build.make CMakeFiles/master.dir/build
 .PHONY : master/fast
+
+#=============================================================================
+# Target rules for targets named Resource
+
+# Build rule for target.
+Resource: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Resource
+.PHONY : Resource
+
+# fast build rule for target.
+Resource/fast:
+	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Resource.dir/build.make module/CMakeFiles/Resource.dir/build
+.PHONY : Resource/fast
 
 #=============================================================================
 # Target rules for targets named Coordination
@@ -301,6 +327,33 @@ master_main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/master.dir/build.make CMakeFiles/master.dir/master_main.cpp.s
 .PHONY : master_main.cpp.s
 
+wm_main.o: wm_main.cpp.o
+
+.PHONY : wm_main.o
+
+# target to build an object file
+wm_main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/wm.dir/build.make CMakeFiles/wm.dir/wm_main.cpp.o
+.PHONY : wm_main.cpp.o
+
+wm_main.i: wm_main.cpp.i
+
+.PHONY : wm_main.i
+
+# target to preprocess a source file
+wm_main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/wm.dir/build.make CMakeFiles/wm.dir/wm_main.cpp.i
+.PHONY : wm_main.cpp.i
+
+wm_main.s: wm_main.cpp.s
+
+.PHONY : wm_main.s
+
+# target to generate assembly for a file
+wm_main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/wm.dir/build.make CMakeFiles/wm.dir/wm_main.cpp.s
+.PHONY : wm_main.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -313,10 +366,12 @@ help:
 	@echo "... Configuration"
 	@echo "... Coordination"
 	@echo "... Parsing"
+	@echo "... Resource"
 	@echo "... client"
 	@echo "... communication"
 	@echo "... master"
 	@echo "... utils"
+	@echo "... wm"
 	@echo "... zk"
 	@echo "... client_main.o"
 	@echo "... client_main.i"
@@ -324,6 +379,9 @@ help:
 	@echo "... master_main.o"
 	@echo "... master_main.i"
 	@echo "... master_main.s"
+	@echo "... wm_main.o"
+	@echo "... wm_main.i"
+	@echo "... wm_main.s"
 .PHONY : help
 
 

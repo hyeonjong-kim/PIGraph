@@ -43,7 +43,7 @@ bool Communication::client(map<string, string> config){
         this_thread::sleep_for(chrono::milliseconds(50));
     }
     */
-    cerr << "[INFO]RESULT: " << msg << endl;
+    //cerr << "[INFO]RESULT: " << msg << endl;
 
     return true;
 }

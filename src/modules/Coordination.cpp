@@ -48,13 +48,13 @@ void Coordination::setResourceMonitoring(string zooHost, vector<string> workerMa
     this->zktools.zkCreatePersistent(this->zh, (char*) (resourcePath + "/CPU").c_str(), "Resource monitoring");
 
     for(int i = 0; i < this->workerManagers.size(); i++){
-        char* buffer = "0";
+        char* buffer = "0.0";
         this->zktools.zkCreatePersistent(this->zh, (char*)(resourcePath + "/CPU" + "/" + workerManagers[i]).c_str(), buffer);
     }
 
     this->zktools.zkCreatePersistent(this->zh, (char*) (resourcePath + "/GPU").c_str(), "Resource monitoring");
     for(int i = 0; i < this->workerManagers.size(); i++){
-        char* buffer = "0";
+        char* buffer = "0.0";
         this->zktools.zkCreatePersistent(this->zh, (char*)(resourcePath + "/GPU" + "/" + workerManagers[i]).c_str(), buffer);
     }
 
@@ -112,7 +112,7 @@ void Coordination::executionQuery_CPU(int numWorker, string jobId){
     string queryPath = "/PiGraph/Query/CPU";
     for(int i = 0; i < numWorker; i++){
         this->mu.lock();
-        cerr << this->resourceSort_CPU[i].first << endl;
+        cerr << this->resourceSort_CPU[i].first << " " << this->resourceSort_CPU[i].second << endl;
         this->zktools.zkSet(this->zh, (char*)(queryPath + "/" + this->resourceSort_CPU[i].first).c_str(), (char*)(jobId).c_str());
         this->mu.unlock();
     }

@@ -49,8 +49,10 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
+  "CMakeFiles/wm.dir/DependInfo.cmake"
   "CMakeFiles/client.dir/DependInfo.cmake"
   "CMakeFiles/master.dir/DependInfo.cmake"
+  "module/CMakeFiles/Resource.dir/DependInfo.cmake"
   "module/CMakeFiles/Coordination.dir/DependInfo.cmake"
   "module/CMakeFiles/Configuration.dir/DependInfo.cmake"
   "module/CMakeFiles/Communication.dir/DependInfo.cmake"

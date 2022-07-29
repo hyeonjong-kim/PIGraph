@@ -19,4 +19,8 @@ add_library(Coordination STATIC ../src/modules/Coordination.cpp)
 target_include_directories(Coordination PUBLIC ../include/modules)
 target_link_libraries(Coordination PRIVATE zk)
 
+add_library(Resource STATIC ../src/modules/Resource.cpp)
+target_include_directories(Resource PUBLIC ../include/modules)
+target_link_libraries(Resource PRIVATE zk)
+
 add_compile_options(-O3 -std=c++17)

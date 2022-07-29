@@ -1,20 +1,21 @@
 nohup: ignoring input
-2022-07-26 17:07:29,145:29032(0x7f6e921cb740):ZOO_INFO@log_env@726: Client environment:zookeeper.version=zookeeper C client 3.4.9
-2022-07-26 17:07:29,145:29032(0x7f6e921cb740):ZOO_INFO@log_env@730: Client environment:host.name=MN
-2022-07-26 17:07:29,145:29032(0x7f6e921cb740):ZOO_INFO@log_env@737: Client environment:os.name=Linux
-2022-07-26 17:07:29,145:29032(0x7f6e921cb740):ZOO_INFO@log_env@738: Client environment:os.arch=3.10.0-1160.el7.x86_64
-2022-07-26 17:07:29,145:29032(0x7f6e921cb740):ZOO_INFO@log_env@739: Client environment:os.version=#1 SMP Mon Oct 19 16:18:59 UTC 2020
-2022-07-26 17:07:29,145:29032(0x7f6e921cb740):ZOO_INFO@log_env@747: Client environment:user.name=hjkim
-2022-07-26 17:07:29,145:29032(0x7f6e921cb740):ZOO_INFO@log_env@755: Client environment:user.home=/home/hjkim
-2022-07-26 17:07:29,145:29032(0x7f6e921cb740):ZOO_INFO@log_env@767: Client environment:user.dir=/home/hjkim/PiGraph/bin
-2022-07-26 17:07:29,145:29032(0x7f6e921cb740):ZOO_INFO@zookeeper_init@800: Initiating client connection, host=localhost.ib:2181 sessionTimeout=10000 watcher=0x423310 sessionId=0 sessionPasswd=<null> context=(nil) flags=0
-2022-07-26 17:07:29,146:29032(0x7f6e8fd01700):ZOO_INFO@check_events@1728: initiated connection to server [192.168.1.100:2181]
-2022-07-26 17:07:29,163:29032(0x7f6e8fd01700):ZOO_INFO@check_events@1775: session establishment complete on server [192.168.1.100:2181], sessionId=0x1821aad118800bd, negotiated timeout=10000
+2022-07-29 19:09:57,172:5024(0x7f6595a5d740):ZOO_INFO@log_env@726: Client environment:zookeeper.version=zookeeper C client 3.4.9
+2022-07-29 19:09:57,172:5024(0x7f6595a5d740):ZOO_INFO@log_env@730: Client environment:host.name=MN
+2022-07-29 19:09:57,172:5024(0x7f6595a5d740):ZOO_INFO@log_env@737: Client environment:os.name=Linux
+2022-07-29 19:09:57,172:5024(0x7f6595a5d740):ZOO_INFO@log_env@738: Client environment:os.arch=3.10.0-1160.el7.x86_64
+2022-07-29 19:09:57,172:5024(0x7f6595a5d740):ZOO_INFO@log_env@739: Client environment:os.version=#1 SMP Mon Oct 19 16:18:59 UTC 2020
+2022-07-29 19:09:57,173:5024(0x7f6595a5d740):ZOO_INFO@log_env@747: Client environment:user.name=hjkim
+2022-07-29 19:09:57,173:5024(0x7f6595a5d740):ZOO_INFO@log_env@755: Client environment:user.home=/home/hjkim
+2022-07-29 19:09:57,173:5024(0x7f6595a5d740):ZOO_INFO@log_env@767: Client environment:user.dir=/home/hjkim/PiGraph/bin
+2022-07-29 19:09:57,173:5024(0x7f6595a5d740):ZOO_INFO@zookeeper_init@800: Initiating client connection, host=localhost.ib:2181 sessionTimeout=10000 watcher=0x4231a0 sessionId=0 sessionPasswd=<null> context=(nil) flags=0
+2022-07-29 19:09:57,174:5024(0x7f6593593700):ZOO_INFO@check_events@1728: initiated connection to server [192.168.1.100:2181]
+2022-07-29 19:09:57,186:5024(0x7f6593593700):ZOO_INFO@check_events@1775: session establishment complete on server [192.168.1.100:2181], sessionId=0x1821aad118800d1, negotiated timeout=10000
 state:ZOO_CONNECTED_STATE
 event:ZOO_SESSION_EVENT
 [ERROR]The node already exists: /PiGraph ZNODE
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Resource
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Resource/CPU
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Resource/CPU/MN
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Resource/CPU/SN01
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Resource/CPU/SN02
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Resource/CPU/SN03
@@ -22,6 +23,7 @@ event:ZOO_SESSION_EVENT
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Resource/CPU/SN05
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Resource/CPU/SN06
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Resource/GPU
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Resource/GPU/MN
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Resource/GPU/SN01
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Resource/GPU/SN02
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Resource/GPU/SN03
@@ -30,6 +32,7 @@ event:ZOO_SESSION_EVENT
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Resource/GPU/SN06
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query/CPU
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query/CPU/MN
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query/CPU/SN01
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query/CPU/SN02
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query/CPU/SN03
@@ -37,12 +40,15 @@ event:ZOO_SESSION_EVENT
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query/CPU/SN05
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query/CPU/SN06
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query/GPU
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query/GPU/MN
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query/GPU/SN01
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query/GPU/SN02
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query/GPU/SN03
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query/GPU/SN04
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query/GPU/SN05
 [INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/Query/GPU/SN06
+[INFO]SUCESS TO GET DATA: /PiGraph/Resource/GPU/MN
+0
 [INFO]SUCESS TO GET DATA: /PiGraph/Resource/GPU/SN01
 0
 [INFO]SUCESS TO GET DATA: /PiGraph/Resource/GPU/SN02
@@ -54,6 +60,8 @@ event:ZOO_SESSION_EVENT
 [INFO]SUCESS TO GET DATA: /PiGraph/Resource/GPU/SN05
 0
 [INFO]SUCESS TO GET DATA: /PiGraph/Resource/GPU/SN06
+0
+[INFO]SUCESS TO GET DATA: /PiGraph/Resource/CPU/MN
 0
 [INFO]SUCESS TO GET DATA: /PiGraph/Resource/CPU/SN01
 0
@@ -67,6 +75,134 @@ event:ZOO_SESSION_EVENT
 0
 [INFO]SUCESS TO GET DATA: /PiGraph/Resource/CPU/SN06
 0
+2022-07-29 19:12:04,803:5024(0x7f6595a5d740):ZOO_INFO@log_env@726: Client environment:zookeeper.version=zookeeper C client 3.4.9
+2022-07-29 19:12:04,803:5024(0x7f6595a5d740):ZOO_INFO@log_env@730: Client environment:host.name=MN
+2022-07-29 19:12:04,803:5024(0x7f6595a5d740):ZOO_INFO@log_env@737: Client environment:os.name=Linux
+2022-07-29 19:12:04,803:5024(0x7f6595a5d740):ZOO_INFO@log_env@738: Client environment:os.arch=3.10.0-1160.el7.x86_64
+2022-07-29 19:12:04,803:5024(0x7f6595a5d740):ZOO_INFO@log_env@739: Client environment:os.version=#1 SMP Mon Oct 19 16:18:59 UTC 2020
+2022-07-29 19:12:04,803:5024(0x7f6595a5d740):ZOO_INFO@log_env@747: Client environment:user.name=hjkim
+2022-07-29 19:12:04,803:5024(0x7f6595a5d740):ZOO_INFO@log_env@755: Client environment:user.home=/home/hjkim
+2022-07-29 19:12:04,803:5024(0x7f6595a5d740):ZOO_INFO@log_env@767: Client environment:user.dir=/home/hjkim/PiGraph/bin
+2022-07-29 19:12:04,803:5024(0x7f6595a5d740):ZOO_INFO@zookeeper_init@800: Initiating client connection, host=localhost.ib:2181 sessionTimeout=10000 watcher=0x4231a0 sessionId=0 sessionPasswd=<null> context=(nil) flags=0
+2022-07-29 19:12:04,804:5024(0x7f6592591700):ZOO_INFO@check_events@1728: initiated connection to server [192.168.1.100:2181]
+2022-07-29 19:12:04,816:5024(0x7f6592591700):ZOO_INFO@check_events@1775: session establishment complete on server [192.168.1.100:2181], sessionId=0x1821aad118800d3, negotiated timeout=10000
+state:ZOO_CONNECTED_STATE
+event:ZOO_SESSION_EVENT
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/1
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/1/filePath
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/1/networkType
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/1/numWorker
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/1/patitionOpt
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/1/port
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/1/processingUnit
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/1/query
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/1/superstep
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/1/HDFS
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/1/mutex
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/1/thread
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/1/workers
+MN -0.161488
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/MN
+SN01 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN01
+SN02 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN02
+[ERROR]The node already exists: /PiGraph/job/1 ZNODE
+[ERROR]The node already exists: /PiGraph/job/1/filePath ZNODE
+[ERROR]The node already exists: /PiGraph/job/1/networkType ZNODE
+[ERROR]The node already exists: /PiGraph/job/1/numWorker ZNODE
+[ERROR]The node already exists: /PiGraph/job/1/patitionOpt ZNODE
+[ERROR]The node already exists: /PiGraph/job/1/port ZNODE
+[ERROR]The node already exists: /PiGraph/job/1/processingUnit ZNODE
+[ERROR]The node already exists: /PiGraph/job/1/query ZNODE
+[ERROR]The node already exists: /PiGraph/job/1/superstep ZNODE
+[ERROR]The node already exists: /PiGraph/job/1/HDFS ZNODE
+[ERROR]The node already exists: /PiGraph/job/1/mutex ZNODE
+[ERROR]The node already exists: /PiGraph/job/1/thread ZNODE
+[ERROR]The node already exists: /PiGraph/job/1/workers ZNODE
+MN -0.161488
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/MN
+SN02 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN02
+SN03 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN03
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/4
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/4/filePath
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/4/networkType
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/4/numWorker
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/4/patitionOpt
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/4/port
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/4/processingUnit
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/4/query
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/4/superstep
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/4/HDFS
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/4/mutex
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/4/thread
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/4/workers
+MN -0.161488
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/MN
+SN02 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN02
+SN03 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN03
+SN04 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN04
+SN05 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN05
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/7
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/7/filePath
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/7/networkType
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/7/numWorker
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/7/patitionOpt
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/7/port
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/7/processingUnit
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/7/query
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/7/superstep
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/7/HDFS
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/7/mutex
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/7/thread
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/7/workers
+MN -0.161488
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/MN
+SN02 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN02
+SN03 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN03
+SN04 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN04
+SN05 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN05
+SN06 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN06
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/9
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/9/filePath
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/9/networkType
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/9/numWorker
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/9/patitionOpt
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/9/port
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/9/processingUnit
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/9/query
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/9/superstep
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/9/HDFS
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/9/mutex
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/9/thread
+[INFO]SUCESS TO CREATE PERSISTENT ZNODE: /PiGraph/job/9/workers
+MN -0.161488
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/MN
+SN02 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN02
+SN03 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN03
+SN04 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN04
+SN05 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN05
+SN06 0
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN06
+SN01 84858
+[INFO]SUCESS TO SET DATA: /PiGraph/Query/CPU/SN01
+[INFO]SUCESS DELETE: /PiGraph/Resource/CPU/MN ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Resource/CPU/SN01 ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Resource/CPU/SN02 ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Resource/CPU/SN03 ZNODE
@@ -74,6 +210,7 @@ event:ZOO_SESSION_EVENT
 [INFO]SUCESS DELETE: /PiGraph/Resource/CPU/SN05 ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Resource/CPU/SN06 ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Resource/CPU ZNODE
+[INFO]SUCESS DELETE: /PiGraph/Resource/GPU/MN ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Resource/GPU/SN01 ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Resource/GPU/SN02 ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Resource/GPU/SN03 ZNODE
@@ -81,6 +218,7 @@ event:ZOO_SESSION_EVENT
 [INFO]SUCESS DELETE: /PiGraph/Resource/GPU/SN05 ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Resource/GPU/SN06 ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Resource/GPU ZNODE
+[INFO]SUCESS DELETE: /PiGraph/Query/CPU/MN ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Query/CPU/SN01 ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Query/CPU/SN02 ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Query/CPU/SN03 ZNODE
@@ -88,6 +226,7 @@ event:ZOO_SESSION_EVENT
 [INFO]SUCESS DELETE: /PiGraph/Query/CPU/SN05 ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Query/CPU/SN06 ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Query/CPU ZNODE
+[INFO]SUCESS DELETE: /PiGraph/Query/GPU/MN ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Query/GPU/SN01 ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Query/GPU/SN02 ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Query/GPU/SN03 ZNODE
@@ -97,6 +236,78 @@ event:ZOO_SESSION_EVENT
 [INFO]SUCESS DELETE: /PiGraph/Query/GPU ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Resource ZNODE
 [INFO]SUCESS DELETE: /PiGraph/Query ZNODE
-2022-07-26 17:07:34,445:29032(0x7f6e921cb740):ZOO_INFO@zookeeper_close@2527: Closing zookeeper sessionId=0x1821aad118800bd to [192.168.1.100:2181]
+2022-07-29 19:19:27,600:5024(0x7f6595a5d740):ZOO_INFO@zookeeper_close@2527: Closing zookeeper sessionId=0x1821aad118800d1 to [192.168.1.100:2181]
 
 [INFO]SUCESS TO CLOSE ZK
+[INFO]SUCESS DELETE: /PiGraph/job/1/filePath ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/1/networkType ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/1/numWorker ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/1/patitionOpt ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/1/port ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/1/processingUnit ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/1/query ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/1/superstep ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/1/HDFS ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/1/mutex ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/1/thread ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/1/workers ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/1 ZNODE
+[ERROR]The Znode does not exist: /PiGraph/job/1/filePath
+[ERROR]The Znode does not exist: /PiGraph/job/1/networkType
+[ERROR]The Znode does not exist: /PiGraph/job/1/numWorker
+[ERROR]The Znode does not exist: /PiGraph/job/1/patitionOpt
+[ERROR]The Znode does not exist: /PiGraph/job/1/port
+[ERROR]The Znode does not exist: /PiGraph/job/1/processingUnit
+[ERROR]The Znode does not exist: /PiGraph/job/1/query
+[ERROR]The Znode does not exist: /PiGraph/job/1/superstep
+[ERROR]The Znode does not exist: /PiGraph/job/1/HDFS
+[ERROR]The Znode does not exist: /PiGraph/job/1/mutex
+[ERROR]The Znode does not exist: /PiGraph/job/1/thread
+[ERROR]The Znode does not exist: /PiGraph/job/1/workers
+[ERROR]The Znode does not exist: /PiGraph/job/1
+[INFO]SUCESS DELETE: /PiGraph/job/4/filePath ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/4/networkType ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/4/numWorker ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/4/patitionOpt ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/4/port ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/4/processingUnit ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/4/query ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/4/superstep ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/4/HDFS ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/4/mutex ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/4/thread ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/4/workers ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/4 ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/7/filePath ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/7/networkType ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/7/numWorker ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/7/patitionOpt ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/7/port ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/7/processingUnit ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/7/query ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/7/superstep ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/7/HDFS ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/7/mutex ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/7/thread ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/7/workers ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/7 ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/9/filePath ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/9/networkType ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/9/numWorker ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/9/patitionOpt ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/9/port ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/9/processingUnit ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/9/query ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/9/superstep ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/9/HDFS ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/9/mutex ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/9/thread ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/9/workers ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job/9 ZNODE
+[INFO]SUCESS DELETE: /PiGraph/job ZNODE
+2022-07-29 19:19:28,183:5024(0x7f6595a5d740):ZOO_INFO@zookeeper_close@2527: Closing zookeeper sessionId=0x1821aad118800d3 to [192.168.1.100:2181]
+
+[INFO]SUCESS TO CLOSE ZK
+[ERROR]Invalid input parameters: /PiGraph/Resource/CPU/
+terminate called after throwing an instance of 'std::bad_alloc'
+  what():  std::bad_alloc

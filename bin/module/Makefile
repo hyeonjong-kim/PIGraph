@@ -131,6 +131,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+module/CMakeFiles/Resource.dir/rule:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Resource.dir/rule
+.PHONY : module/CMakeFiles/Resource.dir/rule
+
+# Convenience name for target.
+Resource: module/CMakeFiles/Resource.dir/rule
+
+.PHONY : Resource
+
+# fast build rule for target.
+Resource/fast:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Resource.dir/build.make module/CMakeFiles/Resource.dir/build
+.PHONY : Resource/fast
+
+# Convenience name for target.
 module/CMakeFiles/Coordination.dir/rule:
 	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Coordination.dir/rule
 .PHONY : module/CMakeFiles/Coordination.dir/rule
@@ -298,6 +313,33 @@ home/hjkim/PiGraph/src/modules/Parsing.cpp.s:
 	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Parsing.dir/build.make module/CMakeFiles/Parsing.dir/home/hjkim/PiGraph/src/modules/Parsing.cpp.s
 .PHONY : home/hjkim/PiGraph/src/modules/Parsing.cpp.s
 
+home/hjkim/PiGraph/src/modules/Resource.o: home/hjkim/PiGraph/src/modules/Resource.cpp.o
+
+.PHONY : home/hjkim/PiGraph/src/modules/Resource.o
+
+# target to build an object file
+home/hjkim/PiGraph/src/modules/Resource.cpp.o:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Resource.dir/build.make module/CMakeFiles/Resource.dir/home/hjkim/PiGraph/src/modules/Resource.cpp.o
+.PHONY : home/hjkim/PiGraph/src/modules/Resource.cpp.o
+
+home/hjkim/PiGraph/src/modules/Resource.i: home/hjkim/PiGraph/src/modules/Resource.cpp.i
+
+.PHONY : home/hjkim/PiGraph/src/modules/Resource.i
+
+# target to preprocess a source file
+home/hjkim/PiGraph/src/modules/Resource.cpp.i:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Resource.dir/build.make module/CMakeFiles/Resource.dir/home/hjkim/PiGraph/src/modules/Resource.cpp.i
+.PHONY : home/hjkim/PiGraph/src/modules/Resource.cpp.i
+
+home/hjkim/PiGraph/src/modules/Resource.s: home/hjkim/PiGraph/src/modules/Resource.cpp.s
+
+.PHONY : home/hjkim/PiGraph/src/modules/Resource.s
+
+# target to generate assembly for a file
+home/hjkim/PiGraph/src/modules/Resource.cpp.s:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Resource.dir/build.make module/CMakeFiles/Resource.dir/home/hjkim/PiGraph/src/modules/Resource.cpp.s
+.PHONY : home/hjkim/PiGraph/src/modules/Resource.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -310,6 +352,7 @@ help:
 	@echo "... Configuration"
 	@echo "... Coordination"
 	@echo "... Parsing"
+	@echo "... Resource"
 	@echo "... home/hjkim/PiGraph/src/modules/Communication.o"
 	@echo "... home/hjkim/PiGraph/src/modules/Communication.i"
 	@echo "... home/hjkim/PiGraph/src/modules/Communication.s"
@@ -322,6 +365,9 @@ help:
 	@echo "... home/hjkim/PiGraph/src/modules/Parsing.o"
 	@echo "... home/hjkim/PiGraph/src/modules/Parsing.i"
 	@echo "... home/hjkim/PiGraph/src/modules/Parsing.s"
+	@echo "... home/hjkim/PiGraph/src/modules/Resource.o"
+	@echo "... home/hjkim/PiGraph/src/modules/Resource.i"
+	@echo "... home/hjkim/PiGraph/src/modules/Resource.s"
 .PHONY : help
 
 

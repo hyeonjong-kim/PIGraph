@@ -1,31 +1,20 @@
-#include "../include/zk/zkTools.h"
+#include <stdio.h>
+#include <string.h>
 #include <unistd.h>
-#include <map>
-#include <string>
+#include "../include/zk/zkTools.h"
 
-int main(){
-    
-    zkTools zk;
-    zhandle_t* zh = zk.zkInit("localhost:2181");
-    char* buffer = new char[5];
-    
-    zk.zkWget(zh, "/PiGraph/Query/CPU/SN01", buffer);
-    map<string, char*> resourceBuffer_GPU;
-    resourceBuffer_GPU.insert({"asdf", buffer});
-    
-    while(true){
-        cerr << resourceBuffer_GPU.find("asdf")->second << endl;
-        sleep(3);
-    }
-    
-    zk.zkClose(zh);
-    
-   /*
-    char* buffer = new char;
-    map<string, char*> resourceBuffer_GPU;
-    resourceBuffer_GPU.insert({"asdf", buffer});
-    cerr << resourceBuffer_GPU.find("asdf")->second << endl;
-    cerr << &buffer << endl;
-    */
-    return 0;
+int main(void){
+  zkTools zktools;
+
+  zhandle_t* zh = zktools.zkInit("localhost.ib:2181");
+  double tmp = 213.134;
+  zktools.zkDelete(zh, "/test");
+  char* buffer = new char[128];
+  strcpy(buffer, to_string(tmp).c_str());
+  zktools.zkCreatePersistent(zh, "/test", "0.0");
+  //cerr << strlen((char*)to_string(tmp).c_str()) << endl;
+  cerr << buffer << endl;
+  zktools.zkSet(zh, "/test", buffer);
+  
+  return 0;
 }

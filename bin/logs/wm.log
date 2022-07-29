@@ -1,0 +1,129 @@
+nohup: ignoring input
+2022-07-29 19:10:07,963:5039(0x7f33c50d0740):ZOO_INFO@log_env@726: Client environment:zookeeper.version=zookeeper C client 3.4.9
+2022-07-29 19:10:07,964:5039(0x7f33c50d0740):ZOO_INFO@log_env@730: Client environment:host.name=MN
+2022-07-29 19:10:07,964:5039(0x7f33c50d0740):ZOO_INFO@log_env@737: Client environment:os.name=Linux
+2022-07-29 19:10:07,964:5039(0x7f33c50d0740):ZOO_INFO@log_env@738: Client environment:os.arch=3.10.0-1160.el7.x86_64
+2022-07-29 19:10:07,964:5039(0x7f33c50d0740):ZOO_INFO@log_env@739: Client environment:os.version=#1 SMP Mon Oct 19 16:18:59 UTC 2020
+2022-07-29 19:10:07,964:5039(0x7f33c50d0740):ZOO_INFO@log_env@747: Client environment:user.name=hjkim
+2022-07-29 19:10:07,964:5039(0x7f33c50d0740):ZOO_INFO@log_env@755: Client environment:user.home=/home/hjkim
+2022-07-29 19:10:07,964:5039(0x7f33c50d0740):ZOO_INFO@log_env@767: Client environment:user.dir=/home/hjkim/PiGraph/bin
+2022-07-29 19:10:07,964:5039(0x7f33c50d0740):ZOO_INFO@zookeeper_init@800: Initiating client connection, host=localhost.ib:2181 sessionTimeout=10000 watcher=0x402ee0 sessionId=0 sessionPasswd=<null> context=(nil) flags=0
+MN
+2022-07-29 19:10:07,965:5039(0x7f33c3c08700):ZOO_INFO@check_events@1728: initiated connection to server [192.168.1.100:2181]
+2022-07-29 19:10:07,975:5039(0x7f33c3c08700):ZOO_INFO@check_events@1775: session establishment complete on server [192.168.1.100:2181], sessionId=0x1821aad118800d2, negotiated timeout=10000
+state:ZOO_CONNECTED_STATE
+event:ZOO_SESSION_EVENT
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[INFO]SUCESS TO SET DATA: /PiGraph/Resource/CPU/MN
+[ERROR]DO NOT EXIST ZNODE: /PiGraph/Resource/CPU/MN
+[ERROR]DO NOT EXIST ZNODE: /PiGraph/Resource/CPU/MN
+[ERROR]DO NOT EXIST ZNODE: /PiGraph/Resource/CPU/MN

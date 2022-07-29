@@ -1,9 +1,11 @@
 /home/hjkim/PiGraph/bin/CMakeFiles/rebuild_cache.dir
 /home/hjkim/PiGraph/bin/CMakeFiles/edit_cache.dir
+/home/hjkim/PiGraph/bin/CMakeFiles/wm.dir
 /home/hjkim/PiGraph/bin/CMakeFiles/client.dir
 /home/hjkim/PiGraph/bin/CMakeFiles/master.dir
 /home/hjkim/PiGraph/bin/module/CMakeFiles/rebuild_cache.dir
 /home/hjkim/PiGraph/bin/module/CMakeFiles/edit_cache.dir
+/home/hjkim/PiGraph/bin/module/CMakeFiles/Resource.dir
 /home/hjkim/PiGraph/bin/module/CMakeFiles/Coordination.dir
 /home/hjkim/PiGraph/bin/module/CMakeFiles/Configuration.dir
 /home/hjkim/PiGraph/bin/module/CMakeFiles/Communication.dir

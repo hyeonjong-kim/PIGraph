@@ -69,10 +69,10 @@ bool Parsing::argParse(int argc, const char *argv[]){
         this->parser->enable_help();
 	
         auto err = parser->parse(argc, argv);
-	if (err) {
-		std::cout << err << std::endl;
-		return -1;
-	}
+	    if(err){
+		    std::cout << err << std::endl;
+		    exit(0);
+	    }
         
         this->argConfig.insert({"filePath", this->parser->get<string>("f")});
         this->argConfig.insert({"numWorker", this->parser->get<string>("w")});
@@ -83,7 +83,7 @@ bool Parsing::argParse(int argc, const char *argv[]){
         this->argConfig.insert({"port", this->parser->get<string>("P")});
         this->argConfig.insert({"query", this->parser->get<string>("q")});
         this->argConfig.insert({"jobId", this->parser->get<string>("j")});
-
+        
         return true;
 }
 
