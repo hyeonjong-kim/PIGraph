@@ -34,7 +34,7 @@ Coordination::~Coordination(){
     
     this->zktools.zkDelete(this->zh,  "/PiGraph/Resource");
     this->zktools.zkDelete(this->zh, "/PiGraph/Query");
-
+    
     this->zktools.zkClose(this->zh);
 }
 
@@ -42,7 +42,7 @@ void Coordination::setResourceMonitoring(string zooHost, vector<string> workerMa
     this->zh = zktools.zkInit((char*) zooHost.c_str());
     this->zktools.zkCreatePersistent(this->zh, "/PiGraph", "PiGraph");
     this->workerManagers = workerManagers;
-    
+
     string resourcePath = "/PiGraph/Resource";
     this->zktools.zkCreatePersistent(this->zh, (char*) resourcePath.c_str(), "Resource monitoring");
     this->zktools.zkCreatePersistent(this->zh, (char*) (resourcePath + "/CPU").c_str(), "Resource monitoring");

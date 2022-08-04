@@ -63,7 +63,6 @@ void Resource::resourceChecker(){
 
     while(true){
         double cpu = this->getCurrentValueCPU();
-        cerr << (char*)to_string(cpu).c_str() << endl;
         this->zktools.zkSet(this->zh, (char*)(string(persistentPath)+ "/" + string(this->hostName)).c_str(), (char*)to_string(cpu).c_str());
         sleep(5);
     }

@@ -131,6 +131,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named worker
+
+# Build rule for target.
+worker: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 worker
+.PHONY : worker
+
+# fast build rule for target.
+worker/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/worker.dir/build.make CMakeFiles/worker.dir/build
+.PHONY : worker/fast
+
+#=============================================================================
 # Target rules for targets named wm
 
 # Build rule for target.
@@ -168,6 +181,19 @@ master: cmake_check_build_system
 master/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/master.dir/build.make CMakeFiles/master.dir/build
 .PHONY : master/fast
+
+#=============================================================================
+# Target rules for targets named Execution
+
+# Build rule for target.
+Execution: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Execution
+.PHONY : Execution
+
+# fast build rule for target.
+Execution/fast:
+	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Execution.dir/build.make module/CMakeFiles/Execution.dir/build
+.PHONY : Execution/fast
 
 #=============================================================================
 # Target rules for targets named Resource
@@ -354,6 +380,33 @@ wm_main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/wm.dir/build.make CMakeFiles/wm.dir/wm_main.cpp.s
 .PHONY : wm_main.cpp.s
 
+worker_main.o: worker_main.cpp.o
+
+.PHONY : worker_main.o
+
+# target to build an object file
+worker_main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/worker.dir/build.make CMakeFiles/worker.dir/worker_main.cpp.o
+.PHONY : worker_main.cpp.o
+
+worker_main.i: worker_main.cpp.i
+
+.PHONY : worker_main.i
+
+# target to preprocess a source file
+worker_main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/worker.dir/build.make CMakeFiles/worker.dir/worker_main.cpp.i
+.PHONY : worker_main.cpp.i
+
+worker_main.s: worker_main.cpp.s
+
+.PHONY : worker_main.s
+
+# target to generate assembly for a file
+worker_main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/worker.dir/build.make CMakeFiles/worker.dir/worker_main.cpp.s
+.PHONY : worker_main.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -365,6 +418,7 @@ help:
 	@echo "... Communication"
 	@echo "... Configuration"
 	@echo "... Coordination"
+	@echo "... Execution"
 	@echo "... Parsing"
 	@echo "... Resource"
 	@echo "... client"
@@ -372,6 +426,7 @@ help:
 	@echo "... master"
 	@echo "... utils"
 	@echo "... wm"
+	@echo "... worker"
 	@echo "... zk"
 	@echo "... client_main.o"
 	@echo "... client_main.i"
@@ -382,6 +437,9 @@ help:
 	@echo "... wm_main.o"
 	@echo "... wm_main.i"
 	@echo "... wm_main.s"
+	@echo "... worker_main.o"
+	@echo "... worker_main.i"
+	@echo "... worker_main.s"
 .PHONY : help
 
 

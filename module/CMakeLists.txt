@@ -23,4 +23,8 @@ add_library(Resource STATIC ../src/modules/Resource.cpp)
 target_include_directories(Resource PUBLIC ../include/modules)
 target_link_libraries(Resource PRIVATE zk)
 
+add_library(Execution STATIC ../src/modules/Execution.cpp)
+target_include_directories(Execution PUBLIC ../include/modules)
+target_link_libraries(Execution PRIVATE zk)
+
 add_compile_options(-O3 -std=c++17)

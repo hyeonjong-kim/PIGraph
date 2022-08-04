@@ -6,9 +6,10 @@ Configuration::Configuration(){
 
 Configuration::~Configuration(){
     map<string,string>::iterator iter;
-    for(size_t i = 0; i < this->allJobConfig.size(); i++){
+    if(!this->allJobConfig.empty()){
+        for(size_t i = 0; i < this->allJobConfig.size(); i++){
         string jobIdPath = "/PiGraph/job/" + this->allJobConfig[i].find("arg")->second.find("jobId")->second;
-
+        cerr << jobIdPath << endl;
         for(iter = this->allJobConfig[i].find("arg")->second.begin(); iter != this->allJobConfig[i].find("arg")->second.end(); iter++){
             if(iter->first != "jobId"){
                 this-zktools.zkDelete(this->zh, (char*)(string(jobIdPath+"/"+iter->first).c_str()));
@@ -21,9 +22,10 @@ Configuration::~Configuration(){
             }
         }
         this->zktools.zkDelete(this->zh, (char*) jobIdPath.c_str());
+        }
+        this->zktools.zkDelete(this->zh, "/PiGraph/job");
     }
-
-    this->zktools.zkDelete(this->zh, "/PiGraph/job");
+    
     this->zktools.zkClose(this->zh);
 }
 
@@ -62,7 +64,6 @@ bool Configuration::submitJobConfig(map<string, map<string,string>> config){
     }
     
     this->ipc.setData(resultShmId, "[INFO]SUCCESS TO SUBMIT JOB CONFIGURATION");
-
     this->allJobConfig.push_back(config);
     return true;
 }

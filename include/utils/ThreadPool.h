@@ -11,6 +11,7 @@
 #include <thread>
 #include <vector>
 #include <iostream>
+#include <signal.h>
 
 using namespace std;
 
@@ -22,8 +23,7 @@ class ThreadPool {
 
   // job 을 추가한다.
   template <class F, class... Args>
-  std::future<typename std::result_of<F(Args...)>::type> EnqueueJob(
-    F&& f, Args&&... args);
+  std::future<typename std::result_of<F(Args...)>::type> EnqueueJob(F&& f, Args&&... args);
 
  private:
   // 총 Worker 쓰레드의 개수.
@@ -35,6 +35,7 @@ class ThreadPool {
   // 위의 job 큐를 위한 cv 와 m.
   std::condition_variable cv_job_q_;
   std::mutex m_job_q_;
+  std::vector<pthread_t> threadHandler;
 
   // 모든 쓰레드 종료
   bool stop_all;
@@ -47,11 +48,12 @@ ThreadPool::ThreadPool(size_t num_threads)
     : num_threads_(num_threads), stop_all(false) {
   worker_threads_.reserve(num_threads_);
   for (size_t i = 0; i < num_threads_; ++i) {
-    worker_threads_.emplace_back([this]() { this->WorkerThread(); });
+    worker_threads_.emplace_back([this]() {this->WorkerThread();});
   }
+
 }
 
-void ThreadPool::WorkerThread() {
+void ThreadPool::WorkerThread(){
   while (true) {
     std::unique_lock<std::mutex> lock(m_job_q_);
     cv_job_q_.wait(lock, [this]() { return !this->jobs_.empty() || stop_all; });
@@ -72,9 +74,10 @@ void ThreadPool::WorkerThread() {
 ThreadPool::~ThreadPool() {
   stop_all = true;
   cv_job_q_.notify_all();
-
-  for (auto& t : worker_threads_) {
-    t.join();
+  for (auto& t : worker_threads_){
+    t.detach();
+    pthread_kill(t.native_handle(), SIGINT);
+    //t.join();
   }
 }
 

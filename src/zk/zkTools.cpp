@@ -266,3 +266,38 @@ bool zkTools::zkSet(zhandle_t *zh, char* path, char* data){
 	cerr << "[ERROR]FAIL TO SET DATA: "<< path << endl;
 	return false;
 }
+
+bool zkTools::zkGetChildern(zhandle_t *zh, char* path, String_vector* strings){
+	int rc = 0;
+	rc = zoo_get_children(zh, path, 0, strings);
+	if(rc == ZOK){
+		cerr << "[INFO]SUCESS TO GET CHILDERN: "<< path <<  endl;
+		return true;
+	}
+	else if(rc == ZNONODE){
+		cerr << "[ERROR]The node does not exist: " << path << endl;
+		return false;
+	}
+	else if(rc == ZNOAUTH){
+		cerr << "[ERROR]The client does not have permission: " << path << endl;
+		return false;
+	}
+	else if(rc == ZBADVERSION){
+		cerr << "[ERROR]Expected version does not match actual version: " << path << endl;
+		return false;
+	}
+	else if(rc == ZINVALIDSTATE){
+		cerr << "[ERROR]Zhandle state is either ZOO_SESSION_EXPIRED_STATE or ZOO_AUTH_FAILED_STATE: " << path << endl;
+		return false;
+	}
+	else if(rc == ZBADARGUMENTS){
+		cerr << "[ERROR]Invalid input parameters: " << path << endl;
+		return false;
+	}
+	else if(rc == ZMARSHALLINGERROR){
+		cerr << "[ERROR]Failed to marshall a request; possibly, out of memory " << path << endl;
+		return false;
+	}
+	
+	return false;
+}

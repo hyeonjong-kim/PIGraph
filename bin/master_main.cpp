@@ -12,14 +12,12 @@ Coordination *coordination = new Coordination();
 Tools tools;
 
 vector<map<string, map<string,string>>> jobConfigLog;
-ThreadPool::ThreadPool* threadPool =  new ThreadPool::ThreadPool(2);
+ThreadPool::ThreadPool* threadPool =  new ThreadPool::ThreadPool(1);
 
 void interruptHandler(int sig){
-    delete coordination;
     delete configuration;
+    delete coordination;
     delete communication;
-    delete threadPool;
-    
     cerr << "[INFO]MASTER STOP" << endl;
     exit(0);
 }
