@@ -29,7 +29,6 @@ class Network{
         map<int, int>* recvPos;
         int externalBucket;
         double* messageBuffer;
-        int count;
         IPoIB** ipoib;
         RDMA** rdma;
         
@@ -195,7 +194,6 @@ void Network::sendMsg_sum(int vertexID, double value){
                 }
             }
             fill_n(this->messageBuffer, this->recvPos->size(), 0.0);
-            cerr << count << endl;
             std::vector<std::future<void>> futures;
             for (size_t i = 0; i < this->numHost; i++){
                 if(i != this->thisHostNumber){
@@ -211,7 +209,6 @@ void Network::sendMsg_sum(int vertexID, double value){
                     futures.emplace_back(this->connectionThreadPool->EnqueueJob(f));
                 }
             }
-
             for(auto& f_ : futures){
                 f_.wait();
             }
@@ -223,13 +220,12 @@ void Network::sendMsg_sum(int vertexID, double value){
                     this->messageBuffer[iter->second] += this->recvMsg[i][iter->second];
                 }
             }
-            
+
             for (size_t i = 0; i < this->numHost; i++){
                 fill_n(this->recvMsg[i], this->recvPos->size(), 0.0);
             }
         }
         else{
-            count++;
             int dstNum = this->externalHashFunction(vertexID);
             if(dstNum == this->thisHostNumber){
                 int recvIdx = this->recvPos->find(vertexID)->second;
@@ -242,14 +238,11 @@ void Network::sendMsg_sum(int vertexID, double value){
     }
     else if(this->networkType == "ipoib"){
         if(vertexID == numeric_limits<int>::max()){
-        
         }
         int dstNum = this->externalHashFunction(vertexID);
         if(dstNum == this->thisHostNumber){
-        
         }
         else{
-        
         }
     }
 }
