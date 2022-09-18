@@ -1,0 +1,1 @@
+/usr/local/bin/c++ CMakeFiles/client.dir/client_main.cpp.o -o client  module/libParsing.a module/libCommunication.a module/lib/libutils.a module/lib/libcommunication.a -libverbs -lpthread 

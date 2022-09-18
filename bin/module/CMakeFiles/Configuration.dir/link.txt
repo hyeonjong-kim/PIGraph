@@ -1,0 +1,2 @@
+/usr/bin/ar qc libConfiguration.a CMakeFiles/Configuration.dir/home/hjkim/PiGraph/src/modules/Configuration.cpp.o
+/usr/bin/ranlib libConfiguration.a

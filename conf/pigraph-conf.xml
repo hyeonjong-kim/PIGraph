@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property>
+		<name>workers</name>
+		<value>SN01,SN02,SN03</value>
+	</property>
+	<property>
+		<name>mutex</name>
+		<value>256</value>
+	</property>
+	<property>
+		<name>thread</name>
+		<value>4</value>
+	</property>
+	<property>
+		<name>HDFS</name>
+		<value>MN.ib:54310</value>
+	</property>
+	<property>
+		<name>zk</name>
+		<value>localhost.ib:2181</value>
+	</property>
+</configuration>

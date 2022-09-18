@@ -1,0 +1,2 @@
+/usr/bin/ar qc libzk.a CMakeFiles/zk.dir/home/hjkim/PiGraph/src/zk/zkTools.cpp.o
+/usr/bin/ranlib libzk.a

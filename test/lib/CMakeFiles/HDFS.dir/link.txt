@@ -1,0 +1,2 @@
+/usr/bin/ar qc libHDFS.a CMakeFiles/HDFS.dir/home/hjkim/PiGraph/src/io/HDFS.cpp.o
+/usr/bin/ranlib libHDFS.a

@@ -1,0 +1,1 @@
+/usr/local/bin/c++ CMakeFiles/worker.dir/worker_main.cpp.o -o worker  -Wl,-rpath,/home/hjkim/PiGraph/hadoop-2.10.1/lib/native module/libSetting.a module/libIO.a module/libGraph.a module/libNetwork.a module/lib/libutils.a /home/hjkim/PiGraph/hadoop-2.10.1/lib/native/libhdfs.so module/lib/libstruct.a module/lib/libcommunication.a -lpthread -libverbs 
