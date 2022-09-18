@@ -14,6 +14,16 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   file(TOUCH_NOCREATE "/home/hjkim/PiGraph/test/CMakeFiles/cmake.verify_globs")
 endif()
 
+# SRC_FILES4 at /home/hjkim/PiGraph/lib/CMakeLists.txt:32 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/hjkim/PiGraph/lib/../src/io/*.cpp")
+set(OLD_GLOB
+  "/home/hjkim/PiGraph/lib/../src/io/HDFS.cpp"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "/home/hjkim/PiGraph/test/CMakeFiles/cmake.verify_globs")
+endif()
+
 # SRC_FILES1 at /home/hjkim/PiGraph/lib/CMakeLists.txt:4 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/hjkim/PiGraph/lib/../src/utils/*.cpp")
 set(OLD_GLOB

@@ -21,11 +21,10 @@ class Parsing{
 
     public:
         Parsing(){
-            this->parser = new ArgumentParser("Pigraph", "Pigraph execution");
+            this->parser = new ArgumentParser("Pigraph_Master", "Pigraph Master");
         }
         
         map<string,string> getArgConfig(){return this->argConfig;}
-
         bool argParse(int argc, const char *argv[]);
 };
 

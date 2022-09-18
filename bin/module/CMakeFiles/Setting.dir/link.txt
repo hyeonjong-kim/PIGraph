@@ -1,0 +1,2 @@
+/usr/bin/ar qc libSetting.a CMakeFiles/Setting.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o
+/usr/bin/ranlib libSetting.a

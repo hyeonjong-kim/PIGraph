@@ -1,1 +1,1 @@
-/usr/local/bin/c++ CMakeFiles/master.dir/main.cpp.o -o master  lib/libzk.a -lzookeeper_mt 
+/usr/local/bin/c++ CMakeFiles/master.dir/main.cpp.o -o master  -Wl,-rpath,/home/hjkim/PiGraph/hadoop-2.10.1/lib/native lib/libHDFS.a /home/hjkim/PiGraph/hadoop-2.10.1/lib/native/libhdfs.so 

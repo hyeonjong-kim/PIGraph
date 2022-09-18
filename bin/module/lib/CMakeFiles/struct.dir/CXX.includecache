@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/hjkim/PiGraph/include/struct/Vertex.h
+
+/home/hjkim/PiGraph/src/struct/Vertex.cpp
+../../include/struct/Vertex.h
+/home/hjkim/PiGraph/include/struct/Vertex.h
+

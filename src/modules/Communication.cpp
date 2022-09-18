@@ -44,7 +44,6 @@ bool Communication::client(map<string, string> config){
     }
     */
     //cerr << "[INFO]RESULT: " << msg << endl;
-
     return true;
 }
 

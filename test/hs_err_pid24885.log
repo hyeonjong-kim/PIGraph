@@ -1,0 +1,2441 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x0000000000000000, pid=24885, tid=0x00007f9ed789b780
+#
+# JRE version: OpenJDK Runtime Environment (8.0_342-b07) (build 1.8.0_342-b07)
+# Java VM: OpenJDK 64-Bit Server VM (25.342-b07 mixed mode linux-amd64 compressed oops)
+# Problematic frame:
+# C  0x0000000000000000
+#
+# Core dump written. Default location: /home/hjkim/PiGraph/test/core or core.24885 (max size 4 kB). To ensure a full core dump, try "ulimit -c unlimited" before starting Java again
+#
+# If you would like to submit a bug report, please visit:
+#   https://bugzilla.redhat.com/enter_bug.cgi?product=Red%20Hat%20Enterprise%20Linux%207&component=java-1.8.0-openjdk
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000001991800):  JavaThread "main" [_thread_in_native, id=24885, stack(0x00007ffe8c2a1000,0x00007ffe8c3a1000)]
+
+siginfo: si_signo: 11 (SIGSEGV), si_code: 1 (SEGV_MAPERR), si_addr: 0x0000000000000000
+
+Registers:
+RAX=0x0000000000000000, RBX=0x00007ffe8c39e4f0, RCX=0x0000000000000b48, RDX=0x0000000000000000
+RSP=0x00007ffe8c39e4e8, RBP=0x00007ffe8c39e510, RSI=0x00007f9ed6bd59f0, RDI=0x00007f9ed6bd41c0
+R8 =0x00007f9ed789b780, R9 =0x00007f9ed789b780, R10=0x00007ffe8c39dee0, R11=0x0000000000000000
+R12=0x0000000000401006, R13=0x00007ffe8c39e5f0, R14=0x0000000000000000, R15=0x0000000000000000
+RIP=0x0000000000000000, EFLAGS=0x0000000000010212, CSGSFS=0x0000000000000033, ERR=0x0000000000000014
+  TRAPNO=0x000000000000000e
+
+Top of Stack: (sp=0x00007ffe8c39e4e8)
+0x00007ffe8c39e4e8:   00000000004010f0 0000000001a60ac8
+0x00007ffe8c39e4f8:   0000000000401006 00007ffe8c39e5f0
+0x00007ffe8c39e508:   0000000000000000 0000000000000000
+0x00007ffe8c39e518:   00007f9ed682e555 0000000000000000
+0x00007ffe8c39e528:   00007ffe8c39e5f8 0000000100000000
+0x00007ffe8c39e538:   00000000004010d2 0000000000000000
+0x00007ffe8c39e548:   aa12422a41107d7c 0000000000401006
+0x00007ffe8c39e558:   00007ffe8c39e5f0 0000000000000000
+0x00007ffe8c39e568:   0000000000000000 55ef5a598b507d7c
+0x00007ffe8c39e578:   552fef2f8b0a7d7c 0000000000000000
+0x00007ffe8c39e588:   0000000000000000 0000000000000000
+0x00007ffe8c39e598:   0000000000000000 0000000000000000
+0x00007ffe8c39e5a8:   0000000000000000 0000000000000000
+0x00007ffe8c39e5b8:   0000000000000000 0000000000401006
+0x00007ffe8c39e5c8:   00007ffe8c39e5f0 0000000000000000
+0x00007ffe8c39e5d8:   000000000040102f 00007ffe8c39e5e8
+0x00007ffe8c39e5e8:   000000000000001c 0000000000000001
+0x00007ffe8c39e5f8:   00007ffe8c3a00b7 0000000000000000
+0x00007ffe8c39e608:   00007ffe8c3a00c0 00007ffe8c3a00d3
+0x00007ffe8c39e618:   00007ffe8c3a00e7 00007ffe8c3a00f3
+0x00007ffe8c39e628:   00007ffe8c3a0107 00007ffe8c3a0117
+0x00007ffe8c39e638:   00007ffe8c3a0125 00007ffe8c3a0148
+0x00007ffe8c39e648:   00007ffe8c3a0164 00007ffe8c3a017f
+0x00007ffe8c39e658:   00007ffe8c3a018a 00007ffe8c3a0842
+0x00007ffe8c39e668:   00007ffe8c3a0873 00007ffe8c3a09a1
+0x00007ffe8c39e678:   00007ffe8c3a09bc 00007ffe8c3a09d9
+0x00007ffe8c39e688:   00007ffe8c3a0a20 00007ffe8c3a0a31
+0x00007ffe8c39e698:   00007ffe8c3a0a48 00007ffe8c3a0a59
+0x00007ffe8c39e6a8:   00007ffe8c3a0a61 00007ffe8c3a0ae5
+0x00007ffe8c39e6b8:   00007ffe8c3a0af3 00007ffe8c3a0b33
+0x00007ffe8c39e6c8:   00007ffe8c3a0b68 00007ffe8c3a0df7
+0x00007ffe8c39e6d8:   00007ffe8c3a0e4f 00007ffe8c3a0e72 
+
+Instructions: (pc=0x0000000000000000)
+0xffffffffffffffe0:   
+
+Register to memory mapping:
+
+RAX=0x0000000000000000 is an unknown value
+RBX=0x00007ffe8c39e4f0 is pointing into the stack for thread: 0x0000000001991800
+RCX=0x0000000000000b48 is an unknown value
+RDX=0x0000000000000000 is an unknown value
+RSP=0x00007ffe8c39e4e8 is pointing into the stack for thread: 0x0000000001991800
+RBP=0x00007ffe8c39e510 is pointing into the stack for thread: 0x0000000001991800
+RSI=0x00007f9ed6bd59f0: <offset 0x3c99f0> in /lib64/libc.so.6 at 0x00007f9ed680c000
+RDI=0x00007f9ed6bd41c0: _IO_2_1_stderr_+0 in /lib64/libc.so.6 at 0x00007f9ed680c000
+R8 =0x00007f9ed789b780 is an unknown value
+R9 =0x00007f9ed789b780 is an unknown value
+R10=0x00007ffe8c39dee0 is pointing into the stack for thread: 0x0000000001991800
+R11=0x0000000000000000 is an unknown value
+R12=0x0000000000401006: <offset 0x1006> in ./master at 0x0000000000400000
+R13=0x00007ffe8c39e5f0 is pointing into the stack for thread: 0x0000000001991800
+R14=0x0000000000000000 is an unknown value
+R15=0x0000000000000000 is an unknown value
+
+
+Stack: [0x00007ffe8c2a1000,0x00007ffe8c3a1000],  sp=0x00007ffe8c39e4e8,  free space=1013k
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x0000000002a69000 JavaThread "org.apache.hadoop.fs.FileSystem$Statistics$StatisticsDataReferenceCleaner" daemon [_thread_blocked, id=24938, stack(0x00007f9e488c9000,0x00007f9e489ca000)]
+  0x00000000028cc800 JavaThread "process reaper" daemon [_thread_blocked, id=24936, stack(0x00007f9e489ca000,0x00007f9e48a03000)]
+  0x0000000001ad0800 JavaThread "Service Thread" daemon [_thread_blocked, id=24933, stack(0x00007f9e49adb000,0x00007f9e49bdc000)]
+  0x0000000001ac3800 JavaThread "C1 CompilerThread14" daemon [_thread_blocked, id=24932, stack(0x00007f9e49bdd000,0x00007f9e49cdd000)]
+  0x0000000001ac1000 JavaThread "C1 CompilerThread13" daemon [_thread_blocked, id=24931, stack(0x00007f9e49cde000,0x00007f9e49dde000)]
+  0x0000000001abf000 JavaThread "C1 CompilerThread12" daemon [_thread_in_native, id=24930, stack(0x00007f9e49ddf000,0x00007f9e49edf000)]
+  0x0000000001abc800 JavaThread "C1 CompilerThread11" daemon [_thread_blocked, id=24929, stack(0x00007f9e49ee0000,0x00007f9e49fe0000)]
+  0x0000000001aba800 JavaThread "C1 CompilerThread10" daemon [_thread_blocked, id=24928, stack(0x00007f9e49fe1000,0x00007f9e4a0e1000)]
+  0x0000000001ab8000 JavaThread "C2 CompilerThread9" daemon [_thread_in_native, id=24927, stack(0x00007f9e4a0e2000,0x00007f9e4a1e2000)]
+  0x0000000001ab6000 JavaThread "C2 CompilerThread8" daemon [_thread_blocked, id=24926, stack(0x00007f9e4a1e3000,0x00007f9e4a2e3000)]
+  0x0000000001ab3800 JavaThread "C2 CompilerThread7" daemon [_thread_blocked, id=24925, stack(0x00007f9e4a2e4000,0x00007f9e4a3e4000)]
+  0x0000000001ab1000 JavaThread "C2 CompilerThread6" daemon [_thread_blocked, id=24924, stack(0x00007f9e4a3e5000,0x00007f9e4a4e5000)]
+  0x0000000001aaf000 JavaThread "C2 CompilerThread5" daemon [_thread_blocked, id=24923, stack(0x00007f9e4a4e6000,0x00007f9e4a5e6000)]
+  0x0000000001aac800 JavaThread "C2 CompilerThread4" daemon [_thread_blocked, id=24922, stack(0x00007f9e4a5e7000,0x00007f9e4a6e7000)]
+  0x0000000001aa2800 JavaThread "C2 CompilerThread3" daemon [_thread_in_native, id=24921, stack(0x00007f9e4a6e8000,0x00007f9e4a7e8000)]
+  0x0000000001aa0000 JavaThread "C2 CompilerThread2" daemon [_thread_blocked, id=24920, stack(0x00007f9e4a7e9000,0x00007f9e4a8e9000)]
+  0x0000000001a9e000 JavaThread "C2 CompilerThread1" daemon [_thread_blocked, id=24919, stack(0x00007f9e4a8ea000,0x00007f9e4a9ea000)]
+  0x0000000001a9b800 JavaThread "C2 CompilerThread0" daemon [_thread_blocked, id=24918, stack(0x00007f9e4a9eb000,0x00007f9e4aaeb000)]
+  0x0000000001a8d000 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=24917, stack(0x00007f9e4aaeb000,0x00007f9e4abec000)]
+  0x0000000001a61000 JavaThread "Finalizer" daemon [_thread_blocked, id=24916, stack(0x00007f9e4abec000,0x00007f9e4aced000)]
+  0x0000000001a5c800 JavaThread "Reference Handler" daemon [_thread_blocked, id=24915, stack(0x00007f9e4aced000,0x00007f9e4adee000)]
+=>0x0000000001991800 JavaThread "main" [_thread_in_native, id=24885, stack(0x00007ffe8c2a1000,0x00007ffe8c3a1000)]
+
+Other Threads:
+  0x0000000001a52800 VMThread [stack: 0x00007f9e4adef000,0x00007f9e4aeef000] [id=24914]
+  0x0000000001ad3000 WatcherThread [stack: 0x00007f9e499db000,0x00007f9e49adb000] [id=24934]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+heap address: 0x0000000080200000, size: 30718 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
+Narrow klass base: 0x0000000800000000, Narrow klass shift: 0
+Compressed class space size: 1073741824 Address: 0x0000000800000000
+
+Heap:
+ PSYoungGen      total 601088K, used 185611K [0x0000000580100000, 0x00000005a9f80000, 0x0000000800000000)
+  eden space 515584K, 36% used [0x0000000580100000,0x000000058b642fa0,0x000000059f880000)
+  from space 85504K, 0% used [0x00000005a4c00000,0x00000005a4c00000,0x00000005a9f80000)
+  to   space 85504K, 0% used [0x000000059f880000,0x000000059f880000,0x00000005a4c00000)
+ ParOldGen       total 1373696K, used 0K [0x0000000080200000, 0x00000000d3f80000, 0x0000000580100000)
+  object space 1373696K, 0% used [0x0000000080200000,0x0000000080200000,0x00000000d3f80000)
+ Metaspace       used 18718K, capacity 18902K, committed 19072K, reserved 1067008K
+  class space    used 2073K, capacity 2147K, committed 2176K, reserved 1048576K
+
+Card table byte_map: [0x00007f9ec170c000,0x00007f9ec530c000] byte_map_base: 0x00007f9ec130b000
+
+Marking Bits: (ParMarkBitMap*) 0x00007f9ed67ee680
+ Begin Bits: [0x00007f9e00010000, 0x00007f9e1e008000)
+ End Bits:   [0x00007f9e1e008000, 0x00007f9e3c000000)
+
+Polling page: 0x00007f9ed78a8000
+
+CodeCache: size=245760Kb used=6449Kb max_used=6462Kb free=239310Kb
+ bounds [0x00007f9ec56cc000, 0x00007f9ec5d2c000, 0x00007f9ed46cc000]
+ total_blobs=1475 nmethods=1088 adapters=296
+ compilation: enabled
+
+Compilation events (250 events):
+Event: 0.841 Thread 0x0000000001ac3800  964       3       sun.nio.cs.UTF_8$Encoder::isLegalReplacement (26 bytes)
+Event: 0.841 Thread 0x0000000001abf000  963       3       java.nio.charset.CharsetEncoder::replaceWith (89 bytes)
+Event: 0.842 Thread 0x0000000001ac3800 nmethod 964 0x00007f9ec5c9cb50 code [0x00007f9ec5c9ccc0, 0x00007f9ec5c9cf48]
+Event: 0.842 Thread 0x0000000001ac3800  965   !   3       sun.misc.URLClassPath$JarLoader::getResource (85 bytes)
+Event: 0.842 Thread 0x0000000001abc800 nmethod 962 0x00007f9ec5c9c010 code [0x00007f9ec5c9c1e0, 0x00007f9ec5c9c908]
+Event: 0.842 Thread 0x0000000001ab8000  966 % !   4       java.util.concurrent.ConcurrentHashMap::transfer @ 99 (832 bytes)
+Event: 0.843 Thread 0x0000000001abf000 nmethod 963 0x00007f9ec5ca44d0 code [0x00007f9ec5ca46e0, 0x00007f9ec5ca5068]
+Event: 0.843 Thread 0x0000000001ac3800 nmethod 965 0x00007f9ec5ca53d0 code [0x00007f9ec5ca5600, 0x00007f9ec5ca60b8]
+Event: 0.844 Thread 0x0000000001ab6000 nmethod 953 0x00007f9ec5ca9710 code [0x00007f9ec5ca9880, 0x00007f9ec5ca9d98]
+Event: 0.848 Thread 0x0000000001aac800 nmethod 933 0x00007f9ec5ca6850 code [0x00007f9ec5ca6a40, 0x00007f9ec5ca78c0]
+Event: 0.850 Thread 0x0000000001a9e000 nmethod 932% 0x00007f9ec5caa6d0 code [0x00007f9ec5caa900, 0x00007f9ec5cab9f0]
+Event: 0.857 Thread 0x0000000001ac1000  967       3       java.lang.reflect.Modifier::isPublic (12 bytes)
+Event: 0.857 Thread 0x0000000001ac1000 nmethod 967 0x00007f9ec5caa350 code [0x00007f9ec5caa4c0, 0x00007f9ec5caa650]
+Event: 0.872 Thread 0x0000000001aaf000 nmethod 955 0x00007f9ec5caee90 code [0x00007f9ec5caf060, 0x00007f9ec5cafc68]
+Event: 0.874 Thread 0x0000000001ab3800  968       4       java.lang.String::regionMatches (149 bytes)
+Event: 0.874 Thread 0x0000000001ab8000 nmethod 966% 0x00007f9ec5cb2810 code [0x00007f9ec5cb29a0, 0x00007f9ec5cb36e8]
+Event: 0.875 Thread 0x0000000001aa0000  969       4       java.util.zip.Inflater::ensureOpen (47 bytes)
+Event: 0.876 Thread 0x0000000001aa0000 nmethod 969 0x00007f9ec5ca8e10 code [0x00007f9ec5ca8f60, 0x00007f9ec5ca9018]
+Event: 0.877 Thread 0x0000000001aba800  970       3       java.lang.Class::checkInitted (19 bytes)
+Event: 0.877 Thread 0x0000000001aba800 nmethod 970 0x00007f9ec5ca86d0 code [0x00007f9ec5ca8860, 0x00007f9ec5ca8b28]
+Event: 0.885 Thread 0x0000000001abc800  971       3       java.util.regex.Pattern$Node::<init> (12 bytes)
+Event: 0.886 Thread 0x0000000001abc800 nmethod 971 0x00007f9ec5cb2410 code [0x00007f9ec5cb2580, 0x00007f9ec5cb2750]
+Event: 0.886 Thread 0x0000000001aa0000  972   !   4       sun.misc.URLClassPath$JarLoader::getResource (85 bytes)
+Event: 0.887 Thread 0x0000000001ab3800 nmethod 968 0x00007f9ec5cb3e50 code [0x00007f9ec5cb3fe0, 0x00007f9ec5cb4918]
+Event: 0.890 Thread 0x0000000001abf000  973       3       java.util.AbstractSet::<init> (5 bytes)
+Event: 0.890 Thread 0x0000000001abf000 nmethod 973 0x00007f9ec5cb1f90 code [0x00007f9ec5cb2100, 0x00007f9ec5cb2310]
+Event: 0.900 Thread 0x0000000001ac3800  974       3       sun.misc.ProxyGenerator::dotToSlash (9 bytes)
+Event: 0.900 Thread 0x0000000001ac3800 nmethod 974 0x00007f9ec5cb0390 code [0x00007f9ec5cb0500, 0x00007f9ec5cb0708]
+Event: 0.902 Thread 0x0000000001ac1000  975       3       sun.reflect.generics.parser.SignatureParser::skipIdentifier (67 bytes)
+Event: 0.902 Thread 0x0000000001aac800  976       4       java.util.HashMap::get (23 bytes)
+Event: 0.902 Thread 0x0000000001abf000  977       3       sun.misc.ProxyGenerator::codeLocalLoadStore (90 bytes)
+Event: 0.902 Thread 0x0000000001aba800  978       3       java.util.HashMap::getNode (148 bytes)
+Event: 0.902 Thread 0x0000000001ac3800  979       3       sun.misc.ProxyGenerator::access$900 (5 bytes)
+Event: 0.902 Thread 0x0000000001ac1000 nmethod 975 0x00007f9ec5cae4d0 code [0x00007f9ec5cae6a0, 0x00007f9ec5caec88]
+Event: 0.902 Thread 0x0000000001ac3800 nmethod 979 0x00007f9ec5cae010 code [0x00007f9ec5cae180, 0x00007f9ec5cae3e8]
+Event: 0.903 Thread 0x0000000001aba800 nmethod 978 0x00007f9ec5cad150 code [0x00007f9ec5cad320, 0x00007f9ec5cadd28]
+Event: 0.903 Thread 0x0000000001aba800  980       3       java.nio.HeapByteBuffer::ix (7 bytes)
+Event: 0.903 Thread 0x0000000001aba800 nmethod 980 0x00007f9ec5cace50 code [0x00007f9ec5cacfa0, 0x00007f9ec5cad0f0]
+Event: 0.903 Thread 0x0000000001abf000 nmethod 977 0x00007f9ec5cb5190 code [0x00007f9ec5cb53e0, 0x00007f9ec5cb6588]
+Event: 0.903 Thread 0x0000000001ac3800  982       3       java.lang.StringBuilder::<init> (18 bytes)
+Event: 0.904 Thread 0x0000000001ac3800 nmethod 982 0x00007f9ec5cb6c10 code [0x00007f9ec5cb6da0, 0x00007f9ec5cb7288]
+Event: 0.904 Thread 0x0000000001abc800  983       3       java.lang.Class::getReflectionFactory (26 bytes)
+Event: 0.904 Thread 0x0000000001aba800  984       3       sun.misc.ProxyGenerator$ConstantPool::getMethodRef (33 bytes)
+Event: 0.905 Thread 0x0000000001abf000  985       1       sun.misc.ProxyGenerator::access$800 (5 bytes)
+Event: 0.905 Thread 0x0000000001ab6000  986       4       java.io.DataOutputStream::incCount (20 bytes)
+Event: 0.905 Thread 0x0000000001abf000 nmethod 985 0x00007f9ec5cac810 code [0x00007f9ec5cac960, 0x00007f9ec5caca50]
+Event: 0.905 Thread 0x0000000001ac3800  987       3       java.lang.Class::searchMethods (90 bytes)
+Event: 0.906 Thread 0x0000000001ab6000 nmethod 986 0x00007f9ec5cba110 code [0x00007f9ec5cba260, 0x00007f9ec5cba2d8]
+Event: 0.906 Thread 0x0000000001abc800 nmethod 983 0x00007f9ec5cb9a50 code [0x00007f9ec5cb9be0, 0x00007f9ec5cb9fe8]
+Event: 0.906 Thread 0x0000000001aba800 nmethod 984 0x00007f9ec5cb7ed0 code [0x00007f9ec5cb8160, 0x00007f9ec5cb8f48]
+Event: 0.907 Thread 0x0000000001ac3800 nmethod 987 0x00007f9ec5cbb850 code [0x00007f9ec5cbbaa0, 0x00007f9ec5cbcad8]
+Event: 0.908 Thread 0x0000000001aac800 nmethod 976 0x00007f9ec5cb7850 code [0x00007f9ec5cb79c0, 0x00007f9ec5cb7c78]
+Event: 0.914 Thread 0x0000000001a9e000  988       4       java.lang.String::equalsIgnoreCase (48 bytes)
+Event: 0.914 Thread 0x0000000001ac1000  989       3       org.apache.log4j.CategoryKey::<init> (18 bytes)
+Event: 0.915 Thread 0x0000000001ac1000 nmethod 989 0x00007f9ec5cba710 code [0x00007f9ec5cba880, 0x00007f9ec5cbab28]
+Event: 0.916 Thread 0x0000000001a9e000 nmethod 988 0x00007f9ec5cbd3d0 code [0x00007f9ec5cbd520, 0x00007f9ec5cbd608]
+Event: 0.916 Thread 0x0000000001abf000  990       1       java.util.concurrent.atomic.AtomicReference::get (5 bytes)
+Event: 0.916 Thread 0x0000000001abf000 nmethod 990 0x00007f9ec5cc0110 code [0x00007f9ec5cc0260, 0x00007f9ec5cc0370]
+Event: 0.921 Thread 0x0000000001abf000  991       3       sun.misc.FDBigInteger::mult (64 bytes)
+Event: 0.921 Thread 0x0000000001abc800  992       3       sun.misc.FDBigInteger::<init> (30 bytes)
+Event: 0.921 Thread 0x0000000001ac1000  993       3       sun.misc.FDBigInteger::trimLeadingZeros (57 bytes)
+Event: 0.921 Thread 0x0000000001aba800  994       3       sun.misc.FDBigInteger::makeImmutable (6 bytes)
+Event: 0.921 Thread 0x0000000001ac3800  995       3       sun.misc.FDBigInteger::mult (44 bytes)
+Event: 0.921 Thread 0x0000000001aba800 nmethod 994 0x00007f9ec5cbe110 code [0x00007f9ec5cbe260, 0x00007f9ec5cbe3b0]
+Event: 0.921 Thread 0x0000000001abf000 nmethod 991 0x00007f9ec5cbda50 code [0x00007f9ec5cbdbc0, 0x00007f9ec5cbde50]
+Event: 0.921 Thread 0x0000000001aa0000 nmethod 972 0x00007f9ec5cc2810 code [0x00007f9ec5cc2a80, 0x00007f9ec5cc37a0]
+Event: 0.922 Thread 0x0000000001ac1000 nmethod 993 0x00007f9ec5cbf350 code [0x00007f9ec5cbf4c0, 0x00007f9ec5cbf7f0]
+Event: 0.922 Thread 0x0000000001abc800 nmethod 992 0x00007f9ec5cbeed0 code [0x00007f9ec5cbf040, 0x00007f9ec5cbf248]
+Event: 0.922 Thread 0x0000000001ac3800 nmethod 995 0x00007f9ec5cbe790 code [0x00007f9ec5cbe920, 0x00007f9ec5cbed38]
+Event: 0.923 Thread 0x0000000001abf000  997       1       java.util.LinkedHashMap::removeEldestEntry (2 bytes)
+Event: 0.924 Thread 0x0000000001abf000 nmethod 997 0x00007f9ec5cbd6d0 code [0x00007f9ec5cbd820, 0x00007f9ec5cbd930]
+Event: 0.924 Thread 0x0000000001abf000  998       3       java.util.LinkedHashMap$LinkedHashIterator::hasNext (13 bytes)
+Event: 0.925 Thread 0x0000000001ac1000  999       3       java.util.LinkedHashMap$LinkedHashIterator::nextNode (54 bytes)
+Event: 0.925 Thread 0x0000000001abf000 nmethod 998 0x00007f9ec5cbe410 code [0x00007f9ec5cbe580, 0x00007f9ec5cbe730]
+Event: 0.925 Thread 0x0000000001ac1000 nmethod 999 0x00007f9ec5cc1dd0 code [0x00007f9ec5cc1f60, 0x00007f9ec5cc22d8]
+Event: 0.942 Thread 0x0000000001abc800 1001       3       java.lang.ThreadLocal::get (38 bytes)
+Event: 0.943 Thread 0x0000000001abc800 nmethod 1001 0x00007f9ec5cc1350 code [0x00007f9ec5cc14e0, 0x00007f9ec5cc1888]
+Event: 0.956 Thread 0x0000000001ab3800 1002       4       java.lang.ClassLoader::checkName (43 bytes)
+Event: 0.962 Thread 0x0000000001ab3800 nmethod 1002 0x00007f9ec5cc0d90 code [0x00007f9ec5cc0f00, 0x00007f9ec5cc1158]
+Event: 0.963 Thread 0x0000000001aba800 1003       1       java.lang.ThreadLocal::getMap (5 bytes)
+Event: 0.963 Thread 0x0000000001aba800 nmethod 1003 0x00007f9ec5cc0a90 code [0x00007f9ec5cc0be0, 0x00007f9ec5cc0cf0]
+Event: 1.011 Thread 0x0000000001ab6000 1004   !   4       java.util.zip.Inflater::inflate (113 bytes)
+Event: 1.013 Thread 0x0000000001aac800 1005       4       java.nio.DirectLongBufferU::get (16 bytes)
+Event: 1.014 Thread 0x0000000001aac800 nmethod 1005 0x00007f9ec5cc0810 code [0x00007f9ec5cc0960, 0x00007f9ec5cc09f8]
+Event: 1.016 Thread 0x0000000001a9e000 1006   !   4       java.util.concurrent.ConcurrentHashMap::transfer (832 bytes)
+Event: 1.016 Thread 0x0000000001ab6000 nmethod 1004 0x00007f9ec5cc54d0 code [0x00007f9ec5cc5640, 0x00007f9ec5cc5b08]
+Event: 1.044 Thread 0x0000000001a9e000 nmethod 1006 0x00007f9ec5cc62d0 code [0x00007f9ec5cc6480, 0x00007f9ec5cc7188]
+Event: 1.058 Thread 0x0000000001a9b800 1007       4       sun.net.util.IPAddressUtil::checkHostString (53 bytes)
+Event: 1.059 Thread 0x0000000001a9b800 nmethod 1007 0x00007f9ec5cc0510 code [0x00007f9ec5cc0660, 0x00007f9ec5cc06f8]
+Event: 1.074 Thread 0x0000000001aa0000 1008       4       java.lang.AbstractStringBuilder::newCapacity (39 bytes)
+Event: 1.075 Thread 0x0000000001aa0000 nmethod 1008 0x00007f9ec5cc5fd0 code [0x00007f9ec5cc6120, 0x00007f9ec5cc61f8]
+Event: 1.077 Thread 0x0000000001ac3800 1010       3       java.lang.Class$MethodArray::addIfNotPresent (47 bytes)
+Event: 1.077 Thread 0x0000000001abf000 1009       3       java.lang.Class$MethodArray::removeByNameAndDescriptor (42 bytes)
+Event: 1.077 Thread 0x0000000001ab1000 1011       4       java.lang.reflect.Method::equals (69 bytes)
+Event: 1.078 Thread 0x0000000001ac3800 nmethod 1010 0x00007f9ec5cc4d90 code [0x00007f9ec5cc4f20, 0x00007f9ec5cc5338]
+Event: 1.078 Thread 0x0000000001ac3800 1013       3       java.lang.Integer::stringSize (21 bytes)
+Event: 1.078 Thread 0x0000000001abf000 nmethod 1009 0x00007f9ec5cc4750 code [0x00007f9ec5cc48e0, 0x00007f9ec5cc4c18]
+Event: 1.078 Thread 0x0000000001abf000 1014       3       java.lang.Integer::getChars (131 bytes)
+Event: 1.078 Thread 0x0000000001ac1000 1012       3       java.lang.AbstractStringBuilder::append (62 bytes)
+Event: 1.078 Thread 0x0000000001abc800 1016       3       java.lang.StringBuilder::append (8 bytes)
+Event: 1.078 Thread 0x0000000001ac3800 nmethod 1013 0x00007f9ec5ccaa50 code [0x00007f9ec5ccabc0, 0x00007f9ec5ccadd0]
+Event: 1.078 Thread 0x0000000001ac3800 1015       3       java.util.ArrayList::<init> (61 bytes)
+Event: 1.078 Thread 0x0000000001aba800 1017       3       java.lang.reflect.Method::getExceptionTypes (11 bytes)
+Event: 1.078 Thread 0x0000000001abc800 nmethod 1016 0x00007f9ec5cca6d0 code [0x00007f9ec5cca840, 0x00007f9ec5cca9c8]
+Event: 1.078 Thread 0x0000000001abf000 nmethod 1014 0x00007f9ec5cc9c50 code [0x00007f9ec5cc9e00, 0x00007f9ec5cca290]
+Event: 1.079 Thread 0x0000000001aba800 nmethod 1017 0x00007f9ec5cc96d0 code [0x00007f9ec5cc9840, 0x00007f9ec5cc9b68]
+Event: 1.079 Thread 0x0000000001aba800 1019       3       sun.misc.ProxyGenerator::getFieldType (65 bytes)
+Event: 1.079 Thread 0x0000000001aa2800 1020       4       java.util.ArrayList::get (11 bytes)
+Event: 1.079 Thread 0x0000000001abc800 1022       3       sun.misc.ProxyGenerator::getParameterDescriptors (47 bytes)
+Event: 1.079 Thread 0x0000000001abf000 1021       3       sun.misc.ProxyGenerator::code_aload (11 bytes)
+Event: 1.079 Thread 0x0000000001ac3800 nmethod 1015 0x00007f9ec5cc8590 code [0x00007f9ec5cc87a0, 0x00007f9ec5cc9278]
+Event: 1.079 Thread 0x0000000001ac3800 1024       3       sun.misc.ProxyGenerator::access$700 (7 bytes)
+Event: 1.079 Thread 0x0000000001ac1000 nmethod 1012 0x00007f9ec5ccb290 code [0x00007f9ec5ccb4a0, 0x00007f9ec5ccbdd8]
+Event: 1.079 Thread 0x0000000001ac1000 1025       3       sun.misc.ProxyGenerator$ExceptionTableEntry::<init> (26 bytes)
+Event: 1.080 Thread 0x0000000001abf000 nmethod 1021 0x00007f9ec5cc81d0 code [0x00007f9ec5cc8340, 0x00007f9ec5cc84e8]
+Event: 1.080 Thread 0x0000000001abf000 1023       3       java.io.OutputStream::<init> (5 bytes)
+Event: 1.080 Thread 0x0000000001ab1000 nmethod 1011 0x00007f9ec5cc7e50 code [0x00007f9ec5cc7fa0, 0x00007f9ec5cc80a8]
+Event: 1.080 Thread 0x0000000001aa0000 1026       4       java.util.HashMap::putVal (300 bytes)
+Event: 1.080 Thread 0x0000000001ac1000 nmethod 1025 0x00007f9ec5cc7a50 code [0x00007f9ec5cc7bc0, 0x00007f9ec5cc7d70]
+Event: 1.080 Thread 0x0000000001abf000 nmethod 1023 0x00007f9ec5ccebd0 code [0x00007f9ec5cced40, 0x00007f9ec5cceef0]
+Event: 1.080 Thread 0x0000000001ac3800 nmethod 1024 0x00007f9ec5cce750 code [0x00007f9ec5cce8c0, 0x00007f9ec5cceaa8]
+Event: 1.080 Thread 0x0000000001ab1000 1027       4       java.util.HashMap::put (13 bytes)
+Event: 1.080 Thread 0x0000000001aa2800 nmethod 1020 0x00007f9ec5cccf10 code [0x00007f9ec5ccd060, 0x00007f9ec5ccd138]
+Event: 1.080 Thread 0x0000000001abf000 1028       3       sun.misc.ProxyGenerator$ConstantPool::getFieldRef (33 bytes)
+Event: 1.081 Thread 0x0000000001aba800 nmethod 1019 0x00007f9ec5cd0790 code [0x00007f9ec5cd0a20, 0x00007f9ec5cd1be8]
+Event: 1.081 Thread 0x0000000001aa2800 1031       4       java.lang.Class::getName (21 bytes)
+Event: 1.081 Thread 0x0000000001abc800 nmethod 1022 0x00007f9ec5cd2190 code [0x00007f9ec5cd23e0, 0x00007f9ec5cd3238]
+Event: 1.081 Thread 0x0000000001abc800 1029       3       sun.misc.ProxyGenerator::access$1000 (7 bytes)
+Event: 1.081 Thread 0x0000000001ac3800 1030       3       sun.misc.ProxyGenerator::code_ipush (90 bytes)
+Event: 1.081 Thread 0x0000000001abc800 nmethod 1029 0x00007f9ec5cccb50 code [0x00007f9ec5ccccc0, 0x00007f9ec5ccce28]
+Event: 1.082 Thread 0x0000000001aac800 1032       4       sun.misc.ProxyGenerator$ConstantPool::getUtf8 (18 bytes)
+Event: 1.082 Thread 0x0000000001abf000 nmethod 1028 0x00007f9ec5cd3a50 code [0x00007f9ec5cd3ce0, 0x00007f9ec5cd4ac8]
+Event: 1.082 Thread 0x0000000001abf000 1033       3       sun.misc.ProxyGenerator$ConstantPool::getString (21 bytes)
+Event: 1.082 Thread 0x0000000001aa2800 nmethod 1031 0x00007f9ec5cc4450 code [0x00007f9ec5cc45a0, 0x00007f9ec5cc4648]
+Event: 1.082 Thread 0x0000000001aba800 1034       3       sun.misc.ProxyGenerator::code_ldc (64 bytes)
+Event: 1.083 Thread 0x0000000001ac3800 nmethod 1030 0x00007f9ec5cd55d0 code [0x00007f9ec5cd5820, 0x00007f9ec5cd6928]
+Event: 1.083 Thread 0x0000000001ab8000 1035       4       java.util.HashMap::newNode (13 bytes)
+Event: 1.083 Thread 0x0000000001abf000 nmethod 1033 0x00007f9ec5ccdd90 code [0x00007f9ec5ccdf60, 0x00007f9ec5cce488]
+Event: 1.083 Thread 0x0000000001ab3800 1036       4       sun.misc.ProxyGenerator$ConstantPool::getValue (91 bytes)
+Event: 1.083 Thread 0x0000000001aaf000 1037       4       java.io.DataOutputStream::writeByte (14 bytes)
+Event: 1.083 Thread 0x0000000001a9e000 1040       4       sun.misc.ProxyGenerator$ConstantPool::getIndirect (67 bytes)
+Event: 1.083 Thread 0x0000000001abc800 1038       3       sun.misc.ProxyGenerator::access$1700 (7 bytes)
+Event: 1.083 Thread 0x0000000001abf000 1039       3       sun.misc.ProxyGenerator::codeClassForName (41 bytes)
+Event: 1.083 Thread 0x0000000001aba800 nmethod 1034 0x00007f9ec5ccf4d0 code [0x00007f9ec5ccf6e0, 0x00007f9ec5cd0348]
+Event: 1.084 Thread 0x0000000001aa2800 1041       4       sun.misc.ProxyGenerator$ConstantPool$IndirectEntry::equals (49 bytes)
+Event: 1.084 Thread 0x0000000001abc800 nmethod 1038 0x00007f9ec5ccf110 code [0x00007f9ec5ccf280, 0x00007f9ec5ccf3e8]
+Event: 1.084 Thread 0x0000000001ab6000 1042 %     4       java.io.DataOutputStream::writeUTF @ 211 (435 bytes)
+Event: 1.085 Thread 0x0000000001ab8000 nmethod 1035 0x00007f9ec5ccc850 code [0x00007f9ec5ccc9a0, 0x00007f9ec5cccab8]
+Event: 1.085 Thread 0x0000000001ab8000 1043  s    4       java.io.DataOutputStream::write (14 bytes)
+Event: 1.085 Thread 0x0000000001aa2800 nmethod 1041 0x00007f9ec5ccc550 code [0x00007f9ec5ccc6a0, 0x00007f9ec5ccc778]
+Event: 1.085 Thread 0x0000000001aba800 1045       3       java.io.DataOutputStream::writeInt (65 bytes)
+Event: 1.085 Thread 0x0000000001aa2800 1044       4       java.io.DataOutputStream::writeShort (35 bytes)
+Event: 1.086 Thread 0x0000000001aba800 nmethod 1045 0x00007f9ec5ccd490 code [0x00007f9ec5ccd640, 0x00007f9ec5ccdbd8]
+Event: 1.088 Thread 0x0000000001abf000 nmethod 1039 0x00007f9ec5cd8510 code [0x00007f9ec5cd8860, 0x00007f9ec5cd9fd8]
+Event: 1.098 Thread 0x0000000001aa0000 nmethod 1026 0x00007f9ec5cde810 code [0x00007f9ec5cdea00, 0x00007f9ec5cdf4b0]
+Event: 1.100 Thread 0x0000000001ab1000 nmethod 1027 0x00007f9ec5cdfb90 code [0x00007f9ec5cdfd80, 0x00007f9ec5ce07f0]
+Event: 1.105 Thread 0x0000000001ab8000 nmethod 1043 0x00007f9ec5cd7250 code [0x00007f9ec5cd73e0, 0x00007f9ec5cd7cc8]
+Event: 1.108 Thread 0x0000000001a9b800 1047   !   4       java.net.URL::<init> (543 bytes)
+Event: 1.111 Thread 0x0000000001aaf000 nmethod 1037 0x00007f9ec5cdb9d0 code [0x00007f9ec5cdbba0, 0x00007f9ec5cdcab8]
+Event: 1.115 Thread 0x0000000001a9e000 nmethod 1040 0x00007f9ec5ce3610 code [0x00007f9ec5ce3860, 0x00007f9ec5ce4750]
+Event: 1.122 Thread 0x0000000001ab3800 nmethod 1036 0x00007f9ec5ce0fd0 code [0x00007f9ec5ce1240, 0x00007f9ec5ce25c0]
+Event: 1.122 Thread 0x0000000001ac1000 1048       3       java.lang.Class::checkMemberAccess (49 bytes)
+Event: 1.123 Thread 0x0000000001ac1000 nmethod 1048 0x00007f9ec5cddf10 code [0x00007f9ec5cde0c0, 0x00007f9ec5cde658]
+Event: 1.128 Thread 0x0000000001aa2800 nmethod 1044 0x00007f9ec5ceb8d0 code [0x00007f9ec5cebb00, 0x00007f9ec5cedad0]
+Event: 1.131 Thread 0x0000000001ab6000 nmethod 1042% 0x00007f9ec5ceea90 code [0x00007f9ec5ceecc0, 0x00007f9ec5cf0a08]
+Event: 1.133 Thread 0x0000000001aac800 nmethod 1032 0x00007f9ec5cf1c50 code [0x00007f9ec5cf1ec0, 0x00007f9ec5cf3330]
+Event: 1.136 Thread 0x0000000001abc800 1049       3       java.lang.ClassLoader::getClassLoader (11 bytes)
+Event: 1.136 Thread 0x0000000001abc800 nmethod 1049 0x00007f9ec5cdb590 code [0x00007f9ec5cdb700, 0x00007f9ec5cdb930]
+Event: 1.138 Thread 0x0000000001ac3800 1050       3       java.lang.Class::forName (15 bytes)
+Event: 1.139 Thread 0x0000000001ac3800 nmethod 1050 0x00007f9ec5cdd950 code [0x00007f9ec5cddae0, 0x00007f9ec5cdddd8]
+Event: 1.140 Thread 0x0000000001aba800 1051       3       java.lang.Class::privateGetDeclaredMethods (67 bytes)
+Event: 1.141 Thread 0x0000000001abf000 1052       3       java.lang.Class$MethodArray::<init> (38 bytes)
+Event: 1.141 Thread 0x0000000001abf000 nmethod 1052 0x00007f9ec5cdd310 code [0x00007f9ec5cdd4a0, 0x00007f9ec5cdd828]
+Event: 1.141 Thread 0x0000000001aba800 nmethod 1051 0x00007f9ec5cea9d0 code [0x00007f9ec5ceabe0, 0x00007f9ec5ceb548]
+Event: 1.159 Thread 0x0000000001abc800 1053       3       java.lang.Enum::<init> (15 bytes)
+Event: 1.160 Thread 0x0000000001abc800 nmethod 1053 0x00007f9ec5cdb110 code [0x00007f9ec5cdb280, 0x00007f9ec5cdb450]
+Event: 1.161 Thread 0x0000000001ac3800 1055       3       java.lang.Class::privateGetMethodRecursive (130 bytes)
+Event: 1.161 Thread 0x0000000001abf000 1054       3       java.lang.Class::getMethod0 (40 bytes)
+Event: 1.162 Thread 0x0000000001abf000 nmethod 1054 0x00007f9ec5cea390 code [0x00007f9ec5cea540, 0x00007f9ec5cea878]
+Event: 1.162 Thread 0x0000000001ac3800 nmethod 1055 0x00007f9ec5ce9490 code [0x00007f9ec5ce96a0, 0x00007f9ec5ce9fb8]
+Event: 1.162 Thread 0x0000000001ac3800 1056       3       java.lang.Class::arrayContentsEq (70 bytes)
+Event: 1.163 Thread 0x0000000001ac3800 nmethod 1056 0x00007f9ec5ce8d50 code [0x00007f9ec5ce8ee0, 0x00007f9ec5ce9330]
+Event: 1.165 Thread 0x0000000001ab6000 1057       4       java.nio.DirectLongBufferU::put (18 bytes)
+Event: 1.166 Thread 0x0000000001ab6000 nmethod 1057 0x00007f9ec5ccc2d0 code [0x00007f9ec5ccc420, 0x00007f9ec5ccc4b8]
+Event: 1.182 Thread 0x0000000001aac800 1058   !   4       java.util.WeakHashMap::expungeStaleEntries (139 bytes)
+Event: 1.183 Thread 0x0000000001aac800 nmethod 1058 0x00007f9ec5ce5bd0 code [0x00007f9ec5ce5d20, 0x00007f9ec5ce5db8]
+Event: 1.201 Thread 0x0000000001ac1000 1059       3       sun.misc.ProxyGenerator::addProxyMethod (234 bytes)
+Event: 1.202 Thread 0x0000000001aba800 1062       3       sun.misc.ProxyGenerator::access$600 (5 bytes)
+Event: 1.202 Thread 0x0000000001abc800 1063       3       sun.misc.ProxyGenerator::getWordsPerType (18 bytes)
+Event: 1.202 Thread 0x0000000001abf000 1064       3       sun.misc.ProxyGenerator$ProxyMethod::codeWrapArgument (171 bytes)
+Event: 1.202 Thread 0x0000000001ac3800 1060       3       java.io.ByteArrayOutputStream::<init> (7 bytes)
+Event: 1.202 Thread 0x0000000001ab6000 1067       4       java.util.ArrayList::add (29 bytes)
+Event: 1.202 Thread 0x0000000001abc800 nmethod 1063 0x00007f9ec5ce8790 code [0x00007f9ec5ce8900, 0x00007f9ec5ce8ad0]
+Event: 1.202 Thread 0x0000000001aba800 nmethod 1062 0x00007f9ec5ce8350 code [0x00007f9ec5ce84c0, 0x00007f9ec5ce86f0]
+Event: 1.202 Thread 0x0000000001aba800 1061       3       java.io.ByteArrayOutputStream::<init> (43 bytes)
+Event: 1.202 Thread 0x0000000001ac3800 nmethod 1060 0x00007f9ec5ce7fd0 code [0x00007f9ec5ce8140, 0x00007f9ec5ce82c8]
+Event: 1.202 Thread 0x0000000001aa0000 1070       4       java.util.ArrayList$Itr::hasNext (20 bytes)
+Event: 1.202 Thread 0x0000000001ac3800 1065       3       java.io.FilterOutputStream::<init> (10 bytes)
+Event: 1.202 Thread 0x0000000001abc800 1066       3       java.io.DataOutputStream::<init> (19 bytes)
+Event: 1.203 Thread 0x0000000001ac3800 nmethod 1065 0x00007f9ec5ce7b50 code [0x00007f9ec5ce7cc0, 0x00007f9ec5ce7ef0]
+Event: 1.203 Thread 0x0000000001ac3800 1068       3       sun.misc.ProxyGenerator$MethodInfo::<init> (86 bytes)
+Event: 1.203 Thread 0x0000000001abc800 nmethod 1066 0x00007f9ec5ce7550 code [0x00007f9ec5ce76c0, 0x00007f9ec5ce7a10]
+Event: 1.203 Thread 0x0000000001abc800 1069       3       sun.misc.ProxyGenerator::code_astore (11 bytes)
+Event: 1.203 Thread 0x0000000001ab3800 1072       4       java.io.DataOutputStream::writeUTF (435 bytes)
+Event: 1.203 Thread 0x0000000001aba800 nmethod 1061 0x00007f9ec5ce6550 code [0x00007f9ec5ce6740, 0x00007f9ec5ce7138]
+Event: 1.203 Thread 0x0000000001aba800 1071       3       java.io.ByteArrayOutputStream::grow (43 bytes)
+Event: 1.203 Thread 0x0000000001ac1000 nmethod 1059 0x00007f9ec5cf7190 code [0x00007f9ec5cf74e0, 0x00007f9ec5cf9308]
+Event: 1.204 Thread 0x0000000001abc800 nmethod 1069 0x00007f9ec5ce6190 code [0x00007f9ec5ce6300, 0x00007f9ec5ce64a8]
+Event: 1.204 Thread 0x0000000001aa0000 nmethod 1070 0x00007f9ec5ce5690 code [0x00007f9ec5ce57e0, 0x00007f9ec5ce5878]
+Event: 1.204 Thread 0x0000000001aa0000 1073       4       java.util.ArrayList$Itr::next (66 bytes)
+Event: 1.204 Thread 0x0000000001ac1000 1074       3       sun.misc.ProxyGenerator$MethodInfo::write (283 bytes)
+Event: 1.204 Thread 0x0000000001aba800 nmethod 1071 0x00007f9ec5cf6790 code [0x00007f9ec5cf6940, 0x00007f9ec5cf6f58]
+Event: 1.204 Thread 0x0000000001aba800 1075  s    3       java.io.ByteArrayOutputStream::writeTo (14 bytes)
+Event: 1.204 Thread 0x0000000001aba800 nmethod 1075 0x00007f9ec5cf6150 code [0x00007f9ec5cf62c0, 0x00007f9ec5cf6688]
+Event: 1.205 Thread 0x0000000001ac3800 nmethod 1068 0x00007f9ec5cf4d90 code [0x00007f9ec5cf4fe0, 0x00007f9ec5cf5ae8]
+Event: 1.206 Thread 0x0000000001aa0000 nmethod 1073 0x00007f9ec5cf4990 code [0x00007f9ec5cf4ae0, 0x00007f9ec5cf4c38]
+Event: 1.208 Thread 0x0000000001abf000 nmethod 1064 0x00007f9ec5cfce50 code [0x00007f9ec5cfd260, 0x00007f9ec5cff228]
+Event: 1.210 Thread 0x0000000001ac1000 nmethod 1074 0x00007f9ec5d00950 code [0x00007f9ec5d00fc0, 0x00007f9ec5d06148]
+Event: 1.211 Thread 0x0000000001abc800 1076       3       java.lang.Class::getMethod (64 bytes)
+Event: 1.211 Thread 0x0000000001ab6000 nmethod 1067 0x00007f9ec5cfb1d0 code [0x00007f9ec5cfb340, 0x00007f9ec5cfb6a8]
+Event: 1.211 Thread 0x0000000001aba800 1077       3       java.lang.Character::digit (6 bytes)
+Event: 1.211 Thread 0x0000000001ac3800 1078       3       java.lang.Character::digit (10 bytes)
+Event: 1.211 Thread 0x0000000001abf000 1079       3       java.lang.CharacterDataLatin1::digit (91 bytes)
+Event: 1.212 Thread 0x0000000001ac3800 nmethod 1078 0x00007f9ec5cfad10 code [0x00007f9ec5cfae80, 0x00007f9ec5cfb0d8]
+Event: 1.212 Thread 0x0000000001aba800 nmethod 1077 0x00007f9ec5cfa7d0 code [0x00007f9ec5cfa960, 0x00007f9ec5cfabf8]
+Event: 1.212 Thread 0x0000000001abc800 nmethod 1076 0x00007f9ec5cfb950 code [0x00007f9ec5cfbba0, 0x00007f9ec5cfc8c8]
+Event: 1.212 Thread 0x0000000001abf000 nmethod 1079 0x00007f9ec5cfa110 code [0x00007f9ec5cfa2a0, 0x00007f9ec5cfa630]
+Event: 1.221 Thread 0x0000000001a9b800 nmethod 1047 0x00007f9ec5d0e490 code [0x00007f9ec5d0e860, 0x00007f9ec5d116c0]
+Event: 1.238 Thread 0x0000000001ac1000 1080       3       java.net.URI::match (56 bytes)
+Event: 1.239 Thread 0x0000000001ac1000 nmethod 1080 0x00007f9ec5d0df90 code [0x00007f9ec5d0e100, 0x00007f9ec5d0e410]
+Event: 1.239 Thread 0x0000000001ac1000 1081       3       java.net.URI::access$300 (7 bytes)
+Event: 1.239 Thread 0x0000000001ac1000 nmethod 1081 0x00007f9ec5cf4610 code [0x00007f9ec5cf4780, 0x00007f9ec5cf48e8]
+Event: 1.244 Thread 0x0000000001ab8000 1082       4       com.ctc.wstx.io.UTF8Reader::read (929 bytes)
+Event: 1.244 Thread 0x0000000001ac3800 1083       3       com.ctc.wstx.sr.BasicStreamReader::skipToken (564 bytes)
+Event: 1.245 Thread 0x0000000001abc800 1084       3       org.apache.hadoop.conf.Configuration::loadProperty (107 bytes)
+Event: 1.245 Thread 0x0000000001aba800 1086  s    3       java.util.Properties::setProperty (7 bytes)
+Event: 1.246 Thread 0x0000000001ac1000 1085   !   3       com.ctc.wstx.sr.StreamScanner::loadMore (171 bytes)
+Event: 1.246 Thread 0x0000000001aa2800 1087       4       com.ctc.wstx.sr.BasicStreamReader::nextFromTree (787 bytes)
+Event: 1.246 Thread 0x0000000001aba800 nmethod 1086 0x00007f9ec5d0d990 code [0x00007f9ec5d0db00, 0x00007f9ec5d0dea8]
+Event: 1.246 Thread 0x0000000001abc800 nmethod 1084 0x00007f9ec5d0cb10 code [0x00007f9ec5d0cd00, 0x00007f9ec5d0d6b8]
+Event: 1.247 Thread 0x0000000001ac3800 nmethod 1083 0x00007f9ec5d093d0 code [0x00007f9ec5d097e0, 0x00007f9ec5d0be38]
+Event: 1.247 Thread 0x0000000001ac1000 nmethod 1085 0x00007f9ec5d15f90 code [0x00007f9ec5d161e0, 0x00007f9ec5d17318]
+Event: 1.249 Thread 0x0000000001ab3800 nmethod 1072 0x00007f9ec5d1aed0 code [0x00007f9ec5d1b100, 0x00007f9ec5d1cf88]
+Event: 1.253 Thread 0x0000000001aaf000 1088       4       com.ctc.wstx.sr.InputElementStack::pop (95 bytes)
+Event: 1.253 Thread 0x0000000001aa0000 1089       4       com.ctc.wstx.sr.BasicStreamReader::handleStartElem (296 bytes)
+Event: 1.255 Thread 0x0000000001aaf000 nmethod 1088 0x00007f9ec5d09090 code [0x00007f9ec5d091e0, 0x00007f9ec5d092f8]
+Event: 1.258 Thread 0x0000000001abf000 1090 % !   3       org.apache.hadoop.conf.Configuration::loadResource @ 356 (1854 bytes)
+Event: 1.258 Thread 0x0000000001abc800 1091       3       com.ctc.wstx.sr.BasicStreamReader::nextFromTreeCommentOrCData (98 bytes)
+Event: 1.260 Thread 0x0000000001abc800 nmethod 1091 0x00007f9ec5d19510 code [0x00007f9ec5d19760, 0x00007f9ec5d1a8e8]
+Event: 1.268 Thread 0x0000000001aa0000 nmethod 1089 0x00007f9ec5d18650 code [0x00007f9ec5d18820, 0x00007f9ec5d18f40]
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (13 events):
+Event: 0.157 Thread 0x0000000001991800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f9ec5a24b6c method=java.lang.String.indexOf(II)I @ 49
+Event: 0.176 Thread 0x0000000001991800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f9ec5a1a3e8 method=java.lang.String.hashCode()I @ 14
+Event: 0.331 Thread 0x0000000001991800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f9ec5ad6640 method=java.lang.String.indexOf([CII[CIII)I @ 134
+Event: 0.490 Thread 0x0000000001991800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f9ec5bcff34 method=com.ctc.wstx.io.WstxInputData.isNameChar(C)Z @ 31
+Event: 0.563 Thread 0x0000000001991800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f9ec5be584c method=com.ctc.wstx.sr.BasicStreamReader.readTextPrimary(C)Z @ 341
+Event: 0.642 Thread 0x0000000001991800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f9ec5c5a17c method=com.ctc.wstx.util.TextBuffer.resetWithIndentation(IC)V @ 69
+Event: 0.649 Thread 0x0000000001991800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f9ec5c60028 method=com.ctc.wstx.io.UTF8Reader.read([CII)I @ 269
+Event: 0.651 Thread 0x0000000001991800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f9ec5c4a218 method=com.ctc.wstx.io.UTF8Reader.read([CII)I @ 269
+Event: 0.735 Thread 0x0000000001991800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f9ec5b8f84c method=java.util.HashMap.getNode(ILjava/lang/Object;)Ljava/util/HashMap$Node; @ 129
+Event: 0.831 Thread 0x0000000001991800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f9ec5c724bc method=com.ctc.wstx.sr.BasicStreamReader.readTextPrimary(C)Z @ 24
+Event: 0.832 Thread 0x0000000001991800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f9ec5c6b80c method=com.ctc.wstx.sr.StreamScanner.getNextChar(Ljava/lang/String;)C @ 8
+Event: 0.841 Thread 0x0000000001991800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f9ec5b3de54 method=sun.misc.URLClassPath$JarLoader.getResource(Ljava/lang/String;Z)Lsun/misc/Resource; @ 15
+Event: 0.902 Thread 0x0000000001991800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f9ec5b765f0 method=java.util.HashMap.getNode(ILjava/lang/Object;)Ljava/util/HashMap$Node; @ 129
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (39 events):
+Event: 0.055 Thread 0x0000000001991800 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.defineClass(Ljava/lang/String;[BII)Ljava/lang/Class; name or signature does not match> (0x0000000580107cc0) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64
+Event: 0.055 Thread 0x0000000001991800 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.prefetchRead(Ljava/lang/Object;J)V name or signature does not match> (0x0000000580107fa8) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/s
+Event: 0.157 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x0000000580270d48) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.157 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x0000000580270f58) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.158 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x0000000580271c60) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.158 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x0000000580271e70) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.158 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x0000000580272bd8) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.158 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x0000000580272de8) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.158 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x0000000580273af0) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.158 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x0000000580273d00) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.211 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x00000005804e3078) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.211 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x00000005804e3288) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.211 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x00000005804e6430) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.211 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x00000005804e6640) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.232 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x00000005806475c0) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.232 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x00000005806477d0) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.232 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x00000005806484b8) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.232 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x00000005806486c8) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.232 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x0000000580649408) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.232 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x0000000580649618) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.232 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x000000058064a300) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.232 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x000000058064a510) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.253 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x0000000580814f28) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.253 Thread 0x0000000001991800 Exception <a 'java/security/PrivilegedActionException'> (0x0000000580815138) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1531]
+Event: 0.289 Thread 0x0000000001991800 Exception <a 'java/lang/ClassNotFoundException': org/apache/log4j/PatternLayoutBeanInfo> (0x0000000580a72f08) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp, lin
+Event: 0.289 Thread 0x0000000001991800 Exception <a 'java/lang/ClassNotFoundException': org/apache/log4j/LayoutBeanInfo> (0x0000000580a998c0) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp, line 217]
+Event: 0.290 Thread 0x0000000001991800 Exception <a 'java/lang/ClassNotFoundException': java/lang/ObjectBeanInfo> (0x0000000580aaaa18) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp, line 217]
+Event: 0.290 Thread 0x0000000001991800 Exception <a 'java/lang/ClassNotFoundException': java/lang/ObjectCustomizer> (0x0000000580abbcc0) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp, line 217]
+Event: 0.298 Thread 0x0000000001991800 Exception <a 'java/lang/ClassNotFoundException': org/apache/log4j/LayoutCustomizer> (0x0000000580aec030) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp, line 217
+Event: 0.300 Thread 0x0000000001991800 Exception <a 'java/lang/ClassNotFoundException': org/apache/log4j/PatternLayoutCustomizer> (0x0000000583d85558) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp, l
+Event: 0.322 Thread 0x0000000001991800 Exception <a 'java/lang/ClassNotFoundException': org/apache/log4j/ConsoleAppenderBeanInfo> (0x0000000583e0e180) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp, l
+Event: 0.323 Thread 0x0000000001991800 Exception <a 'java/lang/ClassNotFoundException': org/apache/log4j/WriterAppenderBeanInfo> (0x0000000583e3a890) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp, li
+Event: 0.324 Thread 0x0000000001991800 Exception <a 'java/lang/ClassNotFoundException': org/apache/log4j/AppenderSkeletonBeanInfo> (0x0000000583e68258) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp, 
+Event: 0.324 Thread 0x0000000001991800 Exception <a 'java/lang/ClassNotFoundException': org/apache/log4j/AppenderSkeletonCustomizer> (0x0000000583e988b8) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp
+Event: 0.326 Thread 0x0000000001991800 Exception <a 'java/lang/ClassNotFoundException': org/apache/log4j/WriterAppenderCustomizer> (0x0000000583edc038) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp, 
+Event: 0.328 Thread 0x0000000001991800 Exception <a 'java/lang/ClassNotFoundException': org/apache/log4j/ConsoleAppenderCustomizer> (0x0000000583f16378) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp,
+Event: 0.534 Thread 0x0000000001991800 Exception <a 'java/lang/NoSuchFieldError': method resolution failed> (0x0000000584d44b10) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/methodHandles.cpp, line 1194]
+Event: 0.536 Thread 0x0000000001991800 Exception <a 'java/lang/NoSuchFieldError': method resolution failed> (0x0000000584d521d0) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/prims/methodHandles.cpp, line 1194]
+Event: 0.590 Thread 0x0000000001991800 Exception <a 'java/lang/reflect/InvocationTargetException'> (0x0000000584e8be50) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/openjdk/hotspot/src/share/vm/runtime/reflection.cpp, line 1092]
+
+Events (250 events):
+Event: 1.221 loading class org/apache/hadoop/hdfs/PeerCache
+Event: 1.221 loading class org/apache/hadoop/hdfs/PeerCache done
+Event: 1.222 loading class com/google/common/collect/LinkedListMultimap
+Event: 1.222 loading class com/google/common/collect/LinkedListMultimap done
+Event: 1.222 loading class com/google/common/collect/ListMultimap
+Event: 1.222 loading class com/google/common/collect/ListMultimap done
+Event: 1.222 loading class com/google/common/collect/Multimap
+Event: 1.222 loading class com/google/common/collect/Multimap done
+Event: 1.223 loading class com/google/common/collect/Multiset
+Event: 1.223 loading class com/google/common/collect/Multiset done
+Event: 1.223 loading class com/google/common/collect/LinkedHashMultiset
+Event: 1.223 loading class com/google/common/collect/LinkedHashMultiset done
+Event: 1.224 loading class com/google/common/collect/AbstractMapBasedMultiset
+Event: 1.224 loading class com/google/common/collect/AbstractMapBasedMultiset done
+Event: 1.224 loading class com/google/common/collect/AbstractMultiset
+Event: 1.224 loading class com/google/common/collect/AbstractMultiset done
+Event: 1.225 loading class java/io/InvalidObjectException
+Event: 1.225 loading class java/io/ObjectStreamException
+Event: 1.225 loading class java/io/ObjectStreamException done
+Event: 1.225 loading class java/io/InvalidObjectException done
+Event: 1.225 loading class com/google/common/collect/Multisets
+Event: 1.225 loading class com/google/common/collect/Multisets done
+Event: 1.226 loading class com/google/common/collect/Ordering
+Event: 1.226 loading class com/google/common/collect/Ordering done
+Event: 1.226 loading class com/google/common/collect/Multisets$2
+Event: 1.226 loading class com/google/common/collect/Multisets$2 done
+Event: 1.227 loading class com/google/common/collect/SortedMultiset
+Event: 1.227 loading class com/google/common/collect/SortedMultiset done
+Event: 1.227 loading class com/google/common/collect/SortedIterable
+Event: 1.227 loading class com/google/common/collect/SortedIterable done
+Event: 1.227 loading class com/google/common/collect/Multiset$Entry
+Event: 1.227 loading class com/google/common/collect/Multiset$Entry done
+Event: 1.227 loading class com/google/common/collect/NullsLastOrdering
+Event: 1.227 loading class com/google/common/collect/NullsLastOrdering done
+Event: 1.227 loading class com/google/common/collect/NullsFirstOrdering
+Event: 1.227 loading class com/google/common/collect/NullsFirstOrdering done
+Event: 1.228 loading class com/google/common/collect/ReverseOrdering
+Event: 1.228 loading class com/google/common/collect/ReverseOrdering done
+Event: 1.228 loading class com/google/common/collect/ComparatorOrdering
+Event: 1.228 loading class com/google/common/collect/ComparatorOrdering done
+Event: 1.228 loading class com/google/common/collect/LexicographicalOrdering
+Event: 1.228 loading class com/google/common/collect/LexicographicalOrdering done
+Event: 1.228 loading class com/google/common/collect/CompoundOrdering
+Event: 1.228 loading class com/google/common/collect/CompoundOrdering done
+Event: 1.229 loading class com/google/common/collect/UsingToStringOrdering
+Event: 1.229 loading class com/google/common/collect/UsingToStringOrdering done
+Event: 1.229 loading class com/google/common/collect/ExplicitOrdering
+Event: 1.229 loading class com/google/common/collect/ExplicitOrdering done
+Event: 1.229 loading class com/google/common/collect/ByFunctionOrdering
+Event: 1.229 loading class com/google/common/collect/ByFunctionOrdering done
+Event: 1.229 loading class com/google/common/collect/NaturalOrdering
+Event: 1.229 loading class com/google/common/collect/NaturalOrdering done
+Event: 1.230 loading class com/google/common/collect/AbstractMultiset$EntrySet
+Event: 1.230 loading class com/google/common/collect/AbstractMultiset$EntrySet done
+Event: 1.230 loading class com/google/common/collect/Multisets$EntrySet
+Event: 1.230 loading class com/google/common/collect/Multisets$EntrySet done
+Event: 1.230 loading class com/google/common/collect/AbstractMapBasedMultiset$1
+Event: 1.230 loading class com/google/common/collect/AbstractMapBasedMultiset$1 done
+Event: 1.230 loading class com/google/common/primitives/Ints
+Event: 1.230 loading class com/google/common/primitives/Ints done
+Event: 1.231 loading class org/apache/hadoop/hdfs/KeyProviderCache
+Event: 1.231 loading class org/apache/hadoop/hdfs/KeyProviderCache done
+Event: 1.231 loading class org/apache/hadoop/hdfs/KeyProviderCache$1
+Event: 1.231 loading class org/apache/hadoop/hdfs/KeyProviderCache$1 done
+Event: 1.232 loading class com/google/common/cache/LocalCache$AccessQueue$1
+Event: 1.232 loading class com/google/common/cache/LocalCache$AccessQueue$1 done
+Event: 1.232 loading class org/apache/hadoop/hdfs/shortcircuit/DomainSocketFactory
+Event: 1.232 loading class org/apache/hadoop/hdfs/shortcircuit/DomainSocketFactory done
+Event: 1.233 loading class org/apache/hadoop/hdfs/util/ByteArrayManager
+Event: 1.233 loading class org/apache/hadoop/hdfs/util/ByteArrayManager done
+Event: 1.233 loading class org/apache/hadoop/hdfs/util/ByteArrayManager$1
+Event: 1.233 loading class org/apache/hadoop/hdfs/util/ByteArrayManager$1 done
+Event: 1.233 loading class org/apache/hadoop/hdfs/util/ByteArrayManager$NewByteArrayWithoutLimit
+Event: 1.233 loading class org/apache/hadoop/hdfs/util/ByteArrayManager$NewByteArrayWithoutLimit done
+Event: 1.234 loading class org/apache/hadoop/hdfs/util/ByteArrayManager$Impl
+Event: 1.234 loading class org/apache/hadoop/hdfs/util/ByteArrayManager$Impl done
+Event: 1.234 loading class org/apache/hadoop/hdfs/protocol/datatransfer/sasl/SaslDataTransferClient
+Event: 1.234 loading class org/apache/hadoop/hdfs/protocol/datatransfer/sasl/SaslDataTransferClient done
+Event: 1.235 loading class org/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil
+Event: 1.235 loading class org/apache/hadoop/hdfs/protocol/datatransfer/sasl/DataTransferSaslUtil done
+Event: 1.236 loading class org/apache/hadoop/hdfs/protocol/datatransfer/InvalidEncryptionKeyException
+Event: 1.236 loading class org/apache/hadoop/hdfs/protocol/datatransfer/InvalidEncryptionKeyException done
+Event: 1.236 loading class org/apache/hadoop/crypto/CryptoInputStream
+Event: 1.236 loading class org/apache/hadoop/crypto/CryptoInputStream done
+Event: 1.237 loading class org/apache/hadoop/crypto/CryptoOutputStream
+Event: 1.237 loading class org/apache/hadoop/crypto/CryptoOutputStream done
+Event: 1.237 loading class org/apache/hadoop/hdfs/protocol/datatransfer/TrustedChannelResolver
+Event: 1.237 loading class org/apache/hadoop/hdfs/protocol/datatransfer/TrustedChannelResolver done
+Event: 1.238 loading class org/apache/hadoop/hdfs/DistributedFileSystem$1
+Event: 1.238 loading class org/apache/hadoop/hdfs/DistributedFileSystem$1 done
+Event: 1.239 loading class org/apache/hadoop/hdfs/DFSOpsCountStatistics
+Event: 1.239 loading class org/apache/hadoop/hdfs/DFSOpsCountStatistics done
+Event: 1.239 loading class java/util/EnumMap
+Event: 1.239 loading class java/util/EnumMap done
+Event: 1.239 loading class java/util/EnumMap$1
+Event: 1.239 loading class java/util/EnumMap$1 done
+Event: 1.239 loading class org/apache/hadoop/hdfs/DFSOpsCountStatistics$OpType
+Event: 1.239 loading class org/apache/hadoop/hdfs/DFSOpsCountStatistics$OpType done
+Event: 1.240 loading class org/apache/hadoop/util/ShutdownHookManager
+Event: 1.240 loading class org/apache/hadoop/util/ShutdownHookManager done
+Event: 1.241 loading class org/apache/hadoop/util/ShutdownHookManager$1
+Event: 1.241 loading class org/apache/hadoop/util/ShutdownHookManager$1 done
+Event: 1.241 loading class java/util/concurrent/Executors$FinalizableDelegatedExecutorService
+Event: 1.241 loading class java/util/concurrent/Executors$DelegatedExecutorService
+Event: 1.241 loading class java/util/concurrent/Executors$DelegatedExecutorService done
+Event: 1.242 loading class java/util/concurrent/Executors$FinalizableDelegatedExecutorService done
+Event: 1.242 loading class org/apache/hadoop/util/ShutdownHookManager$HookEntry
+Event: 1.242 loading class org/apache/hadoop/util/ShutdownHookManager$HookEntry done
+Event: 1.244 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c710
+Event: 1.244 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c4a0 mode 0
+Event: 1.244 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6e0
+Event: 1.244 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c470 mode 0
+Event: 1.245 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c660
+Event: 1.245 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c3f0 mode 0
+Event: 1.245 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6e0
+Event: 1.245 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c470 mode 0
+Event: 1.245 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c600
+Event: 1.245 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c390 mode 0
+Event: 1.246 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c600
+Event: 1.246 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c390 mode 0
+Event: 1.246 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c660
+Event: 1.246 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c3f0 mode 0
+Event: 1.246 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c600
+Event: 1.246 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c390 mode 0
+Event: 1.247 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c600
+Event: 1.247 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c390 mode 0
+Event: 1.247 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c600
+Event: 1.247 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c390 mode 0
+Event: 1.248 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6e0
+Event: 1.248 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c470 mode 0
+Event: 1.248 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c5f0
+Event: 1.248 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c380 mode 0
+Event: 1.251 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c700
+Event: 1.251 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c490 mode 0
+Event: 1.251 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.251 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.252 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.252 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.252 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c5f0
+Event: 1.252 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c380 mode 0
+Event: 1.252 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c5f0
+Event: 1.252 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c380 mode 0
+Event: 1.253 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.253 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.253 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c590
+Event: 1.253 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c320 mode 0
+Event: 1.253 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.253 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.254 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.254 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.255 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c700
+Event: 1.255 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c490 mode 0
+Event: 1.255 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c5f0
+Event: 1.255 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c380 mode 0
+Event: 1.256 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.256 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.256 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c660
+Event: 1.256 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c3f0 mode 0
+Event: 1.256 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c660
+Event: 1.256 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c3f0 mode 0
+Event: 1.256 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c5f0
+Event: 1.256 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c380 mode 0
+Event: 1.257 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c5f0
+Event: 1.257 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c380 mode 0
+Event: 1.257 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c5f0
+Event: 1.257 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c380 mode 0
+Event: 1.257 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.257 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.258 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c590
+Event: 1.258 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c320 mode 0
+Event: 1.258 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c590
+Event: 1.258 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c320 mode 0
+Event: 1.258 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c590
+Event: 1.258 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c320 mode 0
+Event: 1.259 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c660
+Event: 1.259 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c3f0 mode 0
+Event: 1.259 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c5f0
+Event: 1.259 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c380 mode 0
+Event: 1.259 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c5f0
+Event: 1.259 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c380 mode 0
+Event: 1.260 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c5f0
+Event: 1.260 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c380 mode 0
+Event: 1.260 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c700
+Event: 1.260 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c490 mode 0
+Event: 1.261 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c660
+Event: 1.261 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c3f0 mode 0
+Event: 1.261 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c5f0
+Event: 1.261 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c380 mode 0
+Event: 1.261 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c5f0
+Event: 1.261 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c380 mode 0
+Event: 1.262 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.262 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.262 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c660
+Event: 1.262 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c3f0 mode 0
+Event: 1.262 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.262 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.262 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.262 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.263 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.263 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.263 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.263 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.263 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.263 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.264 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c5f0
+Event: 1.264 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c380 mode 0
+Event: 1.264 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c700
+Event: 1.264 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c490 mode 0
+Event: 1.264 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.264 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.265 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.265 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.265 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c660
+Event: 1.265 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c3f0 mode 0
+Event: 1.265 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.265 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.266 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.266 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.266 Thread 0x0000000001991800 DEOPT PACKING pc=0x00007f9ec5c78d9b sp=0x00007ffe8c39c6d0
+Event: 1.266 Thread 0x0000000001991800 DEOPT UNPACKING pc=0x00007f9ec57134c4 sp=0x00007ffe8c39c460 mode 0
+Event: 1.266 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration
+Event: 1.266 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration done
+Event: 1.267 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration$1
+Event: 1.267 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration$1 done
+Event: 1.267 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration$2
+Event: 1.267 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration$2 done
+Event: 1.267 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration$3
+Event: 1.267 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration$3 done
+Event: 1.267 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration$4
+Event: 1.267 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration$4 done
+Event: 1.268 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration$5
+Event: 1.268 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration$5 done
+Event: 1.268 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration$6
+Event: 1.268 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration$6 done
+Event: 1.268 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration$7
+Event: 1.268 loading class org/apache/hadoop/conf/Configuration$ParsedTimeDuration$7 done
+Event: 1.269 loading class org/apache/commons/lang/exception/ExceptionUtils
+Event: 1.269 loading class org/apache/commons/lang/exception/ExceptionUtils done
+Event: 1.269 loading class org/apache/commons/lang/NullArgumentException
+Event: 1.269 loading class org/apache/commons/lang/NullArgumentException done
+Event: 1.270 loading class java/sql/SQLException
+Event: 1.270 loading class java/sql/SQLException done
+Event: 1.270 loading class java/io/PrintWriter
+Event: 1.270 loading class java/io/PrintWriter done
+Event: 1.270 loading class java/lang/Throwable$WrappedPrintWriter
+Event: 1.270 loading class java/lang/Throwable$PrintStreamOrWriter
+Event: 1.271 loading class java/lang/Throwable$PrintStreamOrWriter done
+Event: 1.271 loading class java/lang/Throwable$WrappedPrintWriter done
+Event: 1.271 loading class java/util/IdentityHashMap$KeySet
+Event: 1.271 loading class java/util/IdentityHashMap$KeySet done
+
+
+Dynamic libraries:
+00400000-00402000 r-xp 00000000 08:02 12455182                           /home/hjkim/PiGraph/test/master
+00601000-00602000 r--p 00001000 08:02 12455182                           /home/hjkim/PiGraph/test/master
+00602000-00603000 rw-p 00002000 08:02 12455182                           /home/hjkim/PiGraph/test/master
+01926000-02c4b000 rw-p 00000000 00:00 0                                  [heap]
+80200000-d3f80000 rw-p 00000000 00:00 0 
+d3f80000-580100000 ---p 00000000 00:00 0 
+580100000-5a9f80000 rw-p 00000000 00:00 0 
+5a9f80000-800000000 ---p 00000000 00:00 0 
+800000000-800220000 rw-p 00000000 00:00 0 
+800220000-840000000 ---p 00000000 00:00 0 
+7f9da0000000-7f9da0021000 rw-p 00000000 00:00 0 
+7f9da0021000-7f9da4000000 ---p 00000000 00:00 0 
+7f9da4000000-7f9da4021000 rw-p 00000000 00:00 0 
+7f9da4021000-7f9da8000000 ---p 00000000 00:00 0 
+7f9da8000000-7f9da8021000 rw-p 00000000 00:00 0 
+7f9da8021000-7f9dac000000 ---p 00000000 00:00 0 
+7f9dac000000-7f9dac021000 rw-p 00000000 00:00 0 
+7f9dac021000-7f9db0000000 ---p 00000000 00:00 0 
+7f9db0000000-7f9db00af000 rw-p 00000000 00:00 0 
+7f9db00af000-7f9db4000000 ---p 00000000 00:00 0 
+7f9db4000000-7f9db4165000 rw-p 00000000 00:00 0 
+7f9db4165000-7f9db8000000 ---p 00000000 00:00 0 
+7f9db8000000-7f9db80e5000 rw-p 00000000 00:00 0 
+7f9db80e5000-7f9dbc000000 ---p 00000000 00:00 0 
+7f9dbc000000-7f9dbc0d2000 rw-p 00000000 00:00 0 
+7f9dbc0d2000-7f9dc0000000 ---p 00000000 00:00 0 
+7f9dc0000000-7f9dc02f5000 rw-p 00000000 00:00 0 
+7f9dc02f5000-7f9dc4000000 ---p 00000000 00:00 0 
+7f9dc4000000-7f9dc40d6000 rw-p 00000000 00:00 0 
+7f9dc40d6000-7f9dc8000000 ---p 00000000 00:00 0 
+7f9dc8000000-7f9dc8141000 rw-p 00000000 00:00 0 
+7f9dc8141000-7f9dcc000000 ---p 00000000 00:00 0 
+7f9dcc000000-7f9dcc0f6000 rw-p 00000000 00:00 0 
+7f9dcc0f6000-7f9dd0000000 ---p 00000000 00:00 0 
+7f9dd0000000-7f9dd020f000 rw-p 00000000 00:00 0 
+7f9dd020f000-7f9dd4000000 ---p 00000000 00:00 0 
+7f9dd4000000-7f9dd40a4000 rw-p 00000000 00:00 0 
+7f9dd40a4000-7f9dd8000000 ---p 00000000 00:00 0 
+7f9dd8000000-7f9dd82bb000 rw-p 00000000 00:00 0 
+7f9dd82bb000-7f9ddc000000 ---p 00000000 00:00 0 
+7f9ddc000000-7f9ddc314000 rw-p 00000000 00:00 0 
+7f9ddc314000-7f9de0000000 ---p 00000000 00:00 0 
+7f9de0000000-7f9de00da000 rw-p 00000000 00:00 0 
+7f9de00da000-7f9de4000000 ---p 00000000 00:00 0 
+7f9de4000000-7f9de4161000 rw-p 00000000 00:00 0 
+7f9de4161000-7f9de8000000 ---p 00000000 00:00 0 
+7f9de8000000-7f9de83be000 rw-p 00000000 00:00 0 
+7f9de83be000-7f9dec000000 ---p 00000000 00:00 0 
+7f9ded8bd000-7f9ded93d000 rw-p 00000000 00:00 0 
+7f9ded93d000-7f9dedabd000 ---p 00000000 00:00 0 
+7f9dedabd000-7f9df4000000 r--p 00000000 08:13 3674533                    /usr/lib/locale/locale-archive
+7f9df4000000-7f9df4021000 rw-p 00000000 00:00 0 
+7f9df4021000-7f9df8000000 ---p 00000000 00:00 0 
+7f9df8000000-7f9df8021000 rw-p 00000000 00:00 0 
+7f9df8021000-7f9dfc000000 ---p 00000000 00:00 0 
+7f9dfc000000-7f9dfc021000 rw-p 00000000 00:00 0 
+7f9dfc021000-7f9e00000000 ---p 00000000 00:00 0 
+7f9e00010000-7f9e3c000000 rw-p 00000000 00:00 0 
+7f9e3c000000-7f9e3c021000 rw-p 00000000 00:00 0 
+7f9e3c021000-7f9e40000000 ---p 00000000 00:00 0 
+7f9e40000000-7f9e40021000 rw-p 00000000 00:00 0 
+7f9e40021000-7f9e44000000 ---p 00000000 00:00 0 
+7f9e44000000-7f9e44021000 rw-p 00000000 00:00 0 
+7f9e44021000-7f9e48000000 ---p 00000000 00:00 0 
+7f9e480af000-7f9e482af000 rw-p 00000000 00:00 0 
+7f9e482af000-7f9e484af000 rw-p 00000000 00:00 0 
+7f9e484af000-7f9e484b3000 r--s 00049000 08:13 5506861                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/ext/sunpkcs11.jar
+7f9e484b3000-7f9e484b4000 r--s 0000a000 08:13 5506865                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/ext/sunec.jar
+7f9e484b4000-7f9e484b6000 r--s 00019000 08:13 5379042                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/jce.jar
+7f9e484b6000-7f9e484c7000 r--s 00211000 08:13 5379045                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/jsse.jar
+7f9e484c7000-7f9e486c7000 rw-p 00000000 00:00 0 
+7f9e486c7000-7f9e486c8000 r-xp 00000000 08:13 5507555                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libjaas_unix.so
+7f9e486c8000-7f9e488c7000 ---p 00001000 08:13 5507555                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libjaas_unix.so
+7f9e488c7000-7f9e488c8000 r--p 00000000 08:13 5507555                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libjaas_unix.so
+7f9e488c8000-7f9e488c9000 rw-p 00001000 08:13 5507555                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libjaas_unix.so
+7f9e488c9000-7f9e488cc000 ---p 00000000 00:00 0 
+7f9e488cc000-7f9e489ca000 rw-p 00000000 00:00 0 
+7f9e489ca000-7f9e489cd000 ---p 00000000 00:00 0 
+7f9e489cd000-7f9e48c03000 rw-p 00000000 00:00 0 
+7f9e48c03000-7f9e48c0c000 r-xp 00000000 08:13 5507564                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libmanagement.so
+7f9e48c0c000-7f9e48e0b000 ---p 00009000 08:13 5507564                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libmanagement.so
+7f9e48e0b000-7f9e48e0c000 r--p 00008000 08:13 5507564                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libmanagement.so
+7f9e48e0c000-7f9e48e0d000 rw-p 00009000 08:13 5507564                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libmanagement.so
+7f9e48e0d000-7f9e48e0f000 r--s 00007000 08:02 10097928                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/hadoop-mapreduce-client-hs-plugins-2.10.1.jar
+7f9e48e0f000-7f9e48e12000 r--s 0002e000 08:02 10097926                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/hadoop-mapreduce-client-hs-2.10.1.jar
+7f9e48e12000-7f9e48e14000 r--s 00013000 08:02 10097924                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/hadoop-mapreduce-client-shuffle-2.10.1.jar
+7f9e48e14000-7f9e48e1f000 r--s 00085000 08:02 10097925                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/hadoop-mapreduce-client-app-2.10.1.jar
+7f9e48e1f000-7f9e48e38000 r--s 00172000 08:02 10097922                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/hadoop-mapreduce-client-core-2.10.1.jar
+7f9e48e38000-7f9e48e39000 r--s 00011000 08:02 10097927                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.10.1.jar
+7f9e48e39000-7f9e48e51000 r--s 0017c000 08:02 10097930                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.10.1-tests.jar
+7f9e48e51000-7f9e48e5e000 r--s 000b4000 08:02 10097923                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/hadoop-mapreduce-client-common-2.10.1.jar
+7f9e48e5e000-7f9e48e64000 r--s 00045000 08:02 10097929                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.10.1.jar
+7f9e48e64000-7f9e48e67000 r--s 000fd000 08:02 10097912                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/leveldbjni-all-1.8.jar
+7f9e48e67000-7f9e48e68000 r--s 00000000 08:02 10097914                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/javax.inject-1.jar
+7f9e48e68000-7f9e48e6a000 r--s 00000000 08:02 10097915                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/aopalliance-1.0.jar
+7f9e48e6a000-7f9e48e79000 r--s 0009f000 08:02 10097913                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/guice-3.0.jar
+7f9e48e79000-7f9e48e83000 r--s 00066000 08:02 10097907                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/jersey-core-1.9.jar
+7f9e48e83000-7f9e48e8c000 r--s 0006f000 08:02 10097910                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/log4j-1.2.17.jar
+7f9e48e8c000-7f9e48e8d000 r--s 0000a000 08:02 10097909                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/asm-3.2.jar
+7f9e48e8d000-7f9e48e8f000 r--s 00006000 08:02 10097902                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/paranamer-2.3.jar
+7f9e48e8f000-7f9e48e97000 r--s 0007b000 08:02 10097898                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/protobuf-java-2.5.0.jar
+7f9e48e97000-7f9e48ea5000 r--s 000b1000 08:02 10097901                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/jackson-mapper-asl-1.9.13.jar
+7f9e48ea5000-7f9e48eab000 r--s 00036000 08:02 10097918                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/junit-4.11.jar
+7f9e48eab000-7f9e48eb4000 r--s 00062000 08:02 10097899                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/avro-1.7.7.jar
+7f9e48eb4000-7f9e48eb8000 r--s 0002a000 08:02 10097906                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/commons-io-2.4.jar
+7f9e48eb8000-7f9e48ed1000 r--s 00123000 08:02 10097911                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/netty-3.10.6.Final.jar
+7f9e48ed1000-7f9e48ee3000 r--s 0009d000 08:02 10097908                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/jersey-server-1.9.jar
+7f9e48ee3000-7f9e48ee5000 r--s 00130000 08:02 10097903                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/snappy-java-1.0.5.jar
+7f9e48ee5000-7f9e48ee7000 r--s 0000e000 08:02 10097917                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/guice-servlet-3.0.jar
+7f9e48ee7000-7f9e48eeb000 r--s 00035000 08:02 10097900                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/jackson-core-asl-1.9.13.jar
+7f9e48eeb000-7f9e48ef7000 r--s 0008b000 08:02 10097904                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/commons-compress-1.19.jar
+7f9e48ef7000-7f9e48ef8000 r--s 00003000 08:02 10097916                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/jersey-guice-1.9.jar
+7f9e48ef8000-7f9e48efa000 r--s 00009000 08:02 10097919                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/hamcrest-core-1.3.jar
+7f9e48efa000-7f9e48efc000 r--s 0000a000 08:02 10097905                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/hadoop-annotations-2.10.1.jar
+7f9e48efc000-7f9e48eff000 r--s 0001d000 08:02 10097848                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/hadoop-yarn-registry-2.10.1.jar
+7f9e48eff000-7f9e48f03000 r--s 00040000 08:02 10097855                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/hadoop-yarn-client-2.10.1.jar
+7f9e48f03000-7f9e48f19000 r--s 0010a000 08:02 10097850                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/hadoop-yarn-server-nodemanager-2.10.1.jar
+7f9e48f19000-7f9e48f36000 r--s 001d5000 08:02 10097847                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/hadoop-yarn-common-2.10.1.jar
+7f9e48f36000-7f9e48f37000 r--s 0000a000 08:02 10097860                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/hadoop-yarn-applications-unmanaged-am-launcher-2.10.1.jar
+7f9e48f37000-7f9e48f39000 r--s 00012000 08:02 10097856                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/hadoop-yarn-server-sharedcachemanager-2.10.1.jar
+7f9e48f39000-7f9e48f3a000 r--s 00007000 08:02 10097854                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/hadoop-yarn-server-tests-2.10.1.jar
+7f9e48f3a000-7f9e48f3c000 r--s 00013000 08:02 10097859                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/hadoop-yarn-applications-distributedshell-2.10.1.jar
+7f9e48f3c000-7f9e48f3e000 r--s 0001f000 08:02 10097858                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/hadoop-yarn-server-router-2.10.1.jar
+7f9e48f3e000-7f9e48f5e000 r--s 001c5000 08:02 10097853                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/hadoop-yarn-server-resourcemanager-2.10.1.jar
+7f9e48f5e000-7f9e48f67000 r--s 0008e000 08:02 10097852                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/hadoop-yarn-server-applicationhistoryservice-2.10.1.jar
+7f9e48f67000-7f9e48f69000 r--s 0000f000 08:02 10097851                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/hadoop-yarn-server-web-proxy-2.10.1.jar
+7f9e48f69000-7f9e48f91000 r--s 00297000 08:02 10097846                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/hadoop-yarn-api-2.10.1.jar
+7f9e48f91000-7f9e48fa8000 r--s 0012d000 08:02 10097849                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/hadoop-yarn-server-common-2.10.1.jar
+7f9e48fa8000-7f9e48faa000 r--s 00012000 08:02 10097857                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/hadoop-yarn-server-timeline-pluginstorage-2.10.1.jar
+7f9e48faa000-7f9e48fab000 r--s 0000a000 08:02 10097815                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/apacheds-i18n-2.0.0-M15.jar
+7f9e48fab000-7f9e48fad000 r--s 00012000 08:02 10097817                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/api-util-1.0.0-M20.jar
+7f9e48fad000-7f9e48fae000 r--s 00004000 08:02 10097779                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jackson-jaxrs-1.9.13.jar
+7f9e48fae000-7f9e48fb0000 r--s 00011000 08:02 10097837                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/json-io-2.5.1.jar
+7f9e48fb0000-7f9e48fb2000 r--s 0000e000 08:02 10097844                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/activation-1.1.jar
+7f9e48fb2000-7f9e48fb5000 r--s 000fd000 08:02 10097829                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/leveldbjni-all-1.8.jar
+7f9e48fb5000-7f9e48fb6000 r--s 00000000 08:02 10097783                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/javax.inject-1.jar
+7f9e48fb6000-7f9e48fb9000 r--s 0001d000 08:02 10097776                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jersey-client-1.9.jar
+7f9e48fb9000-7f9e48fbb000 r--s 00000000 08:02 10097784                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/aopalliance-1.0.jar
+7f9e48fbb000-7f9e48fca000 r--s 0009f000 08:02 10097782                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/guice-3.0.jar
+7f9e48fca000-7f9e48fce000 r--s 00021000 08:02 10097788                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jersey-json-1.9.jar
+7f9e48fce000-7f9e48fd4000 r--s 00078000 08:02 10097828                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/woodstox-core-5.0.3.jar
+7f9e48fd4000-7f9e48fd8000 r--s 00028000 08:02 10097774                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jetty-util-6.1.26.jar
+7f9e48fd8000-7f9e48fdd000 r--s 00038000 08:02 10097805                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/commons-beanutils-1.9.4.jar
+7f9e48fdd000-7f9e48fe7000 r--s 00066000 08:02 10097775                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jersey-core-1.9.jar
+7f9e48fe7000-7f9e4901e000 r--s 00219000 08:02 10097823                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/curator-client-2.13.0.jar
+7f9e4901e000-7f9e4901f000 r--s 00003000 08:02 10097793                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/xmlenc-0.52.jar
+7f9e4901f000-7f9e49021000 r--s 00002000 08:02 10097819                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/spotbugs-annotations-3.1.9.jar
+7f9e49021000-7f9e49026000 r--s 0002a000 08:02 10097810                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/gson-2.2.4.jar
+7f9e49026000-7f9e49027000 r--s 00004000 08:02 10097799                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jetty-sslengine-6.1.26.jar
+7f9e49027000-7f9e49039000 r--s 00097000 08:02 10097814                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/apacheds-kerberos-codec-2.0.0-M15.jar
+7f9e49039000-7f9e4903d000 r--s 00041000 08:02 10097824                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jsch-0.1.55.jar
+7f9e4903d000-7f9e4905a000 r--s 0016a000 08:02 10097792                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/commons-math3-3.1.1.jar
+7f9e4905a000-7f9e4905f000 r--s 00041000 08:02 10097838                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/commons-lang-2.6.jar
+7f9e4905f000-7f9e49068000 r--s 0006f000 08:02 10097770                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/log4j-1.2.17.jar
+7f9e49068000-7f9e4906c000 r--s 00024000 08:02 10097827                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/stax2-api-3.1.4.jar
+7f9e4906c000-7f9e4906e000 r--s 00018000 08:02 10097772                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/servlet-api-2.5.jar
+7f9e4906e000-7f9e49074000 r--s 0004d000 08:02 10097811                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/nimbus-jose-jwt-7.9.jar
+7f9e49074000-7f9e49075000 r--s 0000a000 08:02 10097787                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/asm-3.2.jar
+7f9e49075000-7f9e49077000 r--s 00006000 08:02 10097808                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/paranamer-2.3.jar
+7f9e49077000-7f9e4907f000 r--s 0007b000 08:02 10097845                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/protobuf-java-2.5.0.jar
+7f9e4907f000-7f9e4908d000 r--s 000b1000 08:02 10097778                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jackson-mapper-asl-1.9.13.jar
+7f9e4908d000-7f9e4908f000 r--s 00003000 08:02 10097840                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jsr305-3.0.2.jar
+7f9e4908f000-7f9e49098000 r--s 00062000 08:02 10097807                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/avro-1.7.7.jar
+7f9e49098000-7f9e49099000 r--s 00006000 08:02 10097780                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jackson-xc-1.9.13.jar
+7f9e49099000-7f9e4909b000 r--s 0000f000 08:02 10097789                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jettison-1.1.jar
+7f9e4909b000-7f9e4909f000 r--s 0002a000 08:02 10097785                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/commons-io-2.4.jar
+7f9e4909f000-7f9e490a2000 r--s 00012000 08:02 10097834                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/metrics-core-3.0.1.jar
+7f9e490a2000-7f9e490bb000 r--s 00123000 08:02 10097821                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/netty-3.10.6.Final.jar
+7f9e490bb000-7f9e490bf000 r--s 00020000 08:02 10097804                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/commons-digester-1.8.jar
+7f9e490bf000-7f9e490c1000 r--s 0000d000 08:02 10097836                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/java-util-1.9.0.jar
+7f9e490c1000-7f9e490c4000 r--s 0000b000 08:02 10097830                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/geronimo-jcache_1.0_spec-1.0-alpha-1.jar
+7f9e490c4000-7f9e490c9000 r--s 0003e000 08:02 10097796                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/commons-net-3.1.jar
+7f9e490c9000-7f9e490ca000 r--s 00004000 08:02 10097802                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/java-xmlbuilder-0.4.jar
+7f9e490ca000-7f9e490cd000 r--s 00016000 08:02 10097800                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jsp-api-2.1.jar
+7f9e490cd000-7f9e490df000 r--s 0009d000 08:02 10097786                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jersey-server-1.9.jar
+7f9e490df000-7f9e490e1000 r--s 00000000 08:02 10097812                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jcip-annotations-1.0-1.jar
+7f9e490e1000-7f9e490e9000 r--s 0003e000 08:02 10097825                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/curator-recipes-2.13.0.jar
+7f9e490e9000-7f9e490f6000 r--s 000d2000 08:02 10097818                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/zookeeper-3.4.14.jar
+7f9e490f6000-7f9e49109000 r--s 000c7000 08:02 10097790                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jaxb-impl-2.2.3-1.jar
+7f9e49109000-7f9e4910b000 r--s 00130000 08:02 10097809                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/snappy-java-1.0.5.jar
+7f9e4910b000-7f9e4910d000 r--s 0000e000 08:02 10097781                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/guice-servlet-3.0.jar
+7f9e4910d000-7f9e4910f000 r--s 00003000 08:02 10097816                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/api-asn1-api-1.0.0-M20.jar
+7f9e4910f000-7f9e4911c000 r--s 000a7000 08:02 10097794                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/httpclient-4.5.2.jar
+7f9e4911c000-7f9e4911e000 r--s 0000e000 08:02 10097841                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/commons-logging-1.1.3.jar
+7f9e4911e000-7f9e49121000 r--s 00011000 08:02 10097813                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/json-smart-1.3.1.jar
+7f9e49121000-7f9e49125000 r--s 00035000 08:02 10097777                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jackson-core-asl-1.9.13.jar
+7f9e49125000-7f9e4912c000 r--s 00058000 08:02 10097835                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/fst-2.50.jar
+7f9e4912c000-7f9e49138000 r--s 0008b000 08:02 10097771                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/commons-compress-1.19.jar
+7f9e49138000-7f9e4913f000 r--s 00064000 08:02 10097806                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/commons-lang3-3.4.jar
+7f9e4913f000-7f9e49140000 r--s 00003000 08:02 10097791                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jersey-guice-1.9.jar
+7f9e49140000-7f9e49146000 r--s 0002c000 08:02 10097822                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/curator-framework-2.13.0.jar
+7f9e49146000-7f9e49148000 r--s 00004000 08:02 10097843                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/stax-api-1.0-2.jar
+7f9e49148000-7f9e4914f000 r--s 00049000 08:02 10097795                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/httpcore-4.4.4.jar
+7f9e4914f000-7f9e49170000 r--s 00172000 08:02 10097839                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/guava-11.0.2.jar
+7f9e49170000-7f9e49179000 r--s 000b9000 08:02 10097833                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/mssql-jdbc-6.2.1.jre7.jar
+7f9e49179000-7f9e4917b000 r--s 00009000 08:02 10097769                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/commons-cli-1.2.jar
+7f9e4917b000-7f9e4917d000 r--s 0000d000 08:02 10097773                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/commons-codec-1.4.jar
+7f9e4917d000-7f9e49197000 r--s 00155000 08:02 10097826                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/htrace-core4-4.1.0-incubating.jar
+7f9e49197000-7f9e4919a000 r--s 0001e000 08:02 10097832                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/HikariCP-java7-2.4.12.jar
+7f9e4919a000-7f9e4919d000 r--s 00017000 08:02 10097842                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jaxb-api-2.2.2.jar
+7f9e4919d000-7f9e491aa000 r--s 00083000 08:02 10097797                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/commons-collections-3.2.2.jar
+7f9e491aa000-7f9e491d0000 r--s 00180000 08:02 10097831                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/ehcache-3.3.1.jar
+7f9e491d0000-7f9e491d9000 r--s 0007b000 08:02 10097801                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jets3t-0.9.0.jar
+7f9e491d9000-7f9e491e0000 r--s 0007d000 08:02 10097798                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/jetty-6.1.26.jar
+7f9e491e0000-7f9e491e6000 r--s 00043000 08:02 10097803                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/commons-configuration-1.6.jar
+7f9e491e6000-7f9e491e7000 r--s 00004000 08:02 10097820                   /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/audience-annotations-0.5.0.jar
+7f9e491e7000-7f9e49222000 r--s 003d2000 08:02 9574509                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/hadoop-hdfs-client-2.10.1.jar
+7f9e49222000-7f9e49224000 r--s 0001f000 08:02 9574515                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/hadoop-hdfs-nfs-2.10.1.jar
+7f9e49224000-7f9e49227000 r--s 0001d000 08:02 9574510                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/hadoop-hdfs-client-2.10.1-tests.jar
+7f9e49227000-7f9e4922c000 r--s 0003e000 08:02 9574514                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/hadoop-hdfs-rbf-2.10.1-tests.jar
+7f9e4922c000-7f9e4922d000 r--s 00007000 08:02 9574512                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/hadoop-hdfs-native-client-2.10.1-tests.jar
+7f9e4922d000-7f9e4922e000 r--s 00007000 08:02 9574511                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/hadoop-hdfs-native-client-2.10.1.jar
+7f9e4922e000-7f9e4923e000 r--s 000d5000 08:02 9574513                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/hadoop-hdfs-rbf-2.10.1.jar
+7f9e4923e000-7f9e4927e000 r--s 004b4000 08:02 9574507                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/hadoop-hdfs-2.10.1.jar
+7f9e4927e000-7f9e492ad000 r--s 00413000 08:02 9574508                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/hadoop-hdfs-2.10.1-tests.jar
+7f9e492ad000-7f9e492b0000 r--s 0000e000 08:02 9574468                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/jackson-annotations-2.9.10.jar
+7f9e492b0000-7f9e492b9000 r--s 0002d000 08:02 9574465                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/xml-apis-1.4.01.jar
+7f9e492b9000-7f9e492f4000 r--s 003d2000 08:02 9574459                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/hadoop-hdfs-client-2.10.1.jar
+7f9e492f4000-7f9e492f7000 r--s 000fd000 08:02 9574466                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/leveldbjni-all-1.8.jar
+7f9e492f7000-7f9e492fb000 r--s 00028000 08:02 9574450                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/jetty-util-6.1.26.jar
+7f9e492fb000-7f9e49305000 r--s 00066000 08:02 9574451                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/jersey-core-1.9.jar
+7f9e49305000-7f9e49306000 r--s 00003000 08:02 9574446                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/xmlenc-0.52.jar
+7f9e49306000-7f9e49308000 r--s 0000f000 08:02 9574461                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/okio-1.6.0.jar
+7f9e49308000-7f9e4930d000 r--s 00041000 08:02 9574456                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/commons-lang-2.6.jar
+7f9e4930d000-7f9e49316000 r--s 0006f000 08:02 9574440                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/log4j-1.2.17.jar
+7f9e49316000-7f9e49318000 r--s 00018000 08:02 9574448                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/servlet-api-2.5.jar
+7f9e49318000-7f9e49319000 r--s 0000a000 08:02 9574455                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/asm-3.2.jar
+7f9e49319000-7f9e49321000 r--s 0007b000 08:02 9574457                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/protobuf-java-2.5.0.jar
+7f9e49321000-7f9e4932f000 r--s 000b1000 08:02 9574453                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/jackson-mapper-asl-1.9.13.jar
+7f9e4932f000-7f9e49331000 r--s 00003000 08:02 9574442                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/jsr305-3.0.2.jar
+7f9e49331000-7f9e49335000 r--s 0002a000 08:02 9574447                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/commons-io-2.4.jar
+7f9e49335000-7f9e4934e000 r--s 00123000 08:02 9574443                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/netty-3.10.6.Final.jar
+7f9e4934e000-7f9e49360000 r--s 0009d000 08:02 9574454                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/jersey-server-1.9.jar
+7f9e49360000-7f9e49362000 r--s 0000e000 08:02 9574441                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/commons-logging-1.1.3.jar
+7f9e49362000-7f9e49366000 r--s 00035000 08:02 9574452                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/jackson-core-asl-1.9.13.jar
+7f9e49366000-7f9e4936a000 r--s 0004c000 08:02 9574469                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/jackson-core-2.9.10.jar
+7f9e4936a000-7f9e4937d000 r--s 00137000 08:02 9574467                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/jackson-databind-2.9.10.6.jar
+7f9e4937d000-7f9e4939e000 r--s 00172000 08:02 9574444                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/guava-11.0.2.jar
+7f9e4939e000-7f9e493e6000 r--s 003bd000 08:02 9574463                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/netty-all-4.1.50.Final.jar
+7f9e493e6000-7f9e493e8000 r--s 00009000 08:02 9574445                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/commons-cli-1.2.jar
+7f9e493e8000-7f9e493e9000 r--s 00005000 08:02 9574462                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/commons-daemon-1.0.13.jar
+7f9e493e9000-7f9e493ee000 r--s 0004c000 08:02 9574460                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/okhttp-2.7.5.jar
+7f9e493ee000-7f9e493f0000 r--s 0000d000 08:02 9574439                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/commons-codec-1.4.jar
+7f9e493f0000-7f9e4940a000 r--s 00155000 08:02 9574458                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/htrace-core4-4.1.0-incubating.jar
+7f9e4940a000-7f9e49411000 r--s 0007d000 08:02 9574449                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/jetty-6.1.26.jar
+7f9e49411000-7f9e4942a000 r--s 0013a000 08:02 9574464                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/xercesImpl-2.12.0.jar
+7f9e4942a000-7f9e4942f000 r--s 0002a000 08:02 9574436                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/hadoop-nfs-2.10.1.jar
+7f9e4942f000-7f9e49457000 r--s 00261000 08:02 9574435                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/hadoop-common-2.10.1-tests.jar
+7f9e49457000-7f9e49488000 rw-p 00000000 00:00 0 
+7f9e49488000-7f9e494a0000 r-xp 00000000 08:13 5507566                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libnet.so
+7f9e494a0000-7f9e4969f000 ---p 00018000 08:13 5507566                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libnet.so
+7f9e4969f000-7f9e496a0000 r--p 00017000 08:13 5507566                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libnet.so
+7f9e496a0000-7f9e496a1000 rw-p 00018000 08:13 5507566                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libnet.so
+7f9e496a1000-7f9e496b3000 r-xp 00000000 08:13 5507567                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libnio.so
+7f9e496b3000-7f9e498b2000 ---p 00012000 08:13 5507567                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libnio.so
+7f9e498b2000-7f9e498b3000 r--p 00011000 08:13 5507567                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libnio.so
+7f9e498b3000-7f9e498b4000 rw-p 00012000 08:13 5507567                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libnio.so
+7f9e498b4000-7f9e498f1000 r--s 0038e000 08:02 9574434                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/hadoop-common-2.10.1.jar
+7f9e498f1000-7f9e498f2000 r--s 0000a000 08:02 9574380                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/apacheds-i18n-2.0.0-M15.jar
+7f9e498f2000-7f9e498f4000 r--s 00012000 08:02 9574382                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/api-util-1.0.0-M20.jar
+7f9e498f4000-7f9e498f5000 r--s 00004000 08:02 9574355                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jackson-jaxrs-1.9.13.jar
+7f9e498f5000-7f9e498f7000 r--s 0000e000 08:02 9574352                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/activation-1.1.jar
+7f9e498f7000-7f9e498f9000 r--s 00009000 08:02 9574367                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/slf4j-api-1.7.25.jar
+7f9e498f9000-7f9e498fd000 r--s 00021000 08:02 9574347                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jersey-json-1.9.jar
+7f9e498fd000-7f9e49903000 r--s 00078000 08:02 9574393                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/woodstox-core-5.0.3.jar
+7f9e49903000-7f9e49907000 r--s 00028000 08:02 9574343                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jetty-util-6.1.26.jar
+7f9e49907000-7f9e4990c000 r--s 00038000 08:02 9574365                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-beanutils-1.9.4.jar
+7f9e4990c000-7f9e49916000 r--s 00066000 08:02 9574346                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jersey-core-1.9.jar
+7f9e49916000-7f9e4994d000 r--s 00219000 08:02 9574388                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/curator-client-2.13.0.jar
+7f9e4994d000-7f9e4994e000 r--s 00003000 08:02 9574402                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/xmlenc-0.52.jar
+7f9e4994e000-7f9e49950000 r--s 00002000 08:02 9574384                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/spotbugs-annotations-3.1.9.jar
+7f9e49950000-7f9e49955000 r--s 0002a000 08:02 9574374                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/gson-2.2.4.jar
+7f9e49955000-7f9e49956000 r--s 00004000 08:02 9574344                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jetty-sslengine-6.1.26.jar
+7f9e49956000-7f9e49968000 r--s 00097000 08:02 9574379                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/apacheds-kerberos-codec-2.0.0-M15.jar
+7f9e49968000-7f9e49969000 r--s 00002000 08:02 9574368                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar
+7f9e49969000-7f9e4996d000 r--s 00041000 08:02 9574389                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jsch-0.1.55.jar
+7f9e4996d000-7f9e4998a000 r--s 0016a000 08:02 9574401                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-math3-3.1.1.jar
+7f9e4998a000-7f9e4998f000 r--s 00041000 08:02 9574362                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-lang-2.6.jar
+7f9e4998f000-7f9e49998000 r--s 0006f000 08:02 9574359                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/log4j-1.2.17.jar
+7f9e49998000-7f9e4999c000 r--s 00024000 08:02 9574392                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/stax2-api-3.1.4.jar
+7f9e4999c000-7f9e4999e000 r--s 00018000 08:02 9574341                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/servlet-api-2.5.jar
+7f9e4999e000-7f9e499a4000 r--s 0004d000 08:02 9574376                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/nimbus-jose-jwt-7.9.jar
+7f9e499a4000-7f9e499a7000 r--s 0001c000 08:02 9574375                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/hadoop-auth-2.10.1.jar
+7f9e499a7000-7f9e499af000 r--s 0007b000 08:02 9574373                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/protobuf-java-2.5.0.jar
+7f9e499af000-7f9e499cc000 r--s 0013e000 08:02 9574396                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/mockito-all-1.8.5.jar
+7f9e499cc000-7f9e499da000 r--s 000b1000 08:02 9574354                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jackson-mapper-asl-1.9.13.jar
+7f9e499da000-7f9e499db000 ---p 00000000 00:00 0 
+7f9e499db000-7f9e49adb000 rw-p 00000000 00:00 0 
+7f9e49adb000-7f9e49ade000 ---p 00000000 00:00 0 
+7f9e49ade000-7f9e49bdc000 rw-p 00000000 00:00 0 
+7f9e49bdc000-7f9e49be0000 ---p 00000000 00:00 0 
+7f9e49be0000-7f9e49cdd000 rw-p 00000000 00:00 0 
+7f9e49cdd000-7f9e49ce1000 ---p 00000000 00:00 0 
+7f9e49ce1000-7f9e49dde000 rw-p 00000000 00:00 0 
+7f9e49dde000-7f9e49de2000 ---p 00000000 00:00 0 
+7f9e49de2000-7f9e49edf000 rw-p 00000000 00:00 0 
+7f9e49edf000-7f9e49ee3000 ---p 00000000 00:00 0 
+7f9e49ee3000-7f9e49fe0000 rw-p 00000000 00:00 0 
+7f9e49fe0000-7f9e49fe4000 ---p 00000000 00:00 0 
+7f9e49fe4000-7f9e4a0e1000 rw-p 00000000 00:00 0 
+7f9e4a0e1000-7f9e4a0e5000 ---p 00000000 00:00 0 
+7f9e4a0e5000-7f9e4a1e2000 rw-p 00000000 00:00 0 
+7f9e4a1e2000-7f9e4a1e6000 ---p 00000000 00:00 0 
+7f9e4a1e6000-7f9e4a2e3000 rw-p 00000000 00:00 0 
+7f9e4a2e3000-7f9e4a2e7000 ---p 00000000 00:00 0 
+7f9e4a2e7000-7f9e4a3e4000 rw-p 00000000 00:00 0 
+7f9e4a3e4000-7f9e4a3e8000 ---p 00000000 00:00 0 
+7f9e4a3e8000-7f9e4a4e5000 rw-p 00000000 00:00 0 
+7f9e4a4e5000-7f9e4a4e9000 ---p 00000000 00:00 0 
+7f9e4a4e9000-7f9e4a5e6000 rw-p 00000000 00:00 0 
+7f9e4a5e6000-7f9e4a5ea000 ---p 00000000 00:00 0 
+7f9e4a5ea000-7f9e4a6e7000 rw-p 00000000 00:00 0 
+7f9e4a6e7000-7f9e4a6eb000 ---p 00000000 00:00 0 
+7f9e4a6eb000-7f9e4a7e8000 rw-p 00000000 00:00 0 
+7f9e4a7e8000-7f9e4a7ec000 ---p 00000000 00:00 0 
+7f9e4a7ec000-7f9e4a8e9000 rw-p 00000000 00:00 0 
+7f9e4a8e9000-7f9e4a8ed000 ---p 00000000 00:00 0 
+7f9e4a8ed000-7f9e4a9ea000 rw-p 00000000 00:00 0 
+7f9e4a9ea000-7f9e4a9ee000 ---p 00000000 00:00 0 
+7f9e4a9ee000-7f9e4aaeb000 rw-p 00000000 00:00 0 
+7f9e4aaeb000-7f9e4aaee000 ---p 00000000 00:00 0 
+7f9e4aaee000-7f9e4abec000 rw-p 00000000 00:00 0 
+7f9e4abec000-7f9e4abef000 ---p 00000000 00:00 0 
+7f9e4abef000-7f9e4aced000 rw-p 00000000 00:00 0 
+7f9e4aced000-7f9e4acf0000 ---p 00000000 00:00 0 
+7f9e4acf0000-7f9e4adee000 rw-p 00000000 00:00 0 
+7f9e4adee000-7f9e4adef000 ---p 00000000 00:00 0 
+7f9e4adef000-7f9e4c000000 rw-p 00000000 00:00 0 
+7f9e4c000000-7f9e4c021000 rw-p 00000000 00:00 0 
+7f9e4c021000-7f9e50000000 ---p 00000000 00:00 0 
+7f9e50000000-7f9e50001000 r--s 0000a000 08:02 9574358                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/asm-3.2.jar
+7f9e50001000-7f9e50003000 r--s 00006000 08:02 9574370                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/paranamer-2.3.jar
+7f9e50003000-7f9e50009000 r--s 00036000 08:02 9574394                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/junit-4.11.jar
+7f9e50009000-7f9e5000b000 r--s 00003000 08:02 9574399                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jsr305-3.0.2.jar
+7f9e5000b000-7f9e50014000 r--s 00062000 08:02 9574369                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/avro-1.7.7.jar
+7f9e50014000-7f9e50015000 r--s 00006000 08:02 9574356                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jackson-xc-1.9.13.jar
+7f9e50015000-7f9e50017000 r--s 0000f000 08:02 9574348                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jettison-1.1.jar
+7f9e50017000-7f9e5001b000 r--s 0002a000 08:02 9574407                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-io-2.4.jar
+7f9e5001b000-7f9e50034000 r--s 00123000 08:02 9574386                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/netty-3.10.6.Final.jar
+7f9e50034000-7f9e50038000 r--s 00020000 08:02 9574364                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-digester-1.8.jar
+7f9e50038000-7f9e5003d000 r--s 0003e000 08:02 9574408                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-net-3.1.jar
+7f9e5003d000-7f9e50040000 r--s 00016000 08:02 9574345                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jsp-api-2.1.jar
+7f9e50040000-7f9e50052000 r--s 0009d000 08:02 9574357                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jersey-server-1.9.jar
+7f9e50052000-7f9e50054000 r--s 00000000 08:02 9574377                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jcip-annotations-1.0-1.jar
+7f9e50054000-7f9e5005c000 r--s 0003e000 08:02 9574390                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/curator-recipes-2.13.0.jar
+7f9e5005c000-7f9e50069000 r--s 000d2000 08:02 9574383                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/zookeeper-3.4.14.jar
+7f9e50069000-7f9e5007c000 r--s 000c7000 08:02 9574349                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jaxb-impl-2.2.3-1.jar
+7f9e5007c000-7f9e5007e000 r--s 00130000 08:02 9574371                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/snappy-java-1.0.5.jar
+7f9e5007e000-7f9e50080000 r--s 00003000 08:02 9574381                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/api-asn1-api-1.0.0-M20.jar
+7f9e50080000-7f9e5008d000 r--s 000a7000 08:02 9574403                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/httpclient-4.5.2.jar
+7f9e5008d000-7f9e5008f000 r--s 0000e000 08:02 9574405                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-logging-1.1.3.jar
+7f9e5008f000-7f9e50092000 r--s 00011000 08:02 9574378                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/json-smart-1.3.1.jar
+7f9e50092000-7f9e50096000 r--s 00035000 08:02 9574353                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jackson-core-asl-1.9.13.jar
+7f9e50096000-7f9e500a2000 r--s 0008b000 08:02 9574372                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-compress-1.19.jar
+7f9e500a2000-7f9e500a9000 r--s 00064000 08:02 9574366                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-lang3-3.4.jar
+7f9e500a9000-7f9e500af000 r--s 0002c000 08:02 9574387                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/curator-framework-2.13.0.jar
+7f9e500af000-7f9e500b1000 r--s 00004000 08:02 9574351                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/stax-api-1.0-2.jar
+7f9e500b1000-7f9e500b3000 r--s 00009000 08:02 9574395                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/hamcrest-core-1.3.jar
+7f9e500b3000-7f9e500ba000 r--s 00049000 08:02 9574404                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/httpcore-4.4.4.jar
+7f9e500ba000-7f9e500db000 r--s 00172000 08:02 9574398                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/guava-11.0.2.jar
+7f9e500db000-7f9e500f5000 r--s 00155000 08:02 9574391                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/htrace-core4-4.1.0-incubating.jar
+7f9e500f5000-7f9e54000000 rw-p 00000000 00:00 0 
+7f9e54000000-7f9e54021000 rw-p 00000000 00:00 0 
+7f9e54021000-7f9e58000000 ---p 00000000 00:00 0 
+7f9e58000000-7f9e58021000 rw-p 00000000 00:00 0 
+7f9e58021000-7f9e5c000000 ---p 00000000 00:00 0 
+7f9e5c000000-7f9e5c021000 rw-p 00000000 00:00 0 
+7f9e5c021000-7f9e60000000 ---p 00000000 00:00 0 
+7f9e60000000-7f9e60021000 rw-p 00000000 00:00 0 
+7f9e60021000-7f9e64000000 ---p 00000000 00:00 0 
+7f9e64000000-7f9e64021000 rw-p 00000000 00:00 0 
+7f9e64021000-7f9e68000000 ---p 00000000 00:00 0 
+7f9e68000000-7f9e68021000 rw-p 00000000 00:00 0 
+7f9e68021000-7f9e6c000000 ---p 00000000 00:00 0 
+7f9e6c000000-7f9e6c021000 rw-p 00000000 00:00 0 
+7f9e6c021000-7f9e70000000 ---p 00000000 00:00 0 
+7f9e70000000-7f9e70021000 rw-p 00000000 00:00 0 
+7f9e70021000-7f9e74000000 ---p 00000000 00:00 0 
+7f9e74000000-7f9e74021000 rw-p 00000000 00:00 0 
+7f9e74021000-7f9e78000000 ---p 00000000 00:00 0 
+7f9e78000000-7f9e78021000 rw-p 00000000 00:00 0 
+7f9e78021000-7f9e7c000000 ---p 00000000 00:00 0 
+7f9e7c000000-7f9e7c021000 rw-p 00000000 00:00 0 
+7f9e7c021000-7f9e80000000 ---p 00000000 00:00 0 
+7f9e80000000-7f9e80021000 rw-p 00000000 00:00 0 
+7f9e80021000-7f9e84000000 ---p 00000000 00:00 0 
+7f9e84000000-7f9e84001000 r--s 00004000 08:02 9574361                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/java-xmlbuilder-0.4.jar
+7f9e84001000-7f9e84003000 r--s 00009000 08:02 9574400                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-cli-1.2.jar
+7f9e84003000-7f9e84005000 r--s 0000a000 08:02 9574397                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/hadoop-annotations-2.10.1.jar
+7f9e84005000-7f9e84007000 r--s 0000d000 08:02 9574406                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-codec-1.4.jar
+7f9e84007000-7f9e8400a000 r--s 00017000 08:02 9574350                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jaxb-api-2.2.2.jar
+7f9e8400a000-7f9e84017000 r--s 00083000 08:02 9574340                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-collections-3.2.2.jar
+7f9e84017000-7f9e88000000 rw-p 00000000 00:00 0 
+7f9e88000000-7f9e88021000 rw-p 00000000 00:00 0 
+7f9e88021000-7f9e8c000000 ---p 00000000 00:00 0 
+7f9e8c000000-7f9e8c021000 rw-p 00000000 00:00 0 
+7f9e8c021000-7f9e90000000 ---p 00000000 00:00 0 
+7f9e90000000-7f9e90021000 rw-p 00000000 00:00 0 
+7f9e90021000-7f9e94000000 ---p 00000000 00:00 0 
+7f9e94000000-7f9e94021000 rw-p 00000000 00:00 0 
+7f9e94021000-7f9e98000000 ---p 00000000 00:00 0 
+7f9e98000000-7f9e98021000 rw-p 00000000 00:00 0 
+7f9e98021000-7f9e9c000000 ---p 00000000 00:00 0 
+7f9e9c000000-7f9e9c021000 rw-p 00000000 00:00 0 
+7f9e9c021000-7f9ea0000000 ---p 00000000 00:00 0 
+7f9ea0000000-7f9ea0021000 rw-p 00000000 00:00 0 
+7f9ea0021000-7f9ea4000000 ---p 00000000 00:00 0 
+7f9ea4000000-7f9ea4021000 rw-p 00000000 00:00 0 
+7f9ea4021000-7f9ea8000000 ---p 00000000 00:00 0 
+7f9ea8000000-7f9ea8021000 rw-p 00000000 00:00 0 
+7f9ea8021000-7f9eac000000 ---p 00000000 00:00 0 
+7f9eac000000-7f9eac021000 rw-p 00000000 00:00 0 
+7f9eac021000-7f9eb0000000 ---p 00000000 00:00 0 
+7f9eb0000000-7f9eb0021000 rw-p 00000000 00:00 0 
+7f9eb0021000-7f9eb4000000 ---p 00000000 00:00 0 
+7f9eb4000000-7f9eb4021000 rw-p 00000000 00:00 0 
+7f9eb4021000-7f9eb8000000 ---p 00000000 00:00 0 
+7f9eb8000000-7f9eb8021000 rw-p 00000000 00:00 0 
+7f9eb8021000-7f9ebc000000 ---p 00000000 00:00 0 
+7f9ebc000000-7f9ebc009000 r--s 0007b000 08:02 9574360                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jets3t-0.9.0.jar
+7f9ebc009000-7f9ebc010000 r--s 0007d000 08:02 9574342                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jetty-6.1.26.jar
+7f9ebc010000-7f9ebc016000 r--s 00043000 08:02 9574363                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-configuration-1.6.jar
+7f9ebc016000-7f9ebc751000 rw-p 00000000 00:00 0 
+7f9ebc751000-7f9ebc923000 r--s 044ae000 08:13 5379051                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/rt.jar
+7f9ebc923000-7f9ebd3f1000 rw-p 00000000 00:00 0 
+7f9ebd3f1000-7f9ebd3f2000 ---p 00000000 00:00 0 
+7f9ebd3f2000-7f9ebd4f2000 rw-p 00000000 00:00 0 
+7f9ebd4f2000-7f9ebd4f3000 ---p 00000000 00:00 0 
+7f9ebd4f3000-7f9ebd5f3000 rw-p 00000000 00:00 0 
+7f9ebd5f3000-7f9ebd5f4000 ---p 00000000 00:00 0 
+7f9ebd5f4000-7f9ebd6f4000 rw-p 00000000 00:00 0 
+7f9ebd6f4000-7f9ebd6f5000 ---p 00000000 00:00 0 
+7f9ebd6f5000-7f9ebd7f5000 rw-p 00000000 00:00 0 
+7f9ebd7f5000-7f9ebd7f6000 ---p 00000000 00:00 0 
+7f9ebd7f6000-7f9ebd8f6000 rw-p 00000000 00:00 0 
+7f9ebd8f6000-7f9ebd8f7000 ---p 00000000 00:00 0 
+7f9ebd8f7000-7f9ebd9f7000 rw-p 00000000 00:00 0 
+7f9ebd9f7000-7f9ebd9f8000 ---p 00000000 00:00 0 
+7f9ebd9f8000-7f9ebdaf8000 rw-p 00000000 00:00 0 
+7f9ebdaf8000-7f9ebdaf9000 ---p 00000000 00:00 0 
+7f9ebdaf9000-7f9ebdbf9000 rw-p 00000000 00:00 0 
+7f9ebdbf9000-7f9ebdbfa000 ---p 00000000 00:00 0 
+7f9ebdbfa000-7f9ebdcfa000 rw-p 00000000 00:00 0 
+7f9ebdcfa000-7f9ebdcfb000 ---p 00000000 00:00 0 
+7f9ebdcfb000-7f9ebddfb000 rw-p 00000000 00:00 0 
+7f9ebddfb000-7f9ebddfc000 ---p 00000000 00:00 0 
+7f9ebddfc000-7f9ebdefc000 rw-p 00000000 00:00 0 
+7f9ebdefc000-7f9ebdefd000 ---p 00000000 00:00 0 
+7f9ebdefd000-7f9ebdffd000 rw-p 00000000 00:00 0 
+7f9ebdffd000-7f9ebdffe000 ---p 00000000 00:00 0 
+7f9ebdffe000-7f9ebe0fe000 rw-p 00000000 00:00 0 
+7f9ebe0fe000-7f9ebe0ff000 ---p 00000000 00:00 0 
+7f9ebe0ff000-7f9ebe1ff000 rw-p 00000000 00:00 0 
+7f9ebe1ff000-7f9ebe200000 ---p 00000000 00:00 0 
+7f9ebe200000-7f9ebe300000 rw-p 00000000 00:00 0 
+7f9ebe300000-7f9ebe301000 ---p 00000000 00:00 0 
+7f9ebe301000-7f9ebe401000 rw-p 00000000 00:00 0 
+7f9ebe401000-7f9ebe402000 ---p 00000000 00:00 0 
+7f9ebe402000-7f9ebe502000 rw-p 00000000 00:00 0 
+7f9ebe502000-7f9ebe503000 ---p 00000000 00:00 0 
+7f9ebe503000-7f9ebe603000 rw-p 00000000 00:00 0 
+7f9ebe603000-7f9ebe604000 ---p 00000000 00:00 0 
+7f9ebe604000-7f9ebe704000 rw-p 00000000 00:00 0 
+7f9ebe704000-7f9ebe705000 ---p 00000000 00:00 0 
+7f9ebe705000-7f9ebe805000 rw-p 00000000 00:00 0 
+7f9ebe805000-7f9ebe806000 ---p 00000000 00:00 0 
+7f9ebe806000-7f9ebe906000 rw-p 00000000 00:00 0 
+7f9ebe906000-7f9ebe907000 ---p 00000000 00:00 0 
+7f9ebe907000-7f9ebea07000 rw-p 00000000 00:00 0 
+7f9ebea07000-7f9ebea08000 ---p 00000000 00:00 0 
+7f9ebea08000-7f9ebeb08000 rw-p 00000000 00:00 0 
+7f9ebeb08000-7f9ebeb09000 ---p 00000000 00:00 0 
+7f9ebeb09000-7f9ebec09000 rw-p 00000000 00:00 0 
+7f9ebec09000-7f9ebec0a000 ---p 00000000 00:00 0 
+7f9ebec0a000-7f9ebed0a000 rw-p 00000000 00:00 0 
+7f9ebed0a000-7f9ebed0b000 ---p 00000000 00:00 0 
+7f9ebed0b000-7f9ebee0b000 rw-p 00000000 00:00 0 
+7f9ebee0b000-7f9ebee0c000 ---p 00000000 00:00 0 
+7f9ebee0c000-7f9ebf1ab000 rw-p 00000000 00:00 0 
+7f9ebf1ab000-7f9ec170c000 ---p 00000000 00:00 0 
+7f9ec170c000-7f9ec19ab000 rw-p 00000000 00:00 0 
+7f9ec19ab000-7f9ec3f0b000 ---p 00000000 00:00 0 
+7f9ec3f0b000-7f9ec405b000 rw-p 00000000 00:00 0 
+7f9ec405b000-7f9ec530b000 ---p 00000000 00:00 0 
+7f9ec530b000-7f9ec5326000 rw-p 00000000 00:00 0 
+7f9ec5326000-7f9ec56cc000 ---p 00000000 00:00 0 
+7f9ec56cc000-7f9ec5d4c000 rwxp 00000000 00:00 0 
+7f9ec5d4c000-7f9ed46cc000 ---p 00000000 00:00 0 
+7f9ed46cc000-7f9ed46e1000 r-xp 00000000 08:13 3670863                    /usr/lib64/libz.so.1.2.7
+7f9ed46e1000-7f9ed48e0000 ---p 00015000 08:13 3670863                    /usr/lib64/libz.so.1.2.7
+7f9ed48e0000-7f9ed48e1000 r--p 00014000 08:13 3670863                    /usr/lib64/libz.so.1.2.7
+7f9ed48e1000-7f9ed48e2000 rw-p 00015000 08:13 3670863                    /usr/lib64/libz.so.1.2.7
+7f9ed48e2000-7f9ed48ea000 r-xp 00000000 08:13 5507574                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libzip.so
+7f9ed48ea000-7f9ed4ae9000 ---p 00008000 08:13 5507574                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libzip.so
+7f9ed4ae9000-7f9ed4aea000 r--p 00007000 08:13 5507574                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libzip.so
+7f9ed4aea000-7f9ed4aeb000 rw-p 00008000 08:13 5507574                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libzip.so
+7f9ed4aeb000-7f9ed4af7000 r-xp 00000000 08:13 3670692                    /usr/lib64/libnss_files-2.17.so
+7f9ed4af7000-7f9ed4cf6000 ---p 0000c000 08:13 3670692                    /usr/lib64/libnss_files-2.17.so
+7f9ed4cf6000-7f9ed4cf7000 r--p 0000b000 08:13 3670692                    /usr/lib64/libnss_files-2.17.so
+7f9ed4cf7000-7f9ed4cf8000 rw-p 0000c000 08:13 3670692                    /usr/lib64/libnss_files-2.17.so
+7f9ed4cf8000-7f9ed4cfe000 rw-p 00000000 00:00 0 
+7f9ed4cfe000-7f9ed4d28000 r-xp 00000000 08:13 5507556                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libjava.so
+7f9ed4d28000-7f9ed4f27000 ---p 0002a000 08:13 5507556                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libjava.so
+7f9ed4f27000-7f9ed4f28000 r--p 00029000 08:13 5507556                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libjava.so
+7f9ed4f28000-7f9ed4f2a000 rw-p 0002a000 08:13 5507556                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libjava.so
+7f9ed4f2a000-7f9ed4f37000 r-xp 00000000 08:13 5507573                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libverify.so
+7f9ed4f37000-7f9ed5136000 ---p 0000d000 08:13 5507573                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libverify.so
+7f9ed5136000-7f9ed5138000 r--p 0000c000 08:13 5507573                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libverify.so
+7f9ed5138000-7f9ed5139000 rw-p 0000e000 08:13 5507573                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/libverify.so
+7f9ed5139000-7f9ed5140000 r-xp 00000000 08:13 3670704                    /usr/lib64/librt-2.17.so
+7f9ed5140000-7f9ed533f000 ---p 00007000 08:13 3670704                    /usr/lib64/librt-2.17.so
+7f9ed533f000-7f9ed5340000 r--p 00006000 08:13 3670704                    /usr/lib64/librt-2.17.so
+7f9ed5340000-7f9ed5341000 rw-p 00007000 08:13 3670704                    /usr/lib64/librt-2.17.so
+7f9ed5341000-7f9ed5343000 r-xp 00000000 08:13 3670680                    /usr/lib64/libdl-2.17.so
+7f9ed5343000-7f9ed5543000 ---p 00002000 08:13 3670680                    /usr/lib64/libdl-2.17.so
+7f9ed5543000-7f9ed5544000 r--p 00002000 08:13 3670680                    /usr/lib64/libdl-2.17.so
+7f9ed5544000-7f9ed5545000 rw-p 00003000 08:13 3670680                    /usr/lib64/libdl-2.17.so
+7f9ed5545000-7f9ed555c000 r-xp 00000000 08:13 3670700                    /usr/lib64/libpthread-2.17.so
+7f9ed555c000-7f9ed575b000 ---p 00017000 08:13 3670700                    /usr/lib64/libpthread-2.17.so
+7f9ed575b000-7f9ed575c000 r--p 00016000 08:13 3670700                    /usr/lib64/libpthread-2.17.so
+7f9ed575c000-7f9ed575d000 rw-p 00017000 08:13 3670700                    /usr/lib64/libpthread-2.17.so
+7f9ed575d000-7f9ed5761000 rw-p 00000000 00:00 0 
+7f9ed5761000-7f9ed64fe000 r-xp 00000000 08:13 5507578                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/server/libjvm.so
+7f9ed64fe000-7f9ed66fd000 ---p 00d9d000 08:13 5507578                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/server/libjvm.so
+7f9ed66fd000-7f9ed67ab000 r--p 00d9c000 08:13 5507578                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/server/libjvm.so
+7f9ed67ab000-7f9ed67d6000 rw-p 00e4a000 08:13 5507578                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/amd64/server/libjvm.so
+7f9ed67d6000-7f9ed680c000 rw-p 00000000 00:00 0 
+7f9ed680c000-7f9ed69d0000 r-xp 00000000 08:13 3670674                    /usr/lib64/libc-2.17.so
+7f9ed69d0000-7f9ed6bcf000 ---p 001c4000 08:13 3670674                    /usr/lib64/libc-2.17.so
+7f9ed6bcf000-7f9ed6bd3000 r--p 001c3000 08:13 3670674                    /usr/lib64/libc-2.17.so
+7f9ed6bd3000-7f9ed6bd5000 rw-p 001c7000 08:13 3670674                    /usr/lib64/libc-2.17.so
+7f9ed6bd5000-7f9ed6bda000 rw-p 00000000 00:00 0 
+7f9ed6bda000-7f9ed6bf1000 r-xp 00000000 08:13 3680206                    /usr/local/lib64/libgcc_s.so.1
+7f9ed6bf1000-7f9ed6df0000 ---p 00017000 08:13 3680206                    /usr/local/lib64/libgcc_s.so.1
+7f9ed6df0000-7f9ed6df1000 r--p 00016000 08:13 3680206                    /usr/local/lib64/libgcc_s.so.1
+7f9ed6df1000-7f9ed6df2000 rw-p 00017000 08:13 3680206                    /usr/local/lib64/libgcc_s.so.1
+7f9ed6df2000-7f9ed6ef3000 r-xp 00000000 08:13 3670682                    /usr/lib64/libm-2.17.so
+7f9ed6ef3000-7f9ed70f2000 ---p 00101000 08:13 3670682                    /usr/lib64/libm-2.17.so
+7f9ed70f2000-7f9ed70f3000 r--p 00100000 08:13 3670682                    /usr/lib64/libm-2.17.so
+7f9ed70f3000-7f9ed70f4000 rw-p 00101000 08:13 3670682                    /usr/lib64/libm-2.17.so
+7f9ed70f4000-7f9ed7268000 r-xp 00000000 08:13 3680210                    /usr/local/lib64/libstdc++.so.6.0.25
+7f9ed7268000-7f9ed7468000 ---p 00174000 08:13 3680210                    /usr/local/lib64/libstdc++.so.6.0.25
+7f9ed7468000-7f9ed7472000 r--p 00174000 08:13 3680210                    /usr/local/lib64/libstdc++.so.6.0.25
+7f9ed7472000-7f9ed7474000 rw-p 0017e000 08:13 3680210                    /usr/local/lib64/libstdc++.so.6.0.25
+7f9ed7474000-7f9ed7478000 rw-p 00000000 00:00 0 
+7f9ed7478000-7f9ed7489000 r-xp 00000000 08:02 9569124                    /home/hjkim/PiGraph/hadoop-2.10.1/lib/native/libhdfs.so.0.0.0
+7f9ed7489000-7f9ed7688000 ---p 00011000 08:02 9569124                    /home/hjkim/PiGraph/hadoop-2.10.1/lib/native/libhdfs.so.0.0.0
+7f9ed7688000-7f9ed7689000 r--p 00010000 08:02 9569124                    /home/hjkim/PiGraph/hadoop-2.10.1/lib/native/libhdfs.so.0.0.0
+7f9ed7689000-7f9ed768a000 rw-p 00011000 08:02 9569124                    /home/hjkim/PiGraph/hadoop-2.10.1/lib/native/libhdfs.so.0.0.0
+7f9ed768a000-7f9ed76ac000 r-xp 00000000 08:13 3673896                    /usr/lib64/ld-2.17.so
+7f9ed76ac000-7f9ed7750000 rw-p 00000000 00:00 0 
+7f9ed7750000-7f9ed7751000 ---p 00000000 00:00 0 
+7f9ed7751000-7f9ed7892000 rw-p 00000000 00:00 0 
+7f9ed7892000-7f9ed789a000 rw-s 00000000 08:15 2485513                    /tmp/hsperfdata_hjkim/24885
+7f9ed789a000-7f9ed78a0000 rw-p 00000000 00:00 0 
+7f9ed78a0000-7f9ed78a1000 r--s 00004000 08:02 9574385                    /home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/audience-annotations-0.5.0.jar
+7f9ed78a1000-7f9ed78a7000 r--s 000f6000 08:13 5379044                    /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.342.b07-1.el7_9.x86_64/jre/lib/jfr.jar
+7f9ed78a7000-7f9ed78a8000 rw-p 00000000 00:00 0 
+7f9ed78a8000-7f9ed78a9000 r--p 00000000 00:00 0 
+7f9ed78a9000-7f9ed78ab000 rw-p 00000000 00:00 0 
+7f9ed78ab000-7f9ed78ac000 r--p 00021000 08:13 3673896                    /usr/lib64/ld-2.17.so
+7f9ed78ac000-7f9ed78ad000 rw-p 00022000 08:13 3673896                    /usr/lib64/ld-2.17.so
+7f9ed78ad000-7f9ed78ae000 rw-p 00000000 00:00 0 
+7ffe8c2a1000-7ffe8c2a4000 ---p 00000000 00:00 0 
+7ffe8c2a4000-7ffe8c3a1000 rw-p 00000000 00:00 0                          [stack]
+7ffe8c3cc000-7ffe8c3ce000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+
+VM Arguments:
+java_command: <unknown>
+java_class_path (initial): /home/hjkim/PiGraph/hadoop-2.10.1/etc/hadoop:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/audience-annotations-0.5.0.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-configuration-1.6.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jetty-6.1.26.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jets3t-0.9.0.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-collections-3.2.2.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jaxb-api-2.2.2.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/htrace-core4-4.1.0-incubating.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-codec-1.4.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/hadoop-annotations-2.10.1.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-cli-1.2.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/guava-11.0.2.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/httpcore-4.4.4.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/hamcrest-core-1.3.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/stax-api-1.0-2.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/curator-framework-2.13.0.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-lang3-3.4.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-compress-1.19.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/jackson-core-asl-1.9.13.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/json-smart-1.3.1.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/commons-logging-1.1.3.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/httpclient-4.5.2.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/api-asn1-api-1.0.0-M20.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/snappy-java-1.0.5.jar:/home/hjkim/PiGraph/hadoop-2.10.1/share/had
+Launcher Type: generic
+
+Environment Variables:
+JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.332.b09-1.el7_9.x86_64
+CLASSPATH=/home/hjkim/PiGraph/hadoop-2.10.1/etc/hadoop:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/lib/*:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/common/*:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/lib/*:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/hdfs/*:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/lib/*:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/yarn/*:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/lib/*:/home/hjkim/PiGraph/hadoop-2.10.1/share/hadoop/mapreduce/*:/contrib/capacity-scheduler/*.jar
+PATH=/home/hjkim/.vscode-server/bin/c3f126316369cd610563c75b1b1725e0679adfb3/bin:/home/hjkim/.vscode-server/bin/c3f126316369cd610563c75b1b1725e0679adfb3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/home/hjkim/.local/bin:/home/hjkim/bin:/home/hjkim/.local/bin:/home/hjkim/bin
+LD_LIBRARY_PATH=/usr/local/lib64/:/usr/local/lib
+SHELL=/bin/bash
+
+Signal Handlers:
+SIGSEGV: [libjvm.so+0xb66d60], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGBUS: [libjvm.so+0xb66d60], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGFPE: [libjvm.so+0x93ca10], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGPIPE: [libjvm.so+0x93ca10], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGXFSZ: [libjvm.so+0x93ca10], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGILL: [libjvm.so+0x93ca10], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGUSR1: SIG_DFL, sa_mask[0]=00000000000000000000000000000000, sa_flags=none
+SIGUSR2: [libjvm.so+0x93cb80], sa_mask[0]=00000000000000000000000000000000, sa_flags=SA_RESTART|SA_SIGINFO
+SIGHUP: [libjvm.so+0x93cad0], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGINT: [libjvm.so+0x93cad0], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGTERM: [libjvm.so+0x93cad0], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGQUIT: [libjvm.so+0x93cad0], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+
+
+---------------  S Y S T E M  ---------------
+
+OS:CentOS Linux release 7.9.2009 (Core)
+
+uname:Linux 3.10.0-1160.el7.x86_64 #1 SMP Mon Oct 19 16:18:59 UTC 2020 x86_64
+libc:glibc 2.17 NPTL 2.17 
+rlimit: STACK 8192k, CORE 4k, NPROC 4096, NOFILE 4096, AS infinity
+load average:0.33 0.16 0.09
+
+/proc/meminfo:
+MemTotal:       131740088 kB
+MemFree:        118396776 kB
+MemAvailable:   122270196 kB
+Buffers:          439932 kB
+Cached:          3645952 kB
+SwapCached:            0 kB
+Active:          5964616 kB
+Inactive:        2577128 kB
+Active(anon):    4456332 kB
+Inactive(anon):    42484 kB
+Active(file):    1508284 kB
+Inactive(file):  2534644 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+SwapTotal:      67108860 kB
+SwapFree:       67108860 kB
+Dirty:               196 kB
+Writeback:             0 kB
+AnonPages:       4378900 kB
+Mapped:           116392 kB
+Shmem:             42980 kB
+Slab:             595840 kB
+SReclaimable:     456556 kB
+SUnreclaim:       139284 kB
+KernelStack:       22592 kB
+PageTables:        22768 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:    132978904 kB
+Committed_AS:   18513940 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:      529912 kB
+VmallocChunk:   34291843068 kB
+Percpu:            13056 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:   3598336 kB
+CmaTotal:              0 kB
+CmaFree:               0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+DirectMap4k:      446292 kB
+DirectMap2M:    10969088 kB
+DirectMap1G:    124780544 kB
+
+container (cgroup) information:
+container_type: cgroupv1
+cpu_cpuset_cpus: 0-39
+cpu_memory_nodes: 0-1
+active_processor_count: 40
+cpu_quota: -1
+cpu_period: 100000
+cpu_shares: -1
+memory_limit_in_bytes: -1
+memory_and_swap_limit_in_bytes: -1
+memory_soft_limit_in_bytes: -1
+memory_usage_in_bytes: 8749985792
+memory_max_usage_in_bytes: 0
+
+
+CPU:total 40 (initial active 40) (10 cores per cpu, 2 threads per core) family 6 model 63 stepping 2, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2
+
+/proc/cpuinfo:
+processor	: 0
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1224.462
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 0
+cpu cores	: 10
+apicid		: 0
+initial apicid	: 0
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 1
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1242.077
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 1
+cpu cores	: 10
+apicid		: 2
+initial apicid	: 2
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 2
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1495.349
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 2
+cpu cores	: 10
+apicid		: 4
+initial apicid	: 4
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 3
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1267.944
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 3
+cpu cores	: 10
+apicid		: 6
+initial apicid	: 6
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 4
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1675.781
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 4
+cpu cores	: 10
+apicid		: 8
+initial apicid	: 8
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 5
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1499.475
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 8
+cpu cores	: 10
+apicid		: 16
+initial apicid	: 16
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 6
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1526.770
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 9
+cpu cores	: 10
+apicid		: 18
+initial apicid	: 18
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 7
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1260.961
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 10
+cpu cores	: 10
+apicid		: 20
+initial apicid	: 20
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 8
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1237.951
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 11
+cpu cores	: 10
+apicid		: 22
+initial apicid	: 22
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 9
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1289.208
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 12
+cpu cores	: 10
+apicid		: 24
+initial apicid	: 24
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 10
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1200.024
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 0
+cpu cores	: 10
+apicid		: 32
+initial apicid	: 32
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 11
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1210.180
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 1
+cpu cores	: 10
+apicid		: 34
+initial apicid	: 34
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 12
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 2600.000
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 2
+cpu cores	: 10
+apicid		: 36
+initial apicid	: 36
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 13
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1347.131
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 3
+cpu cores	: 10
+apicid		: 38
+initial apicid	: 38
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 14
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1299.682
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 4
+cpu cores	: 10
+apicid		: 40
+initial apicid	: 40
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 15
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1201.928
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 8
+cpu cores	: 10
+apicid		: 48
+initial apicid	: 48
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 16
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1200.024
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 9
+cpu cores	: 10
+apicid		: 50
+initial apicid	: 50
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 17
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1200.024
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 10
+cpu cores	: 10
+apicid		: 52
+initial apicid	: 52
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 18
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1200.024
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 11
+cpu cores	: 10
+apicid		: 54
+initial apicid	: 54
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 19
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1200.024
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 12
+cpu cores	: 10
+apicid		: 56
+initial apicid	: 56
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 20
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1206.213
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 0
+cpu cores	: 10
+apicid		: 1
+initial apicid	: 1
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 21
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1202.087
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 1
+cpu cores	: 10
+apicid		: 3
+initial apicid	: 3
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 22
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1257.312
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 2
+cpu cores	: 10
+apicid		: 5
+initial apicid	: 5
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 23
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1278.417
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 3
+cpu cores	: 10
+apicid		: 7
+initial apicid	: 7
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 24
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1202.563
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 4
+cpu cores	: 10
+apicid		: 9
+initial apicid	: 9
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 25
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1286.828
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 8
+cpu cores	: 10
+apicid		: 17
+initial apicid	: 17
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 26
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1597.070
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 9
+cpu cores	: 10
+apicid		: 19
+initial apicid	: 19
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 27
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1389.025
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 10
+cpu cores	: 10
+apicid		: 21
+initial apicid	: 21
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 28
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1209.545
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 11
+cpu cores	: 10
+apicid		: 23
+initial apicid	: 23
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 29
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1242.712
+cache size	: 25600 KB
+physical id	: 0
+siblings	: 20
+core id		: 12
+cpu cores	: 10
+apicid		: 25
+initial apicid	: 25
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5188.24
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 30
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1202.246
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 0
+cpu cores	: 10
+apicid		: 33
+initial apicid	: 33
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 31
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1282.067
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 1
+cpu cores	: 10
+apicid		: 35
+initial apicid	: 35
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 32
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1212.878
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 2
+cpu cores	: 10
+apicid		: 37
+initial apicid	: 37
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 33
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1222.558
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 3
+cpu cores	: 10
+apicid		: 39
+initial apicid	: 39
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 34
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1224.462
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 4
+cpu cores	: 10
+apicid		: 41
+initial apicid	: 41
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 35
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1200.659
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 8
+cpu cores	: 10
+apicid		: 49
+initial apicid	: 49
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 36
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1251.916
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 9
+cpu cores	: 10
+apicid		: 51
+initial apicid	: 51
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 37
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1201.293
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 10
+cpu cores	: 10
+apicid		: 53
+initial apicid	: 53
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 38
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1201.293
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 11
+cpu cores	: 10
+apicid		: 55
+initial apicid	: 55
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+processor	: 39
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+stepping	: 2
+microcode	: 0x49
+cpu MHz		: 1200.976
+cache size	: 25600 KB
+physical id	: 1
+siblings	: 20
+core id		: 12
+cpu cores	: 10
+apicid		: 57
+initial apicid	: 57
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 15
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm epb invpcid_single intel_ppin ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc dtherm ida arat pln pts md_clear spec_ctrl intel_stibp flush_l1d
+bogomips	: 5194.06
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+
+
+Memory: 4k page, physical 131740088k(118396776k free), swap 67108860k(67108860k free)
+
+vm_info: OpenJDK 64-Bit Server VM (25.342-b07) for linux-amd64 JRE (1.8.0_342-b07), built on Jul 26 2022 17:48:26 by "mockbuild" with gcc 4.8.5 20150623 (Red Hat 4.8.5-44)
+
+time: Mon Aug  8 23:09:15 2022
+timezone: KST
+elapsed time: 1.289809 seconds (0d 0h 0m 1s)
+

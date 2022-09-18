@@ -43,7 +43,20 @@
         "cstring": "cpp",
         "deque": "cpp",
         "iomanip": "cpp",
-        "numeric": "cpp"
+        "numeric": "cpp",
+        "atomic": "cpp",
+        "strstream": "cpp",
+        "cstdarg": "cpp",
+        "list": "cpp",
+        "future": "cpp",
+        "cinttypes": "cpp",
+        "cstddef": "cpp",
+        "algorithm": "cpp",
+        "iterator": "cpp",
+        "map": "cpp",
+        "memory_resource": "cpp",
+        "random": "cpp",
+        "set": "cpp"
     }
 }
 

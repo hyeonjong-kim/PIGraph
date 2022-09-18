@@ -131,6 +131,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+module/lib/CMakeFiles/struct.dir/rule:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/lib/CMakeFiles/struct.dir/rule
+.PHONY : module/lib/CMakeFiles/struct.dir/rule
+
+# Convenience name for target.
+struct: module/lib/CMakeFiles/struct.dir/rule
+
+.PHONY : struct
+
+# fast build rule for target.
+struct/fast:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/lib/CMakeFiles/struct.dir/build.make module/lib/CMakeFiles/struct.dir/build
+.PHONY : struct/fast
+
+# Convenience name for target.
 module/lib/CMakeFiles/communication.dir/rule:
 	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/lib/CMakeFiles/communication.dir/rule
 .PHONY : module/lib/CMakeFiles/communication.dir/rule
@@ -255,6 +270,60 @@ home/hjkim/PiGraph/src/communication/RDMA.s: home/hjkim/PiGraph/src/communicatio
 home/hjkim/PiGraph/src/communication/RDMA.cpp.s:
 	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/lib/CMakeFiles/communication.dir/build.make module/lib/CMakeFiles/communication.dir/home/hjkim/PiGraph/src/communication/RDMA.cpp.s
 .PHONY : home/hjkim/PiGraph/src/communication/RDMA.cpp.s
+
+home/hjkim/PiGraph/src/struct/Edge.o: home/hjkim/PiGraph/src/struct/Edge.cpp.o
+
+.PHONY : home/hjkim/PiGraph/src/struct/Edge.o
+
+# target to build an object file
+home/hjkim/PiGraph/src/struct/Edge.cpp.o:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/lib/CMakeFiles/struct.dir/build.make module/lib/CMakeFiles/struct.dir/home/hjkim/PiGraph/src/struct/Edge.cpp.o
+.PHONY : home/hjkim/PiGraph/src/struct/Edge.cpp.o
+
+home/hjkim/PiGraph/src/struct/Edge.i: home/hjkim/PiGraph/src/struct/Edge.cpp.i
+
+.PHONY : home/hjkim/PiGraph/src/struct/Edge.i
+
+# target to preprocess a source file
+home/hjkim/PiGraph/src/struct/Edge.cpp.i:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/lib/CMakeFiles/struct.dir/build.make module/lib/CMakeFiles/struct.dir/home/hjkim/PiGraph/src/struct/Edge.cpp.i
+.PHONY : home/hjkim/PiGraph/src/struct/Edge.cpp.i
+
+home/hjkim/PiGraph/src/struct/Edge.s: home/hjkim/PiGraph/src/struct/Edge.cpp.s
+
+.PHONY : home/hjkim/PiGraph/src/struct/Edge.s
+
+# target to generate assembly for a file
+home/hjkim/PiGraph/src/struct/Edge.cpp.s:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/lib/CMakeFiles/struct.dir/build.make module/lib/CMakeFiles/struct.dir/home/hjkim/PiGraph/src/struct/Edge.cpp.s
+.PHONY : home/hjkim/PiGraph/src/struct/Edge.cpp.s
+
+home/hjkim/PiGraph/src/struct/Vertex.o: home/hjkim/PiGraph/src/struct/Vertex.cpp.o
+
+.PHONY : home/hjkim/PiGraph/src/struct/Vertex.o
+
+# target to build an object file
+home/hjkim/PiGraph/src/struct/Vertex.cpp.o:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/lib/CMakeFiles/struct.dir/build.make module/lib/CMakeFiles/struct.dir/home/hjkim/PiGraph/src/struct/Vertex.cpp.o
+.PHONY : home/hjkim/PiGraph/src/struct/Vertex.cpp.o
+
+home/hjkim/PiGraph/src/struct/Vertex.i: home/hjkim/PiGraph/src/struct/Vertex.cpp.i
+
+.PHONY : home/hjkim/PiGraph/src/struct/Vertex.i
+
+# target to preprocess a source file
+home/hjkim/PiGraph/src/struct/Vertex.cpp.i:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/lib/CMakeFiles/struct.dir/build.make module/lib/CMakeFiles/struct.dir/home/hjkim/PiGraph/src/struct/Vertex.cpp.i
+.PHONY : home/hjkim/PiGraph/src/struct/Vertex.cpp.i
+
+home/hjkim/PiGraph/src/struct/Vertex.s: home/hjkim/PiGraph/src/struct/Vertex.cpp.s
+
+.PHONY : home/hjkim/PiGraph/src/struct/Vertex.s
+
+# target to generate assembly for a file
+home/hjkim/PiGraph/src/struct/Vertex.cpp.s:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/lib/CMakeFiles/struct.dir/build.make module/lib/CMakeFiles/struct.dir/home/hjkim/PiGraph/src/struct/Vertex.cpp.s
+.PHONY : home/hjkim/PiGraph/src/struct/Vertex.cpp.s
 
 home/hjkim/PiGraph/src/utils/ArgParsing.o: home/hjkim/PiGraph/src/utils/ArgParsing.cpp.o
 
@@ -481,6 +550,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... communication"
+	@echo "... struct"
 	@echo "... utils"
 	@echo "... zk"
 	@echo "... home/hjkim/PiGraph/src/communication/IPC.o"
@@ -492,6 +562,12 @@ help:
 	@echo "... home/hjkim/PiGraph/src/communication/RDMA.o"
 	@echo "... home/hjkim/PiGraph/src/communication/RDMA.i"
 	@echo "... home/hjkim/PiGraph/src/communication/RDMA.s"
+	@echo "... home/hjkim/PiGraph/src/struct/Edge.o"
+	@echo "... home/hjkim/PiGraph/src/struct/Edge.i"
+	@echo "... home/hjkim/PiGraph/src/struct/Edge.s"
+	@echo "... home/hjkim/PiGraph/src/struct/Vertex.o"
+	@echo "... home/hjkim/PiGraph/src/struct/Vertex.i"
+	@echo "... home/hjkim/PiGraph/src/struct/Vertex.s"
 	@echo "... home/hjkim/PiGraph/src/utils/ArgParsing.o"
 	@echo "... home/hjkim/PiGraph/src/utils/ArgParsing.i"
 	@echo "... home/hjkim/PiGraph/src/utils/ArgParsing.s"

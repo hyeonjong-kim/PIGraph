@@ -183,43 +183,17 @@ master/fast:
 .PHONY : master/fast
 
 #=============================================================================
-# Target rules for targets named Execution
+# Target rules for targets named Communication
 
 # Build rule for target.
-Execution: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Execution
-.PHONY : Execution
+Communication: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Communication
+.PHONY : Communication
 
 # fast build rule for target.
-Execution/fast:
-	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Execution.dir/build.make module/CMakeFiles/Execution.dir/build
-.PHONY : Execution/fast
-
-#=============================================================================
-# Target rules for targets named Resource
-
-# Build rule for target.
-Resource: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Resource
-.PHONY : Resource
-
-# fast build rule for target.
-Resource/fast:
-	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Resource.dir/build.make module/CMakeFiles/Resource.dir/build
-.PHONY : Resource/fast
-
-#=============================================================================
-# Target rules for targets named Coordination
-
-# Build rule for target.
-Coordination: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Coordination
-.PHONY : Coordination
-
-# fast build rule for target.
-Coordination/fast:
-	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Coordination.dir/build.make module/CMakeFiles/Coordination.dir/build
-.PHONY : Coordination/fast
+Communication/fast:
+	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Communication.dir/build.make module/CMakeFiles/Communication.dir/build
+.PHONY : Communication/fast
 
 #=============================================================================
 # Target rules for targets named Configuration
@@ -235,17 +209,17 @@ Configuration/fast:
 .PHONY : Configuration/fast
 
 #=============================================================================
-# Target rules for targets named Communication
+# Target rules for targets named Coordination
 
 # Build rule for target.
-Communication: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Communication
-.PHONY : Communication
+Coordination: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Coordination
+.PHONY : Coordination
 
 # fast build rule for target.
-Communication/fast:
-	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Communication.dir/build.make module/CMakeFiles/Communication.dir/build
-.PHONY : Communication/fast
+Coordination/fast:
+	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Coordination.dir/build.make module/CMakeFiles/Coordination.dir/build
+.PHONY : Coordination/fast
 
 #=============================================================================
 # Target rules for targets named Parsing
@@ -259,6 +233,97 @@ Parsing: cmake_check_build_system
 Parsing/fast:
 	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Parsing.dir/build.make module/CMakeFiles/Parsing.dir/build
 .PHONY : Parsing/fast
+
+#=============================================================================
+# Target rules for targets named Resource
+
+# Build rule for target.
+Resource: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Resource
+.PHONY : Resource
+
+# fast build rule for target.
+Resource/fast:
+	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Resource.dir/build.make module/CMakeFiles/Resource.dir/build
+.PHONY : Resource/fast
+
+#=============================================================================
+# Target rules for targets named IO
+
+# Build rule for target.
+IO: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 IO
+.PHONY : IO
+
+# fast build rule for target.
+IO/fast:
+	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/IO.dir/build.make module/CMakeFiles/IO.dir/build
+.PHONY : IO/fast
+
+#=============================================================================
+# Target rules for targets named Execution
+
+# Build rule for target.
+Execution: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Execution
+.PHONY : Execution
+
+# fast build rule for target.
+Execution/fast:
+	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Execution.dir/build.make module/CMakeFiles/Execution.dir/build
+.PHONY : Execution/fast
+
+#=============================================================================
+# Target rules for targets named Setting
+
+# Build rule for target.
+Setting: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Setting
+.PHONY : Setting
+
+# fast build rule for target.
+Setting/fast:
+	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Setting.dir/build.make module/CMakeFiles/Setting.dir/build
+.PHONY : Setting/fast
+
+#=============================================================================
+# Target rules for targets named Graph
+
+# Build rule for target.
+Graph: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Graph
+.PHONY : Graph
+
+# fast build rule for target.
+Graph/fast:
+	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Graph.dir/build.make module/CMakeFiles/Graph.dir/build
+.PHONY : Graph/fast
+
+#=============================================================================
+# Target rules for targets named Network
+
+# Build rule for target.
+Network: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Network
+.PHONY : Network
+
+# fast build rule for target.
+Network/fast:
+	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Network.dir/build.make module/CMakeFiles/Network.dir/build
+.PHONY : Network/fast
+
+#=============================================================================
+# Target rules for targets named struct
+
+# Build rule for target.
+struct: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 struct
+.PHONY : struct
+
+# fast build rule for target.
+struct/fast:
+	$(MAKE) $(MAKESILENT) -f module/lib/CMakeFiles/struct.dir/build.make module/lib/CMakeFiles/struct.dir/build
+.PHONY : struct/fast
 
 #=============================================================================
 # Target rules for targets named communication
@@ -419,11 +484,16 @@ help:
 	@echo "... Configuration"
 	@echo "... Coordination"
 	@echo "... Execution"
+	@echo "... Graph"
+	@echo "... IO"
+	@echo "... Network"
 	@echo "... Parsing"
 	@echo "... Resource"
+	@echo "... Setting"
 	@echo "... client"
 	@echo "... communication"
 	@echo "... master"
+	@echo "... struct"
 	@echo "... utils"
 	@echo "... wm"
 	@echo "... worker"

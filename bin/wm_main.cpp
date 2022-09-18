@@ -10,7 +10,6 @@ Execution* execution = new Execution();
 ThreadPool::ThreadPool* threadPool =  new ThreadPool::ThreadPool(2);
 
 void interruptHandler(int sig){
-    delete threadPool;
     delete execution;
     delete resource;
     

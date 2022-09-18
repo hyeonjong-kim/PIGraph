@@ -1,23 +1,12 @@
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
-#include "../include/zk/zkTools.h"
+#include <iostream>
+#include "../include/io/HDFS.h"
+using namespace std;
 
 int main(){
-  zkTools zktools;
-  zhandle_t* zh = zktools.zkInit("localhost.ib:2181");
-  char* buffer = new char[512];
-  char* previousBuffer = new char[512];
-  zktools.zkWget(zh, "/PiGraph/Query/CPU/MN", buffer);
-  strcpy(previousBuffer, buffer);
-  
-  while(true){
-    if(buffer != "none"){
-      string jobPath = "/PiGraph/job/"+string(buffer);
-      cerr << jobPath << endl;
-    }
-    sleep(2);
-  }
-  
+  HDFS h;
+  h.hdfsInit("MN.ib", 54310);
+  h.hdfsOpen("/user/testfile.txt", O_WRONLY|O_CREAT);
+  char* buffer = "fdsa";
+  h.hdfsWriteFile(buffer);
   return 0;
 }

@@ -131,6 +131,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+lib/CMakeFiles/HDFS.dir/rule:
+	cd /home/hjkim/PiGraph/test && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lib/CMakeFiles/HDFS.dir/rule
+.PHONY : lib/CMakeFiles/HDFS.dir/rule
+
+# Convenience name for target.
+HDFS: lib/CMakeFiles/HDFS.dir/rule
+
+.PHONY : HDFS
+
+# fast build rule for target.
+HDFS/fast:
+	cd /home/hjkim/PiGraph/test && $(MAKE) $(MAKESILENT) -f lib/CMakeFiles/HDFS.dir/build.make lib/CMakeFiles/HDFS.dir/build
+.PHONY : HDFS/fast
+
+# Convenience name for target.
 lib/CMakeFiles/communication.dir/rule:
 	cd /home/hjkim/PiGraph/test && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lib/CMakeFiles/communication.dir/rule
 .PHONY : lib/CMakeFiles/communication.dir/rule
@@ -255,6 +270,33 @@ home/hjkim/PiGraph/src/communication/RDMA.s: home/hjkim/PiGraph/src/communicatio
 home/hjkim/PiGraph/src/communication/RDMA.cpp.s:
 	cd /home/hjkim/PiGraph/test && $(MAKE) $(MAKESILENT) -f lib/CMakeFiles/communication.dir/build.make lib/CMakeFiles/communication.dir/home/hjkim/PiGraph/src/communication/RDMA.cpp.s
 .PHONY : home/hjkim/PiGraph/src/communication/RDMA.cpp.s
+
+home/hjkim/PiGraph/src/io/HDFS.o: home/hjkim/PiGraph/src/io/HDFS.cpp.o
+
+.PHONY : home/hjkim/PiGraph/src/io/HDFS.o
+
+# target to build an object file
+home/hjkim/PiGraph/src/io/HDFS.cpp.o:
+	cd /home/hjkim/PiGraph/test && $(MAKE) $(MAKESILENT) -f lib/CMakeFiles/HDFS.dir/build.make lib/CMakeFiles/HDFS.dir/home/hjkim/PiGraph/src/io/HDFS.cpp.o
+.PHONY : home/hjkim/PiGraph/src/io/HDFS.cpp.o
+
+home/hjkim/PiGraph/src/io/HDFS.i: home/hjkim/PiGraph/src/io/HDFS.cpp.i
+
+.PHONY : home/hjkim/PiGraph/src/io/HDFS.i
+
+# target to preprocess a source file
+home/hjkim/PiGraph/src/io/HDFS.cpp.i:
+	cd /home/hjkim/PiGraph/test && $(MAKE) $(MAKESILENT) -f lib/CMakeFiles/HDFS.dir/build.make lib/CMakeFiles/HDFS.dir/home/hjkim/PiGraph/src/io/HDFS.cpp.i
+.PHONY : home/hjkim/PiGraph/src/io/HDFS.cpp.i
+
+home/hjkim/PiGraph/src/io/HDFS.s: home/hjkim/PiGraph/src/io/HDFS.cpp.s
+
+.PHONY : home/hjkim/PiGraph/src/io/HDFS.s
+
+# target to generate assembly for a file
+home/hjkim/PiGraph/src/io/HDFS.cpp.s:
+	cd /home/hjkim/PiGraph/test && $(MAKE) $(MAKESILENT) -f lib/CMakeFiles/HDFS.dir/build.make lib/CMakeFiles/HDFS.dir/home/hjkim/PiGraph/src/io/HDFS.cpp.s
+.PHONY : home/hjkim/PiGraph/src/io/HDFS.cpp.s
 
 home/hjkim/PiGraph/src/utils/ArgParsing.o: home/hjkim/PiGraph/src/utils/ArgParsing.cpp.o
 
@@ -480,6 +522,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... HDFS"
 	@echo "... communication"
 	@echo "... utils"
 	@echo "... zk"
@@ -492,6 +535,9 @@ help:
 	@echo "... home/hjkim/PiGraph/src/communication/RDMA.o"
 	@echo "... home/hjkim/PiGraph/src/communication/RDMA.i"
 	@echo "... home/hjkim/PiGraph/src/communication/RDMA.s"
+	@echo "... home/hjkim/PiGraph/src/io/HDFS.o"
+	@echo "... home/hjkim/PiGraph/src/io/HDFS.i"
+	@echo "... home/hjkim/PiGraph/src/io/HDFS.s"
 	@echo "... home/hjkim/PiGraph/src/utils/ArgParsing.o"
 	@echo "... home/hjkim/PiGraph/src/utils/ArgParsing.i"
 	@echo "... home/hjkim/PiGraph/src/utils/ArgParsing.s"

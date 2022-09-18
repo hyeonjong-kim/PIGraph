@@ -1,0 +1,2 @@
+/usr/bin/ar qc libIO.a CMakeFiles/IO.dir/home/hjkim/PiGraph/src/modules/IO.cpp.o
+/usr/bin/ranlib libIO.a

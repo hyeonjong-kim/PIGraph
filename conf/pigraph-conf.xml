@@ -2,7 +2,7 @@
 <configuration>
 	<property>
 		<name>workers</name>
-		<value>MN,SN01,SN02,SN03,SN04,SN05,SN06</value>
+		<value>SN01,SN02,SN03</value>
 	</property>
 	<property>
 		<name>mutex</name>
@@ -14,7 +14,7 @@
 	</property>
 	<property>
 		<name>HDFS</name>
-		<value>114.70.235.40:10100</value>
+		<value>MN.ib:54310</value>
 	</property>
 	<property>
 		<name>zk</name>

@@ -6,23 +6,27 @@
 
 #IncludeRegexTransform: 
 
-/home/hjkim/PiGraph/include/zk/zkTools.h
+/home/hjkim/PiGraph/hadoop-2.10.1/include/hdfs.h
+errno.h
+-
+fcntl.h
+-
+stdint.h
+-
+time.h
+-
+
+/home/hjkim/PiGraph/include/io/HDFS.h
 iostream
 -
-zookeeper/zookeeper.h
--
-unistd.h
--
+../../hadoop-2.10.1/include/hdfs.h
+/home/hjkim/PiGraph/hadoop-2.10.1/include/hdfs.h
 string.h
 -
 
 /home/hjkim/PiGraph/test/main.cpp
-stdio.h
+iostream
 -
-string.h
--
-unistd.h
--
-../include/zk/zkTools.h
-/home/hjkim/PiGraph/include/zk/zkTools.h
+../include/io/HDFS.h
+/home/hjkim/PiGraph/include/io/HDFS.h
 

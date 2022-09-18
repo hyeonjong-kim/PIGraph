@@ -75,17 +75,6 @@ CMAKE_BINARY_DIR = /home/hjkim/PiGraph/bin
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/local/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -96,6 +85,17 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/local/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -131,49 +131,19 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-module/CMakeFiles/Execution.dir/rule:
-	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Execution.dir/rule
-.PHONY : module/CMakeFiles/Execution.dir/rule
+module/CMakeFiles/Communication.dir/rule:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Communication.dir/rule
+.PHONY : module/CMakeFiles/Communication.dir/rule
 
 # Convenience name for target.
-Execution: module/CMakeFiles/Execution.dir/rule
+Communication: module/CMakeFiles/Communication.dir/rule
 
-.PHONY : Execution
+.PHONY : Communication
 
 # fast build rule for target.
-Execution/fast:
-	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Execution.dir/build.make module/CMakeFiles/Execution.dir/build
-.PHONY : Execution/fast
-
-# Convenience name for target.
-module/CMakeFiles/Resource.dir/rule:
-	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Resource.dir/rule
-.PHONY : module/CMakeFiles/Resource.dir/rule
-
-# Convenience name for target.
-Resource: module/CMakeFiles/Resource.dir/rule
-
-.PHONY : Resource
-
-# fast build rule for target.
-Resource/fast:
-	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Resource.dir/build.make module/CMakeFiles/Resource.dir/build
-.PHONY : Resource/fast
-
-# Convenience name for target.
-module/CMakeFiles/Coordination.dir/rule:
-	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Coordination.dir/rule
-.PHONY : module/CMakeFiles/Coordination.dir/rule
-
-# Convenience name for target.
-Coordination: module/CMakeFiles/Coordination.dir/rule
-
-.PHONY : Coordination
-
-# fast build rule for target.
-Coordination/fast:
-	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Coordination.dir/build.make module/CMakeFiles/Coordination.dir/build
-.PHONY : Coordination/fast
+Communication/fast:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Communication.dir/build.make module/CMakeFiles/Communication.dir/build
+.PHONY : Communication/fast
 
 # Convenience name for target.
 module/CMakeFiles/Configuration.dir/rule:
@@ -191,19 +161,19 @@ Configuration/fast:
 .PHONY : Configuration/fast
 
 # Convenience name for target.
-module/CMakeFiles/Communication.dir/rule:
-	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Communication.dir/rule
-.PHONY : module/CMakeFiles/Communication.dir/rule
+module/CMakeFiles/Coordination.dir/rule:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Coordination.dir/rule
+.PHONY : module/CMakeFiles/Coordination.dir/rule
 
 # Convenience name for target.
-Communication: module/CMakeFiles/Communication.dir/rule
+Coordination: module/CMakeFiles/Coordination.dir/rule
 
-.PHONY : Communication
+.PHONY : Coordination
 
 # fast build rule for target.
-Communication/fast:
-	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Communication.dir/build.make module/CMakeFiles/Communication.dir/build
-.PHONY : Communication/fast
+Coordination/fast:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Coordination.dir/build.make module/CMakeFiles/Coordination.dir/build
+.PHONY : Coordination/fast
 
 # Convenience name for target.
 module/CMakeFiles/Parsing.dir/rule:
@@ -219,6 +189,96 @@ Parsing: module/CMakeFiles/Parsing.dir/rule
 Parsing/fast:
 	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Parsing.dir/build.make module/CMakeFiles/Parsing.dir/build
 .PHONY : Parsing/fast
+
+# Convenience name for target.
+module/CMakeFiles/Resource.dir/rule:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Resource.dir/rule
+.PHONY : module/CMakeFiles/Resource.dir/rule
+
+# Convenience name for target.
+Resource: module/CMakeFiles/Resource.dir/rule
+
+.PHONY : Resource
+
+# fast build rule for target.
+Resource/fast:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Resource.dir/build.make module/CMakeFiles/Resource.dir/build
+.PHONY : Resource/fast
+
+# Convenience name for target.
+module/CMakeFiles/IO.dir/rule:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/IO.dir/rule
+.PHONY : module/CMakeFiles/IO.dir/rule
+
+# Convenience name for target.
+IO: module/CMakeFiles/IO.dir/rule
+
+.PHONY : IO
+
+# fast build rule for target.
+IO/fast:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/IO.dir/build.make module/CMakeFiles/IO.dir/build
+.PHONY : IO/fast
+
+# Convenience name for target.
+module/CMakeFiles/Execution.dir/rule:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Execution.dir/rule
+.PHONY : module/CMakeFiles/Execution.dir/rule
+
+# Convenience name for target.
+Execution: module/CMakeFiles/Execution.dir/rule
+
+.PHONY : Execution
+
+# fast build rule for target.
+Execution/fast:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Execution.dir/build.make module/CMakeFiles/Execution.dir/build
+.PHONY : Execution/fast
+
+# Convenience name for target.
+module/CMakeFiles/Setting.dir/rule:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Setting.dir/rule
+.PHONY : module/CMakeFiles/Setting.dir/rule
+
+# Convenience name for target.
+Setting: module/CMakeFiles/Setting.dir/rule
+
+.PHONY : Setting
+
+# fast build rule for target.
+Setting/fast:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Setting.dir/build.make module/CMakeFiles/Setting.dir/build
+.PHONY : Setting/fast
+
+# Convenience name for target.
+module/CMakeFiles/Graph.dir/rule:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Graph.dir/rule
+.PHONY : module/CMakeFiles/Graph.dir/rule
+
+# Convenience name for target.
+Graph: module/CMakeFiles/Graph.dir/rule
+
+.PHONY : Graph
+
+# fast build rule for target.
+Graph/fast:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Graph.dir/build.make module/CMakeFiles/Graph.dir/build
+.PHONY : Graph/fast
+
+# Convenience name for target.
+module/CMakeFiles/Network.dir/rule:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Network.dir/rule
+.PHONY : module/CMakeFiles/Network.dir/rule
+
+# Convenience name for target.
+Network: module/CMakeFiles/Network.dir/rule
+
+.PHONY : Network
+
+# fast build rule for target.
+Network/fast:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Network.dir/build.make module/CMakeFiles/Network.dir/build
+.PHONY : Network/fast
 
 home/hjkim/PiGraph/src/modules/Communication.o: home/hjkim/PiGraph/src/modules/Communication.cpp.o
 
@@ -328,6 +388,33 @@ home/hjkim/PiGraph/src/modules/Execution.cpp.s:
 	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Execution.dir/build.make module/CMakeFiles/Execution.dir/home/hjkim/PiGraph/src/modules/Execution.cpp.s
 .PHONY : home/hjkim/PiGraph/src/modules/Execution.cpp.s
 
+home/hjkim/PiGraph/src/modules/IO.o: home/hjkim/PiGraph/src/modules/IO.cpp.o
+
+.PHONY : home/hjkim/PiGraph/src/modules/IO.o
+
+# target to build an object file
+home/hjkim/PiGraph/src/modules/IO.cpp.o:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/IO.dir/build.make module/CMakeFiles/IO.dir/home/hjkim/PiGraph/src/modules/IO.cpp.o
+.PHONY : home/hjkim/PiGraph/src/modules/IO.cpp.o
+
+home/hjkim/PiGraph/src/modules/IO.i: home/hjkim/PiGraph/src/modules/IO.cpp.i
+
+.PHONY : home/hjkim/PiGraph/src/modules/IO.i
+
+# target to preprocess a source file
+home/hjkim/PiGraph/src/modules/IO.cpp.i:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/IO.dir/build.make module/CMakeFiles/IO.dir/home/hjkim/PiGraph/src/modules/IO.cpp.i
+.PHONY : home/hjkim/PiGraph/src/modules/IO.cpp.i
+
+home/hjkim/PiGraph/src/modules/IO.s: home/hjkim/PiGraph/src/modules/IO.cpp.s
+
+.PHONY : home/hjkim/PiGraph/src/modules/IO.s
+
+# target to generate assembly for a file
+home/hjkim/PiGraph/src/modules/IO.cpp.s:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/IO.dir/build.make module/CMakeFiles/IO.dir/home/hjkim/PiGraph/src/modules/IO.cpp.s
+.PHONY : home/hjkim/PiGraph/src/modules/IO.cpp.s
+
 home/hjkim/PiGraph/src/modules/Parsing.o: home/hjkim/PiGraph/src/modules/Parsing.cpp.o
 
 .PHONY : home/hjkim/PiGraph/src/modules/Parsing.o
@@ -382,6 +469,39 @@ home/hjkim/PiGraph/src/modules/Resource.cpp.s:
 	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Resource.dir/build.make module/CMakeFiles/Resource.dir/home/hjkim/PiGraph/src/modules/Resource.cpp.s
 .PHONY : home/hjkim/PiGraph/src/modules/Resource.cpp.s
 
+home/hjkim/PiGraph/src/modules/Setting.o: home/hjkim/PiGraph/src/modules/Setting.cpp.o
+
+.PHONY : home/hjkim/PiGraph/src/modules/Setting.o
+
+# target to build an object file
+home/hjkim/PiGraph/src/modules/Setting.cpp.o:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Setting.dir/build.make module/CMakeFiles/Setting.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Graph.dir/build.make module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Network.dir/build.make module/CMakeFiles/Network.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o
+.PHONY : home/hjkim/PiGraph/src/modules/Setting.cpp.o
+
+home/hjkim/PiGraph/src/modules/Setting.i: home/hjkim/PiGraph/src/modules/Setting.cpp.i
+
+.PHONY : home/hjkim/PiGraph/src/modules/Setting.i
+
+# target to preprocess a source file
+home/hjkim/PiGraph/src/modules/Setting.cpp.i:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Setting.dir/build.make module/CMakeFiles/Setting.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.i
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Graph.dir/build.make module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.i
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Network.dir/build.make module/CMakeFiles/Network.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.i
+.PHONY : home/hjkim/PiGraph/src/modules/Setting.cpp.i
+
+home/hjkim/PiGraph/src/modules/Setting.s: home/hjkim/PiGraph/src/modules/Setting.cpp.s
+
+.PHONY : home/hjkim/PiGraph/src/modules/Setting.s
+
+# target to generate assembly for a file
+home/hjkim/PiGraph/src/modules/Setting.cpp.s:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Setting.dir/build.make module/CMakeFiles/Setting.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.s
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Graph.dir/build.make module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.s
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Network.dir/build.make module/CMakeFiles/Network.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.s
+.PHONY : home/hjkim/PiGraph/src/modules/Setting.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -394,8 +514,12 @@ help:
 	@echo "... Configuration"
 	@echo "... Coordination"
 	@echo "... Execution"
+	@echo "... Graph"
+	@echo "... IO"
+	@echo "... Network"
 	@echo "... Parsing"
 	@echo "... Resource"
+	@echo "... Setting"
 	@echo "... home/hjkim/PiGraph/src/modules/Communication.o"
 	@echo "... home/hjkim/PiGraph/src/modules/Communication.i"
 	@echo "... home/hjkim/PiGraph/src/modules/Communication.s"
@@ -408,12 +532,18 @@ help:
 	@echo "... home/hjkim/PiGraph/src/modules/Execution.o"
 	@echo "... home/hjkim/PiGraph/src/modules/Execution.i"
 	@echo "... home/hjkim/PiGraph/src/modules/Execution.s"
+	@echo "... home/hjkim/PiGraph/src/modules/IO.o"
+	@echo "... home/hjkim/PiGraph/src/modules/IO.i"
+	@echo "... home/hjkim/PiGraph/src/modules/IO.s"
 	@echo "... home/hjkim/PiGraph/src/modules/Parsing.o"
 	@echo "... home/hjkim/PiGraph/src/modules/Parsing.i"
 	@echo "... home/hjkim/PiGraph/src/modules/Parsing.s"
 	@echo "... home/hjkim/PiGraph/src/modules/Resource.o"
 	@echo "... home/hjkim/PiGraph/src/modules/Resource.i"
 	@echo "... home/hjkim/PiGraph/src/modules/Resource.s"
+	@echo "... home/hjkim/PiGraph/src/modules/Setting.o"
+	@echo "... home/hjkim/PiGraph/src/modules/Setting.i"
+	@echo "... home/hjkim/PiGraph/src/modules/Setting.s"
 .PHONY : help
 
 

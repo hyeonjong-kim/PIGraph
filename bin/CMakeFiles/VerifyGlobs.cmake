@@ -14,6 +14,17 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   file(TOUCH_NOCREATE "/home/hjkim/PiGraph/bin/CMakeFiles/cmake.verify_globs")
 endif()
 
+# SRC_FILES4 at /home/hjkim/PiGraph/lib/CMakeLists.txt:32 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/hjkim/PiGraph/lib/../src/struct/*.cpp")
+set(OLD_GLOB
+  "/home/hjkim/PiGraph/lib/../src/struct/Edge.cpp"
+  "/home/hjkim/PiGraph/lib/../src/struct/Vertex.cpp"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "/home/hjkim/PiGraph/bin/CMakeFiles/cmake.verify_globs")
+endif()
+
 # SRC_FILES1 at /home/hjkim/PiGraph/lib/CMakeLists.txt:4 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/hjkim/PiGraph/lib/../src/utils/*.cpp")
 set(OLD_GLOB

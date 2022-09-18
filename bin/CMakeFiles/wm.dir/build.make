@@ -100,8 +100,6 @@ wm: CMakeFiles/wm.dir/wm_main.cpp.o
 wm: CMakeFiles/wm.dir/build.make
 wm: module/libResource.a
 wm: module/libExecution.a
-wm: module/libResource.a
-wm: module/libExecution.a
 wm: module/lib/libzk.a
 wm: CMakeFiles/wm.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable wm"

@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/hjkim/PiGraph/hadoop-2.10.1/include/hdfs.h
+errno.h
+-
+fcntl.h
+-
+stdint.h
+-
+time.h
+-
+
+/home/hjkim/PiGraph/include/io/HDFS.h
+iostream
+-
+../../hadoop-2.10.1/include/hdfs.h
+/home/hjkim/PiGraph/hadoop-2.10.1/include/hdfs.h
+string.h
+-
+
+/home/hjkim/PiGraph/src/io/HDFS.cpp
+../../include/io/HDFS.h
+/home/hjkim/PiGraph/include/io/HDFS.h
+

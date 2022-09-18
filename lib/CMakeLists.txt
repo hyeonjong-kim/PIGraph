@@ -26,5 +26,26 @@ file(GLOB_RECURSE SRC_FILES3 CONFIGURE_DEPENDS
 
 add_library(communication STATIC ${SRC_FILES3})
 target_include_directories(communication PUBLIC ../include/communication)
+target_link_libraries(communication PRIVATE pthread ibverbs)
+add_compile_options(-O3 -std=c++17)
+
+file(GLOB_RECURSE SRC_FILES4 CONFIGURE_DEPENDS
+  ../src/struct/*.cpp
+)
+
+add_library(struct STATIC ${SRC_FILES4})
+target_include_directories(struct PUBLIC ../include/struct)
 
 add_compile_options(-O3 -std=c++17)
+
+
+#file(GLOB_RECURSE SRC_FILES4 CONFIGURE_DEPENDS
+#  ../src/io/*.cpp
+#)
+
+#add_library(HDFS STATIC ${SRC_FILES4})
+#target_include_directories(HDFS PUBLIC ../include/io)
+#target_include_directories(HDFS PUBLIC /home/hjkim/PiGraph/hadoop-2.10.1/include)
+#target_link_libraries(HDFS PRIVATE /home/hjkim/PiGraph/hadoop-2.10.1/lib/native/libhdfs.so)
+
+#add_compile_options(-O3 -std=c++17)

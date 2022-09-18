@@ -10,12 +10,13 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "/home/hjkim/PiGraph/lib/../include/zk"
+  "/home/hjkim/PiGraph/lib/../include/io"
+  "/home/hjkim/PiGraph/hadoop-2.10.1/include"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/hjkim/PiGraph/test/lib/CMakeFiles/zk.dir/DependInfo.cmake"
+  "/home/hjkim/PiGraph/test/lib/CMakeFiles/HDFS.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libstruct.a CMakeFiles/struct.dir/home/hjkim/PiGraph/src/struct/Edge.cpp.o CMakeFiles/struct.dir/home/hjkim/PiGraph/src/struct/Vertex.cpp.o
+/usr/bin/ranlib libstruct.a

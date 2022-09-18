@@ -1,1 +1,1 @@
-/usr/local/bin/c++ CMakeFiles/wm.dir/wm_main.cpp.o -o wm  module/libResource.a module/libExecution.a -lpthread module/libResource.a module/libExecution.a -lpthread module/lib/libzk.a -lzookeeper_mt 
+/usr/local/bin/c++ CMakeFiles/wm.dir/wm_main.cpp.o -o wm  module/libResource.a module/libExecution.a -lpthread module/lib/libzk.a -lzookeeper_mt 

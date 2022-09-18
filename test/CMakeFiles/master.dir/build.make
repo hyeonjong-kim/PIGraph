@@ -98,7 +98,8 @@ master_EXTERNAL_OBJECTS =
 
 master: CMakeFiles/master.dir/main.cpp.o
 master: CMakeFiles/master.dir/build.make
-master: lib/libzk.a
+master: lib/libHDFS.a
+master: /home/hjkim/PiGraph/hadoop-2.10.1/lib/native/libhdfs.so
 master: CMakeFiles/master.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hjkim/PiGraph/test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable master"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/master.dir/link.txt --verbose=$(VERBOSE)

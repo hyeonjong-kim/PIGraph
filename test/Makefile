@@ -144,6 +144,19 @@ master/fast:
 .PHONY : master/fast
 
 #=============================================================================
+# Target rules for targets named HDFS
+
+# Build rule for target.
+HDFS: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 HDFS
+.PHONY : HDFS
+
+# fast build rule for target.
+HDFS/fast:
+	$(MAKE) $(MAKESILENT) -f lib/CMakeFiles/HDFS.dir/build.make lib/CMakeFiles/HDFS.dir/build
+.PHONY : HDFS/fast
+
+#=============================================================================
 # Target rules for targets named communication
 
 # Build rule for target.
@@ -217,6 +230,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... HDFS"
 	@echo "... communication"
 	@echo "... master"
 	@echo "... utils"

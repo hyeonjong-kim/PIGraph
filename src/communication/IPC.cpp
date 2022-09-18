@@ -7,11 +7,12 @@ int IPC::createShm(key_t key){
 
 bool IPC::setData(int shmId, string data){
     char *shm = (char*) shmat(shmId,(void*)0,0);
+    
     if(shm == (char*) -1){
         perror("shmat fild");
         return false;
     }
-
+    cerr << data << endl;
     sprintf(shm, "%s", (char*) data.c_str());
     this->detachShm(shm);
     return true;

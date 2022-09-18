@@ -48,6 +48,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/master.dir/DependInfo.cmake"
+  "lib/CMakeFiles/HDFS.dir/DependInfo.cmake"
   "lib/CMakeFiles/communication.dir/DependInfo.cmake"
   "lib/CMakeFiles/zk.dir/DependInfo.cmake"
   "lib/CMakeFiles/utils.dir/DependInfo.cmake"

@@ -298,6 +298,7 @@ bool zkTools::zkGetChildern(zhandle_t *zh, char* path, String_vector* strings){
 		cerr << "[ERROR]Failed to marshall a request; possibly, out of memory " << path << endl;
 		return false;
 	}
-	
+
+	cerr << "[ERROR]FAIL TO GET CHILDERN:: "<< path << endl;
 	return false;
 }
