@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <map>
 #include <mutex>
+#include <vector>
 
 #include "../communication/IPoIB.h"
 #include "../communication/RDMA.h"
@@ -19,7 +20,7 @@ using namespace std;
 class Network{
     private:
         string networkType;
-        string hostInfo;
+        vector<string> hostInfo;
         int thisHostNumber;
         int numHost;
         int port;
@@ -39,7 +40,7 @@ class Network{
         Network(){};
         ~Network();
 
-        void setNetwork(string _networkType, int _numHost, string _hostInfo, int _port, map<int, int>* _recvPos, mutex* _mu, int _numMu);
+        void setNetwork(string _networkType, int _numHost, vector<string> _hostInfo, int _port, map<int, int>* _recvPos, mutex* _mu, int _numMu);
         bool setIPoIB();
         bool setRDMA();
         void sendMsg_sum(int vertexID, double value);
@@ -56,7 +57,7 @@ class Network{
     return {};
 }
 
-void Network::setNetwork(string _networkType, int _numHost, string _hostInfo, int _port, map<int, int>* _recvPos, mutex* _mu, int _numMu){
+void Network::setNetwork(string _networkType, int _numHost, vector<string> _hostInfo, int _port, map<int, int>* _recvPos, mutex* _mu, int _numMu){
     this->networkType =  _networkType;
     this->numHost = _numHost;
     this->externalBucket = _numHost;
@@ -89,21 +90,22 @@ void Network::setNetwork(string _networkType, int _numHost, string _hostInfo, in
 }
 
 bool Network::setIPoIB(){
-    vector<string> hosts = tools.split_simple(this->hostInfo, ',');
     
     char thisHostName[256];
     gethostname(thisHostName, 256);
-    for (size_t i = 0; i < hosts.size(); i++){
-        if(string(thisHostName).compare(hosts[i]) == 0){
+    for (size_t i = 0; i < hostInfo.size(); i++){
+        if(string(thisHostName).compare(hostInfo[i]) == 0){
             break;
         }
         this->thisHostNumber++;
     }
     vector<char*> serverAddr(this->numHost);
     std::vector<std::future<void>> futures;
-    for(size_t i = 0; i < hosts.size(); i++){
+
+    for(size_t i = 0; i < hostInfo.size(); i++){
+        
         if(i != this->thisHostNumber){
-            serverAddr[i] = HostToIp(hosts[i]+".ib");
+            serverAddr[i] = HostToIp(hostInfo[i]+".ib");
             this->ipoib[i]->setInfo(i, this->port, serverAddr[i], this->numHost, this->port+this->thisHostNumber);
             this->ipoib[i]->setSocket();
             auto f = [this, i](){
@@ -118,8 +120,8 @@ bool Network::setIPoIB(){
         f_.wait();
     }
     futures.clear();
-   
-    for (size_t i = 0; i < hosts.size(); i++){
+
+    for (size_t i = 0; i < hostInfo.size(); i++){
         if(i != this->thisHostNumber){
             auto f = [this, i](){
                 this->ipoib[i]->sendCheckMsg();

@@ -30,10 +30,9 @@ int main(int argc, const char *argv[]){
     string readFile = io->readHDFSFile((char*)(setting->filePath.c_str()), O_RDONLY);
     graph->setInfo(0, 1, 0);
     graph->createGraph(readFile);
-    network->setNetwork(setting->networkType, 1, setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex);
-    cerr << "flag 1" << endl;
-    processing->setInfo(graph, network, setting->superstep);
-    processing->execute();
+    network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex);
+    //processing->setInfo(graph, network, setting->superstep);
+    //processing->execute();
     cerr << "working!!!!!" << endl;
     /*
     string readFile;

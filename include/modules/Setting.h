@@ -26,7 +26,7 @@ class Setting{
         string HDFS_host;
         int HDFS_port;
         string processingUnit;
-        string workers;
+        vector<string> workers;
         string networkType;
         mutex* mu;
 
@@ -95,9 +95,10 @@ bool Setting::argParse(int argc, const char *argv[]){
     this->filePath = this->parser->get<string>("f");
     this->query = this->parser->get<string>("q");
     this->processingUnit = this->parser->get<string>("u");
-    this->workers = this->parser->get<string>("w");
+    string worker = this->parser->get<string>("w");
+    this->workers = tools.split_simple(worker, ',');
     this->networkType = this->parser->get<string>("n");
-
+    
     string HDFS = this->parser->get<string>("H");
     vector<string> split_HDFS = tools.split_simple(HDFS, ':');
     this->HDFS_host = split_HDFS[0];
