@@ -25,12 +25,13 @@ int main(int argc, const char *argv[]){
     
 
     setting->argParse(argc, argv);
-    IO* io = new IO;
+    IO* io = new IO();
     io->setHDFSInfo((char*)(setting->HDFS_host.c_str()), setting->HDFS_port);
     string readFile = io->readHDFSFile((char*)(setting->filePath.c_str()), O_RDONLY);
     graph->setInfo(0, 1, 0);
     graph->createGraph(readFile);
     network->setNetwork(setting->networkType, 1, setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex);
+    cerr << "flag 1" << endl;
     processing->setInfo(graph, network, setting->superstep);
     processing->execute();
     cerr << "working!!!!!" << endl;

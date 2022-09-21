@@ -90,6 +90,7 @@ void Network::setNetwork(string _networkType, int _numHost, string _hostInfo, in
 
 bool Network::setIPoIB(){
     vector<string> hosts = tools.split_simple(this->hostInfo, ',');
+    
     char thisHostName[256];
     gethostname(thisHostName, 256);
     for (size_t i = 0; i < hosts.size(); i++){
@@ -99,11 +100,10 @@ bool Network::setIPoIB(){
         this->thisHostNumber++;
     }
     vector<char*> serverAddr(this->numHost);
-
     std::vector<std::future<void>> futures;
     for(size_t i = 0; i < hosts.size(); i++){
         if(i != this->thisHostNumber){
-            serverAddr[i] = HostToIp(hosts[i]);
+            serverAddr[i] = HostToIp(hosts[i]+".ib");
             this->ipoib[i]->setInfo(i, this->port, serverAddr[i], this->numHost, this->port+this->thisHostNumber);
             this->ipoib[i]->setSocket();
             auto f = [this, i](){
