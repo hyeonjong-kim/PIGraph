@@ -97,6 +97,8 @@ bool Setting::argParse(int argc, const char *argv[]){
     this->processingUnit = this->parser->get<string>("u");
     string worker = this->parser->get<string>("w");
     this->workers = tools.split_simple(worker, ',');
+
+    
     this->networkType = this->parser->get<string>("n");
     
     string HDFS = this->parser->get<string>("H");
