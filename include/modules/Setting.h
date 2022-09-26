@@ -29,6 +29,7 @@ class Setting{
         vector<string> workers;
         string networkType;
         mutex* mu;
+        int thisHostNumber = 0;
 
         Setting(){this->parser = new ArgumentParser("Pigraph_Worker", "Pigraph Worker");}
         bool argParse(int argc, const char *argv[]);
@@ -102,7 +103,16 @@ bool Setting::argParse(int argc, const char *argv[]){
     vector<string> split_HDFS = tools.split_simple(HDFS, ':');
     this->HDFS_host = split_HDFS[0];
     this->HDFS_port = stoi(split_HDFS[1]);
-
+    
+    char thisHostName[256];
+    gethostname(thisHostName, 256);
+    for (size_t i = 0; i < workers.size(); i++){
+        if(string(thisHostName).compare(workers[i]) == 0){
+            break;
+        }
+        this->thisHostNumber++;
+    }
+    
     return true;
 }
 

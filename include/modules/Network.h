@@ -40,7 +40,7 @@ class Network{
         Network(){};
         ~Network();
 
-        void setNetwork(string _networkType, int _numHost, vector<string> _hostInfo, int _port, map<int, int>* _recvPos, mutex* _mu, int _numMu);
+        void setNetwork(string _networkType, int _numHost, vector<string> _hostInfo, int _port, map<int, int>* _recvPos, mutex* _mu, int _numMu, int thisHostNumber);
         bool setIPoIB();
         bool setRDMA();
         void sendMsg_sum(int vertexID, double value);
@@ -57,7 +57,7 @@ class Network{
     return {};
 }
 
-void Network::setNetwork(string _networkType, int _numHost, vector<string> _hostInfo, int _port, map<int, int>* _recvPos, mutex* _mu, int _numMu){
+void Network::setNetwork(string _networkType, int _numHost, vector<string> _hostInfo, int _port, map<int, int>* _recvPos, mutex* _mu, int _numMu, int thisHostNumber){
     this->networkType =  _networkType;
     this->numHost = _numHost;
     this->externalBucket = _numHost;
@@ -66,7 +66,7 @@ void Network::setNetwork(string _networkType, int _numHost, vector<string> _host
     this->numMu = _numMu; 
     this->recvPos = _recvPos;
     this->port = _port;
-    
+    this->thisHostNumber = thisHostNumber;
     this->ipoib = new IPoIB*[numHost];
     this->rdma = new RDMA*[numHost];
     this->recvMsg = new double*[this->numHost];
@@ -88,15 +88,6 @@ void Network::setNetwork(string _networkType, int _numHost, vector<string> _host
 }
 
 bool Network::setIPoIB(){
-    
-    char thisHostName[256];
-    gethostname(thisHostName, 256);
-    for (size_t i = 0; i < hostInfo.size(); i++){
-        if(string(thisHostName).compare(hostInfo[i]) == 0){
-            break;
-        }
-        this->thisHostNumber++;
-    }
     vector<char*> serverAddr(this->numHost);
     std::vector<std::future<void>> futures;
 
