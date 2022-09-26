@@ -77,10 +77,8 @@ void Network::setNetwork(string _networkType, int _numHost, vector<string> _host
 
     this->connectionThreadPool =  new ThreadPool::ThreadPool(this->numHost);
     for (size_t i = 0; i < this->numHost; i++){
-        if(i != this->thisHostNumber){
-            this->ipoib[i] = new IPoIB();
-            this->rdma[i] = new RDMA();
-        }
+        this->ipoib[i] = new IPoIB();
+        this->rdma[i] = new RDMA();
     }
 
     if(this->networkType == "rdma"){
@@ -103,7 +101,6 @@ bool Network::setIPoIB(){
     std::vector<std::future<void>> futures;
 
     for(size_t i = 0; i < hostInfo.size(); i++){
-        
         if(i != this->thisHostNumber){
             serverAddr[i] = HostToIp(hostInfo[i]+".ib");
             this->ipoib[i]->setInfo(i, this->port, serverAddr[i], this->numHost, this->port+this->thisHostNumber);

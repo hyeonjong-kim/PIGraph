@@ -7,10 +7,10 @@ IPoIB::IPoIB(int socket_num, int port, char _server_addr[], int num_host, int _c
     this->client_port = _client_port;
 }
 
-void IPoIB::setInfo(int socket_num, int port, char* _server_addr, int num_host, int _client_port){
-    this->port = port + socket_num;
+void IPoIB::setInfo(int socket_num, int _port, char* _server_addr, int _num_host, int _client_port){
+    this->port = _port + socket_num;
     this->server_addr = _server_addr;
-    this->num_host = num_host;
+    this->num_host = _num_host;
     this->client_port = _client_port;
 }
 

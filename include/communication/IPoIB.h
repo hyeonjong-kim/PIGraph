@@ -44,7 +44,7 @@ class IPoIB{
         
         
         
-        void setInfo(int socket_num, int port, char _server_addr[], int num_host, int _client_port);
+        void setInfo(int socket_num, int _port, char _server_addr[], int _num_host, int _client_port);
         
         void setSocket();
         void connectSocket();
