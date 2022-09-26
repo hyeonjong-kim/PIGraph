@@ -32,7 +32,7 @@ class Network{
         double* messageBuffer;
         IPoIB** ipoib;
         RDMA** rdma;
-        
+        int count = 0;
         Tools tools;
         ThreadPool::ThreadPool* connectionThreadPool;
 
@@ -178,6 +178,7 @@ bool Network::setRDMA(){
 void Network::sendMsg_sum(int vertexID, double value){
     if(this->networkType == "rdma"){
         if(vertexID == numeric_limits<int>::max()){
+            cerr << this->count << endl;
             for (size_t i = 0; i < this->numHost; i++){
                 if(i != this->thisHostNumber){
                     this->rdma[i]->sendMsg();   
@@ -216,6 +217,7 @@ void Network::sendMsg_sum(int vertexID, double value){
             }
         }
         else{
+            this->count++;
             int dstNum = this->externalHashFunction(vertexID);
             if(dstNum == this->thisHostNumber){
                 int recvIdx = this->recvPos->find(vertexID)->second;

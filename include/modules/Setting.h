@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <mutex>
+#include <unistd.h>
 
 #include "../utils/ArgParsing.h"
 #include "../utils/Tools.h"
@@ -112,7 +113,7 @@ bool Setting::argParse(int argc, const char *argv[]){
         }
         this->thisHostNumber++;
     }
-    
+
     return true;
 }
 
