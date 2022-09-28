@@ -21,8 +21,7 @@ class Processing{
         double* msgBuffer;
         int iteration;
         int numThread;
-        struct timeval start_query = {};
-        struct timeval end_query = {};
+        
 
     public:
         Processing(){}
@@ -68,7 +67,6 @@ void Processing::execute(){
     int end;
     
     std::vector<std::future<void>> futures;
-    gettimeofday(&this->start_query, NULL);
     for (size_t i = 0; i < this->iteration; i++){
         cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
         start = 0;
@@ -102,9 +100,6 @@ void Processing::execute(){
         this->network->sendMsg_sum(numeric_limits<int>::max(), 0.0);
         this->superstep++;
     }
-    gettimeofday(&this->end_query, NULL);
-    double time_query = end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
-    cerr << "Toal graph processing time: " << time_query << endl;
 }
 
 #endif

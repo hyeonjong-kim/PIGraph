@@ -52,14 +52,16 @@ class Network{
 
         int externalHashFunction(int x){return (x % externalBucket);}
         int internalHashFunction(int x){return (x % internalBucket);}
+
+        char* HostToIp(string host) {
+            hostent* hostname = gethostbyname(host.c_str());
+            if(hostname)
+                return inet_ntoa(**(in_addr**)hostname->h_addr_list);
+            return {};
+        }
 };
 
- char* HostToIp(string host) {
-    hostent* hostname = gethostbyname(host.c_str());
-    if(hostname)
-        return inet_ntoa(**(in_addr**)hostname->h_addr_list);
-    return {};
-}
+
 
 void Network::setNetwork(string _networkType, int _numHost, vector<string> _hostInfo, int _port, map<int, int>* _recvPos, mutex* _mu, int _numMu, int thisHostNumber, double* msgBuffer){
     this->networkType =  _networkType;
@@ -94,9 +96,8 @@ void Network::setNetwork(string _networkType, int _numHost, vector<string> _host
 }
 
 bool Network::setIPoIB(){
-    vector<char*> serverAddr(this->numHost);
     std::vector<std::future<void>> futures;
-
+    vector<char*> serverAddr(this->numHost);
     for(size_t i = 0; i < hostInfo.size(); i++){
         if(i != this->thisHostNumber){
             serverAddr[i] = HostToIp(hostInfo[i]+".ib");
@@ -285,6 +286,7 @@ void Network::sendMsg_sum(int vertexID, double value){
                             sprintf(tmp, "%0.16f", send_msg[j]);
                             msg += string(tmp) + "\n";
                         }
+                        fill_n(send_msg, this->ipoib[i].getSendMsgBufSize(), 0.0);
                         this->ipoib[i].sendMsg(msg); 
                         this->ipoib[i].sendMsg("Q");
                         msg = ipoib[i].readMsg();
@@ -316,6 +318,11 @@ void Network::sendMsg_sum(int vertexID, double value){
                     futures.emplace_back(this->connectionThreadPool->EnqueueJob(f));
                 }
             }
+            
+            for(auto& f_ : futures){
+                f_.wait();
+            }
+            futures.clear();
 
             fill_n(this->messageBuffer, this->recvPos->size(), 0.0);
             map<int,int>::iterator iter;
@@ -329,16 +336,17 @@ void Network::sendMsg_sum(int vertexID, double value){
                 fill_n(this->recvMsg[i], this->recvPos->size(), 0.0);
             }
         }
-        int dstNum = this->externalHashFunction(vertexID);
-        
-        if(dstNum == this->thisHostNumber){
-            this->mu[this->internalHashFunction(vertexID)].lock();
-            int recvIdx = this->recvPos->find(vertexID)->second;
-            this->recvMsg[dstNum][recvIdx] += value;
-            this->mu[this->internalHashFunction(vertexID)].unlock();
-        }
         else{
-            this->ipoib[dstNum].combinerSum(vertexID, value);
+            int dstNum = this->externalHashFunction(vertexID);
+            if(dstNum == this->thisHostNumber){
+                this->mu[this->internalHashFunction(vertexID)].lock();
+                int recvIdx = this->recvPos->find(vertexID)->second;
+                this->recvMsg[dstNum][recvIdx] += value;
+                this->mu[this->internalHashFunction(vertexID)].unlock();
+            }
+            else{
+                this->ipoib[dstNum].combinerSum(vertexID, value);
+            }
         }
     }
 }
