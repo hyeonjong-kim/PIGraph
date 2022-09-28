@@ -10,6 +10,12 @@
 #include "../include/modules/Network.h"
 #include "../include/modules/Processing.h"
 
+#define pp pair<int, double>
+bool cmp(const pp& a, const pp& b) {
+	if (a.second == b.second) return a.first < b.first;
+	return a.second > b.second;
+}
+
 using namespace std;
 
 struct mesg_buffer {
@@ -30,9 +36,21 @@ int main(int argc, const char *argv[]){
     string readFile = io->readHDFSFile((char*)(setting->filePath.c_str()), O_RDONLY);
     graph->setInfo(setting->partitionOpt, setting->workers.size(), setting->thisHostNumber);
     graph->createGraph(readFile);
-    network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber);
-    processing->setInfo(graph, network, setting->superstep);
+    network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber, graph->getMsgBuffer());
+    processing->setInfo(graph, network, setting->superstep, setting->numThread);
     processing->execute();
+    
+    
+    map<int,double> finalResult;
+    for (size_t i = 0; i < graph->getNumVertex(); i++){
+        finalResult.insert({graph->getVertices()[i].vertexID, graph->getVertices()[i].vertexValue});
+    }
+    vector<pp> vec(finalResult.begin(), finalResult.end());
+    sort(vec.begin(), vec.end(), cmp);
+    for(auto num:vec){
+        cerr << num.first << ": " << num.second << endl;
+    }
+    
     cerr << "working!!!!!" << endl;
     return 0;
 }

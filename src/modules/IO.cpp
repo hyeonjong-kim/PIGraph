@@ -20,7 +20,6 @@ string IO::readHDFSFile(const char* path, int flags, int bufferSize, short repli
         bzero(readBuffer, 1024);
         readLength = hdfsRead(this->fs_HDFS, this->file_HDFS, (void*)readBuffer, 1024-1);
         result += string(readBuffer);
-        //if(readLength !=0)result += string(readBuffer);
     } while (readLength != 0);
     
     hdfsCloseFile(this->fs_HDFS, this->file_HDFS);
