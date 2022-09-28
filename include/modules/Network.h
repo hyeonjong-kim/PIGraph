@@ -65,7 +65,7 @@ void Network::setNetwork(string _networkType, int _numHost, vector<string> _host
     this->networkType =  _networkType;
     this->numHost = _numHost;
     this->externalBucket = _numHost;
-    this->internalBucket = numMu;
+    this->internalBucket = _numMu;
     this->hostInfo = _hostInfo;
     this->mu = _mu;
     this->numMu = _numMu; 
@@ -82,12 +82,14 @@ void Network::setNetwork(string _networkType, int _numHost, vector<string> _host
 	}
     
     this->messageBuffer = msgBuffer;
-
     this->connectionThreadPool =  new ThreadPool::ThreadPool(this->numHost);
 
     if(this->networkType == "rdma"){
         this->setIPoIB();
         this->setRDMA();
+    }
+    else if(this->networkType == "ipoib"){
+        this->setIPoIB();
     }
 }
 
@@ -96,25 +98,32 @@ bool Network::setIPoIB(){
     std::vector<std::future<void>> futures;
 
     for(size_t i = 0; i < hostInfo.size(); i++){
-        //if(i != this->thisHostNumber){
+        if(i != this->thisHostNumber){
             serverAddr[i] = HostToIp(hostInfo[i]+".ib");
-            this->ipoib[i].setInfo(i, this->port, serverAddr[i], this->numHost, this->port+this->thisHostNumber);
+            this->ipoib[i].setInfo(i, this->port, serverAddr[i], this->numHost, this->port+this->thisHostNumber, this->recvPos->size(), this->recvPos, this->numMu);
             this->ipoib[i].setSocket();
             auto f = [this, i](){
                 this->ipoib[i].connectSocket();
+                if(this->networkType == "ipoib")this->ipoib[i].exchangeInfo();
                 return;
             };
             futures.emplace_back(this->connectionThreadPool->EnqueueJob(f));
-        //}
+        }
     }
      
     for(auto& f_ : futures){
         f_.wait();
     }
     futures.clear();
+    
+    if(this->networkType == "ipoib"){
+        for(size_t i = 0; i < hostInfo.size(); i++){
+            if(i != this->thisHostNumber)this->externalNumVertex += this->ipoib[i].getSendMsgBufSize();
+        }
+    }
 
     for (size_t i = 0; i < hostInfo.size(); i++){
-        //if(i != this->thisHostNumber){
+        if(i != this->thisHostNumber){
             auto f = [this, i](){
                 this->ipoib[i].sendCheckMsg();
                 string s = "";
@@ -125,7 +134,7 @@ bool Network::setIPoIB(){
                 return;
 		    };
 		    futures.emplace_back(this->connectionThreadPool->EnqueueJob(f));
-        //}
+        }
     }
 
     for(auto& f_ : futures){
@@ -137,17 +146,17 @@ bool Network::setIPoIB(){
 }
 
 bool Network::setRDMA(){
-	int buffer_size = recvPos->size();
+	int buffer_size = this->recvPos->size();
     std::vector<std::future<void>> futures;
 	for(size_t i = 0; i < this->numHost; i++){
-        //if(i != this->thisHostNumber){
-            this->rdma[i].setInfo(&(this->ipoib[i]), this->recvMsg[i], buffer_size, recvPos, numMu);
+        if(i != this->thisHostNumber){
+            this->rdma[i].setInfo(&(this->ipoib[i]), this->recvMsg[i], buffer_size, this->recvPos, this->numMu);
             auto f = [this, i](){
                 this->rdma[i].connectRDMA();
 			    return;
 		    };
 		    futures.emplace_back(this->connectionThreadPool->EnqueueJob(f));
-        //}
+        }
 	}
     
 	for (auto& f_ : futures) {
@@ -157,13 +166,13 @@ bool Network::setRDMA(){
 	futures.clear();
     
     for (size_t i = 0; i < this->numHost; i++){
-        //if(i != this->thisHostNumber){
+        if(i != this->thisHostNumber){
             this->externalNumVertex += this->rdma[i].getNumVertex();
-        //}
+        }
     }
     
     for (size_t i = 0; i < this->numHost; i++){
-        //if(i != this->thisHostNumber){
+        if(i != this->thisHostNumber){
             auto f = [this, i](){
                 this->ipoib[i].sendCheckMsg();
                 string s = "";
@@ -174,7 +183,7 @@ bool Network::setRDMA(){
                 return;
             };
             futures.emplace_back(this->connectionThreadPool->EnqueueJob(f));
-        //}
+        }
     }
 
     for(auto& f_ : futures){
@@ -190,12 +199,12 @@ void Network::sendMsg_sum(int vertexID, double value){
         if(vertexID == numeric_limits<int>::max()){
             std::vector<std::future<void>> futures;
             for (size_t i = 0; i < this->numHost; i++){
-                //if(i != this->thisHostNumber){
+                if(i != this->thisHostNumber){
                     auto f = [this, i](){
                         this->rdma[i].sendMsg();   
                     };
                     futures.emplace_back(this->connectionThreadPool->EnqueueJob(f));
-                //}
+                }
             }
             for(auto& f_ : futures){
                 f_.wait();
@@ -203,18 +212,18 @@ void Network::sendMsg_sum(int vertexID, double value){
             futures.clear();
 
             for (size_t i = 0; i < this->numHost; i++){
-                //if(i != this->thisHostNumber){
+                if(i != this->thisHostNumber){
                     auto f = [this, i](){
                         this->ipoib[i].sendCheckMsg();
                         string s = "";
                         while(s.compare("1\n")!= 0){
                             s = this->ipoib[i].readCheckMsg();
                         }
-                        cerr <<  "[INFO]" << this->ipoib[i].getServerAddr() << " - SUCCESS TO RDMA Networking " << endl;
+                        cerr <<  "[INFO]" << this->ipoib[i].getServerAddr() << " - SUCCESS RDMA Networking " << endl;
                         return;
                     };
                     futures.emplace_back(this->connectionThreadPool->EnqueueJob(f));
-                //}
+                }
             }
             
             for(auto& f_ : futures){
@@ -236,28 +245,70 @@ void Network::sendMsg_sum(int vertexID, double value){
         }
         else{
             int dstNum = this->externalHashFunction(vertexID);
-            /*
+            
             if(dstNum == this->thisHostNumber){
-                //this->mu[this->internalHashFunction(vertexID)].lock();
+                this->mu[this->internalHashFunction(vertexID)].lock();
                 int recvIdx = this->recvPos->find(vertexID)->second;
                 this->recvMsg[dstNum][recvIdx] += value;
-                //this->mu[this->internalHashFunction(vertexID)].unlock();
+                this->mu[this->internalHashFunction(vertexID)].unlock();
             }
-            */
-            
-            //else{
+            else{
                 this->rdma[dstNum].combinerSum(vertexID, value);
-            //}
+            }
         }
     }
 
     else if(this->networkType == "ipoib"){
         if(vertexID == numeric_limits<int>::max()){
+            std::vector<std::future<void>> futures;
+            for (size_t i = 0; i < this->numHost; i++){
+                if(i != this->thisHostNumber){
+                    auto f = [this, i](){
+                        string msg = "";
+                        double* send_msg = this->ipoib[i].getSendMsgBuf();
+                        for (size_t j = 0; j < this->ipoib[i].getSendMsgBufSize(); j++){
+                            char tmp[128];
+                            sprintf(tmp, "%0.16f", send_msg[j]);
+                            msg += string(tmp) + "\n";
+                        }
+                        this->ipoib[i].sendMsg(msg); 
+                        this->ipoib[i].sendMsg("Q");
+                        msg = ipoib[i].readMsg();
+                        
+                        vector<string> splitMsg = this->tools.split_simple(msg, '\n');
+                        for (size_t j = 0; j < splitMsg.size(); j++){
+                            this->recvMsg[i][j] = stod(splitMsg[j]);
+                        }
+                    };
+                    futures.emplace_back(this->connectionThreadPool->EnqueueJob(f));
+                }
+            }
+            for(auto& f_ : futures){
+                f_.wait();
+            }
+            futures.clear();
+            fill_n(this->messageBuffer, this->recvPos->size(), 0.0);
+            map<int,int>::iterator iter;
+            for(iter = this->recvPos->begin();iter != this->recvPos->end(); iter++){
+                for (size_t i = 0; i < this->numHost; i++){
+                    this->messageBuffer[iter->second] += this->recvMsg[i][iter->second];
+                }
+            }
+            
+            for (size_t i = 0; i < this->numHost; i++){
+                fill_n(this->recvMsg[i], this->recvPos->size(), 0.0);
+            }
         }
         int dstNum = this->externalHashFunction(vertexID);
+        
         if(dstNum == this->thisHostNumber){
+            this->mu[this->internalHashFunction(vertexID)].lock();
+            int recvIdx = this->recvPos->find(vertexID)->second;
+            this->recvMsg[dstNum][recvIdx] += value;
+            this->mu[this->internalHashFunction(vertexID)].unlock();
         }
         else{
+            this->ipoib[dstNum].combinerSum(vertexID, value);
         }
     }
 }

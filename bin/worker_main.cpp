@@ -37,6 +37,7 @@ int main(int argc, const char *argv[]){
     graph->setInfo(setting->partitionOpt, setting->workers.size(), setting->thisHostNumber);
     graph->createGraph(readFile);
     network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber, graph->getMsgBuffer());
+    
     processing->setInfo(graph, network, setting->superstep, setting->numThread);
     processing->execute();
     
@@ -51,6 +52,7 @@ int main(int argc, const char *argv[]){
         cerr << num.first << ": " << num.second << endl;
     }
     
+
     cerr << "working!!!!!" << endl;
     return 0;
 }

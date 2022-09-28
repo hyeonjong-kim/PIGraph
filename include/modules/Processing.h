@@ -69,18 +69,16 @@ void Processing::execute(){
     std::vector<std::future<void>> futures;
     gettimeofday(&this->start_query, NULL);
     for (size_t i = 0; i < this->iteration; i++){
-        cerr << "superstep " << this->superstep << endl;
+        cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
         start = 0;
         end = 0;
         for (size_t i = 1; i <= this->numThread; i++){
-            
             int sliceEdge = 0;
             for (size_t j = start; j < this->thisNumVertex; j++){
                 sliceEdge += this->edges->find(this->vertices[j].vertexID)->second.size();
                 if(sliceEdge < slice)end++;
                 else break;
             }
-            
             if(i != this->numThread){
                 auto f = [this, start, end](){
                     this->PageRank(start, end);
@@ -89,7 +87,7 @@ void Processing::execute(){
             }
             else{
                 auto f = [this, start](){
-                    this->PageRank(start, this->totalNumVertex);
+                    this->PageRank(start, this->thisNumVertex);
                 };
                 futures.emplace_back(this->threadPool->EnqueueJob(f));
             }
@@ -99,6 +97,8 @@ void Processing::execute(){
             f_.wait();
         }
         futures.clear();
+        cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
+
         this->network->sendMsg_sum(numeric_limits<int>::max(), 0.0);
         this->superstep++;
     }
