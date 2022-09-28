@@ -65,6 +65,8 @@ void Processing::execute(){
     int slice = this->thisNumEdge/this->numThread;
     int start;
     int end;
+    cerr << this->thisNumEdge << endl;
+    cerr << this->totalNumVertex << endl;
     
     std::vector<std::future<void>> futures;
     for (size_t i = 0; i < this->iteration; i++){

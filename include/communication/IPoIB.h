@@ -17,6 +17,7 @@
 #include <map>
 #include <mutex>
 #include <linux/sockios.h>
+#include <netdb.h>
 
 using namespace std;
 
@@ -48,11 +49,11 @@ class IPoIB{
         int send_buffer_size;
         
     public:
-        IPoIB(int socket_num, int port, char _server_addr[], int num_host, int _client_port, int _buffer_size, map<int, int>* _recv_pos, int mu_num);
+        IPoIB(int socket_num, int port, string hostName, int num_host, int _client_port, int _buffer_size, map<int, int>* _recv_pos, int mu_num);
         IPoIB(){}
         ~IPoIB(){}
         
-        void setInfo(int socket_num, int _port, char _server_addr[], int _num_host, int _client_port, int _buffer_size, map<int, int>* _recv_pos, int mu_num);
+        void setInfo(int socket_num, int _port, string hostName, int _num_host, int _client_port, int _buffer_size, map<int, int>* _recv_pos, int mu_num);
         
         void setSocket();
         void connectSocket();
@@ -67,6 +68,7 @@ class IPoIB{
         string readCheckMsg();
         void sendAliveMsg(string _msg);
         string readAliveMsg();
+        string hostName;
 
         void exchangeInfo();
         void getRemoteBufferSize();
@@ -80,6 +82,13 @@ class IPoIB{
         void closeSocket();
         char* getServerAddr(){return this->server_addr;}
         vector<string> split(string& input, char delimiter);
+
+        char* HostToIp(string host) {
+            hostent* _hostname = gethostbyname(host.c_str());
+            if(_hostname)
+                return inet_ntoa(**(in_addr**)_hostname->h_addr_list);
+            return {};
+        }
         
 };
 
@@ -95,9 +104,10 @@ vector<string> IPoIB::split(string& input, char delimiter) {
     return answer;
 }
 
-IPoIB::IPoIB(int socket_num, int port, char _server_addr[], int num_host, int _client_port, int _buffer_size, map<int, int>* _recv_pos, int mu_num){
+IPoIB::IPoIB(int socket_num, int port, string hostName, int num_host, int _client_port, int _buffer_size, map<int, int>* _recv_pos, int mu_num){
     this->port = port + socket_num;
-    this->server_addr = _server_addr;
+    this->hostName = hostName;
+    this->server_addr = this->HostToIp(hostName);
     this->num_host = num_host;
     this->client_port = _client_port;
     this->buffer_size = _buffer_size;
@@ -106,9 +116,10 @@ IPoIB::IPoIB(int socket_num, int port, char _server_addr[], int num_host, int _c
     this->vertex_mu = new mutex[mu_num];
 }
 
-void IPoIB::setInfo(int socket_num, int _port, char* _server_addr, int _num_host, int _client_port, int _buffer_size, map<int, int>* _recv_pos, int mu_num){
+void IPoIB::setInfo(int socket_num, int _port, string hostName, int _num_host, int _client_port, int _buffer_size, map<int, int>* _recv_pos, int mu_num){
     this->port = _port + socket_num;
-    this->server_addr = _server_addr;
+    this->hostName = hostName;
+    this->server_addr = this->HostToIp(hostName);
     this->num_host = _num_host;
     this->client_port = _client_port;
     this->buffer_size = _buffer_size;
@@ -363,6 +374,7 @@ void IPoIB::exchangeInfo(){
             this->send_pos.insert(make_pair(stoi(value_split[0]), stoi(value_split[1])));
         }
     }
+
     cerr << this->send_pos.size() << endl;
     
 }

@@ -52,13 +52,6 @@ class Network{
 
         int externalHashFunction(int x){return (x % externalBucket);}
         int internalHashFunction(int x){return (x % internalBucket);}
-
-        char* HostToIp(string host) {
-            hostent* hostname = gethostbyname(host.c_str());
-            if(hostname)
-                return inet_ntoa(**(in_addr**)hostname->h_addr_list);
-            return {};
-        }
 };
 
 
@@ -97,11 +90,9 @@ void Network::setNetwork(string _networkType, int _numHost, vector<string> _host
 
 bool Network::setIPoIB(){
     std::vector<std::future<void>> futures;
-    vector<char*> serverAddr(this->numHost);
     for(size_t i = 0; i < hostInfo.size(); i++){
         if(i != this->thisHostNumber){
-            serverAddr[i] = HostToIp(hostInfo[i]+".ib");
-            this->ipoib[i].setInfo(i, this->port, serverAddr[i], this->numHost, this->port+this->thisHostNumber, this->recvPos->size(), this->recvPos, this->numMu);
+            this->ipoib[i].setInfo(i, this->port, hostInfo[i]+".ib", this->numHost, this->port+this->thisHostNumber, this->recvPos->size(), this->recvPos, this->numMu);
             this->ipoib[i].setSocket();
             auto f = [this, i](){
                 this->ipoib[i].connectSocket();
