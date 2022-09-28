@@ -75,14 +75,11 @@ void Processing::execute(){
         end = 0;
         for (size_t i = 1; i <= this->numThread; i++){
             int sliceEdge = 0;
-            cerr << this->totalNumVertex << endl;
-            
             for (size_t j = start; j < this->thisNumVertex; j++){
                 sliceEdge += this->edges->find(this->vertices[j].vertexID)->second.size();
                 if(sliceEdge < slice)end++;
                 else break;
             }
-            cerr << start << " " << end << endl;
             if(i != this->numThread){
                 auto f = [this, start, end](){
                     this->PageRank(start, end);

@@ -41,7 +41,7 @@ int main(int argc, const char *argv[]){
     processing->setInfo(graph, network, setting->superstep, setting->numThread);
     processing->execute();
     
-    
+    /*
     map<int,double> finalResult;
     for (size_t i = 0; i < graph->getNumVertex(); i++){
         finalResult.insert({graph->getVertices()[i].vertexID, graph->getVertices()[i].vertexValue});
@@ -51,7 +51,7 @@ int main(int argc, const char *argv[]){
     for(auto num:vec){
         cerr << num.first << ": " << num.second << endl;
     }
-    
+    */
 
     cerr << "working!!!!!" << endl;
     return 0;

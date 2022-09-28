@@ -61,12 +61,15 @@ class IPoIB{
         string readMsg();
         void sendRDMAInfo(string _msg);
         map<string, string> readRDMAInfo();
+        void sendIPoIBInfo(string _msg);
+        int readIPoIBInfo();
         void sendCheckMsg();
         string readCheckMsg();
         void sendAliveMsg(string _msg);
         string readAliveMsg();
 
         void exchangeInfo();
+        void getRemoteBufferSize();
         void combinerSum(int vertex_id, double value);
         void combinerMin(int vertex_id, double value);
         void combinerMax(int vertex_id, double value);
@@ -232,6 +235,27 @@ map<string, string> IPoIB::readRDMAInfo(){
     return info;
 }
 
+void IPoIB::sendIPoIBInfo(string _msg){
+    this->send_msg = _msg;
+    char msg[send_msg.size()];
+    strcpy(msg, send_msg.c_str());
+    write(this->client_sock , msg , strlen(msg));
+}
+
+int IPoIB::readIPoIBInfo(){
+    this->result="";
+    this->read_char = "";
+    while(result.back() != '\n'){
+        bzero(this->buffer, sizeof(this->buffer));
+        this->valread = read(this->new_socket , this->buffer, 1);
+        this->read_char = this->buffer;
+        if(this->read_char!=""){
+            this->result += this->read_char;
+        }
+    }
+    return stoi(result);
+}
+
 void IPoIB::sendCheckMsg(){
     string checkMsg = "1\n";
     char msg[checkMsg.size()];
@@ -316,12 +340,13 @@ void IPoIB::combinerMax(int vertex_id, double value){
     this->vertex_mu[this->internalHashFunction(vertex_id)].unlock();
 }
 
-void IPoIB::exchangeInfo(){
-    this->sendMsg(to_string(this->buffer_size) + "\n");
-    this->sendMsg("Q");
-    this->send_buffer_size = stoi(this->readMsg());
+void IPoIB::getRemoteBufferSize(){
+    this->sendIPoIBInfo(to_string(this->buffer_size) + "\n");
+    this->send_buffer_size = this->readIPoIBInfo();
     this->send_msg_buf = new double[this->send_buffer_size];
-    
+}
+
+void IPoIB::exchangeInfo(){
     map<int,int>::iterator iter;
     for(iter=this->recv_pos->begin(); iter!=this->recv_pos->end(); iter++){
         this->sendMsg(to_string(iter->first) + " " + to_string(iter->second) + "\n");
@@ -338,6 +363,8 @@ void IPoIB::exchangeInfo(){
             this->send_pos.insert(make_pair(stoi(value_split[0]), stoi(value_split[1])));
         }
     }
+    cerr << this->send_pos.size() << endl;
+    
 }
 
 

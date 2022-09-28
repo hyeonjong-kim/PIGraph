@@ -110,7 +110,7 @@ bool Network::setIPoIB(){
             futures.emplace_back(this->connectionThreadPool->EnqueueJob(f));
         }
     }
-     
+    
     for(auto& f_ : futures){
         f_.wait();
     }
@@ -120,6 +120,7 @@ bool Network::setIPoIB(){
         for(size_t i = 0; i < hostInfo.size(); i++){
             if(i != this->thisHostNumber){
                 auto f = [this, i](){
+                    this->ipoib[i].getRemoteBufferSize();
                     this->ipoib[i].exchangeInfo();
                     return;
                 };
@@ -130,12 +131,11 @@ bool Network::setIPoIB(){
     	    f_.wait();
   	    }
 	    futures.clear();
-
         for(size_t i = 0; i < hostInfo.size(); i++){
             if(i != this->thisHostNumber)this->externalNumVertex += this->ipoib[i].getSendMsgBufSize();
         }
     }
-
+   
     for (size_t i = 0; i < hostInfo.size(); i++){
         if(i != this->thisHostNumber){
             auto f = [this, i](){
