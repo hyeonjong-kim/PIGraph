@@ -118,14 +118,19 @@ bool Network::setIPoIB(){
     
     if(this->networkType == "ipoib"){
         for(size_t i = 0; i < hostInfo.size(); i++){
-        if(i != this->thisHostNumber){
-            auto f = [this, i](){
-                this->ipoib[i].exchangeInfo();
-                return;
-            };
-            futures.emplace_back(this->connectionThreadPool->EnqueueJob(f));
+            if(i != this->thisHostNumber){
+                auto f = [this, i](){
+                    this->ipoib[i].exchangeInfo();
+                    return;
+                };
+                futures.emplace_back(this->connectionThreadPool->EnqueueJob(f));
+            }
         }
-    }
+        for(auto& f_ : futures){
+    	    f_.wait();
+  	    }
+	    futures.clear();
+
         for(size_t i = 0; i < hostInfo.size(); i++){
             if(i != this->thisHostNumber)this->externalNumVertex += this->ipoib[i].getSendMsgBufSize();
         }
