@@ -296,6 +296,22 @@ void Network::sendMsg_sum(int vertexID, double value){
                 f_.wait();
             }
             futures.clear();
+
+            for (size_t i = 0; i < this->numHost; i++){
+                if(i != this->thisHostNumber){
+                    auto f = [this, i](){
+                        this->ipoib[i].sendCheckMsg();
+                        string s = "";
+                        while(s.compare("1\n")!= 0){
+                            s = this->ipoib[i].readCheckMsg();
+                        }
+                        cerr <<  "[INFO]" << this->ipoib[i].getServerAddr() << " - SUCCESS IPoIB Networking " << endl;
+                        return;
+                    };
+                    futures.emplace_back(this->connectionThreadPool->EnqueueJob(f));
+                }
+            }
+
             fill_n(this->messageBuffer, this->recvPos->size(), 0.0);
             map<int,int>::iterator iter;
             for(iter = this->recvPos->begin();iter != this->recvPos->end(); iter++){

@@ -66,9 +66,11 @@ void Processing::execute(){
     int slice = this->thisNumEdge/this->numThread;
     int start;
     int end;
+    
     std::vector<std::future<void>> futures;
     gettimeofday(&this->start_query, NULL);
     for (size_t i = 0; i < this->iteration; i++){
+        cerr << this->thisNumVertex << endl;
         cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
         start = 0;
         end = 0;
