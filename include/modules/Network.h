@@ -52,6 +52,8 @@ class Network{
 
         int externalHashFunction(int x){return (x % externalBucket);}
         int internalHashFunction(int x){return (x % internalBucket);}
+
+        void closeNetwork();
 };
 
 
@@ -119,6 +121,7 @@ bool Network::setIPoIB(){
                 futures.emplace_back(this->connectionThreadPool->EnqueueJob(f));
             }
         }
+
         for(auto& f_ : futures){
     	    f_.wait();
   	    }
@@ -341,5 +344,23 @@ void Network::sendMsg_sum(int vertexID, double value){
         }
     }
 }
+
+void Network::closeNetwork(){
+    if(this->networkType == "rdma"){
+        for (size_t i = 0; i < this->numHost; i++){
+            if(i != this->thisHostNumber){
+                this->ipoib[i].closeSocket();
+                this->rdma[i].closeRDMA();
+            }
+        }
+        
+    }
+    else if(this->networkType == "ipoib"){
+        for (size_t i = 0; i < this->numHost; i++){
+            if(i != this->thisHostNumber)this->ipoib[i].closeSocket();
+        }
+    }
+}
+
 
 #endif

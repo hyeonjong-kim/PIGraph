@@ -86,7 +86,6 @@ void Graph::createGraph(string& edgeInfo){
                 tmp.insert({stoi(splitEdgeInfo2[1]),v});
                 vector<int> e;
                 this->edges->insert({stoi(splitEdgeInfo2[1]), e});
-                this->numEdge++;
 			}
 		}
     }

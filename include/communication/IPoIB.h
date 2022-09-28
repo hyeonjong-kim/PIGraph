@@ -31,7 +31,7 @@ class IPoIB{
         char buffer[104867600] = {0};
         int port;
         int valread;
-        char* server_addr;
+        char* server_addr = new char[15];
         int num_host;
         socklen_t opt_len = sizeof(opt);
         int client_port;
@@ -47,6 +47,7 @@ class IPoIB{
 
         int buffer_size;
         int send_buffer_size;
+        int count = 0;
         
     public:
         IPoIB(int socket_num, int port, string hostName, int num_host, int _client_port, int _buffer_size, map<int, int>* _recv_pos, int mu_num);
@@ -83,13 +84,12 @@ class IPoIB{
         char* getServerAddr(){return this->server_addr;}
         vector<string> split(string& input, char delimiter);
 
-        char* HostToIp(string host) {
+        string HostToIp(string host) {
             hostent* _hostname = gethostbyname(host.c_str());
             if(_hostname)
-                return inet_ntoa(**(in_addr**)_hostname->h_addr_list);
+                return string(inet_ntoa(**(in_addr**)_hostname->h_addr_list));
             return {};
         }
-        
 };
 
 vector<string> IPoIB::split(string& input, char delimiter) {
@@ -107,7 +107,7 @@ vector<string> IPoIB::split(string& input, char delimiter) {
 IPoIB::IPoIB(int socket_num, int port, string hostName, int num_host, int _client_port, int _buffer_size, map<int, int>* _recv_pos, int mu_num){
     this->port = port + socket_num;
     this->hostName = hostName;
-    this->server_addr = this->HostToIp(hostName);
+    this->server_addr = (char*)this->HostToIp(hostName).c_str();
     this->num_host = num_host;
     this->client_port = _client_port;
     this->buffer_size = _buffer_size;
@@ -119,7 +119,7 @@ IPoIB::IPoIB(int socket_num, int port, string hostName, int num_host, int _clien
 void IPoIB::setInfo(int socket_num, int _port, string hostName, int _num_host, int _client_port, int _buffer_size, map<int, int>* _recv_pos, int mu_num){
     this->port = _port + socket_num;
     this->hostName = hostName;
-    this->server_addr = this->HostToIp(hostName);
+    strcpy(this->server_addr, this->HostToIp(hostName).c_str());
     this->num_host = _num_host;
     this->client_port = _client_port;
     this->buffer_size = _buffer_size;
@@ -374,9 +374,6 @@ void IPoIB::exchangeInfo(){
             this->send_pos.insert(make_pair(stoi(value_split[0]), stoi(value_split[1])));
         }
     }
-
-    cerr << this->send_pos.size() << endl;
-    
 }
 
 

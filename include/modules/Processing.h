@@ -65,9 +65,6 @@ void Processing::execute(){
     int slice = this->thisNumEdge/this->numThread;
     int start;
     int end;
-    cerr << this->thisNumEdge << endl;
-    cerr << this->totalNumVertex << endl;
-    
     std::vector<std::future<void>> futures;
     for (size_t i = 0; i < this->iteration; i++){
         cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
@@ -102,6 +99,7 @@ void Processing::execute(){
         this->network->sendMsg_sum(numeric_limits<int>::max(), 0.0);
         this->superstep++;
     }
+    this->network->closeNetwork();
 }
 
 #endif
