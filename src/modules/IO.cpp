@@ -28,6 +28,10 @@ string IO::readHDFSFile(const char* path, int flags, int bufferSize, short repli
     return result;
 }
 
-bool IO::writeHDFSFile(){
-
+bool IO::writeHDFSFile(const char* path, int flags, string result, int bufferSize, short replication, tSize blocksize){
+    this->fs_HDFS = hdfsConnect(this->hostInfo_HDFS, this->port_HDFS);
+    this->file_HDFS = hdfsOpenFile(this->fs_HDFS, path, flags, bufferSize, replication, blocksize);
+     if(!this->file_HDFS) {
+        cerr << "[ERROR]Fail to open hdfs file: " << path << endl;
+    }
 }

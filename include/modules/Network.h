@@ -254,7 +254,6 @@ void Network::sendMsg_sum(int vertexID, double value){
         }
         else{
             int dstNum = this->externalHashFunction(vertexID);
-            
             if(dstNum == this->thisHostNumber){
                 this->mu[this->internalHashFunction(vertexID)].lock();
                 int recvIdx = this->recvPos->find(vertexID)->second;

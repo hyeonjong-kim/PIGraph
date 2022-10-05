@@ -8,6 +8,8 @@
 
 /home/hjkim/PiGraph/include/struct/Vertex.h
 
+/home/hjkim/PiGraph/src/struct/Edge.cpp
+
 /home/hjkim/PiGraph/src/struct/Vertex.cpp
 ../../include/struct/Vertex.h
 /home/hjkim/PiGraph/include/struct/Vertex.h

@@ -17,5 +17,5 @@ class IO{
 
         void setHDFSInfo(const char* hostInfo, tPort port);
         string readHDFSFile(const char* path, int flags, int bufferSize=0, short replication=0, tSize blocksize=0);
-        bool writeHDFSFile();
+        bool writeHDFSFile(const char* path, int flags, string result, int bufferSize=0, short replication=0, tSize blocksize=0);
 };

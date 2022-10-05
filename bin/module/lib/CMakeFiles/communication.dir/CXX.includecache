@@ -6,6 +6,28 @@
 
 #IncludeRegexTransform: 
 
+/home/hjkim/PiGraph/include/communication/IPC.h
+iostream
+-
+sys/ipc.h
+-
+sys/shm.h
+-
+stdio.h
+-
+errno.h
+-
+sys/types.h
+-
+sys/ipc.h
+-
+sys/sem.h
+-
+unistd.h
+-
+stdlib.h
+-
+
 /home/hjkim/PiGraph/include/communication/IPoIB.h
 iostream
 -
@@ -83,6 +105,10 @@ thread
 /home/hjkim/PiGraph/include/communication/IPoIB.h
 ../../include/communication/RDMA.h
 /home/hjkim/PiGraph/include/communication/RDMA.h
+
+/home/hjkim/PiGraph/src/communication/IPC.cpp
+IPC.h
+/home/hjkim/PiGraph/src/communication/IPC.h
 
 /home/hjkim/PiGraph/src/communication/IPoIB.cpp
 ../../include/communication/IPoIB.h

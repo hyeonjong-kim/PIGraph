@@ -9,13 +9,6 @@
 #include "../include/modules/Graph.h"
 #include "../include/modules/Network.h"
 #include "../include/modules/Processing.h"
-
-#define pp pair<int, double>
-bool cmp(const pp& a, const pp& b) {
-	if (a.second == b.second) return a.first < b.first;
-	return a.second > b.second;
-}
-
 using namespace std;
 
 struct mesg_buffer {
@@ -60,7 +53,7 @@ int main(int argc, const char *argv[]){
 
     gettimeofday(&start_query, NULL);
     processing->setInfo(graph, network, setting->superstep, setting->numThread);
-    processing->execute();
+    string result = processing->execute(setting->query);
     gettimeofday(&end_query, NULL);
     gettimeofday(&end_total, NULL);
 
@@ -76,18 +69,10 @@ int main(int argc, const char *argv[]){
     cerr << "Time of setting network: " << time_network_setting << endl;
     cerr << "Time of processing graph: " << time_query << endl;
     
-    /*
-    map<int,double> finalResult;
-    for (size_t i = 0; i < graph->getNumVertex(); i++){
-        finalResult.insert({graph->getVertices()[i].vertexID, graph->getVertices()[i].vertexValue});
-    }
-    vector<pp> vec(finalResult.begin(), finalResult.end());
-    sort(vec.begin(), vec.end(), cmp);
-    for(auto num:vec){
-        cerr << num.first << ": " << num.second << endl;
-    }
-    */
-
+    ofstream writeFile;
+    writeFile.open("test.txt");
+    writeFile.write(result.c_str(), result.size());
+    writeFile.close();
     cerr << "working!!!!!" << endl;
     return 0;
 }
