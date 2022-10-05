@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <mutex>
+#include <unistd.h>
 
 #include "../utils/ArgParsing.h"
 #include "../utils/Tools.h"
@@ -26,9 +27,11 @@ class Setting{
         string HDFS_host;
         int HDFS_port;
         string processingUnit;
-        string workers;
+        vector<string> workers;
         string networkType;
         mutex* mu;
+        int thisHostNumber = 0;
+        int numThread;
 
         Setting(){this->parser = new ArgumentParser("Pigraph_Worker", "Pigraph Worker");}
         bool argParse(int argc, const char *argv[]);
@@ -87,21 +90,31 @@ bool Setting::argParse(int argc, const char *argv[]){
         exit(0);
     }
     
-    this->superstep = stoi(this->parser->get<string>("s"));
-    this->port = stoi(this->parser->get<string>("P"));
-    this->partitionOpt = stoi(this->parser->get<string>("p"));
-    this->numMutex = stoi(this->parser->get<string>("m"));
+    this->superstep = this->parser->get<int>("s");
+    this->port = this->parser->get<int>("P");
+    this->partitionOpt = this->parser->get<int>("p");
+    this->numMutex = this->parser->get<int>("m");
     this->mu = new mutex[this->numMutex];
     this->filePath = this->parser->get<string>("f");
     this->query = this->parser->get<string>("q");
     this->processingUnit = this->parser->get<string>("u");
-    this->workers = this->parser->get<string>("w");
+    string worker = this->parser->get<string>("w");
+    this->workers = tools.split_simple(worker, ',');
     this->networkType = this->parser->get<string>("n");
-
     string HDFS = this->parser->get<string>("H");
     vector<string> split_HDFS = tools.split_simple(HDFS, ':');
     this->HDFS_host = split_HDFS[0];
     this->HDFS_port = stoi(split_HDFS[1]);
+    this->numThread = this->parser->get<int>("t");
+    
+    char thisHostName[256];
+    gethostname(thisHostName, 256);
+    for (size_t i = 0; i < workers.size(); i++){
+        if(string(thisHostName).compare(workers[i]) == 0){
+            break;
+        }
+        this->thisHostNumber++;
+    }
 
     return true;
 }

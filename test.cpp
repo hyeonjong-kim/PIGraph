@@ -1,66 +1,39 @@
 #include <iostream>
-#include <map>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <sys/ipc.h>
-#include <sys/msg.h>
-#include <cstring>
+#include <netdb.h>
+#include <sys/param.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <fstream>
+#include <time.h>
+#include <vector>
 
 using namespace std;
 
-struct mesg_buffer {
-    long mesg_type;
-    char mesg_text[100];
-} message;
+#define MST (-7)
 
-int main(){
-    string readFile;
-    pid_t c_pid = fork();
-    
-    if (c_pid == -1) {
-        perror("fork");
-        exit(EXIT_FAILURE);
-    } else if (c_pid > 0) {    
-        key_t key;
-        int msgid;
-        key = ftok("progfile", 65);
-        msgid = msgget(key, 0666 | IPC_CREAT);
-        msgrcv(msgid, &message, sizeof(message), 1, 0);
-        printf("Data Received is : %s \n", message.mesg_text);
-        msgrcv(msgid, &message, sizeof(message), 1, 0);
-        printf("Data Received is : %s \n", message.mesg_text);
-        msgctl(msgid, IPC_RMID, NULL);
-
-        wait(nullptr);
-    } else {
-        //child
-        readFile = "24123123";
-        key_t key;
-        int msgid;
-    
-        // ftok to generate unique key
-        key = ftok("progfile", 65);
-        msgid = msgget(key, 0666 | IPC_CREAT);
-        message.mesg_type = 1;
-        strcpy(message.mesg_text, readFile.c_str());
-        cerr << message.mesg_text[0] << endl;
-        //message.mesg_text = readFile.c_str();
-        msgsnd(msgid, &message, sizeof(message), 0);
-        printf("Data send is : %s \n", message.mesg_text);
+int main(int argc, char *argv[])
+{
+	
+    vector<string> s;
+    s.push_back("MN");
+    s.push_back("SN01");
+    vector<char*> tmp(2);
+	for (size_t i = 0; i < 2; i++)
+    {
+        hostent * record = gethostbyname(s[i].c_str());
         
-        readFile = "12345678944139403824123123";
-        // ftok to generate unique key
-        key = ftok("progfile", 65);
-        msgid = msgget(key, 0666 | IPC_CREAT);
-        message.mesg_type = 1;
-        strcpy(message.mesg_text, readFile.c_str());
-        cerr << message.mesg_text[0] << endl;
-        //message.mesg_text = readFile.c_str();
-        msgsnd(msgid, &message, sizeof(message), 0);
-
-        msgsnd(msgid, &message, sizeof(message), 0);
-        // display the message
-        printf("Data send is : %s \n", message.mesg_text);
+        char* ip_address = inet_ntoa(* (in_addr * )record->h_addr);
+        cerr << ip_address << endl;
+        tmp[i] = ip_address;
+        /*
+        in_addr * address = (in_addr * )record->h_addr;
+        char* ip_address = inet_ntoa(* address);
+        cerr <<  ip_address << endl;
         
+        */
     }
+    cerr << tmp[0] << endl; 
+    
+	// log this information to ipaddr.log
+	return 0;
 }

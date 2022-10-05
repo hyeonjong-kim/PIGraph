@@ -21,6 +21,7 @@ class Graph{
         map<int, int>* recvPos = new map<int, int>;
         
         int numVertex;
+        int numEdge = 0;
         int hostID;
         int externalBucket;
         char delimiter;
@@ -42,6 +43,8 @@ class Graph{
         void setMsgBuffer(double* msgBuffer){this->msgBuffer = msgBuffer;}
         int getNumVertex(){return this->numVertex;}
         void setNumVertex(int numVertex){this->numVertex = numVertex;}
+        int getNumEdge(){return this->numEdge;}
+        void setNumEdge(int numEdge){this->numEdge = numEdge;}
         
         int externalHashFunction(int x){return (x % externalBucket);}
 };
@@ -66,6 +69,7 @@ void Graph::createGraph(string& edgeInfo){
         if(this->externalHashFunction(stoi(splitEdgeInfo2[0])) == this->hostID){
 			if(tmp.count(stoi(splitEdgeInfo2[0])) == 1){
                 this->edges->find(stoi(splitEdgeInfo2[0]))->second.push_back(stoi(splitEdgeInfo2[1]));
+                this->numEdge++;
             }
 			else{
                 Vertex v(stoi(splitEdgeInfo2[0]));
@@ -73,6 +77,7 @@ void Graph::createGraph(string& edgeInfo){
                 vector<int> e;
                 e.push_back(stoi(splitEdgeInfo2[1]));
                 this->edges->insert({stoi(splitEdgeInfo2[0]), e});
+                this->numEdge++;
 			}
 		}
 		if(this->externalHashFunction(stoi(splitEdgeInfo2[1])) == this->hostID){
