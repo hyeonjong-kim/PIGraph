@@ -110,12 +110,27 @@ void Coordination::resourceMonitoring(){
 
 void Coordination::executionQuery_CPU(int numWorker, string jobId){
     string queryPath = "/PiGraph/Query/CPU";
+    this->mu.lock();
+    vector<string> workers;
+    string workers_str = "";
+    for(int i = 0; i < numWorker; i++){
+        workers.push_back(this->resourceSort_CPU[i].first);
+        if(i!=numWorker)workers_str += this->resourceSort_CPU[i].first + ",";
+    }
+    this->zktools.zkSet(this->zh, (char*)("PiGraph/job/" + jobId + "workers").c_str(), (char*)(workers_str.c_str()));
+    for (size_t i = 0; i < workers.size(); i++){
+        this->zktools.zkSet(this->zh, (char*)(queryPath + "/" + workers[i]).c_str(), (char*)(jobId).c_str());
+    }
+    this->mu.unlock();
+    
+    /*
     for(int i = 0; i < numWorker; i++){
         this->mu.lock();
         cerr << this->resourceSort_CPU[i].first << " " << this->resourceSort_CPU[i].second << endl;
         this->zktools.zkSet(this->zh, (char*)(queryPath + "/" + this->resourceSort_CPU[i].first).c_str(), (char*)(jobId).c_str());
         this->mu.unlock();
     }
+    */
 }
 
 void Coordination::executionQuery_GPU(int numWorker, string jobId){
