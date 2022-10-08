@@ -129,7 +129,7 @@ string Processing::execute(string query){
             sprintf(tmp, "%0.16f", num.second);
             result += to_string(num.first) + "\t" + string(tmp) + "\n";
         }
-
+        /*
         map<int,double> finalResult2;
         ifstream data_file("../am_result_4");
         vector<string> split_line;
@@ -151,8 +151,9 @@ string Processing::execute(string query){
             err += fabs(b-a)/fabs(c);
         }
         cerr << "Err: " << err / finalResult2.size() << endl;
+        */
     }
-
+    
     return result;
 }
 

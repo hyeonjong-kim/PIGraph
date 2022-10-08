@@ -32,6 +32,7 @@ class Setting{
         mutex* mu;
         int thisHostNumber = 0;
         int numThread;
+        string outputPath;
 
         Setting(){this->parser = new ArgumentParser("Pigraph_Worker", "Pigraph Worker");}
         bool argParse(int argc, const char *argv[]);
@@ -82,6 +83,10 @@ bool Setting::argParse(int argc, const char *argv[]){
         .names({"-n", "--networkType"})
         .description("Network Type")
         .required(true);
+    this->parser->add_argument()
+        .names({"-o", "--outputPath"})
+        .description("Output Path")
+        .required(true);
     this->parser->enable_help();
     
     auto err = parser->parse(argc, argv);
@@ -115,7 +120,9 @@ bool Setting::argParse(int argc, const char *argv[]){
         }
         this->thisHostNumber++;
     }
-
+    
+    this->outputPath = this->parser->get<string>("o");
+    
     return true;
 }
 

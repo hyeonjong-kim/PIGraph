@@ -30,6 +30,8 @@ int main(int argc, const char *argv[]){
     struct timeval end_create_graph = {};
     struct timeval start_network_set = {};
     struct timeval end_network_set = {};
+    struct timeval start_write_file = {};
+    struct timeval end_write_file = {};
     struct timeval start_query = {};
     struct timeval end_query = {};
 
@@ -55,6 +57,10 @@ int main(int argc, const char *argv[]){
     processing->setInfo(graph, network, setting->superstep, setting->numThread);
     string result = processing->execute(setting->query);
     gettimeofday(&end_query, NULL);
+    
+    gettimeofday(&start_write_file, NULL);
+    io->writeHDFSFile((char*)(setting->outputPath.c_str()), O_WRONLY|O_CREAT, result, setting->thisHostNumber);
+    gettimeofday(&end_write_file, NULL);
     gettimeofday(&end_total, NULL);
 
     double time_total = end_total.tv_sec + end_total.tv_usec / 1000000.0 - start_total.tv_sec - start_total.tv_usec / 1000000.0;
@@ -62,17 +68,14 @@ int main(int argc, const char *argv[]){
     double time_create_graph = end_create_graph.tv_sec + end_create_graph.tv_usec / 1000000.0 - start_create_graph.tv_sec - start_create_graph.tv_usec / 1000000.0;
     double time_network_setting = end_network_set.tv_sec + end_network_set.tv_usec / 1000000.0 - start_network_set.tv_sec - start_network_set.tv_usec / 1000000.0;
     double time_query = end_query.tv_sec + end_query.tv_usec / 1000000.0 - start_query.tv_sec - start_query.tv_usec / 1000000.0;
+    double time_write_file = end_write_file.tv_sec + end_write_file.tv_usec / 1000000.0 - start_write_file.tv_sec - start_write_file.tv_usec / 1000000.0;
     
     cerr << "Total execution time: " << time_total << endl;
-    cerr << "Time of Reading file: " << time_read_file << endl;
+    cerr << "Time of Reading Reading: " << time_read_file << endl;
     cerr << "Time of creating graph: " << time_create_graph << endl;
     cerr << "Time of setting network: " << time_network_setting << endl;
     cerr << "Time of processing graph: " << time_query << endl;
+    cerr << "Time of Writing Reading: " << time_write_file << endl;
     
-    ofstream writeFile;
-    writeFile.open("test.txt");
-    writeFile.write(result.c_str(), result.size());
-    writeFile.close();
-    cerr << "working!!!!!" << endl;
     return 0;
 }

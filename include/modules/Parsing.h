@@ -59,11 +59,15 @@ bool Parsing::argParse(int argc, const char *argv[]){
         .required(true);
         this->parser->add_argument()
         .names({"-q", "--query"})
-        .description("information of port")
+        .description("information of query")
         .required(true);
         this->parser->add_argument()
         .names({"-j", "--job"})
-        .description("information of port")
+        .description("information of job id")
+        .required(true);
+        this->parser->add_argument()
+        .names({"-o", "--outputPath"})
+        .description("information of output path")
         .required(true);
         this->parser->enable_help();
 	
@@ -82,6 +86,7 @@ bool Parsing::argParse(int argc, const char *argv[]){
         this->argConfig.insert({"port", this->parser->get<string>("P")});
         this->argConfig.insert({"query", this->parser->get<string>("q")});
         this->argConfig.insert({"jobId", this->parser->get<string>("j")});
+        this->argConfig.insert({"outputPath", this->parser->get<string>("o")});
         
         return true;
 }

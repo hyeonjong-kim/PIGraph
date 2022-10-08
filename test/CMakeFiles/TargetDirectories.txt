@@ -1,9 +1,0 @@
-/home/hjkim/PiGraph/test/CMakeFiles/rebuild_cache.dir
-/home/hjkim/PiGraph/test/CMakeFiles/edit_cache.dir
-/home/hjkim/PiGraph/test/CMakeFiles/master.dir
-/home/hjkim/PiGraph/test/lib/CMakeFiles/rebuild_cache.dir
-/home/hjkim/PiGraph/test/lib/CMakeFiles/edit_cache.dir
-/home/hjkim/PiGraph/test/lib/CMakeFiles/HDFS.dir
-/home/hjkim/PiGraph/test/lib/CMakeFiles/communication.dir
-/home/hjkim/PiGraph/test/lib/CMakeFiles/zk.dir
-/home/hjkim/PiGraph/test/lib/CMakeFiles/utils.dir

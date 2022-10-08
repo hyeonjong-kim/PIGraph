@@ -365,8 +365,8 @@ void IPoIB::exchangeInfo(){
     this->sendMsg("Q");
     fill_n(this->send_msg_buf, this->send_buffer_size, 0.0);
     
-    result = this->readMsg();
-    vector<string> msg_split = split(result, '\n');
+    string memoryInfo = this->readMsg();
+    vector<string> msg_split = split(memoryInfo, '\n');
     vector<string> value_split;
     for(int k = 0; k < msg_split.size(); k++){
         value_split = split(msg_split[k], ' ');
