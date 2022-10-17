@@ -428,9 +428,9 @@ void Network::sendMsg_min(int vertexID, double value){
                         msg = ipoib[i].readMsg();
                         
                         vector<string> splitMsg = this->tools.split_simple(msg, '\n');
-                        cerr << "msg: "  << splitMsg.size() << endl;
                         for (size_t j = 0; j < splitMsg.size(); j++){
-                            this->recvMsg[i][j] = stod(splitMsg[j]);
+                            if(stod(splitMsg[j]) == 0.0)this->recvMsg[i][j] = numeric_limits<double>::max();
+                            else this->recvMsg[i][j] = stod(splitMsg[j]);
                         }
                     };
                     futures.emplace_back(this->connectionThreadPool->EnqueueJob(f));
