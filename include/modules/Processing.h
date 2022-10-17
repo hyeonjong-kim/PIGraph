@@ -2,6 +2,7 @@
 #define PROCESSING_H
 
 #include <sys/time.h>
+#include <algorithm>
 #include <cmath>
 
 #include "../modules/Graph.h"
@@ -29,19 +30,22 @@ class Processing{
         double* msgBuffer;
         int iteration;
         int numThread;
-        int count = 0;
+        int sourceVertex;
+        bool checkAliveThisWorker = false;
+        bool checkAlive = true;
         
 
     public:
         Processing(){}
         ~Processing(){}
-        void setInfo(Graph* graph, Network* network, int iteration, int numThread);
+        void setInfo(Graph* graph, Network* network, int iteration, int numThread, int sourceVertex);
         void PageRank(int start, int end);
+        void SingleSourceShortestPath(int start, int end);
         void SingleShortestPath(int start, int end);
         string execute(string query);
 };
 
-void Processing::setInfo(Graph* graph, Network* network, int iteration, int numThread){
+void Processing::setInfo(Graph* graph, Network* network, int iteration, int numThread, int sourceVertex){
     this->vertices = graph->getVertices();
     this->edges = graph->getEdges();
     this->network = network;
@@ -52,6 +56,7 @@ void Processing::setInfo(Graph* graph, Network* network, int iteration, int numT
     this->thisNumEdge = graph->getNumEdge();
     this->numThread = numThread;
     this->threadPool = new ThreadPool::ThreadPool(numThread);
+    this->sourceVertex = sourceVertex;
 }
 
 void Processing::PageRank(int start, int end){
@@ -69,6 +74,26 @@ void Processing::PageRank(int start, int end){
                 this->network->sendMsg_sum(outgoingEdges[j], this->vertices[i].vertexValue/n);  
             }
         }
+    }
+}
+
+void Processing::SingleSourceShortestPath(int start, int end){
+    for (size_t i = start; i < end; i++){
+        if(this->vertices[i].state == true){
+            if(this->superstep == 0){
+                this->vertices[i].vertexValue = numeric_limits<double>::max();
+            }
+            double minDist = (this->vertices[i].vertexID == this->sourceVertex) ? 0.0 : this->msgBuffer[this->vertices[i].pos];
+            if(minDist < this->vertices[i].vertexValue){
+                this->vertices[i].vertexValue = minDist;
+                vector<int> outgoingEdges = this->edges->find(this->vertices[i].vertexID)->second;
+                long n = outgoingEdges.size();
+                for(size_t j = 0; j < n; j++){
+                    this->network->sendMsg_min(outgoingEdges[j], this->vertices[i].vertexValue + 1.0); 
+                }
+            }
+        }
+        vertices[i].state = false;
     }
 }
 
@@ -118,7 +143,6 @@ string Processing::execute(string query){
 
         map<int,double> finalResult;
         for (size_t i = 0; i < this->thisNumVertex; i++){
-            //double tmp = floor(vertices[i].vertexValue*100000)/100000;
             finalResult.insert({vertices[i].vertexID, vertices[i].vertexValue});
         }
         vector<pp> vec(finalResult.begin(), finalResult.end());
@@ -129,31 +153,73 @@ string Processing::execute(string query){
             sprintf(tmp, "%0.16f", num.second);
             result += to_string(num.first) + "\t" + string(tmp) + "\n";
         }
-        /*
-        map<int,double> finalResult2;
-        ifstream data_file("../am_result_4");
-        vector<string> split_line;
-        string read_str;
-        while(getline(data_file, read_str)){
-            split_line = this->tools.split_simple(read_str, '\t');
-            finalResult2.insert({stoi(split_line[0]), stod(split_line[1])});
-        }
-        map<int,double>::iterator iter;
-        
-        double err = 0.0;
-        for (iter = finalResult2.begin(); iter != finalResult2.end(); iter++){
-            cerr.precision(10);
-            double a = fabs(iter->second);
-            double b = fabs(finalResult.find(iter->first)->second);
-            double c;
-            if(a > b)c = a;
-            else c = b; 
-            err += fabs(b-a)/fabs(c);
-        }
-        cerr << "Err: " << err / finalResult2.size() << endl;
-        */
     }
-    
+
+    else if(query == "sssp"){
+        int slice = this->thisNumEdge/this->numThread;
+        int start;
+        int end;
+        cerr << "[INFO]Total vertices: " << this->totalNumVertex << endl;
+        cerr << "[INFO]This worker's edges: " << this->thisNumEdge << endl;
+        std::vector<std::future<void>> futures;
+        while(this->checkAlive){
+            cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
+            start = 0;
+            end = 0;
+            for (size_t i = 1; i <= this->numThread; i++){
+                int sliceEdge = 0;
+                for (size_t j = start; j < this->thisNumVertex; j++){
+                    sliceEdge += this->edges->find(this->vertices[j].vertexID)->second.size();
+                    if(sliceEdge < slice)end++;
+                    else break;
+                }
+                if(i != this->numThread){
+                    auto f = [this, start, end](){
+                        this->SingleSourceShortestPath(start, end);
+                    };
+                    futures.emplace_back(this->threadPool->EnqueueJob(f));
+                }
+                else{
+                    auto f = [this, start](){
+                        this->SingleSourceShortestPath(start, this->thisNumVertex);
+                    };
+                    futures.emplace_back(this->threadPool->EnqueueJob(f));
+                }
+                start = end;
+            }
+            for(auto& f_ : futures){
+                f_.wait();
+            }
+            futures.clear();
+            cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
+            
+            if(this->superstep < this->iteration)this->network->sendMsg_min(numeric_limits<int>::max(), 0.0);
+            
+            for (size_t i = 0; i < this->thisNumVertex; i++){
+                if(this->msgBuffer[this->vertices[i].pos]!= numeric_limits<double>::max()){
+                    this->vertices[i].state = true;
+                    this->checkAliveThisWorker = true;
+                }
+            }
+
+            if(this->checkAliveThisWorker == true){
+                this->network->sendAliveMsg("alive");
+            }
+            else{
+                this->network->sendAliveMsg("dead");
+            }
+            this->checkAliveThisWorker = false;
+            this->checkAlive = this->network->getAliveMsg();
+            this->superstep++;
+        }
+        
+        this->network->closeNetwork();
+
+        for (size_t i = 0; i < this->thisNumVertex; i++){
+            if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
+            result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
+        }
+    }
     return result;
 }
 

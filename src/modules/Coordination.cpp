@@ -117,7 +117,7 @@ void Coordination::executionQuery_CPU(int numWorker, string jobId){
         workers.push_back(this->resourceSort_CPU[i].first);
         if(i!=numWorker)workers_str += this->resourceSort_CPU[i].first + ",";
     }
-    this->zktools.zkSet(this->zh, (char*)("PiGraph/job/" + jobId + "workers").c_str(), (char*)(workers_str.c_str()));
+    this->zktools.zkSet(this->zh, (char*)("/PiGraph/job/" + jobId + "/workers").c_str(), (char*)(workers_str.c_str()));
     for (size_t i = 0; i < workers.size(); i++){
         this->zktools.zkSet(this->zh, (char*)(queryPath + "/" + workers[i]).c_str(), (char*)(jobId).c_str());
     }

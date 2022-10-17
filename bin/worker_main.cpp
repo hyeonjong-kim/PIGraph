@@ -50,12 +50,25 @@ int main(int argc, const char *argv[]){
     gettimeofday(&end_create_graph, NULL);
     
     gettimeofday(&start_network_set, NULL);
-    network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber, graph->getMsgBuffer());
+    if(setting->query=="pagerank"){
+        network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber, graph->getMsgBuffer(), 0.0);
+    }
+    else if(setting->query=="sssp"){
+        network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber, graph->getMsgBuffer(), numeric_limits<double>::max());
+    }
     gettimeofday(&end_network_set, NULL);
 
     gettimeofday(&start_query, NULL);
-    processing->setInfo(graph, network, setting->superstep, setting->numThread);
+    if(setting->query=="pagerank"){
+        processing->setInfo(graph, network, setting->superstep, setting->numThread, 0);
+
+    }
+    else if(setting->query=="sssp"){
+        processing->setInfo(graph, network, setting->superstep, setting->numThread, setting->sourceVertex);
+
+    }
     string result = processing->execute(setting->query);
+    //cerr << result << endl;
     gettimeofday(&end_query, NULL);
     
     gettimeofday(&start_write_file, NULL);

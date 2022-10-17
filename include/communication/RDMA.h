@@ -44,6 +44,7 @@ class RDMA {
         double* send_msg;
         struct ibv_mr* send_mr;
         map<int, int> send_pos;
+        int send_msg_size;
         
         uint16_t lid;
         uint32_t qp_num;
@@ -52,6 +53,7 @@ class RDMA {
         mutex* vertex_mu;
         int internalBucket;
 
+        double initValue;
         int vertex_num;
 
         struct ibv_comp_channel *channel;
@@ -77,9 +79,10 @@ class RDMA {
         uint16_t getLocalId(struct ibv_context* context, int ib_port);
         uint32_t getQueuePairNumber(struct ibv_qp* qp);
 
-        void connectRDMA();
+        void connectRDMA(double initValue);
         void exchangeInfo();
         
+        double* getSendMsg(){return this->send_msg;}
         void postRdmaWrite(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length, string r_addr, string r_key);
         void postRecv(struct ibv_qp *qp, struct ibv_mr *mr, void *addr, uint32_t length);
         bool pollCompletion(struct ibv_cq* cq);
@@ -159,7 +162,8 @@ void RDMA::setInfo(IPoIB* ipoib, double* _recv_msg, int _buffer_size, map<int, i
   this->internalBucket = mu_num;
 }
 
-void RDMA::connectRDMA(){
+void RDMA::connectRDMA(double initValue){
+  this->initValue = initValue;
   this->exchangeInfo();
   this->changeQueuePairStateToInit(this->qp);
   this->changeQueuePairStateToRTR(this->qp, PORT, stoi(this->RDMAInfo.find("qp_num")->second), stoi(this->RDMAInfo.find("lid")->second));
@@ -283,10 +287,11 @@ void RDMA::exchangeInfo(){
     this->ipoib->sendMsg(to_string(iter->first) + " " + to_string(iter->second) + "\n");
   }
   this->ipoib->sendMsg("Q");
-  this->send_msg = new double[stoi(this->RDMAInfo.find("len")->second)];
-  fill_n(this->recv_msg, this->buffer_size, 0.0);
-  fill_n(this->send_msg, stoi(RDMAInfo.find("len")->second), 0.0);
-  this->send_mr = this->registerMemoryRegion(this->protection_domain, this->send_msg, stoi(RDMAInfo.find("len")->second) * sizeof(double));
+  this->send_msg_size = stoi(RDMAInfo.find("len")->second);
+  this->send_msg = new double[this->send_msg_size];
+  fill_n(this->recv_msg, this->buffer_size, this->initValue);
+  fill_n(this->send_msg, this->send_msg_size, this->initValue);
+  this->send_mr = this->registerMemoryRegion(this->protection_domain, this->send_msg, this->send_msg_size * sizeof(double));
   
   string result = this->ipoib->readMsg();
   vector<string> msg_split = split(result, '\n');
@@ -386,6 +391,7 @@ void RDMA::combinerMin(int vertex_id, double value){
   int pos = this->send_pos.find(vertex_id)->second;
   if(this->send_msg[pos] > value){
     this->send_msg[pos] = value;
+    cerr <<  value;
   }
   this->vertex_mu[this->internalHashFunction(vertex_id)].unlock();
 }
@@ -400,7 +406,7 @@ void RDMA::combinerMax(int vertex_id, double value){
 }
 
 void RDMA::sendMsg(){
-  this->postRdmaWrite(this->qp, this->send_mr, this->send_msg, stoi(this->RDMAInfo.find("len")->second)* sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
+  this->postRdmaWrite(this->qp, this->send_mr, this->send_msg, this->send_msg_size* sizeof(double), this->RDMAInfo.find("addr")->second, this->RDMAInfo.find("rkey")->second);
   thread ReadRDMAmsg([this](){
     this->postRecv(this->qp, this->recv_mr, this->recv_msg, this->buffer_size);
     this->pollCompletion(this->completion_queue_recv);
@@ -409,7 +415,7 @@ void RDMA::sendMsg(){
   this->pollCompletion(this->completion_queue);
   ReadRDMAmsg.join();
 
-  fill_n(this->send_msg, stoi(this->RDMAInfo.find("len")->second), 0.0);
+  fill_n(this->send_msg, this->send_msg_size, this->initValue);
   
 }
 

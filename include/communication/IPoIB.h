@@ -47,8 +47,7 @@ class IPoIB{
 
         int buffer_size;
         int send_buffer_size;
-        int count = 0;
-        
+        double initValue;
     public:
         IPoIB(int socket_num, int port, string hostName, int num_host, int _client_port, int _buffer_size, map<int, int>* _recv_pos, int mu_num);
         IPoIB(){}
@@ -57,7 +56,7 @@ class IPoIB{
         void setInfo(int socket_num, int _port, string hostName, int _num_host, int _client_port, int _buffer_size, map<int, int>* _recv_pos, int mu_num);
         
         void setSocket();
-        void connectSocket();
+        void connectSocket(double initValue);
         
         void sendMsg(string _msg);
         string readMsg();
@@ -171,7 +170,8 @@ void IPoIB::setSocket(){
     }
 }
 
-void IPoIB::connectSocket(){
+void IPoIB::connectSocket(double initValue){
+    this->initValue = initValue;
     thread connect_server([](int& new_socket, int& server_fd, struct sockaddr_in& address, int& addrlen){
         if((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen))<0){
             perror("accept");
@@ -316,7 +316,7 @@ string IPoIB::readAliveMsg(){
         this->result += this->read_char;
     }
 
-    this->result=this->result.substr(0, this->result.length()-1);  
+    this->result=this->result.substr(0, this->result.length()-1);
     return this->result;
 }
 
@@ -363,7 +363,7 @@ void IPoIB::exchangeInfo(){
         this->sendMsg(to_string(iter->first) + " " + to_string(iter->second) + "\n");
     }
     this->sendMsg("Q");
-    fill_n(this->send_msg_buf, this->send_buffer_size, 0.0);
+    fill_n(this->send_msg_buf, this->send_buffer_size, initValue);
     
     string memoryInfo = this->readMsg();
     vector<string> msg_split = split(memoryInfo, '\n');
