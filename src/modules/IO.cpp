@@ -30,7 +30,7 @@ string IO::readHDFSFile(const char* path, int flags, int bufferSize, short repli
 
 bool IO::writeHDFSFile(char* path, int flags, string& result, int thisHostNum, int bufferSize, short replication, tSize blocksize){
     this->fs_HDFS = hdfsConnect(this->hostInfo_HDFS, this->port_HDFS);
-    if(hdfsExists(this->fs_HDFS, path) == -1)hdfsCreateDirectory(this->fs_HDFS, path);
+    //if(hdfsExists(this->fs_HDFS, path) == -1)hdfsCreateDirectory(this->fs_HDFS, path);
     strcat(path, ("/PiGraph_part_" + to_string(thisHostNum)).c_str());
     this->file_HDFS = hdfsOpenFile(this->fs_HDFS, path, flags, bufferSize, replication, blocksize);
      if(!this->file_HDFS) {
