@@ -285,7 +285,6 @@ void Network::sendMsg_sum(int vertexID, double value){
                         msg = ipoib[i].readMsg();
                         
                         vector<string> splitMsg = this->tools.split_simple(msg, '\n');
-                        cerr << "msg: "  << splitMsg.size() << endl;
                         for (size_t j = 0; j < splitMsg.size(); j++){
                             this->recvMsg[i][j] = stod(splitMsg[j]);
                         }

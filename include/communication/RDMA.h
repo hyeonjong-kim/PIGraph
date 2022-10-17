@@ -391,7 +391,6 @@ void RDMA::combinerMin(int vertex_id, double value){
   int pos = this->send_pos.find(vertex_id)->second;
   if(this->send_msg[pos] > value){
     this->send_msg[pos] = value;
-    cerr <<  value;
   }
   this->vertex_mu[this->internalHashFunction(vertex_id)].unlock();
 }
