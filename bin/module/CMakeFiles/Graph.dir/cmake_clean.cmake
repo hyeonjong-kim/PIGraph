@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o"
+  "CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.o"
   "libGraph.a"
   "libGraph.pdb"
 )

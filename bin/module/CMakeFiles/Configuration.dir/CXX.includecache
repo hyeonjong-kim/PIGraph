@@ -35,12 +35,26 @@ map
 -
 vector
 -
+algorithm
+-
 ../zk/zkTools.h
 /home/hjkim/PiGraph/include/zk/zkTools.h
 ../communication/IPC.h
 /home/hjkim/PiGraph/include/communication/IPC.h
 ../utils/tinyxml.h
 /home/hjkim/PiGraph/include/utils/tinyxml.h
+../utils/Tools.h
+/home/hjkim/PiGraph/include/utils/Tools.h
+
+/home/hjkim/PiGraph/include/utils/Tools.h
+iostream
+-
+sstream
+-
+vector
+-
+string
+-
 
 /home/hjkim/PiGraph/include/utils/tinystr.h
 assert.h

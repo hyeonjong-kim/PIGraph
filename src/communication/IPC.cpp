@@ -12,7 +12,6 @@ bool IPC::setData(int shmId, string data){
         perror("shmat fild");
         return false;
     }
-    cerr << data << endl;
     sprintf(shm, "%s", (char*) data.c_str());
     this->detachShm(shm);
     return true;

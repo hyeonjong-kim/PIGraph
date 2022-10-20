@@ -1,12 +1,15 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 
+#include <limits>
+using namespace std;
+
 class Vertex{
     public:
         int vertexID;
         int pos;
         bool status = true;
-        double vertexValue = 3141592.0;
+        double vertexValue = numeric_limits<double>::max();
         double edgeValue;
         bool state = true;
         Vertex(){}

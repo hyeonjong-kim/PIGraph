@@ -22,6 +22,7 @@ bool Communication::client(map<string, string> config){
 		cerr << "[ERROR]FAIL TO CREATE OR GET SHM" << endl;
         return false;
 	}
+    
     this->ipc.setData(resultShmId, "");
     string msg = "";
 
@@ -35,15 +36,15 @@ bool Communication::client(map<string, string> config){
         cerr << "[ERROR]FAIL TO SET SHM" << endl;
         return false;
     }
-    /*
+    
     //Result
     msg = "";
     while(msg == ""){
         msg = this->ipc.getData(resultShmId);
         this_thread::sleep_for(chrono::milliseconds(50));
     }
-    */
-    //cerr << "[INFO]RESULT: " << msg << endl;
+    
+    cerr << "[INFO]RESULT: " << msg << endl;
     return true;
 }
 
@@ -67,6 +68,7 @@ map<string, string> Communication::master(){
         vector<string>resultMsg = this->tools.split_simple(splitMsg[i], ' ');
         argConfig.insert({resultMsg[0], resultMsg[1]});
     }   
-    
+    argConfig.insert({"State", "Run"});
+
     return argConfig;
 }

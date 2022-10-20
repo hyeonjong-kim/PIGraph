@@ -111,6 +111,8 @@ sstream
 -
 vector
 -
+string
+-
 
 /home/hjkim/PiGraph/include/utils/tinystr.h
 assert.h

@@ -47,6 +47,19 @@ bool Configuration::submitJobConfig(map<string, map<string,string>> config){
         return false;
     }
     
+    if(this->tools.split_simple(config.find("xml")->second.find("workers")->second, ',').size() != stoi(config.find("arg")->second.find("numWorker")->second)){
+        this->ipc.setData(resultShmId, "[ERROR]Number of Workers is not equal Number of Worker Nodes");
+        return false;
+    }
+
+    for (size_t i = 0; i < this->jobIds.size(); i++){
+        if(this->jobIds[i] == config.find("arg")->second.find("jobId")->second){
+            this->ipc.setData(resultShmId, "[ERROR]Already exist job id");
+            return false;
+        }
+    }
+    
+    this->jobIds.push_back(config.find("arg")->second.find("jobId")->second);
     string jobIdPath = "/PiGraph/job/" + config.find("arg")->second.find("jobId")->second;
     this->zktools.zkCreatePersistent(this->zh, (char*)jobIdPath.c_str(), "jobId");
     
@@ -62,27 +75,62 @@ bool Configuration::submitJobConfig(map<string, map<string,string>> config){
             this->zktools.zkCreatePersistent(this->zh, (char*)(string(jobIdPath+"/"+iter->first).c_str()), (char*)(iter->second.c_str()));
         }
     }
-    
-    this->ipc.setData(resultShmId, "[INFO]SUCCESS TO SUBMIT JOB CONFIGURATION");
+
+    this->ipc.setData(resultShmId, "SUCCESS TO SUBMIT JOB CONFIGURATION");
     this->allJobConfig.push_back(config);
     return true;
 }
 
-bool Configuration::deleteJobConfig(string joibId){
+bool Configuration::killJob(string jobId){
+    string path = "/PiGraph/job/" + jobId + "/State";
+    this->zktools.zkSet(this->zh, (char*)path.c_str(), "Kill");
+    int resultShmId = this->ipc.createShm((key_t)190507);
+    if (resultShmId == -1){
+        cerr << "[ERROR]FAIL TO CREATE OR GET SHM" << endl;
+        return false;
+	}
+    this->ipc.setData(resultShmId, "[INFO]Attempt to kill job: " + jobId);
+    return true;
+}
 
+void Configuration::checkJobState(string jobId){
+    int resultShmId = this->ipc.createShm((key_t)190507);
+    if (resultShmId == -1){
+		cerr << "[ERROR]FAIL TO CREATE OR GET SHM" << endl;
+        return;
+	}
+
+    string msg = "";
+    if(jobId == "all"){
+        for (size_t i = 0; i < this->jobIds.size(); i++){
+            char* buffer = new char[256];
+            string path = "/PiGraph/job/" + jobIds[i] + "/State";
+            this->zktools.zkGet(this->zh, (char*)path.c_str(), buffer);
+            msg += this->jobIds[i] + ": " + string(buffer) + "\n";
+        }
+        this->ipc.setData(resultShmId, msg);
+    }
+    else{
+        char* buffer = new char[256];
+        this->zktools.zkGet(this->zh, (char*)("/PiGraph/job/" + jobId + "/State").c_str(), buffer);
+        msg += jobId + ": " + string(buffer);
+        this->ipc.setData(resultShmId, msg);
+    }
 }
 
 bool Configuration::xmlParse(){
-    this->readDoc->LoadFile("/home/hjkim/PiGraph/conf/pigraph-conf.xml");
+    this->readDoc->LoadFile("../conf/pigraph-conf.xml");
     TiXmlElement* rootElement = this->readDoc->FirstChildElement( "configuration" );
     TiXmlElement* element = rootElement->FirstChildElement("property");
     
     while(element){
         string name = element->FirstChildElement("name")->GetText();
         string value = element->FirstChildElement("value")->GetText();
+        if(name == "workers")value.erase(remove(value.begin(), value.end(), ' '), value.end());
         this->xmlConfig.insert({name, value});
         element = element->NextSiblingElement("property");
     }
     
     return true;
 }
+

@@ -71,6 +71,28 @@ void Coordination::setResourceMonitoring(string zooHost, vector<string> workerMa
         char* buffer = "none";
         this->zktools.zkCreatePersistent(this->zh, (char*)(queryPath + "/GPU" + "/" + workerManagers[i]).c_str(), buffer);
     }
+
+}
+
+void Coordination::wakeMonitoring(){
+    while (true){
+        for (size_t i = 0; i < this->workerManagers.size(); i++){
+            if(!(this->ping(this->HostToIp(this->workerManagers[i])))){
+                cerr << "[INFO]" << this->workerManagers[i] << " OUT"<< endl;
+                this->zktools.zkDelete(this->zh, (char*)("/PiGraph/Resource/CPU/" + this->workerManagers[i]).c_str());
+                this->zktools.zkDelete(this->zh, (char*)("/PiGraph/Resource/GPU/" + this->workerManagers[i]).c_str());
+                this->zktools.zkDelete(this->zh, (char*)("/PiGraph/Query/CPU/" + this->workerManagers[i]).c_str());
+                this->zktools.zkDelete(this->zh, (char*)("/PiGraph/Query/GPU/" + this->workerManagers[i]).c_str());
+                this->mu.lock();
+                this->resourceBuffer_CPU.erase(this->workerManagers[i]);
+                this->resourceBuffer_GPU.erase(this->workerManagers[i]);
+                this->workerManagers.erase(this->workerManagers.begin() + i);
+                this->mu.unlock();
+                break;
+            }
+        }
+        sleep(5);
+    }
 }
 
 void Coordination::resourceMonitoring(){
@@ -103,7 +125,6 @@ void Coordination::resourceMonitoring(){
         }
         sort(this->resourceSort_CPU.begin(), this->resourceSort_CPU.end(), cmp);
         this->mu.unlock();
-
         sleep(5);
     }
 }
@@ -115,22 +136,15 @@ void Coordination::executionQuery_CPU(int numWorker, string jobId){
     string workers_str = "";
     for(int i = 0; i < numWorker; i++){
         workers.push_back(this->resourceSort_CPU[i].first);
-        if(i!=numWorker)workers_str += this->resourceSort_CPU[i].first + ",";
+        if(i < numWorker-1)workers_str += this->resourceSort_CPU[i].first + ",";
+        else workers_str += this->resourceSort_CPU[i].first;
     }
+    
     this->zktools.zkSet(this->zh, (char*)("/PiGraph/job/" + jobId + "/workers").c_str(), (char*)(workers_str.c_str()));
     for (size_t i = 0; i < workers.size(); i++){
         this->zktools.zkSet(this->zh, (char*)(queryPath + "/" + workers[i]).c_str(), (char*)(jobId).c_str());
     }
     this->mu.unlock();
-    
-    /*
-    for(int i = 0; i < numWorker; i++){
-        this->mu.lock();
-        cerr << this->resourceSort_CPU[i].first << " " << this->resourceSort_CPU[i].second << endl;
-        this->zktools.zkSet(this->zh, (char*)(queryPath + "/" + this->resourceSort_CPU[i].first).c_str(), (char*)(jobId).c_str());
-        this->mu.unlock();
-    }
-    */
 }
 
 void Coordination::executionQuery_GPU(int numWorker, string jobId){
@@ -140,4 +154,12 @@ void Coordination::executionQuery_GPU(int numWorker, string jobId){
         this->zktools.zkSet(this->zh, (char*)(queryPath + "/" + this->resourceSort_GPU[i].first).c_str(), (char*)(jobId).c_str());
         this->mu.unlock();
     }
+}
+
+bool Coordination::addNode(string nodeName){
+    this->zktools.zkCreatePersistent(this->zh, (char*)("/PiGraph/Resource/CPU/" +nodeName).c_str(), "Resource monitoring");
+    this->zktools.zkCreatePersistent(this->zh, (char*)("/PiGraph/Resource/GPU/" +nodeName).c_str(), "Resource monitoring");
+    this->zktools.zkCreatePersistent(this->zh, (char*)("/PiGraph/Query/CPU/" +nodeName).c_str(), "Resource monitoring");
+    this->zktools.zkCreatePersistent(this->zh, (char*)("/PiGraph/Query/CPU/" +nodeName).c_str(), "Resource monitoring");
+
 }

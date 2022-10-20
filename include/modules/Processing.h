@@ -41,7 +41,7 @@ class Processing{
         void setInfo(Graph* graph, Network* network, int iteration, int numThread, int sourceVertex);
         void PageRank(int start, int end);
         void SingleSourceShortestPath(int start, int end);
-        void SingleShortestPath(int start, int end);
+        void WeaklyConnectedComponent(int start, int end);
         string execute(string query);
 };
 
@@ -94,6 +94,38 @@ void Processing::SingleSourceShortestPath(int start, int end){
             }
         }
         vertices[i].state = false;
+    }
+}
+
+void Processing::WeaklyConnectedComponent(int start, int end){
+    for (size_t i = start; i < end; i++){
+        if(this->vertices[i].state == true){
+            int currentComponent = this->vertices[i].vertexValue;
+            vector<int> outgoingEdges = this->edges->find(this->vertices[i].vertexID)->second;
+            if(this->superstep == 0){
+                for (size_t j = 0; j < outgoingEdges.size(); j++){
+                    if(outgoingEdges[j] < currentComponent)currentComponent = outgoingEdges[j];
+                }
+                
+                if(currentComponent != this->vertices[i].vertexValue){
+                    this->vertices[i].vertexValue = currentComponent;
+                    for (size_t j = 0; j < outgoingEdges.size(); j++){
+                        if(outgoingEdges[j] > currentComponent)this->network->sendMsg_min(outgoingEdges[j], this->vertices[i].vertexValue);
+                    }
+                }
+                vertices[i].state = false;
+                return;
+            }
+            
+            if(this->msgBuffer[this->vertices[i].pos] < currentComponent){
+                currentComponent = this->msgBuffer[this->vertices[i].pos];
+                this->vertices[i].vertexValue = currentComponent;
+                for (size_t j = 0; j < outgoingEdges.size(); j++){
+                    this->network->sendMsg_min(outgoingEdges[j], this->vertices[i].vertexValue);
+                }
+            }
+            vertices[i].state = false;
+        }
     }
 }
 
@@ -220,6 +252,73 @@ string Processing::execute(string query){
             result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
         }
     }
+
+    else if(query == "wcc"){
+        int slice = this->thisNumEdge/this->numThread;
+        int start;
+        int end;
+        cerr << "[INFO]Total vertices: " << this->totalNumVertex << endl;
+        cerr << "[INFO]This worker's edges: " << this->thisNumEdge << endl;
+        std::vector<std::future<void>> futures;
+        while(this->checkAlive){
+            cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
+            start = 0;
+            end = 0;
+            for (size_t i = 1; i <= this->numThread; i++){
+                int sliceEdge = 0;
+                for (size_t j = start; j < this->thisNumVertex; j++){
+                    sliceEdge += this->edges->find(this->vertices[j].vertexID)->second.size();
+                    if(sliceEdge < slice)end++;
+                    else break;
+                }
+                if(i != this->numThread){
+                    auto f = [this, start, end](){
+                        this->WeaklyConnectedComponent(start, end);
+                    };
+                    futures.emplace_back(this->threadPool->EnqueueJob(f));
+                }
+                else{
+                    auto f = [this, start](){
+                        this->WeaklyConnectedComponent(start, this->thisNumVertex);
+                    };
+                    futures.emplace_back(this->threadPool->EnqueueJob(f));
+                }
+                start = end;
+            }
+            for(auto& f_ : futures){
+                f_.wait();
+            }
+            futures.clear();
+            cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
+            
+            if(this->superstep < this->iteration)this->network->sendMsg_min(numeric_limits<int>::max(), 0.0);
+            
+            for (size_t i = 0; i < this->thisNumVertex; i++){
+                if(this->msgBuffer[this->vertices[i].pos]!= numeric_limits<double>::max()){
+                    this->vertices[i].state = true;
+                    this->checkAliveThisWorker = true;
+                }
+            }
+
+            if(this->checkAliveThisWorker == true){
+                this->network->sendAliveMsg("alive");
+            }
+            else{
+                this->network->sendAliveMsg("dead");
+            }
+            this->checkAliveThisWorker = false;
+            this->checkAlive = this->network->getAliveMsg();
+            this->superstep++;
+        }
+        
+        this->network->closeNetwork();
+
+        for (size_t i = 0; i < this->thisNumVertex; i++){
+            if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
+            result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
+        }
+    }
+
     return result;
 }
 

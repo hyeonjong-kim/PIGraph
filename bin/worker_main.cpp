@@ -53,22 +53,21 @@ int main(int argc, const char *argv[]){
     if(setting->query=="pagerank"){
         network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber, graph->getMsgBuffer(), 0.0);
     }
-    else if(setting->query=="sssp"){
+    else if(setting->query=="sssp" || setting->query=="wcc"){
         network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber, graph->getMsgBuffer(), numeric_limits<double>::max());
     }
     gettimeofday(&end_network_set, NULL);
 
     gettimeofday(&start_query, NULL);
-    if(setting->query=="pagerank"){
+    if(setting->query=="pagerank" || setting->query=="wcc"){
         processing->setInfo(graph, network, setting->superstep, setting->numThread, 0);
 
     }
     else if(setting->query=="sssp"){
         processing->setInfo(graph, network, setting->superstep, setting->numThread, setting->sourceVertex);
-
     }
+
     string result = processing->execute(setting->query);
-    //cerr << result << endl;
     gettimeofday(&end_query, NULL);
     
     gettimeofday(&start_write_file, NULL);
@@ -84,11 +83,11 @@ int main(int argc, const char *argv[]){
     double time_write_file = end_write_file.tv_sec + end_write_file.tv_usec / 1000000.0 - start_write_file.tv_sec - start_write_file.tv_usec / 1000000.0;
     
     cerr << "Total execution time: " << time_total << endl;
-    cerr << "Time of Reading Reading: " << time_read_file << endl;
+    cerr << "Time of reading file: " << time_read_file << endl;
     cerr << "Time of creating graph: " << time_create_graph << endl;
     cerr << "Time of setting network: " << time_network_setting << endl;
     cerr << "Time of processing graph: " << time_query << endl;
-    cerr << "Time of Writing Reading: " << time_write_file << endl;
+    cerr << "Time of writing file: " << time_write_file << endl;
     
     return 0;
 }

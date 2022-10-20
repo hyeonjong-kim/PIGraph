@@ -57,6 +57,8 @@ sstream
 -
 vector
 -
+string
+-
 
 /home/hjkim/PiGraph/src/modules/Setting.cpp
 ../../include/modules/Setting.h

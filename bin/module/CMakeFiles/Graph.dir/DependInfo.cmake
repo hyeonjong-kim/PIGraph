@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/hjkim/PiGraph/src/modules/Setting.cpp" "/home/hjkim/PiGraph/bin/module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o"
+  "/home/hjkim/PiGraph/src/modules/Graph.cpp" "/home/hjkim/PiGraph/bin/module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
