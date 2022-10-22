@@ -6,7 +6,7 @@ Configuration::Configuration(){
 
 Configuration::~Configuration(){
     map<string,string>::iterator iter;
-    if(!this->allJobConfig.empty()){
+    if(this->allJobConfig.size() != 0){
         for(size_t i = 0; i < this->allJobConfig.size(); i++){
         string jobIdPath = "/PiGraph/job/" + this->allJobConfig[i].find("arg")->second.find("jobId")->second;
         cerr << jobIdPath << endl;
@@ -23,9 +23,10 @@ Configuration::~Configuration(){
         }
         this->zktools.zkDelete(this->zh, (char*) jobIdPath.c_str());
         }
-        this->zktools.zkDelete(this->zh, "/PiGraph/job");
+        
     }
     
+    this->zktools.zkDelete(this->zh, "/PiGraph/job");
     this->zktools.zkClose(this->zh);
 }
 
@@ -47,11 +48,6 @@ bool Configuration::submitJobConfig(map<string, map<string,string>> config){
         return false;
     }
     
-    if(this->tools.split_simple(config.find("xml")->second.find("workers")->second, ',').size() != stoi(config.find("arg")->second.find("numWorker")->second)){
-        this->ipc.setData(resultShmId, "[ERROR]Number of Workers is not equal Number of Worker Nodes");
-        return false;
-    }
-
     for (size_t i = 0; i < this->jobIds.size(); i++){
         if(this->jobIds[i] == config.find("arg")->second.find("jobId")->second){
             this->ipc.setData(resultShmId, "[ERROR]Already exist job id");
@@ -76,7 +72,6 @@ bool Configuration::submitJobConfig(map<string, map<string,string>> config){
         }
     }
 
-    this->ipc.setData(resultShmId, "SUCCESS TO SUBMIT JOB CONFIGURATION");
     this->allJobConfig.push_back(config);
     return true;
 }

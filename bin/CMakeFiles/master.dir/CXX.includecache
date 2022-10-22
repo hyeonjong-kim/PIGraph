@@ -107,6 +107,8 @@ sys/wait.h
 -
 fcntl.h
 -
+../communication/IPC.h
+/home/hjkim/PiGraph/include/communication/IPC.h
 ../zk/zkTools.h
 /home/hjkim/PiGraph/include/zk/zkTools.h
 ../utils/Tools.h

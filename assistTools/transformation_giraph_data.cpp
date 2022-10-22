@@ -22,8 +22,8 @@ vector<string> split(string input, char delimiter) {
 }
 
 int main(){
-    string path = "/home/hjkim/data/Amazon0601.txt";
-    char delimiter  = '\t';
+    string path = "/home/hjkim/data/facebook_combined.txt";
+    char delimiter  = ' ';
     ifstream data(path);
     string s;
     vector<string> v;
@@ -51,7 +51,7 @@ int main(){
 
         while (!iter->second.empty())
         {   
-            s += ("[" + to_string(iter->second.front()) + ",0" + "],");
+            s += ("[" + to_string(iter->second.front()) + ",1.0" + "],");
             iter->second.pop();
         }
         

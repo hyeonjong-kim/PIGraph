@@ -17,7 +17,7 @@ target_link_libraries(Configuration PRIVATE zk communication utils)
 
 add_library(Coordination STATIC ../src/modules/Coordination.cpp)
 target_include_directories(Coordination PUBLIC ../include/modules)
-target_link_libraries(Coordination PRIVATE zk utils)
+target_link_libraries(Coordination PRIVATE zk utils communication)
 
 add_library(Resource STATIC ../src/modules/Resource.cpp)
 target_include_directories(Resource PUBLIC ../include/modules)

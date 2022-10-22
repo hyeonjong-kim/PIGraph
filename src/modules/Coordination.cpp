@@ -130,8 +130,19 @@ void Coordination::resourceMonitoring(){
 }
 
 void Coordination::executionQuery_CPU(int numWorker, string jobId){
+    int resultShmId = this->ipc.createShm((key_t)190507);
+    if (resultShmId == -1){
+		cerr << "[ERROR]FAIL TO CREATE OR GET SHM" << endl;
+        return;
+	}
+
     string queryPath = "/PiGraph/Query/CPU";
     this->mu.lock();
+    if(this->workerManagers.size() < numWorker){
+        this->ipc.setData(resultShmId, "[ERROR]Number of Workers is not equal Number of Worker Nodes");
+        return;
+    }
+
     vector<string> workers;
     string workers_str = "";
     for(int i = 0; i < numWorker; i++){
@@ -145,6 +156,8 @@ void Coordination::executionQuery_CPU(int numWorker, string jobId){
         this->zktools.zkSet(this->zh, (char*)(queryPath + "/" + workers[i]).c_str(), (char*)(jobId).c_str());
     }
     this->mu.unlock();
+    this->ipc.setData(resultShmId, "SUCCESS TO SUBMIT JOB");
+    return;
 }
 
 void Coordination::executionQuery_GPU(int numWorker, string jobId){
@@ -157,9 +170,26 @@ void Coordination::executionQuery_GPU(int numWorker, string jobId){
 }
 
 bool Coordination::addNode(string nodeName){
-    this->zktools.zkCreatePersistent(this->zh, (char*)("/PiGraph/Resource/CPU/" +nodeName).c_str(), "Resource monitoring");
-    this->zktools.zkCreatePersistent(this->zh, (char*)("/PiGraph/Resource/GPU/" +nodeName).c_str(), "Resource monitoring");
-    this->zktools.zkCreatePersistent(this->zh, (char*)("/PiGraph/Query/CPU/" +nodeName).c_str(), "Resource monitoring");
-    this->zktools.zkCreatePersistent(this->zh, (char*)("/PiGraph/Query/CPU/" +nodeName).c_str(), "Resource monitoring");
+    if(!(this->zktools.zkCreatePersistent(this->zh, (char*)("/PiGraph/Resource/CPU/" + nodeName).c_str(), "Resource monitoring")))return false;
+    if(!(this->zktools.zkCreatePersistent(this->zh, (char*)("/PiGraph/Resource/GPU/" + nodeName).c_str(), "Resource monitoring")))return false;
+    if(!(this->zktools.zkCreatePersistent(this->zh, (char*)("/PiGraph/Query/CPU/" + nodeName).c_str(), "Resource monitoring")))return false;
+    if(!(this->zktools.zkCreatePersistent(this->zh, (char*)("/PiGraph/Query/GPU/" + nodeName).c_str(), "Resource monitoring")))return false;
+    this->mu.lock();
+    this->workerManagers.push_back(nodeName);
+    char* buffer_CPU = new char[512];
+    this->zktools.zkWget(this->zh, (char*)("/PiGraph/Resource/CPU/" + nodeName).c_str(), buffer_CPU);
+    this->resourceBuffer_GPU.insert(pair<string, char*>(nodeName, buffer_CPU));
+    char* buffer_GPU = new char[512];
+    this->zktools.zkWget(this->zh, (char*)("/PiGraph/Resource/GPU/" + nodeName).c_str(), buffer_GPU);
+    this->resourceBuffer_CPU.insert(pair<string, char*>(nodeName, buffer_GPU));
+    this->mu.unlock();
 
+    int resultShmId = this->ipc.createShm((key_t)190507);
+    if (resultShmId == -1){
+		cerr << "[ERROR]FAIL TO CREATE OR GET SHM" << endl;
+        return false;
+	}
+    ipc.setData(resultShmId, "[INFO]Attempt to add: " + nodeName);
+
+    return true;
 }

@@ -83,6 +83,7 @@ void Processing::SingleSourceShortestPath(int start, int end){
             if(this->superstep == 0){
                 this->vertices[i].vertexValue = numeric_limits<double>::max();
             }
+            
             double minDist = (this->vertices[i].vertexID == this->sourceVertex) ? 0.0 : this->msgBuffer[this->vertices[i].pos];
             if(minDist < this->vertices[i].vertexValue){
                 this->vertices[i].vertexValue = minDist;

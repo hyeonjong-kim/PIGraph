@@ -341,6 +341,7 @@ module/CMakeFiles/Configuration.dir/clean:
 # Target rules for target module/CMakeFiles/Coordination.dir
 
 # All Build rule for target.
+module/CMakeFiles/Coordination.dir/all: module/lib/CMakeFiles/communication.dir/all
 module/CMakeFiles/Coordination.dir/all: module/lib/CMakeFiles/zk.dir/all
 module/CMakeFiles/Coordination.dir/all: module/lib/CMakeFiles/utils.dir/all
 	$(MAKE) $(MAKESILENT) -f module/CMakeFiles/Coordination.dir/build.make module/CMakeFiles/Coordination.dir/depend
@@ -350,7 +351,7 @@ module/CMakeFiles/Coordination.dir/all: module/lib/CMakeFiles/utils.dir/all
 
 # Build rule for subdir invocation for target.
 module/CMakeFiles/Coordination.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/bin/CMakeFiles 12
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/bin/CMakeFiles 16
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 module/CMakeFiles/Coordination.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/hjkim/PiGraph/bin/CMakeFiles 0
 .PHONY : module/CMakeFiles/Coordination.dir/rule

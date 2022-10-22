@@ -2,15 +2,11 @@
 <configuration>
 	<property>
 		<name>workers</name>
-		<value>MN</value>
+		<value>SN01,SN02,SN03,SN04,SN05,SN06</value>
 	</property>
 	<property>
 		<name>mutex</name>
 		<value>256</value>
-	</property>
-	<property>
-		<name>thread</name>
-		<value>128</value>
 	</property>
 	<property>
 		<name>HDFS</name>

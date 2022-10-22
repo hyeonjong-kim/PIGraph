@@ -47,7 +47,7 @@ int main(int argc, const char *argv[]){
             configuration->killJob(argConfig.find("jobId")->second);
         }
         else if(argConfig.find("queryType")->second == "add"){
-            configuration->killJob(argConfig.find("jobId")->second);
+            coordination->addNode(argConfig.find("nodename")->second);
         }
         else if(argConfig.find("queryType")->second == "submit"){
             argConfig.erase("queryType");

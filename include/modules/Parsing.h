@@ -33,10 +33,11 @@ bool Parsing::argParse(int argc, const char *argv[]){
     .names({"-Q", "--query_type"})
     .description("query type")
     .required(true);
+    
     this->parser->add_argument()
     .names({"-j", "--job"})
     .description("information of job id")
-    .required(true);
+    .required(false);
 
     this->parser->add_argument()
     .names({"-f", "--file_path"})
@@ -78,6 +79,16 @@ bool Parsing::argParse(int argc, const char *argv[]){
     .names({"-t", "--thread"})
     .description("information of thead")
     .required(false);
+    this->parser->add_argument()
+    .names({"-S", "--source_id"})
+    .description("Source id")
+    .required(false);
+
+    this->parser->add_argument()
+    .names({"-N", "--node_name"})
+    .description("node name")
+    .required(false);
+
     this->parser->enable_help();
 
     auto err = parser->parse(argc, argv);
@@ -101,7 +112,7 @@ bool Parsing::argParse(int argc, const char *argv[]){
         this->argConfig.insert({"port", this->parser->get<string>("P")});
         this->argConfig.insert({"jobId", this->parser->get<string>("j")});
         this->argConfig.insert({"thread", this->parser->get<string>("t")});
-
+        
         string processingUnit = this->parser->get<string>("u");
         string query = this->parser->get<string>("q");
         string networkType = this->parser->get<string>("n");
@@ -119,6 +130,9 @@ bool Parsing::argParse(int argc, const char *argv[]){
         this->argConfig.insert({"processingUnit", processingUnit});
         this->argConfig.insert({"query", query});
         this->argConfig.insert({"networkType", networkType});
+        if(query == "sssp"){
+            this->argConfig.insert({"sourceId", this->parser->get<string>("S")});
+        }
         return true;
     }
     if(queryType == "check"){
@@ -128,6 +142,11 @@ bool Parsing::argParse(int argc, const char *argv[]){
     if(queryType == "kill"){
         this->argConfig.insert({"queryType", queryType});
         this->argConfig.insert({"jobId", this->parser->get<string>("j")});
+    }
+
+    if(queryType == "add"){
+        this->argConfig.insert({"queryType", queryType});
+        this->argConfig.insert({"nodename", this->parser->get<string>("N")});
     }
 }
 

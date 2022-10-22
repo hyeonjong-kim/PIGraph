@@ -13,6 +13,7 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 
+#include "../communication/IPC.h"
 #include "../zk/zkTools.h"
 #include "../utils/Tools.h"
 
@@ -28,6 +29,7 @@ class Coordination{
         vector<pair<string, double>> resourceSort_GPU;
         vector<map<string, map<string,string>>>* allJobConfig;
         mutex mu;
+        IPC ipc;
         Tools tools;
 
     public:
