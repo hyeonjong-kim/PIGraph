@@ -388,6 +388,33 @@ home/hjkim/PiGraph/src/modules/Execution.cpp.s:
 	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Execution.dir/build.make module/CMakeFiles/Execution.dir/home/hjkim/PiGraph/src/modules/Execution.cpp.s
 .PHONY : home/hjkim/PiGraph/src/modules/Execution.cpp.s
 
+home/hjkim/PiGraph/src/modules/Graph.o: home/hjkim/PiGraph/src/modules/Graph.cpp.o
+
+.PHONY : home/hjkim/PiGraph/src/modules/Graph.o
+
+# target to build an object file
+home/hjkim/PiGraph/src/modules/Graph.cpp.o:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Graph.dir/build.make module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.o
+.PHONY : home/hjkim/PiGraph/src/modules/Graph.cpp.o
+
+home/hjkim/PiGraph/src/modules/Graph.i: home/hjkim/PiGraph/src/modules/Graph.cpp.i
+
+.PHONY : home/hjkim/PiGraph/src/modules/Graph.i
+
+# target to preprocess a source file
+home/hjkim/PiGraph/src/modules/Graph.cpp.i:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Graph.dir/build.make module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.i
+.PHONY : home/hjkim/PiGraph/src/modules/Graph.cpp.i
+
+home/hjkim/PiGraph/src/modules/Graph.s: home/hjkim/PiGraph/src/modules/Graph.cpp.s
+
+.PHONY : home/hjkim/PiGraph/src/modules/Graph.s
+
+# target to generate assembly for a file
+home/hjkim/PiGraph/src/modules/Graph.cpp.s:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Graph.dir/build.make module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.s
+.PHONY : home/hjkim/PiGraph/src/modules/Graph.cpp.s
+
 home/hjkim/PiGraph/src/modules/IO.o: home/hjkim/PiGraph/src/modules/IO.cpp.o
 
 .PHONY : home/hjkim/PiGraph/src/modules/IO.o
@@ -414,6 +441,33 @@ home/hjkim/PiGraph/src/modules/IO.s: home/hjkim/PiGraph/src/modules/IO.cpp.s
 home/hjkim/PiGraph/src/modules/IO.cpp.s:
 	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/IO.dir/build.make module/CMakeFiles/IO.dir/home/hjkim/PiGraph/src/modules/IO.cpp.s
 .PHONY : home/hjkim/PiGraph/src/modules/IO.cpp.s
+
+home/hjkim/PiGraph/src/modules/Network.o: home/hjkim/PiGraph/src/modules/Network.cpp.o
+
+.PHONY : home/hjkim/PiGraph/src/modules/Network.o
+
+# target to build an object file
+home/hjkim/PiGraph/src/modules/Network.cpp.o:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Network.dir/build.make module/CMakeFiles/Network.dir/home/hjkim/PiGraph/src/modules/Network.cpp.o
+.PHONY : home/hjkim/PiGraph/src/modules/Network.cpp.o
+
+home/hjkim/PiGraph/src/modules/Network.i: home/hjkim/PiGraph/src/modules/Network.cpp.i
+
+.PHONY : home/hjkim/PiGraph/src/modules/Network.i
+
+# target to preprocess a source file
+home/hjkim/PiGraph/src/modules/Network.cpp.i:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Network.dir/build.make module/CMakeFiles/Network.dir/home/hjkim/PiGraph/src/modules/Network.cpp.i
+.PHONY : home/hjkim/PiGraph/src/modules/Network.cpp.i
+
+home/hjkim/PiGraph/src/modules/Network.s: home/hjkim/PiGraph/src/modules/Network.cpp.s
+
+.PHONY : home/hjkim/PiGraph/src/modules/Network.s
+
+# target to generate assembly for a file
+home/hjkim/PiGraph/src/modules/Network.cpp.s:
+	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Network.dir/build.make module/CMakeFiles/Network.dir/home/hjkim/PiGraph/src/modules/Network.cpp.s
+.PHONY : home/hjkim/PiGraph/src/modules/Network.cpp.s
 
 home/hjkim/PiGraph/src/modules/Parsing.o: home/hjkim/PiGraph/src/modules/Parsing.cpp.o
 
@@ -476,8 +530,6 @@ home/hjkim/PiGraph/src/modules/Setting.o: home/hjkim/PiGraph/src/modules/Setting
 # target to build an object file
 home/hjkim/PiGraph/src/modules/Setting.cpp.o:
 	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Setting.dir/build.make module/CMakeFiles/Setting.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o
-	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Graph.dir/build.make module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o
-	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Network.dir/build.make module/CMakeFiles/Network.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o
 .PHONY : home/hjkim/PiGraph/src/modules/Setting.cpp.o
 
 home/hjkim/PiGraph/src/modules/Setting.i: home/hjkim/PiGraph/src/modules/Setting.cpp.i
@@ -487,8 +539,6 @@ home/hjkim/PiGraph/src/modules/Setting.i: home/hjkim/PiGraph/src/modules/Setting
 # target to preprocess a source file
 home/hjkim/PiGraph/src/modules/Setting.cpp.i:
 	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Setting.dir/build.make module/CMakeFiles/Setting.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.i
-	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Graph.dir/build.make module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.i
-	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Network.dir/build.make module/CMakeFiles/Network.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.i
 .PHONY : home/hjkim/PiGraph/src/modules/Setting.cpp.i
 
 home/hjkim/PiGraph/src/modules/Setting.s: home/hjkim/PiGraph/src/modules/Setting.cpp.s
@@ -498,8 +548,6 @@ home/hjkim/PiGraph/src/modules/Setting.s: home/hjkim/PiGraph/src/modules/Setting
 # target to generate assembly for a file
 home/hjkim/PiGraph/src/modules/Setting.cpp.s:
 	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Setting.dir/build.make module/CMakeFiles/Setting.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.s
-	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Graph.dir/build.make module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.s
-	cd /home/hjkim/PiGraph/bin && $(MAKE) $(MAKESILENT) -f module/CMakeFiles/Network.dir/build.make module/CMakeFiles/Network.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.s
 .PHONY : home/hjkim/PiGraph/src/modules/Setting.cpp.s
 
 # Help Target
@@ -532,9 +580,15 @@ help:
 	@echo "... home/hjkim/PiGraph/src/modules/Execution.o"
 	@echo "... home/hjkim/PiGraph/src/modules/Execution.i"
 	@echo "... home/hjkim/PiGraph/src/modules/Execution.s"
+	@echo "... home/hjkim/PiGraph/src/modules/Graph.o"
+	@echo "... home/hjkim/PiGraph/src/modules/Graph.i"
+	@echo "... home/hjkim/PiGraph/src/modules/Graph.s"
 	@echo "... home/hjkim/PiGraph/src/modules/IO.o"
 	@echo "... home/hjkim/PiGraph/src/modules/IO.i"
 	@echo "... home/hjkim/PiGraph/src/modules/IO.s"
+	@echo "... home/hjkim/PiGraph/src/modules/Network.o"
+	@echo "... home/hjkim/PiGraph/src/modules/Network.i"
+	@echo "... home/hjkim/PiGraph/src/modules/Network.s"
 	@echo "... home/hjkim/PiGraph/src/modules/Parsing.o"
 	@echo "... home/hjkim/PiGraph/src/modules/Parsing.i"
 	@echo "... home/hjkim/PiGraph/src/modules/Parsing.s"

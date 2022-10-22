@@ -60,7 +60,6 @@ double Resource::getCurrentValueCPU(){
 
 void Resource::resourceChecker(){
     char* persistentPath = "/PiGraph/Resource/CPU";
-
     while(true){
         double cpu = this->getCurrentValueCPU();
         this->zktools.zkSet(this->zh, (char*)(string(persistentPath)+ "/" + string(this->hostName)).c_str(), (char*)to_string(cpu).c_str());

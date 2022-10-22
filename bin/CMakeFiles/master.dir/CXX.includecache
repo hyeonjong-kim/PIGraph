@@ -75,12 +75,16 @@ map
 -
 vector
 -
+algorithm
+-
 ../zk/zkTools.h
 /home/hjkim/PiGraph/include/zk/zkTools.h
 ../communication/IPC.h
 /home/hjkim/PiGraph/include/communication/IPC.h
 ../utils/tinyxml.h
 /home/hjkim/PiGraph/include/utils/tinyxml.h
+../utils/Tools.h
+/home/hjkim/PiGraph/include/utils/Tools.h
 
 /home/hjkim/PiGraph/include/modules/Coordination.h
 iostream
@@ -95,8 +99,20 @@ algorithm
 -
 mutex
 -
+arpa/inet.h
+-
+netdb.h
+-
+sys/wait.h
+-
+fcntl.h
+-
+../communication/IPC.h
+/home/hjkim/PiGraph/include/communication/IPC.h
 ../zk/zkTools.h
 /home/hjkim/PiGraph/include/zk/zkTools.h
+../utils/Tools.h
+/home/hjkim/PiGraph/include/utils/Tools.h
 
 /home/hjkim/PiGraph/include/utils/ThreadPool.h
 chrono
@@ -128,6 +144,8 @@ iostream
 sstream
 -
 vector
+-
+string
 -
 
 /home/hjkim/PiGraph/include/utils/tinystr.h

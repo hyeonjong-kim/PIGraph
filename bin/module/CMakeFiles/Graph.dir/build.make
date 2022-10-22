@@ -76,27 +76,27 @@ include module/CMakeFiles/Graph.dir/progress.make
 # Include the compile flags for this target's objects.
 include module/CMakeFiles/Graph.dir/flags.make
 
-module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o: module/CMakeFiles/Graph.dir/flags.make
-module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o: /home/hjkim/PiGraph/src/modules/Setting.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o"
-	cd /home/hjkim/PiGraph/bin/module && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o -c /home/hjkim/PiGraph/src/modules/Setting.cpp
+module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.o: module/CMakeFiles/Graph.dir/flags.make
+module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.o: /home/hjkim/PiGraph/src/modules/Graph.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.o"
+	cd /home/hjkim/PiGraph/bin/module && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.o -c /home/hjkim/PiGraph/src/modules/Graph.cpp
 
-module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.i"
-	cd /home/hjkim/PiGraph/bin/module && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/hjkim/PiGraph/src/modules/Setting.cpp > CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.i
+module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.i"
+	cd /home/hjkim/PiGraph/bin/module && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/hjkim/PiGraph/src/modules/Graph.cpp > CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.i
 
-module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.s"
-	cd /home/hjkim/PiGraph/bin/module && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hjkim/PiGraph/src/modules/Setting.cpp -o CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.s
+module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.s"
+	cd /home/hjkim/PiGraph/bin/module && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hjkim/PiGraph/src/modules/Graph.cpp -o CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.s
 
 # Object files for target Graph
 Graph_OBJECTS = \
-"CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o"
+"CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.o"
 
 # External object files for target Graph
 Graph_EXTERNAL_OBJECTS =
 
-module/libGraph.a: module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o
+module/libGraph.a: module/CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.o
 module/libGraph.a: module/CMakeFiles/Graph.dir/build.make
 module/libGraph.a: module/CMakeFiles/Graph.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libGraph.a"

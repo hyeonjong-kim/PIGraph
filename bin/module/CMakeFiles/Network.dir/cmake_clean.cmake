@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/Network.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o"
+  "CMakeFiles/Network.dir/home/hjkim/PiGraph/src/modules/Network.cpp.o"
   "libNetwork.a"
   "libNetwork.pdb"
 )

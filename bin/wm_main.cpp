@@ -7,7 +7,7 @@
 
 Resource* resource = new Resource();
 Execution* execution = new Execution();
-ThreadPool::ThreadPool* threadPool =  new ThreadPool::ThreadPool(2);
+ThreadPool::ThreadPool* threadPool =  new ThreadPool::ThreadPool(3);
 
 void interruptHandler(int sig){
     delete execution;

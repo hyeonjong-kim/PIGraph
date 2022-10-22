@@ -32,6 +32,8 @@ class Setting{
         mutex* mu;
         int thisHostNumber = 0;
         int numThread;
+        string outputPath;
+        int sourceVertex;
 
         Setting(){this->parser = new ArgumentParser("Pigraph_Worker", "Pigraph Worker");}
         bool argParse(int argc, const char *argv[]);
@@ -82,6 +84,14 @@ bool Setting::argParse(int argc, const char *argv[]){
         .names({"-n", "--networkType"})
         .description("Network Type")
         .required(true);
+    this->parser->add_argument()
+        .names({"-o", "--outputPath"})
+        .description("Output Path")
+        .required(true);
+    this->parser->add_argument()
+        .names({"-S", "--sourceVertex"})
+        .description("Source Vertex")
+        .required(false);   
     this->parser->enable_help();
     
     auto err = parser->parse(argc, argv);
@@ -106,6 +116,7 @@ bool Setting::argParse(int argc, const char *argv[]){
     this->HDFS_host = split_HDFS[0];
     this->HDFS_port = stoi(split_HDFS[1]);
     this->numThread = this->parser->get<int>("t");
+    if(this->query == "sssp")this->sourceVertex = this->parser->get<int>("S");
     
     char thisHostName[256];
     gethostname(thisHostName, 256);
@@ -115,7 +126,9 @@ bool Setting::argParse(int argc, const char *argv[]){
         }
         this->thisHostNumber++;
     }
-
+    
+    this->outputPath = this->parser->get<string>("o");
+    
     return true;
 }
 

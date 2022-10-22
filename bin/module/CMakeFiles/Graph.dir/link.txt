@@ -1,2 +1,2 @@
-/usr/bin/ar qc libGraph.a CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Setting.cpp.o
+/usr/bin/ar qc libGraph.a CMakeFiles/Graph.dir/home/hjkim/PiGraph/src/modules/Graph.cpp.o
 /usr/bin/ranlib libGraph.a

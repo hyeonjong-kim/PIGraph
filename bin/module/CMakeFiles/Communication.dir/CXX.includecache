@@ -61,6 +61,8 @@ sstream
 -
 vector
 -
+string
+-
 
 /home/hjkim/PiGraph/src/modules/Communication.cpp
 ../../include/modules/Communication.h

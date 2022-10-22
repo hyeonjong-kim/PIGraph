@@ -4,7 +4,7 @@
 # compile CXX with /usr/local/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/hjkim/PiGraph/module/../include/modules -I/home/hjkim/PiGraph/lib/../include/zk
+CXX_INCLUDES = -I/home/hjkim/PiGraph/module/../include/modules -I/home/hjkim/PiGraph/lib/../include/zk -I/home/hjkim/PiGraph/lib/../include/utils -I/home/hjkim/PiGraph/lib/../include/communication
 
 CXX_FLAGS = 
 

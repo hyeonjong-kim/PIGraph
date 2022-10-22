@@ -102,9 +102,9 @@ worker: module/libSetting.a
 worker: module/libIO.a
 worker: module/libGraph.a
 worker: module/libNetwork.a
-worker: module/lib/libutils.a
 worker: /home/hjkim/PiGraph/hadoop-2.10.1/lib/native/libhdfs.so
 worker: module/lib/libstruct.a
+worker: module/lib/libutils.a
 worker: module/lib/libcommunication.a
 worker: CMakeFiles/worker.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable worker"

@@ -101,6 +101,7 @@ wm: CMakeFiles/wm.dir/build.make
 wm: module/libResource.a
 wm: module/libExecution.a
 wm: module/lib/libzk.a
+wm: module/lib/libutils.a
 wm: CMakeFiles/wm.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hjkim/PiGraph/bin/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable wm"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/wm.dir/link.txt --verbose=$(VERBOSE)
