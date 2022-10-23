@@ -102,7 +102,7 @@ worker: module/libSetting.a
 worker: module/libIO.a
 worker: module/libGraph.a
 worker: module/libNetwork.a
-worker: /home/hjkim/PiGraph/hadoop-2.10.1/lib/native/libhdfs.so
+worker: /home/hjkim/hadoop-2.10.1/lib/native/libhdfs.so
 worker: module/lib/libstruct.a
 worker: module/lib/libutils.a
 worker: module/lib/libcommunication.a

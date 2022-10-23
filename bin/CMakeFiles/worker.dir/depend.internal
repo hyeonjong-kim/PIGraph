@@ -3,7 +3,6 @@
 
 CMakeFiles/worker.dir/worker_main.cpp.o
  /home/hjkim/PiGraph/bin/worker_main.cpp
- /home/hjkim/PiGraph/hadoop-2.10.1/include/hdfs.h
  /home/hjkim/PiGraph/include/communication/IPoIB.h
  /home/hjkim/PiGraph/include/communication/RDMA.h
  /home/hjkim/PiGraph/include/modules/Graph.h
@@ -15,3 +14,4 @@ CMakeFiles/worker.dir/worker_main.cpp.o
  /home/hjkim/PiGraph/include/utils/ArgParsing.h
  /home/hjkim/PiGraph/include/utils/ThreadPool.h
  /home/hjkim/PiGraph/include/utils/Tools.h
+ /home/hjkim/hadoop-2.10.1/include/hdfs.h

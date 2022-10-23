@@ -33,8 +33,8 @@ target_link_libraries(Setting PRIVATE utils)
 
 add_library(IO STATIC ../src/modules/IO.cpp)
 target_include_directories(IO PUBLIC ../include/modules)
-target_include_directories(IO PUBLIC /home/hjkim/PiGraph/hadoop-2.10.1/include)
-target_link_libraries(IO PRIVATE /home/hjkim/PiGraph/hadoop-2.10.1/lib/native/libhdfs.so)
+target_include_directories(IO PUBLIC /home/hjkim/hadoop-2.10.1/include)
+target_link_libraries(IO PRIVATE /home/hjkim/hadoop-2.10.1/lib/native/libhdfs.so)
 
 add_library(Graph STATIC ../src/modules/Graph.cpp)
 target_include_directories(Graph PUBLIC ../include/modules)

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string.h>
-#include "../../hadoop-2.10.1/include/hdfs.h"
+#include "../../../hadoop-2.10.1/include/hdfs.h"
 
 using namespace std;
 

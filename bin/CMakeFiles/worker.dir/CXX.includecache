@@ -28,16 +28,6 @@ sys/msg.h
 ../include/modules/Processing.h
 /home/hjkim/PiGraph/include/modules/Processing.h
 
-/home/hjkim/PiGraph/hadoop-2.10.1/include/hdfs.h
-errno.h
--
-fcntl.h
--
-stdint.h
--
-time.h
--
-
 /home/hjkim/PiGraph/include/communication/IPoIB.h
 iostream
 -
@@ -135,8 +125,8 @@ iostream
 -
 string.h
 -
-../../hadoop-2.10.1/include/hdfs.h
-/home/hjkim/PiGraph/hadoop-2.10.1/include/hdfs.h
+../../../hadoop-2.10.1/include/hdfs.h
+/home/hjkim/hadoop-2.10.1/include/hdfs.h
 
 /home/hjkim/PiGraph/include/modules/Network.h
 iostream
@@ -258,5 +248,15 @@ sstream
 vector
 -
 string
+-
+
+/home/hjkim/hadoop-2.10.1/include/hdfs.h
+errno.h
+-
+fcntl.h
+-
+stdint.h
+-
+time.h
 -
 

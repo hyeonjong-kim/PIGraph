@@ -11,7 +11,7 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/home/hjkim/PiGraph/module/../include/modules"
-  "/home/hjkim/PiGraph/hadoop-2.10.1/include"
+  "/home/hjkim/hadoop-2.10.1/include"
   )
 
 # Targets to which this target links.

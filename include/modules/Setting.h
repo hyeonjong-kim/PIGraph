@@ -99,7 +99,7 @@ bool Setting::argParse(int argc, const char *argv[]){
         std::cout << err << std::endl;
         exit(0);
     }
-    
+      
     this->superstep = this->parser->get<int>("s");
     this->port = this->parser->get<int>("P");
     this->partitionOpt = this->parser->get<int>("p");

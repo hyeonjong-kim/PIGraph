@@ -226,7 +226,7 @@ string Processing::execute(string query){
             futures.clear();
             cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
             
-            if(this->superstep < this->iteration)this->network->sendMsg_min(numeric_limits<int>::max(), 0.0);
+            this->network->sendMsg_min(numeric_limits<int>::max(), 0.0);
             
             for (size_t i = 0; i < this->thisNumVertex; i++){
                 if(this->msgBuffer[this->vertices[i].pos]!= numeric_limits<double>::max()){
@@ -292,7 +292,7 @@ string Processing::execute(string query){
             futures.clear();
             cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
             
-            if(this->superstep < this->iteration)this->network->sendMsg_min(numeric_limits<int>::max(), 0.0);
+            this->network->sendMsg_min(numeric_limits<int>::max(), 0.0);
             
             for (size_t i = 0; i < this->thisNumVertex; i++){
                 if(this->msgBuffer[this->vertices[i].pos]!= numeric_limits<double>::max()){
