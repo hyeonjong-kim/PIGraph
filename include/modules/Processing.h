@@ -33,6 +33,7 @@ class Processing{
         int sourceVertex;
         bool checkAliveThisWorker = false;
         bool checkAlive = true;
+        bool blockProcessing = true;
         
 
     public:
@@ -132,191 +133,369 @@ void Processing::WeaklyConnectedComponent(int start, int end){
 
 string Processing::execute(string query){
     string result = "";
-    if(query == "pagerank"){
-        int slice = this->thisNumEdge/this->numThread;
-        int start;
-        int end;
-        cerr << this->totalNumVertex << endl;
-        cerr << this->thisNumEdge << endl;
-        std::vector<std::future<void>> futures;
-        for (size_t i = 0; i <= this->iteration; i++){
-            cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
-            start = 0;
-            end = 0;
-            for (size_t i = 1; i <= this->numThread; i++){
-                int sliceEdge = 0;
-                for (size_t j = start; j < this->thisNumVertex; j++){
-                    sliceEdge += this->edges->find(this->vertices[j].vertexID)->second.size();
-                    if(sliceEdge < slice)end++;
-                    else break;
+    if(this->blockProcessing == true){
+        if(query == "pagerank"){
+            int slice = this->thisNumEdge/this->numThread;
+            int start;
+            int end;
+            cerr << this->totalNumVertex << endl;
+            cerr << this->thisNumEdge << endl;
+            std::vector<std::future<void>> futures;
+
+            for (size_t i = 0; i <= this->iteration; i++){
+                cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
+                start = 0;
+                end = 0;
+                for (size_t j = 1; j <= this->numThread; j++){
+                    int sliceEdge = 0;
+                    for (size_t z = start; z < this->thisNumVertex; z++){
+                        sliceEdge += this->edges->find(this->vertices[z].vertexID)->second.size();
+                        if(sliceEdge < slice)end++;
+                        else break;
+                    }
+                    if(j != this->numThread){
+                        auto f = [this, start, end](){
+                            this->PageRank(start, end);
+                        };
+                        futures.emplace_back(this->threadPool->EnqueueJob(f));
+                    }
+                    else{
+                        auto f = [this, start](){
+                            this->PageRank(start, this->thisNumVertex);
+                        };
+                        futures.emplace_back(this->threadPool->EnqueueJob(f));
+                    }
+                    start = end;
                 }
-                if(i != this->numThread){
-                    auto f = [this, start, end](){
-                        this->PageRank(start, end);
-                    };
-                    futures.emplace_back(this->threadPool->EnqueueJob(f));
+                for(auto& f_ : futures){
+                    f_.wait();
+                }
+                futures.clear();
+                cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
+                if(this->superstep < this->iteration)this->network->sendMsg_sum(numeric_limits<int>::max(), 0.0);
+                this->superstep++;
+            }
+            this->network->closeNetwork();
+
+            map<int,double> finalResult;
+            for (size_t i = 0; i < this->thisNumVertex; i++){
+                finalResult.insert({vertices[i].vertexID, vertices[i].vertexValue});
+            }
+            vector<pp> vec(finalResult.begin(), finalResult.end());
+            sort(vec.begin(), vec.end(), cmp);
+            
+            for(auto num:vec){ 
+                char tmp[128];
+                sprintf(tmp, "%0.16f", num.second);
+                result += to_string(num.first) + "\t" + string(tmp) + "\n";
+            }
+        }
+
+        else if(query == "sssp"){
+            int slice = this->thisNumEdge/this->numThread;
+            int start;
+            int end;
+            cerr << "[INFO]Total vertices: " << this->totalNumVertex << endl;
+            cerr << "[INFO]This worker's edges: " << this->thisNumEdge << endl;
+            std::vector<std::future<void>> futures;
+            while(this->checkAlive){
+                cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
+                start = 0;
+                end = 0;
+                for (size_t i = 1; i <= this->numThread; i++){
+                    int sliceEdge = 0;
+                    for (size_t j = start; j < this->thisNumVertex; j++){
+                        sliceEdge += this->edges->find(this->vertices[j].vertexID)->second.size();
+                        if(sliceEdge < slice)end++;
+                        else break;
+                    }
+                    if(i != this->numThread){
+                        auto f = [this, start, end](){
+                            this->SingleSourceShortestPath(start, end);
+                        };
+                        futures.emplace_back(this->threadPool->EnqueueJob(f));
+                    }
+                    else{
+                        auto f = [this, start](){
+                            this->SingleSourceShortestPath(start, this->thisNumVertex);
+                        };
+                        futures.emplace_back(this->threadPool->EnqueueJob(f));
+                    }
+                    start = end;
+                }
+                for(auto& f_ : futures){
+                    f_.wait();
+                }
+                futures.clear();
+                cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
+                
+                this->network->sendMsg_min(numeric_limits<int>::max(), 0.0);
+                
+                for (size_t i = 0; i < this->thisNumVertex; i++){
+                    if(this->msgBuffer[this->vertices[i].pos]!= numeric_limits<double>::max()){
+                        this->vertices[i].state = true;
+                        this->checkAliveThisWorker = true;
+                    }
+                }
+
+                if(this->checkAliveThisWorker == true){
+                    this->network->sendAliveMsg("alive");
                 }
                 else{
-                    auto f = [this, start](){
-                        this->PageRank(start, this->thisNumVertex);
-                    };
-                    futures.emplace_back(this->threadPool->EnqueueJob(f));
+                    this->network->sendAliveMsg("dead");
                 }
-                start = end;
+                this->checkAliveThisWorker = false;
+                this->checkAlive = this->network->getAliveMsg();
+                this->superstep++;
             }
-            for(auto& f_ : futures){
-                f_.wait();
-            }
-            futures.clear();
-            cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
-            if(this->superstep < this->iteration)this->network->sendMsg_sum(numeric_limits<int>::max(), 0.0);
-            this->superstep++;
-        }
-        this->network->closeNetwork();
+            
+            this->network->closeNetwork();
 
-        map<int,double> finalResult;
-        for (size_t i = 0; i < this->thisNumVertex; i++){
-            finalResult.insert({vertices[i].vertexID, vertices[i].vertexValue});
+            for (size_t i = 0; i < this->thisNumVertex; i++){
+                if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
+                result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
+            }
         }
-        vector<pp> vec(finalResult.begin(), finalResult.end());
-        sort(vec.begin(), vec.end(), cmp);
-        
-        for(auto num:vec){ 
-            char tmp[128];
-            sprintf(tmp, "%0.16f", num.second);
-            result += to_string(num.first) + "\t" + string(tmp) + "\n";
+
+        else if(query == "wcc"){
+            int slice = this->thisNumEdge/this->numThread;
+            int start;
+            int end;
+            cerr << "[INFO]Total vertices: " << this->totalNumVertex << endl;
+            cerr << "[INFO]This worker's edges: " << this->thisNumEdge << endl;
+            std::vector<std::future<void>> futures;
+            while(this->checkAlive){
+                cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
+                start = 0;
+                end = 0;
+                for (size_t i = 1; i <= this->numThread; i++){
+                    int sliceEdge = 0;
+                    for (size_t j = start; j < this->thisNumVertex; j++){
+                        sliceEdge += this->edges->find(this->vertices[j].vertexID)->second.size();
+                        if(sliceEdge < slice)end++;
+                        else break;
+                    }
+                    if(i != this->numThread){
+                        auto f = [this, start, end](){
+                            this->WeaklyConnectedComponent(start, end);
+                        };
+                        futures.emplace_back(this->threadPool->EnqueueJob(f));
+                    }
+                    else{
+                        auto f = [this, start](){
+                            this->WeaklyConnectedComponent(start, this->thisNumVertex);
+                        };
+                        futures.emplace_back(this->threadPool->EnqueueJob(f));
+                    }
+                    start = end;
+                }
+                for(auto& f_ : futures){
+                    f_.wait();
+                }
+                futures.clear();
+                cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
+                
+                this->network->sendMsg_min(numeric_limits<int>::max(), 0.0);
+                
+                for (size_t i = 0; i < this->thisNumVertex; i++){
+                    if(this->msgBuffer[this->vertices[i].pos]!= numeric_limits<double>::max()){
+                        this->vertices[i].state = true;
+                        this->checkAliveThisWorker = true;
+                    }
+                }
+
+                if(this->checkAliveThisWorker == true){
+                    this->network->sendAliveMsg("alive");
+                }
+                else{
+                    this->network->sendAliveMsg("dead");
+                }
+                this->checkAliveThisWorker = false;
+                this->checkAlive = this->network->getAliveMsg();
+                this->superstep++;
+            }
+            
+            this->network->closeNetwork();
+
+            for (size_t i = 0; i < this->thisNumVertex; i++){
+                if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
+                result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
+            }
         }
     }
 
-    else if(query == "sssp"){
-        int slice = this->thisNumEdge/this->numThread;
-        int start;
-        int end;
-        cerr << "[INFO]Total vertices: " << this->totalNumVertex << endl;
-        cerr << "[INFO]This worker's edges: " << this->thisNumEdge << endl;
-        std::vector<std::future<void>> futures;
-        while(this->checkAlive){
-            cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
-            start = 0;
-            end = 0;
-            for (size_t i = 1; i <= this->numThread; i++){
-                int sliceEdge = 0;
-                for (size_t j = start; j < this->thisNumVertex; j++){
-                    sliceEdge += this->edges->find(this->vertices[j].vertexID)->second.size();
-                    if(sliceEdge < slice)end++;
-                    else break;
+    else if(this->blockProcessing == false){
+        if(query == "pagerank"){
+            cerr << this->totalNumVertex << endl;
+            cerr << this->thisNumEdge << endl;
+            std::vector<std::future<void>> futures;
+            for (size_t i = 0; i <= this->iteration; i++){
+                cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
+                /*
+                for (size_t j = 0; j < count; j++)
+                {
+                    
                 }
-                if(i != this->numThread){
-                    auto f = [this, start, end](){
-                        this->SingleSourceShortestPath(start, end);
-                    };
-                    futures.emplace_back(this->threadPool->EnqueueJob(f));
+                */
+                
+                auto f = [this, i](){
+                    this->PageRank(i, this->thisNumVertex);
+                };
+                futures.emplace_back(this->threadPool->EnqueueJob(f));
+                for(auto& f_ : futures){
+                    f_.wait();
+                }
+                futures.clear();
+                cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
+                if(this->superstep < this->iteration)this->network->sendMsg_sum(numeric_limits<int>::max(), 0.0);
+                this->superstep++;
+            }
+
+            this->network->closeNetwork();
+            map<int,double> finalResult;
+            for (size_t i = 0; i < this->thisNumVertex; i++){
+                finalResult.insert({vertices[i].vertexID, vertices[i].vertexValue});
+            }
+            vector<pp> vec(finalResult.begin(), finalResult.end());
+            sort(vec.begin(), vec.end(), cmp);
+            
+            for(auto num:vec){ 
+                char tmp[128];
+                sprintf(tmp, "%0.16f", num.second);
+                result += to_string(num.first) + "\t" + string(tmp) + "\n";
+            }
+        }
+
+        else if(query == "sssp"){
+            int slice = this->thisNumEdge/this->numThread;
+            int start;
+            int end;
+            cerr << "[INFO]Total vertices: " << this->totalNumVertex << endl;
+            cerr << "[INFO]This worker's edges: " << this->thisNumEdge << endl;
+            std::vector<std::future<void>> futures;
+            while(this->checkAlive){
+                cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
+                start = 0;
+                end = 0;
+                for (size_t i = 1; i <= this->numThread; i++){
+                    int sliceEdge = 0;
+                    for (size_t j = start; j < this->thisNumVertex; j++){
+                        sliceEdge += this->edges->find(this->vertices[j].vertexID)->second.size();
+                        if(sliceEdge < slice)end++;
+                        else break;
+                    }
+                    if(i != this->numThread){
+                        auto f = [this, start, end](){
+                            this->SingleSourceShortestPath(start, end);
+                        };
+                        futures.emplace_back(this->threadPool->EnqueueJob(f));
+                    }
+                    else{
+                        auto f = [this, start](){
+                            this->SingleSourceShortestPath(start, this->thisNumVertex);
+                        };
+                        futures.emplace_back(this->threadPool->EnqueueJob(f));
+                    }
+                    start = end;
+                }
+                for(auto& f_ : futures){
+                    f_.wait();
+                }
+                futures.clear();
+                cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
+                
+                this->network->sendMsg_min(numeric_limits<int>::max(), 0.0);
+                
+                for (size_t i = 0; i < this->thisNumVertex; i++){
+                    if(this->msgBuffer[this->vertices[i].pos]!= numeric_limits<double>::max()){
+                        this->vertices[i].state = true;
+                        this->checkAliveThisWorker = true;
+                    }
+                }
+
+                if(this->checkAliveThisWorker == true){
+                    this->network->sendAliveMsg("alive");
                 }
                 else{
-                    auto f = [this, start](){
-                        this->SingleSourceShortestPath(start, this->thisNumVertex);
-                    };
-                    futures.emplace_back(this->threadPool->EnqueueJob(f));
+                    this->network->sendAliveMsg("dead");
                 }
-                start = end;
+                this->checkAliveThisWorker = false;
+                this->checkAlive = this->network->getAliveMsg();
+                this->superstep++;
             }
-            for(auto& f_ : futures){
-                f_.wait();
-            }
-            futures.clear();
-            cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
             
-            this->network->sendMsg_min(numeric_limits<int>::max(), 0.0);
-            
+            this->network->closeNetwork();
+
             for (size_t i = 0; i < this->thisNumVertex; i++){
-                if(this->msgBuffer[this->vertices[i].pos]!= numeric_limits<double>::max()){
-                    this->vertices[i].state = true;
-                    this->checkAliveThisWorker = true;
-                }
+                if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
+                result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
             }
-
-            if(this->checkAliveThisWorker == true){
-                this->network->sendAliveMsg("alive");
-            }
-            else{
-                this->network->sendAliveMsg("dead");
-            }
-            this->checkAliveThisWorker = false;
-            this->checkAlive = this->network->getAliveMsg();
-            this->superstep++;
         }
-        
-        this->network->closeNetwork();
 
-        for (size_t i = 0; i < this->thisNumVertex; i++){
-            if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
-            result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
-        }
-    }
-
-    else if(query == "wcc"){
-        int slice = this->thisNumEdge/this->numThread;
-        int start;
-        int end;
-        cerr << "[INFO]Total vertices: " << this->totalNumVertex << endl;
-        cerr << "[INFO]This worker's edges: " << this->thisNumEdge << endl;
-        std::vector<std::future<void>> futures;
-        while(this->checkAlive){
-            cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
-            start = 0;
-            end = 0;
-            for (size_t i = 1; i <= this->numThread; i++){
-                int sliceEdge = 0;
-                for (size_t j = start; j < this->thisNumVertex; j++){
-                    sliceEdge += this->edges->find(this->vertices[j].vertexID)->second.size();
-                    if(sliceEdge < slice)end++;
-                    else break;
+        else if(query == "wcc"){
+            int slice = this->thisNumEdge/this->numThread;
+            int start;
+            int end;
+            cerr << "[INFO]Total vertices: " << this->totalNumVertex << endl;
+            cerr << "[INFO]This worker's edges: " << this->thisNumEdge << endl;
+            std::vector<std::future<void>> futures;
+            while(this->checkAlive){
+                cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
+                start = 0;
+                end = 0;
+                for (size_t i = 1; i <= this->numThread; i++){
+                    int sliceEdge = 0;
+                    for (size_t j = start; j < this->thisNumVertex; j++){
+                        sliceEdge += this->edges->find(this->vertices[j].vertexID)->second.size();
+                        if(sliceEdge < slice)end++;
+                        else break;
+                    }
+                    if(i != this->numThread){
+                        auto f = [this, start, end](){
+                            this->WeaklyConnectedComponent(start, end);
+                        };
+                        futures.emplace_back(this->threadPool->EnqueueJob(f));
+                    }
+                    else{
+                        auto f = [this, start](){
+                            this->WeaklyConnectedComponent(start, this->thisNumVertex);
+                        };
+                        futures.emplace_back(this->threadPool->EnqueueJob(f));
+                    }
+                    start = end;
                 }
-                if(i != this->numThread){
-                    auto f = [this, start, end](){
-                        this->WeaklyConnectedComponent(start, end);
-                    };
-                    futures.emplace_back(this->threadPool->EnqueueJob(f));
+                for(auto& f_ : futures){
+                    f_.wait();
+                }
+                futures.clear();
+                cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
+                
+                this->network->sendMsg_min(numeric_limits<int>::max(), 0.0);
+                
+                for (size_t i = 0; i < this->thisNumVertex; i++){
+                    if(this->msgBuffer[this->vertices[i].pos]!= numeric_limits<double>::max()){
+                        this->vertices[i].state = true;
+                        this->checkAliveThisWorker = true;
+                    }
+                }
+
+                if(this->checkAliveThisWorker == true){
+                    this->network->sendAliveMsg("alive");
                 }
                 else{
-                    auto f = [this, start](){
-                        this->WeaklyConnectedComponent(start, this->thisNumVertex);
-                    };
-                    futures.emplace_back(this->threadPool->EnqueueJob(f));
+                    this->network->sendAliveMsg("dead");
                 }
-                start = end;
+                this->checkAliveThisWorker = false;
+                this->checkAlive = this->network->getAliveMsg();
+                this->superstep++;
             }
-            for(auto& f_ : futures){
-                f_.wait();
-            }
-            futures.clear();
-            cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
             
-            this->network->sendMsg_min(numeric_limits<int>::max(), 0.0);
-            
+            this->network->closeNetwork();
+
             for (size_t i = 0; i < this->thisNumVertex; i++){
-                if(this->msgBuffer[this->vertices[i].pos]!= numeric_limits<double>::max()){
-                    this->vertices[i].state = true;
-                    this->checkAliveThisWorker = true;
-                }
+                if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
+                result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
             }
-
-            if(this->checkAliveThisWorker == true){
-                this->network->sendAliveMsg("alive");
-            }
-            else{
-                this->network->sendAliveMsg("dead");
-            }
-            this->checkAliveThisWorker = false;
-            this->checkAlive = this->network->getAliveMsg();
-            this->superstep++;
-        }
-        
-        this->network->closeNetwork();
-
-        for (size_t i = 0; i < this->thisNumVertex; i++){
-            if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
-            result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
         }
     }
 

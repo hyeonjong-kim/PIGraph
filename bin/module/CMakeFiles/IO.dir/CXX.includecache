@@ -6,3 +6,25 @@
 
 #IncludeRegexTransform: 
 
+/home/hjkim/PiGraph/include/modules/IO.h
+iostream
+-
+string.h
+-
+../../../hadoop-2.10.1/include/hdfs.h
+/home/hjkim/hadoop-2.10.1/include/hdfs.h
+
+/home/hjkim/PiGraph/src/modules/IO.cpp
+../../include/modules/IO.h
+/home/hjkim/PiGraph/include/modules/IO.h
+
+/home/hjkim/hadoop-2.10.1/include/hdfs.h
+errno.h
+-
+fcntl.h
+-
+stdint.h
+-
+time.h
+-
+
