@@ -39,14 +39,14 @@ class Processing{
     public:
         Processing(){}
         ~Processing(){}
-        void setInfo(Graph* graph, Network* network, int iteration, int numThread, int sourceVertex);
+        void setInfo(Graph* graph, Network* network, int iteration, int numThread, int sourceVertex, bool blockProcessing);
         void PageRank(int start, int end);
         void SingleSourceShortestPath(int start, int end);
         void WeaklyConnectedComponent(int start, int end);
         string execute(string query);
 };
 
-void Processing::setInfo(Graph* graph, Network* network, int iteration, int numThread, int sourceVertex){
+void Processing::setInfo(Graph* graph, Network* network, int iteration, int numThread, int sourceVertex, bool blockProcessing){
     this->vertices = graph->getVertices();
     this->edges = graph->getEdges();
     this->network = network;
@@ -58,6 +58,9 @@ void Processing::setInfo(Graph* graph, Network* network, int iteration, int numT
     this->numThread = numThread;
     this->threadPool = new ThreadPool::ThreadPool(numThread);
     this->sourceVertex = sourceVertex;
+    this->blockProcessing = blockProcessing;
+
+    cerr << this->blockProcessing << endl;
 }
 
 void Processing::PageRank(int start, int end){
@@ -331,17 +334,12 @@ string Processing::execute(string query){
             std::vector<std::future<void>> futures;
             for (size_t i = 0; i <= this->iteration; i++){
                 cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
-                /*
-                for (size_t j = 0; j < count; j++)
-                {
-                    
+                for (size_t j = 0; j < this->thisNumVertex; j++){
+                    auto f = [this, j](){
+                        this->PageRank(j, j);
+                    };
+                    futures.emplace_back(this->threadPool->EnqueueJob(f));
                 }
-                */
-                
-                auto f = [this, i](){
-                    this->PageRank(i, this->thisNumVertex);
-                };
-                futures.emplace_back(this->threadPool->EnqueueJob(f));
                 for(auto& f_ : futures){
                     f_.wait();
                 }

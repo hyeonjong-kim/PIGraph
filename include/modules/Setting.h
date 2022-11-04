@@ -34,6 +34,7 @@ class Setting{
         int numThread;
         string outputPath;
         int sourceVertex;
+        bool blockProcessing;
 
         Setting(){this->parser = new ArgumentParser("Pigraph_Worker", "Pigraph Worker");}
         bool argParse(int argc, const char *argv[]);
@@ -91,7 +92,11 @@ bool Setting::argParse(int argc, const char *argv[]){
     this->parser->add_argument()
         .names({"-S", "--sourceVertex"})
         .description("Source Vertex")
-        .required(false);   
+        .required(false); 
+    this->parser->add_argument()
+        .names({"-b", "--true"})
+        .description("Block Processing")
+        .required(false); 
     this->parser->enable_help();
     
     auto err = parser->parse(argc, argv);
@@ -117,6 +122,10 @@ bool Setting::argParse(int argc, const char *argv[]){
     this->HDFS_port = stoi(split_HDFS[1]);
     this->numThread = this->parser->get<int>("t");
     if(this->query == "sssp")this->sourceVertex = this->parser->get<int>("S");
+    if(this->parser->get<int>("b") ==1){
+        this->blockProcessing = true;
+    }   
+    else this->blockProcessing = false;
     
     char thisHostName[256];
     gethostname(thisHostName, 256);

@@ -60,11 +60,11 @@ int main(int argc, const char *argv[]){
 
     gettimeofday(&start_query, NULL);
     if(setting->query=="pagerank" || setting->query=="wcc"){
-        processing->setInfo(graph, network, setting->superstep, setting->numThread, 0);
+        processing->setInfo(graph, network, setting->superstep, setting->numThread, 0, setting->blockProcessing);
 
     }
     else if(setting->query=="sssp"){
-        processing->setInfo(graph, network, setting->superstep, setting->numThread, setting->sourceVertex);
+        processing->setInfo(graph, network, setting->superstep, setting->numThread, setting->sourceVertex, setting->blockProcessing);
     }
 
     string result = processing->execute(setting->query);
