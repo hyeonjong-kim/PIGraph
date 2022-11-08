@@ -11,6 +11,13 @@
 #include "../include/modules/Processing.h"
 using namespace std;
 
+#define pp pair<int, double>
+
+bool cmp(const pp& a, const pp& b) {
+	if (a.second == b.second) return a.first < b.first;
+	return a.second > b.second;
+}
+
 struct mesg_buffer {
     long mesg_type;
     char mesg_text[1024];
@@ -67,10 +74,30 @@ int main(int argc, const char *argv[]){
         processing->setInfo(graph, network, setting->superstep, setting->numThread, setting->sourceVertex, setting->blockProcessing, setting->recvCombiner);
     }
 
-    string result = processing->execute(setting->query);
-    cerr << result << endl;
+    processing->execute(setting->query);
     gettimeofday(&end_query, NULL);
-    
+    Vertex* vertices = graph->getVertices();
+    string result = "";
+    if(setting->query == "pagerank"){
+        map<int,double> finalResult;
+        for (size_t i = 0; i < graph->getNumVertex(); i++){
+            finalResult.insert({vertices[i].vertexID, vertices[i].vertexValue});
+        }
+        vector<pp> vec(finalResult.begin(), finalResult.end());
+        sort(vec.begin(), vec.end(), cmp);
+        for(auto num:vec){ 
+            char tmp[128];
+            sprintf(tmp, "%0.16f", num.second);
+            result += to_string(num.first) + "\t" + string(tmp) + "\n";
+        }
+    }
+    else{
+        for (size_t i = 0; i < graph->getNumVertex(); i++){
+            if(vertices[i].vertexValue == numeric_limits<double>::max())vertices[i].vertexValue = 0.0;
+            result += to_string(vertices[i].vertexID) + "\t" + to_string(vertices[i].vertexValue) + "\n";
+        }
+    }
+    cerr << result << endl;
     gettimeofday(&start_write_file, NULL);
     io->writeHDFSFile((char*)(setting->outputPath.c_str()), O_WRONLY|O_CREAT, result, setting->thisHostNumber);
     gettimeofday(&end_write_file, NULL);

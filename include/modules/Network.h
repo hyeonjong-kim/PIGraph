@@ -35,7 +35,6 @@ class Network{
         RDMA* rdma;
         Tools tools;
         ThreadPool::ThreadPool* connectionThreadPool;
-        ThreadPool::ThreadPool* msgProcessingThreadPool = new ThreadPool::ThreadPool(256);
         int externalNumVertex = 0;
         double initValue;
         bool recvCombiner = true;
@@ -247,34 +246,12 @@ void Network::sendMsg_sum(int vertexID, double value){
             
             fill_n(this->messageBuffer, this->recvPos->size(), this->initValue);
             if(this->recvCombiner == true){
-                /*
                 map<int,int>::iterator iter;
                 for(iter = this->recvPos->begin();iter != this->recvPos->end(); iter++){
                     for (size_t i = 0; i < this->numHost; i++){
                         this->messageBuffer[iter->second] += this->recvMsg[i][iter->second];
                     }
                 }
-                */
-                int slice = this->recvPos->size()/256;
-                int start = 0;
-                int end = 0;
-                for (size_t i = 0; i < this->recvPos->size(); i+=slice){
-                    end += slice;
-                    if(end > this->recvPos->size())end = this->recvPos->size();
-                    auto f = [this, start, end](){
-                        for (size_t j =  start; j < end; j++){
-                            for (size_t z = 0; z < this->numHost; z++){
-                                this->messageBuffer[this->recvPos->find(j)->second] += this->recvMsg[z][this->recvPos->find(j)->second];
-                            }
-                        }
-                    };
-                    futures.emplace_back(this->msgProcessingThreadPool->EnqueueJob(f));
-                    start = end;
-                }
-                for(auto& f_ : futures){
-                    f_.wait();
-                }
-                futures.clear();
                 for (size_t i = 0; i < this->numHost; i++){
                     fill_n(this->recvMsg[i], this->recvPos->size(), this->initValue);
                 }

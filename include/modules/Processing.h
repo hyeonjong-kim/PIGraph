@@ -9,12 +9,6 @@
 #include "../modules/Network.h"
 #include "../utils/ThreadPool.h"
 #include "../utils/Tools.h"
-#define pp pair<int, double>
-
-bool cmp(const pp& a, const pp& b) {
-	if (a.second == b.second) return a.first < b.first;
-	return a.second > b.second;
-}
 
 class Processing{
     private:
@@ -47,7 +41,7 @@ class Processing{
 
         void PageRank_No_recvCombiner(int start, int end);
         void SingleSourceShortestPath_No_recvCombiner(int start, int end);
-        string execute(string query);
+        void execute(string query);
 };
 
 void Processing::setInfo(Graph* graph, Network* network, int iteration, int numThread, int sourceVertex, bool blockProcessing, bool recvCombiner){
@@ -114,7 +108,7 @@ void Processing::SingleSourceShortestPath(int start, int end){
             if(this->superstep == 0){
                 this->vertices[i].vertexValue = numeric_limits<double>::max();
             }
-            
+
             double minDist = (this->vertices[i].vertexID == this->sourceVertex) ? 0.0 : this->msgBuffer[this->vertices[i].pos];
             if(minDist < this->vertices[i].vertexValue){
                 this->vertices[i].vertexValue = minDist;
@@ -184,8 +178,7 @@ void Processing::WeaklyConnectedComponent(int start, int end){
     }
 }
 
-string Processing::execute(string query){
-    string result = "";
+void Processing::execute(string query){
     cerr << "[INFO]Total vertices: " << this->totalNumVertex << endl;
     cerr << "[INFO]This worker's edges: " << this->thisNumEdge << endl;
     if(this->blockProcessing == true && this->recvCombiner == true){
@@ -228,19 +221,6 @@ string Processing::execute(string query){
                 this->superstep++;
             }
             this->network->closeNetwork();
-
-            map<int,double> finalResult;
-            for (size_t i = 0; i < this->thisNumVertex; i++){
-                finalResult.insert({vertices[i].vertexID, vertices[i].vertexValue});
-            }
-            vector<pp> vec(finalResult.begin(), finalResult.end());
-            sort(vec.begin(), vec.end(), cmp);
-            
-            for(auto num:vec){ 
-                char tmp[128];
-                sprintf(tmp, "%0.16f", num.second);
-                result += to_string(num.first) + "\t" + string(tmp) + "\n";
-            }
         }
 
         else if(query == "sssp"){
@@ -300,11 +280,6 @@ string Processing::execute(string query){
             }
             
             this->network->closeNetwork();
-
-            for (size_t i = 0; i < this->thisNumVertex; i++){
-                if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
-                result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
-            }
         }
 
         else if(query == "wcc"){
@@ -364,11 +339,6 @@ string Processing::execute(string query){
             }
             
             this->network->closeNetwork();
-
-            for (size_t i = 0; i < this->thisNumVertex; i++){
-                if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
-                result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
-            }
         }
     }
 
@@ -412,19 +382,6 @@ string Processing::execute(string query){
                 this->superstep++;
             }
             this->network->closeNetwork();
-
-            map<int,double> finalResult;
-            for (size_t i = 0; i < this->thisNumVertex; i++){
-                finalResult.insert({vertices[i].vertexID, vertices[i].vertexValue});
-            }
-            vector<pp> vec(finalResult.begin(), finalResult.end());
-            sort(vec.begin(), vec.end(), cmp);
-            
-            for(auto num:vec){ 
-                char tmp[128];
-                sprintf(tmp, "%0.16f", num.second);
-                result += to_string(num.first) + "\t" + string(tmp) + "\n";
-            }
         }
 
         else if(query == "sssp"){
@@ -484,11 +441,6 @@ string Processing::execute(string query){
             }
             
             this->network->closeNetwork();
-
-            for (size_t i = 0; i < this->thisNumVertex; i++){
-                if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
-                result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
-            }
         }
 
         else if(query == "wcc"){
@@ -548,11 +500,6 @@ string Processing::execute(string query){
             }
             
             this->network->closeNetwork();
-
-            for (size_t i = 0; i < this->thisNumVertex; i++){
-                if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
-                result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
-            }
         }
     }
 
@@ -577,18 +524,6 @@ string Processing::execute(string query){
             }
 
             this->network->closeNetwork();
-            map<int,double> finalResult;
-            for (size_t i = 0; i < this->thisNumVertex; i++){
-                finalResult.insert({vertices[i].vertexID, vertices[i].vertexValue});
-            }
-            vector<pp> vec(finalResult.begin(), finalResult.end());
-            sort(vec.begin(), vec.end(), cmp);
-            
-            for(auto num:vec){ 
-                char tmp[128];
-                sprintf(tmp, "%0.16f", num.second);
-                result += to_string(num.first) + "\t" + string(tmp) + "\n";
-            }
         }
 
         else if(query == "sssp"){
@@ -630,11 +565,6 @@ string Processing::execute(string query){
             }
             
             this->network->closeNetwork();
-
-            for (size_t i = 0; i < this->thisNumVertex; i++){
-                if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
-                result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
-            }
         }
 
         else if(query == "wcc"){
@@ -694,11 +624,6 @@ string Processing::execute(string query){
             }
             
             this->network->closeNetwork();
-
-            for (size_t i = 0; i < this->thisNumVertex; i++){
-                if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
-                result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
-            }
         }
     }
 
@@ -723,18 +648,6 @@ string Processing::execute(string query){
             }
 
             this->network->closeNetwork();
-            map<int,double> finalResult;
-            for (size_t i = 0; i < this->thisNumVertex; i++){
-                finalResult.insert({vertices[i].vertexID, vertices[i].vertexValue});
-            }
-            vector<pp> vec(finalResult.begin(), finalResult.end());
-            sort(vec.begin(), vec.end(), cmp);
-            
-            for(auto num:vec){ 
-                char tmp[128];
-                sprintf(tmp, "%0.16f", num.second);
-                result += to_string(num.first) + "\t" + string(tmp) + "\n";
-            }
         }
 
         else if(query == "sssp"){
@@ -776,11 +689,6 @@ string Processing::execute(string query){
             }
             
             this->network->closeNetwork();
-
-            for (size_t i = 0; i < this->thisNumVertex; i++){
-                if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
-                result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
-            }
         }
 
         else if(query == "wcc"){
@@ -840,15 +748,8 @@ string Processing::execute(string query){
             }
             
             this->network->closeNetwork();
-
-            for (size_t i = 0; i < this->thisNumVertex; i++){
-                if(this->vertices[i].vertexValue == numeric_limits<double>::max())this->vertices[i].vertexValue = 0.0;
-                result += to_string(this->vertices[i].vertexID) + "\t" + to_string(this->vertices[i].vertexValue) + "\n";
-            }
         }
     }
-
-    return result;
 }
 
 #endif
