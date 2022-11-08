@@ -51,20 +51,20 @@ int main(int argc, const char *argv[]){
     
     gettimeofday(&start_network_set, NULL);
     if(setting->query=="pagerank"){
-        network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber, graph->getMsgBuffer(), 0.0, setting->numThread);
+        network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber, graph->getMsgBuffer(), 0.0, setting->recvCombiner);
     }
     else if(setting->query=="sssp" || setting->query=="wcc"){
-        network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber, graph->getMsgBuffer(), numeric_limits<double>::max(), setting->numThread);
+        network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber, graph->getMsgBuffer(), numeric_limits<double>::max(), setting->recvCombiner);
     }
     gettimeofday(&end_network_set, NULL);
 
     gettimeofday(&start_query, NULL);
     if(setting->query=="pagerank" || setting->query=="wcc"){
-        processing->setInfo(graph, network, setting->superstep, setting->numThread, 0, setting->blockProcessing);
+        processing->setInfo(graph, network, setting->superstep, setting->numThread, 0, setting->blockProcessing, setting->recvCombiner);
 
     }
     else if(setting->query=="sssp"){
-        processing->setInfo(graph, network, setting->superstep, setting->numThread, setting->sourceVertex, setting->blockProcessing);
+        processing->setInfo(graph, network, setting->superstep, setting->numThread, setting->sourceVertex, setting->blockProcessing, setting->recvCombiner);
     }
 
     string result = processing->execute(setting->query);

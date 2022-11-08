@@ -35,6 +35,7 @@ class Setting{
         string outputPath;
         int sourceVertex;
         bool blockProcessing;
+        bool recvCombiner;
 
         Setting(){this->parser = new ArgumentParser("Pigraph_Worker", "Pigraph Worker");}
         bool argParse(int argc, const char *argv[]);
@@ -94,9 +95,13 @@ bool Setting::argParse(int argc, const char *argv[]){
         .description("Source Vertex")
         .required(false); 
     this->parser->add_argument()
-        .names({"-b", "--true"})
+        .names({"-b", "--block"})
         .description("Block Processing")
-        .required(false); 
+        .required(true); 
+    this->parser->add_argument()
+        .names({"-r", "--recvCombiner"})
+        .description("Recv Combiner")
+        .required(true);
     this->parser->enable_help();
     
     auto err = parser->parse(argc, argv);
@@ -126,6 +131,11 @@ bool Setting::argParse(int argc, const char *argv[]){
         this->blockProcessing = true;
     }   
     else this->blockProcessing = false;
+
+    if(this->parser->get<int>("r") ==1){
+        this->recvCombiner = true;
+    }   
+    else this->recvCombiner = false;
     
     char thisHostName[256];
     gethostname(thisHostName, 256);
