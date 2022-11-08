@@ -59,8 +59,6 @@ void Processing::setInfo(Graph* graph, Network* network, int iteration, int numT
     this->threadPool = new ThreadPool::ThreadPool(numThread);
     this->sourceVertex = sourceVertex;
     this->blockProcessing = blockProcessing;
-
-    cerr << this->blockProcessing << endl;
 }
 
 void Processing::PageRank(int start, int end){
@@ -136,15 +134,14 @@ void Processing::WeaklyConnectedComponent(int start, int end){
 
 string Processing::execute(string query){
     string result = "";
+    cerr << "[INFO]Total vertices: " << this->totalNumVertex << endl;
+    cerr << "[INFO]This worker's edges: " << this->thisNumEdge << endl;
     if(this->blockProcessing == true){
         if(query == "pagerank"){
             int slice = this->thisNumEdge/this->numThread;
             int start;
             int end;
-            cerr << this->totalNumVertex << endl;
-            cerr << this->thisNumEdge << endl;
             std::vector<std::future<void>> futures;
-
             for (size_t i = 0; i <= this->iteration; i++){
                 cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
                 start = 0;
@@ -198,8 +195,6 @@ string Processing::execute(string query){
             int slice = this->thisNumEdge/this->numThread;
             int start;
             int end;
-            cerr << "[INFO]Total vertices: " << this->totalNumVertex << endl;
-            cerr << "[INFO]This worker's edges: " << this->thisNumEdge << endl;
             std::vector<std::future<void>> futures;
             while(this->checkAlive){
                 cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
@@ -264,8 +259,6 @@ string Processing::execute(string query){
             int slice = this->thisNumEdge/this->numThread;
             int start;
             int end;
-            cerr << "[INFO]Total vertices: " << this->totalNumVertex << endl;
-            cerr << "[INFO]This worker's edges: " << this->thisNumEdge << endl;
             std::vector<std::future<void>> futures;
             while(this->checkAlive){
                 cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
@@ -329,14 +322,12 @@ string Processing::execute(string query){
 
     else if(this->blockProcessing == false){
         if(query == "pagerank"){
-            cerr << this->totalNumVertex << endl;
-            cerr << this->thisNumEdge << endl;
             std::vector<std::future<void>> futures;
             for (size_t i = 0; i <= this->iteration; i++){
                 cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
                 for (size_t j = 0; j < this->thisNumVertex; j++){
                     auto f = [this, j](){
-                        this->PageRank(j, j);
+                        this->PageRank(j, j+1);
                     };
                     futures.emplace_back(this->threadPool->EnqueueJob(f));
                 }
@@ -368,40 +359,20 @@ string Processing::execute(string query){
             int slice = this->thisNumEdge/this->numThread;
             int start;
             int end;
-            cerr << "[INFO]Total vertices: " << this->totalNumVertex << endl;
-            cerr << "[INFO]This worker's edges: " << this->thisNumEdge << endl;
             std::vector<std::future<void>> futures;
             while(this->checkAlive){
                 cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
-                start = 0;
-                end = 0;
-                for (size_t i = 1; i <= this->numThread; i++){
-                    int sliceEdge = 0;
-                    for (size_t j = start; j < this->thisNumVertex; j++){
-                        sliceEdge += this->edges->find(this->vertices[j].vertexID)->second.size();
-                        if(sliceEdge < slice)end++;
-                        else break;
-                    }
-                    if(i != this->numThread){
-                        auto f = [this, start, end](){
-                            this->SingleSourceShortestPath(start, end);
-                        };
-                        futures.emplace_back(this->threadPool->EnqueueJob(f));
-                    }
-                    else{
-                        auto f = [this, start](){
-                            this->SingleSourceShortestPath(start, this->thisNumVertex);
-                        };
-                        futures.emplace_back(this->threadPool->EnqueueJob(f));
-                    }
-                    start = end;
+                for (size_t j = 0; j < this->thisNumVertex; j++){
+                    auto f = [this, j](){
+                        this->SingleSourceShortestPath(j, j+1);
+                    };
+                    futures.emplace_back(this->threadPool->EnqueueJob(f));
                 }
                 for(auto& f_ : futures){
                     f_.wait();
                 }
                 futures.clear();
                 cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
-                
                 this->network->sendMsg_min(numeric_limits<int>::max(), 0.0);
                 
                 for (size_t i = 0; i < this->thisNumVertex; i++){
@@ -434,8 +405,6 @@ string Processing::execute(string query){
             int slice = this->thisNumEdge/this->numThread;
             int start;
             int end;
-            cerr << "[INFO]Total vertices: " << this->totalNumVertex << endl;
-            cerr << "[INFO]This worker's edges: " << this->thisNumEdge << endl;
             std::vector<std::future<void>> futures;
             while(this->checkAlive){
                 cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
