@@ -51,10 +51,10 @@ int main(int argc, const char *argv[]){
     
     gettimeofday(&start_network_set, NULL);
     if(setting->query=="pagerank"){
-        network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber, graph->getMsgBuffer(), 0.0);
+        network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber, graph->getMsgBuffer(), 0.0, setting->numThread);
     }
     else if(setting->query=="sssp" || setting->query=="wcc"){
-        network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber, graph->getMsgBuffer(), numeric_limits<double>::max());
+        network->setNetwork(setting->networkType, setting->workers.size(), setting->workers, setting->port, graph->getRecvPos(), setting->mu, setting->numMutex, setting->thisHostNumber, graph->getMsgBuffer(), numeric_limits<double>::max(), setting->numThread);
     }
     gettimeofday(&end_network_set, NULL);
 
@@ -68,6 +68,7 @@ int main(int argc, const char *argv[]){
     }
 
     string result = processing->execute(setting->query);
+    cerr << result << endl;
     gettimeofday(&end_query, NULL);
     
     gettimeofday(&start_write_file, NULL);

@@ -35,14 +35,16 @@ class Network{
         RDMA* rdma;
         Tools tools;
         ThreadPool::ThreadPool* connectionThreadPool;
+        ThreadPool::ThreadPool* msgProcessingThreadPool;
         int externalNumVertex = 0;
         double initValue;
+        int numThread;
 
     public:
         Network(){};
         ~Network();
 
-        void setNetwork(string _networkType, int _numHost, vector<string> _hostInfo, int _port, map<int, int>* _recvPos, mutex* _mu, int _numMu, int thisHostNumber, double* msgBuffer, double initValue);
+        void setNetwork(string _networkType, int _numHost, vector<string> _hostInfo, int _port, map<int, int>* _recvPos, mutex* _mu, int _numMu, int thisHostNumber, double* msgBuffer, double initValue, int thread);
         bool setIPoIB();
         bool setRDMA();
         void sendMsg_sum(int vertexID, double value);
@@ -61,7 +63,7 @@ class Network{
 
 
 
-void Network::setNetwork(string _networkType, int _numHost, vector<string> _hostInfo, int _port, map<int, int>* _recvPos, mutex* _mu, int _numMu, int thisHostNumber, double* msgBuffer, double initValue){
+void Network::setNetwork(string _networkType, int _numHost, vector<string> _hostInfo, int _port, map<int, int>* _recvPos, mutex* _mu, int _numMu, int thisHostNumber, double* msgBuffer, double initValue, int thread){
     this->initValue = initValue;
     this->networkType =  _networkType;
     this->numHost = _numHost;
@@ -85,6 +87,8 @@ void Network::setNetwork(string _networkType, int _numHost, vector<string> _host
     this->messageBuffer = msgBuffer;
     fill_n(this->messageBuffer, this->recvPos->size(), this->initValue);
     this->connectionThreadPool =  new ThreadPool::ThreadPool(this->numHost);
+    this->msgProcessingThreadPool =  new ThreadPool::ThreadPool(thread);
+    this->numThread = thread;
 
     if(this->networkType == "rdma"){
         this->setIPoIB();
@@ -241,13 +245,36 @@ void Network::sendMsg_sum(int vertexID, double value){
             futures.clear();
             
             fill_n(this->messageBuffer, this->recvPos->size(), this->initValue);
+            /*
             map<int,int>::iterator iter;
             for(iter = this->recvPos->begin();iter != this->recvPos->end(); iter++){
                 for (size_t i = 0; i < this->numHost; i++){
                     this->messageBuffer[iter->second] += this->recvMsg[i][iter->second];
                 }
             }
+            */
             
+            int slice = this->recvPos->size()/this->numThread;
+            int start = 0;
+            int end = 0;
+            for (size_t i = 0; i < this->recvPos->size(); i+=slice){
+                end += slice;
+                if(end > this->recvPos->size())end = this->recvPos->size();
+                auto f = [this, start, end](){
+                    for (size_t j =  start; j < end; j++){
+                        for (size_t z = 0; z < this->numHost; z++){
+                            this->messageBuffer[this->recvPos->find(j)->second] += this->recvMsg[z][this->recvPos->find(j)->second];
+                        }
+                    }
+                };
+                futures.emplace_back(this->msgProcessingThreadPool->EnqueueJob(f));
+                start = end;
+            }
+            for(auto& f_ : futures){
+                f_.wait();
+            }
+            futures.clear();
+
             for (size_t i = 0; i < this->numHost; i++){
                 fill_n(this->recvMsg[i], this->recvPos->size(), this->initValue);
             }
@@ -318,12 +345,34 @@ void Network::sendMsg_sum(int vertexID, double value){
             futures.clear();
 
             fill_n(this->messageBuffer, this->recvPos->size(), this->initValue);
+            /*
             map<int,int>::iterator iter;
             for(iter = this->recvPos->begin();iter != this->recvPos->end(); iter++){
                 for (size_t i = 0; i < this->numHost; i++){
                     this->messageBuffer[iter->second] += this->recvMsg[i][iter->second];
                 }
             }
+            */
+            int slice = this->recvPos->size()/this->numThread;
+            int start = 0;
+            int end = 0;
+            for (size_t i = 0; i < this->recvPos->size(); i+=slice){
+                end += slice;
+                if(end > this->recvPos->size())end = this->recvPos->size();
+                auto f = [this, start, end](){
+                    for (size_t j =  start; j < end; j++){
+                        for (size_t z = 0; z < this->numHost; z++){
+                            this->messageBuffer[this->recvPos->find(j)->second] += this->recvMsg[z][this->recvPos->find(j)->second];
+                        }
+                    }
+                };
+                futures.emplace_back(this->msgProcessingThreadPool->EnqueueJob(f));
+                start = end;
+            }
+            for(auto& f_ : futures){
+                f_.wait();
+            }
+            futures.clear();
             
             for (size_t i = 0; i < this->numHost; i++){
                 fill_n(this->recvMsg[i], this->recvPos->size(), this->initValue);
@@ -382,13 +431,35 @@ void Network::sendMsg_min(int vertexID, double value){
             futures.clear();
             
             fill_n(this->messageBuffer, this->recvPos->size(), this->initValue);
+            /*
             map<int,int>::iterator iter;
             for(iter = this->recvPos->begin();iter != this->recvPos->end(); iter++){
                 for (size_t i = 0; i < this->numHost; i++){
                     if(this->messageBuffer[iter->second] > this->recvMsg[i][iter->second])this->messageBuffer[iter->second] = this->recvMsg[i][iter->second];
                 }
             }
-            
+            */
+            int slice = this->recvPos->size()/this->numThread;
+            int start = 0;
+            int end = 0;
+            for (size_t i = 0; i < this->recvPos->size(); i+=slice){
+                end += slice;
+                if(end > this->recvPos->size())end = this->recvPos->size();
+                auto f = [this, start, end](){
+                    for (size_t j =  start; j < end; j++){
+                        for (size_t z = 0; z < this->numHost; z++){
+                            if(this->messageBuffer[this->recvPos->find(j)->second] > this->recvMsg[z][this->recvPos->find(j)->second])this->messageBuffer[this->recvPos->find(j)->second] = this->recvMsg[z][this->recvPos->find(j)->second];
+                        }
+                    }
+                };
+                futures.emplace_back(this->msgProcessingThreadPool->EnqueueJob(f));
+                start = end;
+            }
+            for(auto& f_ : futures){
+                f_.wait();
+            }
+            futures.clear();
+
             for (size_t i = 0; i < this->numHost; i++){
                 fill_n(this->recvMsg[i], this->recvPos->size(), this->initValue);
             }
@@ -461,13 +532,35 @@ void Network::sendMsg_min(int vertexID, double value){
             futures.clear();
 
             fill_n(this->messageBuffer, this->recvPos->size(), this->initValue);
+            /*
             map<int,int>::iterator iter;
             for(iter = this->recvPos->begin();iter != this->recvPos->end(); iter++){
                 for (size_t i = 0; i < this->numHost; i++){
                     if(this->messageBuffer[iter->second] > this->recvMsg[i][iter->second])this->messageBuffer[iter->second] = this->recvMsg[i][iter->second];
                 }
             }
-            
+            */
+            int slice = this->recvPos->size()/this->numThread;
+            int start = 0;
+            int end = 0;
+            for (size_t i = 0; i < this->recvPos->size(); i+=slice){
+                end += slice;
+                if(end > this->recvPos->size())end = this->recvPos->size();
+                auto f = [this, start, end](){
+                    for (size_t j =  start; j < end; j++){
+                        for (size_t z = 0; z < this->numHost; z++){
+                            if(this->messageBuffer[this->recvPos->find(j)->second] > this->recvMsg[z][this->recvPos->find(j)->second])this->messageBuffer[this->recvPos->find(j)->second] = this->recvMsg[z][this->recvPos->find(j)->second];
+                        }
+                    }
+                };
+                futures.emplace_back(this->msgProcessingThreadPool->EnqueueJob(f));
+                start = end;
+            }
+            for(auto& f_ : futures){
+                f_.wait();
+            }
+            futures.clear();
+
             for (size_t i = 0; i < this->numHost; i++){
                 fill_n(this->recvMsg[i], this->recvPos->size(), this->initValue);
             }
