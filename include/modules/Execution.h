@@ -70,13 +70,15 @@ void Execution::executeWorker(){
                                 + string(" -p ") + executionOpt.find("patitionOpt")->second + string(" -q ") + executionOpt.find("query")->second + string(" -H ") + executionOpt.find("HDFS")->second 
                                 + string(" -u ") + executionOpt.find("processingUnit")->second + string(" -m ") + executionOpt.find("mutex")->second + string(" -w ") + executionOpt.find("workers")->second 
                                 + string(" -t ") + executionOpt.find("thread")->second + string(" -n ") + executionOpt.find("networkType")->second + string(" -o ") + executionOpt.find("outputPath")->second 
-                                + string(" -S ") + executionOpt.find("sourceId")->second + string(" 1> logs/worker_") + string(buffer) + string(" 2>&1 &");
+                                + string(" -S ") + executionOpt.find("sourceId")->second + string(" -b ") + executionOpt.find("block")->second + string(" -r ") + executionOpt.find("receiveCombiner")->second 
+                                + string(" 1> logs/worker_") + string(buffer) + string(" 2>&1 &");
             }
             else{
                 executionCl = string("nohup ") + string("./worker") + string(" -s ") + executionOpt.find("superstep")->second + string(" -P ") + executionOpt.find("port")->second + string(" -f ") + executionOpt.find("filePath")->second 
                                 + string(" -p ") + executionOpt.find("patitionOpt")->second + string(" -q ") + executionOpt.find("query")->second + string(" -H ") + executionOpt.find("HDFS")->second 
                                 + string(" -u ") + executionOpt.find("processingUnit")->second + string(" -m ") + executionOpt.find("mutex")->second + string(" -w ") + executionOpt.find("workers")->second 
-                                + string(" -t ") + executionOpt.find("thread")->second + string(" -n ") + executionOpt.find("networkType")->second + string(" -o ") + executionOpt.find("outputPath")->second + string(" 1> logs/worker_") + string(buffer) + string(" 2>&1 &");
+                                + string(" -t ") + executionOpt.find("thread")->second + string(" -n ") + executionOpt.find("networkType")->second + string(" -o ") + executionOpt.find("outputPath")->second 
+                                + string(" -b ") + executionOpt.find("block")->second + string(" -r ") + executionOpt.find("receiveCombiner")->second + string(" 1> logs/worker_") + string(buffer) + string(" 2>&1 &");
             }
             
             system((char*)executionCl.c_str());

@@ -87,6 +87,10 @@ bool Parsing::argParse(int argc, const char *argv[]){
     .names({"-b", "--block_processing"})
     .description("Block processing")
     .required(false);
+    this->parser->add_argument()
+    .names({"-r", "--receiveCombiner"})
+    .description("Receive combiner")
+    .required(false);
 
     this->parser->add_argument()
     .names({"-N", "--node_name"})
@@ -117,6 +121,7 @@ bool Parsing::argParse(int argc, const char *argv[]){
         this->argConfig.insert({"jobId", this->parser->get<string>("j")});
         this->argConfig.insert({"thread", this->parser->get<string>("t")});
         this->argConfig.insert({"block", this->parser->get<string>("b")});
+        this->argConfig.insert({"receiveCombiner", this->parser->get<string>("r")});
         
         string processingUnit = this->parser->get<string>("u");
         string query = this->parser->get<string>("q");
