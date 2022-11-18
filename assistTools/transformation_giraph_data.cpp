@@ -22,8 +22,8 @@ vector<string> split(string input, char delimiter) {
 }
 
 int main(){
-    string path = "/home/hjkim/data/facebook_combined.txt";
-    char delimiter  = ' ';
+    string path = "/home/hjkim/data/WikiTalk.txt";
+    char delimiter  = '\t';
     ifstream data(path);
     string s;
     vector<string> v;

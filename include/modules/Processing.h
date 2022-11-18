@@ -379,6 +379,7 @@ void Processing::execute(string query){
                 futures.clear();
                 cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
                 if(this->superstep < this->iteration)this->network->sendMsg_sum(numeric_limits<int>::max(), 0.0);
+                
                 this->superstep++;
             }
             this->network->closeNetwork();
@@ -391,6 +392,26 @@ void Processing::execute(string query){
             std::vector<std::future<void>> futures;
             while(this->checkAlive){
                 cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
+                if(this->superstep > 0){
+                    for (size_t j = 0; j < this->network->getNumHost(); j++){
+                        for (size_t i = 0; i < this->thisNumVertex; i++){
+                            if(this->recvMsg[j][this->vertices[i].pos]!= numeric_limits<double>::max()){
+                                this->vertices[i].state = true;
+                                this->checkAliveThisWorker = true;
+                            }
+                        }
+                    }
+                    if(this->checkAliveThisWorker == true){
+                        this->network->sendAliveMsg("alive");
+                    }
+                    else{
+                        this->network->sendAliveMsg("dead");
+                    }
+                    this->checkAliveThisWorker = false;
+                    this->checkAlive = this->network->getAliveMsg();    
+                    if(!checkAlive)break;
+                }
+                
                 start = 0;
                 end = 0;
                 for (size_t i = 1; i <= this->numThread; i++){
@@ -421,22 +442,6 @@ void Processing::execute(string query){
                 cerr <<  "[INFO]SUCCESS PROCESSING GRAPH" << endl;
                 
                 this->network->sendMsg_min(numeric_limits<int>::max(), 0.0);
-                
-                for (size_t i = 0; i < this->thisNumVertex; i++){
-                    if(this->msgBuffer[this->vertices[i].pos]!= numeric_limits<double>::max()){
-                        this->vertices[i].state = true;
-                        this->checkAliveThisWorker = true;
-                    }
-                }
-
-                if(this->checkAliveThisWorker == true){
-                    this->network->sendAliveMsg("alive");
-                }
-                else{
-                    this->network->sendAliveMsg("dead");
-                }
-                this->checkAliveThisWorker = false;
-                this->checkAlive = this->network->getAliveMsg();
                 this->superstep++;
             }
             
@@ -657,6 +662,25 @@ void Processing::execute(string query){
             std::vector<std::future<void>> futures;
             while(this->checkAlive){
                 cerr << "[INFO]SUPERSTEP " << this->superstep << endl;
+                if(this->superstep > 0){
+                    for (size_t j = 0; j < this->network->getNumHost(); j++){
+                        for (size_t i = 0; i < this->thisNumVertex; i++){
+                            if(this->recvMsg[j][this->vertices[i].pos]!= numeric_limits<double>::max()){
+                                this->vertices[i].state = true;
+                                this->checkAliveThisWorker = true;
+                            }
+                        }
+                    }
+                    if(this->checkAliveThisWorker == true){
+                        this->network->sendAliveMsg("alive");
+                    }
+                    else{
+                        this->network->sendAliveMsg("dead");
+                    }
+                    this->checkAliveThisWorker = false;
+                    this->checkAlive = this->network->getAliveMsg();    
+                    if(!checkAlive)break;
+                }
                 for (size_t j = 0; j < this->thisNumVertex; j++){
                     auto f = [this, j](){
                         this->SingleSourceShortestPath_No_recvCombiner(j, j+1);
@@ -676,15 +700,6 @@ void Processing::execute(string query){
                         this->checkAliveThisWorker = true;
                     }
                 }
-
-                if(this->checkAliveThisWorker == true){
-                    this->network->sendAliveMsg("alive");
-                }
-                else{
-                    this->network->sendAliveMsg("dead");
-                }
-                this->checkAliveThisWorker = false;
-                this->checkAlive = this->network->getAliveMsg();
                 this->superstep++;
             }
             
